@@ -1,0 +1,120 @@
+/*------------------------------------*\
+	Transversal Elements
+    #Styles links - appearance buttons
+\*------------------------------------*/
+
+.btn {
+  display: inline-block;
+  width: 100%;
+  padding: 16px;
+  text-align: center;
+  color: $c-default;
+  @include font-rem(16px);
+  font-family: $f-default;
+  font-weight: $fw-regular;
+  border: 2px solid $c-default;
+  background-color: $c-neutro;
+  cursor: pointer;
+  transition: all 0.2s;
+  &:hover {
+    color: $c-neutro;
+    border: 2px solid $c-brand;
+    background-color: $c-brand;
+  }
+  &:active {
+    border-top-color: $c-brand-dark;
+    border-left-color: $c-brand-dark;
+  }
+  &:before {
+    @include font-rem(20px);
+    padding-right: 12px;
+  }
+}
+.btn_small {
+  width: auto;
+  padding: 14px 24px;
+}
+
+
+.btn_solid {
+  color: $c-neutro;
+  background-color: $c-default;
+}
+
+.btn_close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-block;
+  padding:0 4px 5px;
+  border-bottom: solid 3px $c-brand;
+  cursor: pointer;
+
+  span {
+    display: none;
+  }
+  &:before {
+    @include font-rem(22px);
+  }
+}
+
+.btn_block {
+  display: block;
+}
+
+.btn__wrapper {
+  display: block;
+  text-align: center;
+  &:after,
+  &:before {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    width: 25%;
+    max-width: 240px;
+    height: 1px;
+    margin: 0 24px;
+    border-bottom: 1px solid $c-default;
+  }
+  .btn {
+    width: auto;
+  }
+}
+
+.btn_edit {
+  display: block;
+  width: 26px;
+  height: 26px;
+  line-height: 24px;
+  text-align: center;
+  color: $c-neutro;
+  cursor: pointer;
+  background-color: $c-brand;
+  border-radius: 50%;
+  &:hover {
+    background-color: $c-default;
+  }
+}
+
+.btn-tag {
+  display: inline-block;
+  padding: 4px 8px;
+  color: $c-brand;
+  @include font-rem(14px);
+  border: 1px solid $c-brand;
+  border-radius: 25px;
+  background-color: $c-neutro;
+}
+
+
+
+// $bp-medium: 768px;
+@include media-query(medium) {
+  .btn {
+    width: auto;
+    min-width: 220px;
+  }
+  .btn_block {
+    width: 100%;
+  }
+}

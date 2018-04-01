@@ -1,0 +1,136 @@
+/*------------------------------------*\
+	Elementos Formularios
+\*------------------------------------*/
+
+.form-section {
+  max-width: 400px;
+  margin: 32px auto;
+  padding: 0;
+  border: none;
+  .notify__info {
+    @include font-rem(16px);
+  }
+}
+
+.form-section_band {
+  padding-top: 32px;
+  .form-section__title {
+    border: none;
+    padding-bottom: 32px;
+    margin-bottom: 0;
+  }
+}
+  .form-section__slot {
+    max-width: 280px;
+    margin: 0 auto;
+  }
+  .form-section__subtitle {
+    margin: 0;
+    text-transform: initial;
+    @include font-rem(16px);
+    font-family: $f-default;
+    font-weight: $fw-regular;
+  }
+  .form-section__title {
+    width: 100%;
+    margin-bottom: 40px;
+  }
+  .form-section__head {
+    margin: 0;
+    padding-bottom: 30px;
+    text-transform: uppercase;
+    @include font-rem(18px);
+    font-family: $f-default;
+    font-weight: $fw-bold;
+  }
+.form-section_dividers {
+  margin-bottom: 0;
+  .form-section__title {
+    margin-bottom: 0;
+  }
+}
+.form-section_footer {
+  text-align: center;
+}
+
+@media only screen and (min-width: 620px) {
+  .form-section {
+    margin: 50px auto;
+    max-width: 800px;
+  }
+  .form-section__inner {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .form-section_dividers {
+    margin-bottom: 0;
+  }
+
+  .form-section_band {
+    padding: 1px 0;
+  }
+
+  .form-section__grid {
+    width: 100%;
+    @include flexbox;
+    @include justify-content(space-between);
+  }
+
+  .form-section__item {
+    flex-grow: 1;
+    max-width: 50%;
+  }
+
+  .form-section__slot {
+    max-width: 280px;
+    margin: 0 0 0 auto;
+    &.sticky {
+      position: sticky;
+      position: -webkit-sticky;
+      top: 30px;
+    }
+  }
+  .form-section_footer {
+    .btn {
+      max-width: 320px;
+    }
+
+  }
+}
+
+// $bp-medium: 768px;
+@include media-query(medium) {
+  .form-section__subtitle {
+    @include font-rem(18px);
+  }
+
+  .form-section__slot {
+    max-width: 320px;
+    margin-left: auto;
+  }
+  .form-section_footer {
+    margin-top: 0;
+    .btn {
+      max-width: 320px;
+    }
+    .form__row_away {
+      padding-top: 60px;
+    }
+  }
+}
+.layout_section {
+  max-width: 400px;
+  margin: 32px auto;
+  text-align: center;
+  .title {
+    display: inline-block;
+  }
+
+}
+@media only screen and (min-width: 620px) {
+  .layout_section {
+    margin: 50px auto;
+    max-width: 800px;
+  }
+}

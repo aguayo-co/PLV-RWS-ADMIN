@@ -1,0 +1,89 @@
+/*------------------------------------*\
+    #Styles for text elements
+\*------------------------------------*/
+body {
+  line-height: 1.4;
+  color:  $c-default;
+  @include font-rem(14px);
+  font-family: $f-default;
+  font-weight: $fw-regular;
+}
+
+.break {
+  position: relative;
+  padding: 12px 0 24px;
+  text-align: center;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: $c-default;
+  }
+  .break__txt {
+    position: relative;
+    z-index: 2;
+    display: inline-block;
+    padding: 0 24px;
+    background-color: $c-neutro;
+  }
+}
+
+.txt_brand {
+  color: $c-brand;
+}
+
+.small_high {
+  display: block;
+  text-transform: initial;
+  color: $c-brand;
+  @include font-rem(14px);
+  font-family: $f-default;
+  font-weight: $fw-regular;
+}
+
+// borde rosado 
+.tag {
+  display: inline-block;
+  padding: 4px 8px;
+  color: $c-brand;
+  border: 1px solid $c-brand;
+  border-radius: 25px;
+}
+// texto tachado 
+.through {
+  text-decoration: line-through;
+}
+//borde bottom pink
+.txt-underline {
+  display: inline-block;
+  padding-bottom: 2px;
+  color: $black;
+  font-size: inherit;
+  font-weight: $fw-bold;
+  border-bottom: 3px solid $c-brand;
+  transition: all 0.5s;
+}
+
+.txt-light {
+  font-family: $f-normal;
+  font-weight: $fw-thin;
+}
+
+.plus-item {
+  &:before {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    line-height: 18px;
+    text-align: center;
+    color: $c-brand;
+    @include font-rem(10px);
+    border: 1px solid $c-brand;
+    border-radius: 50%;
+  }
+}
+

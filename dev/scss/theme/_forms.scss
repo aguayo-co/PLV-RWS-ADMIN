@@ -1,0 +1,825 @@
+/*------------------------------------*\
+	Transversal Elements
+    #Forms Styles
+\*------------------------------------*/
+input, select, textarea {
+  outline: none;
+  border: none;
+}
+
+label {
+  cursor: default;
+}
+
+select {
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+}
+
+
+/*------------------------------------*\
+	Elementos Formularios
+\*------------------------------------*/
+
+.form {
+  color: $c-default;
+}
+.form__set {
+  border: none;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.form__legend {
+  padding-bottom: 24px;
+  margin: 0;
+  text-transform: uppercase;
+  @include font-rem(18px);
+  font-family: $f-fancy;
+  font-weight: $fw-light;
+}
+ .form__grid_center {
+   text-align: center;
+ }
+  .form__row {
+    padding-bottom: 12px;
+  }
+  .form__row_top {
+    padding-top: 12px;
+    width: 100%;
+  }
+  .form__row_block {
+    width: 100%;
+  }
+
+  .form__row_away {
+    padding-top: 12px;
+  }
+
+  .form__btn {
+    text-align: center;
+  }
+
+  .form__label {
+    display: block;
+    padding-bottom: 6px;
+    @include font-rem(14px);
+    font-weight: $fw-bold;
+  }
+  .form__label_high {
+    color: $c-brand;
+    font-weight: $fw-regular;
+  }
+
+  .form__headline {
+    @include font-rem(16px);
+  }
+
+  .form__disclaimer {
+    margin: 0;
+    @include font-rem(16px);
+  }
+  .form__price {
+    @include flexbox;
+    @include justify-content(space-between);
+    @include align-items(center);
+    &:before {
+      content: '$';
+      padding: 0 18px 12px 0;
+      @include font-rem(30px);
+      font-family: $f-fancy;
+      font-weight: $fw-light;
+    }
+  }
+
+  .form__control {
+    width: 100%;
+    padding: 0 12px;
+    margin-bottom: 12px;
+    line-height: 40px;
+    font-family: $f-default;
+    border: 1px solid $c-default-2;
+  }
+  .form__edit {
+    width: 100%;
+    line-height: 1.6;
+    color: $c-default-5;
+    @include font-rem(16px);
+    font-family: $f-default;
+    font-weight: $fw-regular;
+  }
+  .form__edit_txt {
+    width: 100%;
+    min-height: 170px;
+    padding: 6px;
+    line-height: 1.4;
+    color: $c-default-5;
+    @include font-rem(16px);
+    font-family: $f-default;
+    font-weight: $fw-regular;
+    border: 1px solid $c-neutro-3;
+
+  }
+
+.form__grid_reverse {
+  @include flexbox;
+  @include justify-content(center);
+  @include flex-direction (column-reverse);
+  text-align: center;
+  .form__grid_group {
+    @include flexbox;
+    @include flex-direction (column-reverse);
+    padding-bottom: 20px;
+  }
+}
+  .form__group-item {
+    padding: 14px 24px;
+  }
+
+//Input select
+.form__select {
+  width: 100%;
+  padding: 0 38px 0 12px;
+  margin-bottom: 12px;
+  height: 42px;
+  font-family: $f-default;
+  border: 1px solid $c-default-2;
+  background-color: #fff;
+  background-image: url(../../static/img/arrow-select.svg);
+  background-size: 11px 9px;
+  background-position: 98% center;
+  background-repeat: no-repeat;
+  -webkit-appearance: none;
+  -moz-appearance:    none;
+  padding-right:0\0;
+  background: none\0;
+}
+
+//Input textarea
+.form__textarea {
+  width: 100%;
+  padding: 10px 12px;
+  line-height: 1.4;
+  font-family: $f-default;
+  border: 1px solid $c-default-2;
+}
+.form__label-link {
+  color: $c-default;
+  font-weight: $fw-bold;
+  border-bottom: 2px solid $c-brand;
+}
+
+.form__text {
+  margin-top: 0;
+  font-family: $f-fancy;
+  @include font-rem(12px);
+  font-weight: $fw-medium;
+}
+
+/*------------------------------------*\
+	form radio
+\*------------------------------------*/
+.form__input-radio {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+  &:checked + .form__label_radio {
+    &:before {
+      content: '';
+    }
+  }
+}
+
+//label de input radio
+.form__label_radio {
+  position: relative;
+  padding-bottom: 0; 
+  padding-left: 28px;
+  font-weight: $fw-regular;
+
+  strong {
+    display: block;
+  }
+  
+  &:before {
+    position: absolute;
+    top: 8px;
+    left: 4px;
+    z-index: 1;
+    width: 10px;
+    height: 10px;
+    cursor: pointer;
+    @include font-rem(12px);
+    color: $c-default;
+    border-radius: 50%;
+    background-color: $c-brand;
+  }
+ 
+  &:after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 0;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    border: 2px solid $c-default-3;
+    border-radius: 50%;
+  }
+}
+/*------------------------------------*\
+	form radio boxcheck
+\*------------------------------------*/
+
+.form__input-radio {
+  &:checked+.form__label_radio {
+    .boxcheck__label {
+      border-color: $c-brand;
+    }
+  }
+}
+.boxcheck__item {
+  padding-bottom: 16px;
+  .form__label_radio  {
+    &:before {
+      top: 50%;
+      margin-top: -3px;
+    }
+    &:after {
+      top: 50%;
+      margin-top: -7px;
+    }
+  }
+}
+
+/*------------------------------------*\
+	form checkbox
+\*------------------------------------*/
+.form__row_check {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+//label de input checkbox
+.form__label_check {
+  position: relative;
+  display: inline-block;
+  padding-left: 28px;
+  padding-bottom: 2px;
+  &:before {
+    position: absolute;
+    top: 6px;
+    left: 3px;
+    z-index: 1;
+    display: none;
+    cursor: pointer;
+    color: $c-brand;
+    font-weight: $fw-bold;
+    @include font-rem(8px);
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 0;
+    width: 13px;
+    height: 13px;
+    cursor: pointer;
+    border: 2px solid $c-default-4;
+    border-radius: 3px;
+  }
+}
+//Input checkbox 
+.form__input-check {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+  &:checked+.form__label_check {
+    &:before {
+      display: block;
+    }
+  }
+}
+.form__check {
+  .form__label_check {
+    color: $c-default-4;
+    &:after {
+      border-color: $c-default-3;
+    }
+  }
+}
+
+/*------------------------------------*\
+	form password visible
+\*------------------------------------*/
+
+.form__password {
+  position: relative;
+}
+
+.form__visible {
+  position: absolute;
+  top: 12px;
+  right: 10px;
+  cursor: pointer;
+}
+
+/*------------------------------------*\
+	Form password fortaleza
+\*------------------------------------*/
+.password-bar {
+  position: relative;
+  display: block;
+  width: 85%;
+  height: 4px;
+  margin-bottom: 12px;
+  border: 1px solid $c-default-3;
+  border-radius: 25px;
+  transition: all .2s ease-out;
+  &:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    display: block;
+    width: 0;
+    height: 4px;
+    margin-top: -2px;
+    border-radius: 25px;
+    background-color: $c-brand;
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -16%;
+    display: block;
+    width: 15%;
+    margin-top: -9px;
+    text-align: right;
+    color: $c-default-3;
+    @include font-rem(12px);
+  }
+
+  &.level-1 {
+    &:before {
+      width: 25%;
+    }
+    &:after {
+      content: 'Bajo';
+    }
+
+  }
+  &.level-2 {
+    &:before {
+      width: 50%;
+    }
+    &:after {
+      content: 'Medio';
+    }
+
+  }
+  &.level-3 {
+    &:before {
+      width: 100%;
+    }
+    &:after {
+      content: 'Alto';
+    }
+
+  }
+}
+
+/*------------------------------------*\
+	form input asistido para talla
+\*------------------------------------*/
+
+.form-asisted__box {
+  position: relative;
+  display: block;
+  width: 180px;
+  margin: 0 auto 12px;
+}
+
+.form-asisted__model {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 42px;
+  padding: 0 10px;
+  text-align: right;
+  @include font-rem(28px);
+  background-color: $c-neutro;
+}
+
+.form-asisted__value {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  width: 100%;
+  height: 42px;
+  text-align: right;
+  text-transform: uppercase;
+  pointer-events: none;
+  @include font-rem(28px);
+  .form-asisted__item {
+    display: inline-block;
+    vertical-align: bottom;
+    width: 40px;
+    height: 42px;
+    margin: 0 10px;
+    line-height: 42px;
+    text-align: center;
+    border-bottom: 1px solid #000;
+  }
+}
+/*------------------------------------*\
+	form toggle color form
+\*------------------------------------*/
+.toggle-select {
+  margin-top: -12px;
+}
+
+.toggle-select__list {
+  list-style: none;
+  margin: 0 0 12px 0;
+  padding: 4px 8px;
+  border-bottom: 1px solid $c-default-2;
+  border-left: 1px solid $c-default-2;
+  border-right: 1px solid $c-default-2;
+  span {
+    vertical-align: middle;
+  }
+}
+
+.color-circle {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  cursor: pointer;
+  border-radius: 50%;
+  border: 1px solid $c-default-3;
+}
+
+.toggle-select__item {
+  padding: 4px;
+  @include font-rem(16px);
+}
+
+/*------------------------------------*\
+	form switch
+\*------------------------------------*/
+.form__switch {
+  position: relative;
+  display: inline-block;
+  width: 62px;
+  height: 28px;
+}
+.switch__input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 62px;
+  height: 28px;
+  opacity: 0;
+} 
+// Unchecked
+.switch__label {
+   display: block;
+   cursor: pointer;
+   color: $c-default-4;
+   &:before {
+     content: '';
+     position: absolute;
+     top: 0;
+     left: 0;
+     z-index: 1;
+     width: 62px;
+     height: 28px;
+     border-radius: 14px;
+     background-color: $c-default-4;
+     transition: background-color 0.28s cubic-bezier(.4, 0, .2, 1);
+   }
+   &:after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    z-index: 2;
+    width: 22px;
+    height: 22px;
+    border-radius: 14px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .04), 0 3px 1px -2px rgba(0, 0, 0, .1), 0 1px 5px 0 rgba(0, 0, 0, .02);
+    background-color: $c-neutro;
+    transition: all 0.28s cubic-bezier(.4, 0, .2, 1);
+    transition-property: left, background-color;
+   }
+ } 
+.switch__status {
+  position: absolute;
+  top: 28px;
+  left: 0;
+  right: 0;
+  line-height: 1;
+  text-align: center;
+  &:before {
+    content: 'Deshabilitado';
+    @include font-rem(12px);
+  }
+}
+
+// Checked
+.switch__input {
+  &:checked+.switch__label {
+    color: $c-brand;
+    &:before {
+      background-color: $c-brand;
+    }
+    &:after {
+      left: 37px;
+    }
+    .switch__status {
+      &:before {
+        content: 'Habilitado';
+      }
+    }
+  }
+}
+/*------------------------------------*\
+	form combo: input alineado con btn
+\*------------------------------------*/
+
+.form__combo {
+  @include flexbox;
+  @include align-items(center);
+  margin-bottom: 12px;
+}
+.combo__control {
+  width: 60%;
+  margin-bottom: 0;
+  font-family: $f-normal;
+  font-weight: $fw-thin;
+  @include font-rem(28px);
+}
+.combo__btn {
+  width: 40%;
+  min-width: auto;
+  margin-left: 10px;
+  padding: 10px 16px;
+  border-width: 1px;
+}
+.form__combo_ok {
+  .combo__control {
+    border-color: $c-ok;
+    color: $c-ok;
+  }
+  &:before {
+    margin-left: 12px;
+    @include order(2);
+    color: $c-ok;
+    font-weight: bold;
+    @include font-rem(18px);
+  }
+}
+
+.form-brand {
+  display: block;
+  padding-top: 30px;
+  color: $c-default;
+  .brand {
+    @include justify-content(center);
+  }
+  .brand__typo {
+    text-align: left;
+  }
+}
+
+//Input File
+.form_file {
+  position: relative;
+}
+
+.form__file-txt {
+  display: block;
+}
+
+.form__file {
+  position: absolute;
+  opacity: 0;
+}
+
+.form__label_file {
+  display: block;
+  cursor: pointer;
+  padding-bottom: 18px;
+}
+
+.form__file-txt {
+  padding-bottom: 8px;
+}
+
+.form__file-input {
+  @include flexbox;
+  @include align-items(center);
+  width: 100%;
+  border: 1px solid $c-default;
+}
+
+.form-file__btn {
+  width: 30%;
+  color: $c-neutro;
+  background-color: $c-default;
+  padding: 11px 20px 13px;
+  text-align: center;
+}
+
+.form-file__txt {
+  width: 70%;
+  padding: 11px 20px 13px;
+}
+
+// $bp-medium: 768px;
+@include media-query(medium) {
+  .form__edit_txt {
+    width: 100%;
+    min-height: 100px;
+  }
+  .form__headline {
+    @include font-rem(18px);
+  }
+
+  .form__disclaimer {
+    margin: 0;
+    @include font-rem(18px);
+  }
+  .form-brand {
+    padding-top: 50px;
+  }
+}
+
+// $bp-wide: 1024px;
+@include media-query(wide) {
+  .form__set {
+    max-width: 100%;
+  }
+
+  .form__grid {
+    @include flexbox;
+    @include justify-content(space-between);
+    @include align-items(center);
+
+    .form__row {
+      width: 50%;
+      flex-grow: 1;
+      &:not(:last-child) {
+        margin-right: 12px;
+      }
+    }
+  }
+
+  .form__grid_center {
+    @include justify-content(center);
+    .form__row {
+      width: auto;
+      flex-grow: 0;
+    }
+  }
+
+  .form__group {
+    @include flexbox;
+    @include justify-content(center); 
+    .form__row {
+      flex-grow: 0;
+      &:not(:last-child) {
+        margin-right: 12px;
+      }
+    }
+  }
+
+  .form__text {
+    @include font-rem(16px);
+  }
+
+}
+
+@media only screen and (min-width: 1080px) {
+  .form__grid_reverse {
+    @include flex-direction (row); 
+    @include justify-content(space-between);
+    @include align-items(center);
+    .form__grid_group {
+      @include flex-direction (row);
+      @include justify-content(flex-end);
+      padding-bottom: 0;
+      width: 50%;
+      padding-left: 8px;
+      .form__row {
+        flex-grow: 1;
+        &:not(:last-child) {
+          margin-right: 12px;
+        }
+      }
+    }
+      .form__grid-item {
+        width: 100%;
+        min-width: 100px;
+      }
+  }
+  
+}
+
+/*------------------------------------*\
+	Mensajes Error
+\*------------------------------------*/
+
+.is-danger {
+  .form__control {
+    border: 1px solid $c-brand;
+  }
+}
+
+.helper {
+  display: block;
+  background-color: $c-neutro-3;
+  a {
+    border-bottom: 2px solid $c-brand;
+    color: $c-default;
+    font-weight: $fw-bold;
+  }
+}
+
+.helper__list {
+  margin: 0;
+  padding: 8px 16px 8px 28px;
+  line-height: 1.6;
+  @include font-rem(12px);
+}
+.help {
+  position: relative;
+  display: block;
+  padding: 5px 8px;
+  line-height: 1.2;
+  color: $c-neutro;
+  background-color: $c-brand;
+  &:before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    bottom: -9px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 9px 10px 0 10px;
+    border-color: $c-brand transparent transparent transparent;
+  }
+}
+
+/*------------------------------------*\
+	Mensajes formulario
+\*------------------------------------*/
+.form__notify {
+  display: block;
+  padding: 16px;
+  text-align: center;
+  background-color: $c-neutro-3;
+  p {
+    &:first-child {
+      margin-top: 0;
+      padding-top: 0;
+    }
+  }
+}
+
+.form__mesagge {
+  margin-top: 0;
+  @include font-rem(16px);
+}
+
+
+.form__note {
+  margin: -8px 0 0;
+  @include font-rem(12px);
+}
+  .form__note_right {
+    text-align: right;
+  }
+  
+.form__info {
+  position: relative;
+  min-height: 40px;
+  padding: 16px 0 16px 48px;
+  @include font-rem(16px);
+  strong {
+    font-weight: $fw-bold;
+  }
+  &:before {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -20px;
+    @include font-rem(40px);
+  }
+}
+
+  

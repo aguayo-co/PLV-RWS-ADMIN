@@ -1,0 +1,313 @@
+/*------------------------------------*\
+	Detalle producto
+\*------------------------------------*/
+.detail {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.detail__gallery {
+  width: 100%;
+}
+.detail__tabs {
+  @include flexbox;
+  @include flex-direction(column);
+}
+
+.detail__thumb {
+  padding-bottom: 10px;
+  opacity: .5;
+  cursor: pointer;
+  transform: scale(.9);
+  transition: all .2s ease-out;
+  &:before {
+    display: none;
+    padding: 0 20px;
+    color: $c-neutro;
+    @include font-rem(24px);
+    transform: scale(.9);
+  }
+}
+
+.detail__thumb_active {
+  opacity: 1;
+  transform: scale(1);
+  &:before {
+    transform: scale(1);
+  }
+}
+
+.detail__tabs_initial {
+  .detail__thumb {
+    &:first-child {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+// Descripción
+.detail__content {
+  @include font-rem(16px);
+}
+  .detail__header {
+    padding: 24px 0;
+    text-align: center;
+  }
+    .detail__title {
+      display: block;
+      padding-bottom: 8px;
+      text-transform: uppercase;
+      @include font-rem(22px);
+      font-weight: $fw-bold;
+      font-family: $f-fancy;
+      border-bottom: 1px solid $c-default;
+    }
+  .detail__tag {
+    margin: 0;
+    @include font-rem(16px);
+  }
+
+  .detail__brand {
+    padding: 2px 0;
+    font-family: $f-fancy;
+    font-weight: $fw-medium;
+  }
+  .detail__value {
+    padding-bottom: 16px;
+    text-align: center;
+  }
+    .detail__through {
+      margin: 0;
+      color: $c-brand;
+    }
+    .detail__price {
+      margin: 0;
+      @include font-rem(36px);
+    }
+  .detail__actions {
+    text-align: center;
+    padding-bottom: 10px;
+  }
+  .detail__btn {
+    margin-bottom: 16px;
+    &:before {
+      color: $c-brand;
+    }
+    &:hover {
+      &:before {
+        color: $c-neutro;
+      }
+    }
+  }
+  .detail__lead {
+    @include font-rem(16px);
+  }
+    .detail__subtitle {
+      font-weight: $fw-bold;
+      @include font-rem(16px);
+      margin: 0;
+      padding-bottom: 12px;
+    }
+    .detail__txt {
+      margin: 0;
+      padding-bottom: 12px;
+    }
+
+    .detail__txt_ico {
+      position: relative;
+      padding-left: 20px;
+      &:before {
+        position: absolute;
+        top: 4px;
+        left: 0;
+        color: $c-brand;
+        @include font-rem(6px);
+        border: 1px solid $c-brand;
+        border-radius: 50%;
+        padding: 4px 3px;
+      }
+    }
+    .detail__txt_small {
+      display: block;
+      @include font-rem(12px);
+    }
+
+
+/*------------------------------------*\
+  Detalle producto: img responsive
+  Slider Una columna: se ocultan los thumbs
+  y se remplazan por corazones
+  Rangos:
+  de 0 a 419px
+  de 620px a 879px
+\*------------------------------------*/
+
+//Thumb btn heart
+@media only screen and (max-width: 419px) {
+  .detail__picture {
+    margin: 0 -2%;
+  }
+
+  .detail__tabs {
+    @include flex-direction(row);
+    @include justify-content(center);
+    margin-top: -34px;
+  }
+
+  .detail__thumb {
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+    &:before {
+      display: block;
+    }
+  }
+  .detail__img {
+    display: none;
+  }
+}
+//Alinear top
+@media only screen and (min-width: 420px) {
+  .detail {
+    padding-top: 40px;
+  }
+}
+
+//Thumb btn heart
+@media only screen and (min-width: 768px) and (max-width: 850px) {
+  .detail__tabs {
+    @include flex-direction(row);
+    @include justify-content(center);
+    margin-top: -34px;
+  }
+  .detail__thumb {
+    &:before {
+      display: block;
+    }
+  }
+  .detail__img {
+    display: none;
+  }
+}
+/*------------------------------------*\
+  Detalle producto: img responsive
+ // Gallery thums visible
+  Rangos:
+  de 420 a 767
+\*------------------------------------*/
+@media only screen and (min-width: 420px) and (max-width: 767px) {
+  .detail__gallery {
+    @include flexbox;
+    @include flex-direction(row-reverse);
+  }
+  .detail__tabs {
+    // max-width: 26.2%;
+    max-width: 22%;
+    padding-right: 20px;
+  }
+}
+
+/*------------------------------------*\
+  Detalle producto: img responsive
+  2 columnas
+  Estilos bloque 620 en adelante
+\*------------------------------------*/
+// detalle producto 2 columnas
+// $bp-medium: 768px;
+@include media-query(medium) {
+  .detail {
+    max-width: 100%;
+    @include flexbox;
+    @include justify-content(space-between);
+  }
+
+  .detail__content {
+    padding-left: 20px;
+    @include font-rem(18px);
+  }
+
+  .detail__header {
+    text-align: left;
+  }
+
+  .detail__title {
+    display: inline-block;
+  }
+
+  .detail__value {
+    padding-bottom: 16px;
+    text-align: left;
+  }
+
+  .detail__actions {
+    text-align: left;
+  }
+}
+
+// Gallery 2 columnas thums visible
+@media only screen and (min-width: 850px) {
+  .detail__gallery {
+    @include flexbox;
+    @include flex-direction(row-reverse);
+    padding-right: 20px;
+    width: 55%;
+  }
+    .detail__picture {
+      width: 100%;
+    }
+    .detail__tabs {
+      // max-width: 26.2%;
+      max-width: 22%;
+      padding-right: 20px;
+    }
+
+  .detail__content {
+    width: 45%;
+    padding-left: 20px;
+  }
+    .detail__title {
+      @include font-rem(34px);
+    }
+
+    .detail__brand {
+      @include font-rem(20px);
+    }
+    .detail__price {
+      @include font-rem(48px);
+    }
+    .detail__btn {
+      width: 100%;
+      max-width: 332px;
+    }
+
+    .detail__lead {
+      max-width: 500px;
+      @include font-rem(18px);
+    }
+      .detail__subtitle {
+        @include font-rem(18px);
+      }
+}
+
+
+// $bp-medium: 1024px;
+@include media-query(wide) {
+  
+}
+
+// $bp-large: 1170px;
+@include media-query(large) {
+  .detail__gallery {
+    padding-right: 30px;
+    width: 100%;
+  }
+
+  .detail__picture {
+    padding-left: 10px;
+  }
+
+  .detail__content {
+    padding-left: 30px;
+    width: 90%;
+  }
+}

@@ -1,23 +1,26 @@
-<template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
-  </div>
+<template lang="pug">
+div.page
+  
+  //- main content
+  main.content-main
+    .layout
+      //- Datos personales
+      .layout-inner
+        .content-grid
+          AdminMenu
+          //- Router Page
+          router-view
+
 </template>
 
 <script>
+
+import AdminMenu from '@/components/AdminMenu'
+
 export default {
-  name: 'App'
+  name: 'app',
+  components: {
+   AdminMenu
+  }
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

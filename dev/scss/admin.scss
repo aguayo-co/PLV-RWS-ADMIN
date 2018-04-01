@@ -1,0 +1,71 @@
+//*------------------------------------*\
+    // #Main SCSS
+//*------------------------------------*/
+@import "bourbon/bourbon";
+
+@import
+  'utils/variables/var-breakpoint',
+  'utils/variables/var-color',
+  'utils/variables/var-typo',
+  'utils/mix/mix-font-family',
+  'utils/mix/mix-font-rem',
+  'utils/mix/mix-flex',
+  'utils/mix/mix-mediaquery',
+  'utils/helpers/help-center',
+  'utils/helpers/help-clearfix';
+
+@import
+  'generic/normalize',
+  'generic/font-face';
+
+@import
+  'theme/anchor',
+  'theme/buttons',
+  'theme/forms',
+  'theme/titles',
+  'theme/type',
+  'theme/media',
+  'theme/table',
+  'theme/layout';
+
+@import
+  'block/page-header',
+  'block/menu',
+  'block/page-footer',
+  'block/toggle-box',
+  'block/modal',
+  'block/notify',
+  'block/banner-slider',
+  'block/banner-top',
+  'block/banner-grid',
+  'block/slider-fullwide';
+
+  //User
+@import 
+'block/layout-single',
+'block/user-menu',
+'block/user-profile',
+'block/dividers',
+'block/form-section';
+
+//Product
+@import
+  'block/product-detail',
+  'block/product-slot',
+  'block/slider-slot';
+
+//componentes
+@import 
+  'block/steps',
+  'block/upfile',
+  'block/box-switch',
+  'block/box-flat',
+  'block/boxcheck',
+  'block/pay-off',
+  'block/list';
+
+@import
+  'vendor/flickity';
+
+@import
+  'generic/print';
