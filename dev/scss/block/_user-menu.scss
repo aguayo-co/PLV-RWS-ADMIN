@@ -3,12 +3,12 @@
 \*------------------------------------*/
 //side paginas 2 slot menu usuario
 .side {
-  padding-right: 70px;
-  background-color: $c-neutro;
+  padding: 38px 0 0 50px;
+  background-color: $c-default;
 }
 
 .user-nav {
-  color: $c-default;
+  color: $c-neutro;
   min-width: 212px;
 }
 
@@ -31,7 +31,7 @@
     .user-nav__link {
       position: relative;
       padding-left: 36px;
-      color: $c-default;
+      color: $c-neutro;
       &:before {
         position: absolute;
         left: 0;
@@ -53,11 +53,11 @@
     position: fixed;
     left: 0;
     z-index: 10;
-    display: none;
+    // display: none;
     width: 100%;
-    max-width: 450px;
+    max-width: 262px;
     height: 100vh;
-    padding: 0 60px 80px;
+    padding: 0 0 80px 40px;
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar;
@@ -71,16 +71,16 @@
   .side {
     position: relative;
     max-width: 284px;
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      display: block;
-      width: 1px;
-      height: 98%;
-      background-color: $c-default-3;
-    }
+    // &::after {
+    //   content: '';
+    //   position: absolute;
+    //   top: 0;
+    //   right: 0;
+    //   display: block;
+    //   width: 1px;
+    //   height: 98%;
+    //   background-color: $c-default-3;
+    // }
   }
 }
 

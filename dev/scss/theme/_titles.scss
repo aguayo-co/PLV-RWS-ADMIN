@@ -23,13 +23,13 @@ h6 {
 }
 //title page form slot
 .title {
-  padding-bottom: 14px;
+  display: inline-block;
+  padding: 0 8px 0;
   margin-bottom: 24px;
-  text-align: center;
   text-transform: uppercase;
   @include font-rem(26px);
-  font-family: $f-fancy;
-  font-weight: $fw-semi-bold;
+  font-family: $f-normal;
+  font-weight: $fw-regular;
   border-bottom: 1px solid $c-default;
 }
 .page__head {

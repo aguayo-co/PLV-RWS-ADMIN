@@ -1,0 +1,71 @@
+/*------------------------------------*\
+  Nav
+\*------------------------------------*/
+
+.nav {
+  @include flexbox;
+  padding-bottom: 40px;
+}
+
+.nav__btn {
+  display: inline-block;
+  width: 11%;
+  min-width: 85px;
+  padding: 10px;
+  margin: 0 6px 0;
+  margin-bottom: 12px;
+  vertical-align: middle;
+  font-family: $f-default;
+  text-transform: uppercase;
+  color: $c-default;
+  border: 1px solid $c-default;
+}
+
+.nav__text {
+  width: 26%;
+  padding: 0 5px 11px;
+  color: $c-default;
+  margin: 0;
+  text-align: center;
+}
+
+.pagination {
+  display: inline-block;
+  width: 38%;
+  text-align: right;
+}
+
+.pagination__select {
+ display: inline-block; 
+}
+
+.pagination__item {
+  display: inline-block;
+  padding: 10px 16px 11px;
+  margin: 0 4px;
+  border: 1px solid $c-default;
+}
+
+.pagination__item_txt {
+  padding: 10px 10px 11px;
+  margin: 0;
+  border: none;
+}
+
+
+@media only screen and (max-width: 1023px) {
+  .nav {
+    min-width: 680px;
+    overflow-x: scroll;
+  }
+}
+
+@media only screen and (min-width: 1080px) {
+  .nav__text {
+    width: 32%;
+    padding: 10px 5px 11px;
+  }
+  .pagination {
+    width: 40%;
+  }
+}

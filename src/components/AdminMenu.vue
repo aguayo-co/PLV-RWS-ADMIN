@@ -1,6 +1,12 @@
 <template lang="pug">
 .side
-  h2.headline Tu cuenta
+  a.page-brand(href='/', title='Ir a la página de inicio')
+    span.brand
+      img.brand__logo(src='/static/img/brand-prilov.png', alt='Prilov Compra. Usa. Vende')
+      span.brand__typo
+        strong.brand__name Prilov.com
+        span.brand__tagline  Compra. Usa. Vende.
+
   //- User Nav
   nav.user-nav
     //- User Menu lista
@@ -22,72 +28,57 @@ export default {
     return {
       UserNavList: [
         {
-          title: 'General',
+          title: 'Ventas y productos',
           items: [
             {
-              name: 'Notificaciones',
+              name: 'Productos',
               url: '#',
-              ico: 'i-bell'
+              ico: 'i-closet'
             },
             {
-              name: 'Datos Bancarios',
+              name: 'Ventas',
               url: '#',
-              ico: 'i-bank-data'
+              ico: 'i-sale'
             },
             {
-              name: 'Créditos',
+              name: 'Transferencias',
               url: '#',
               ico: 'i-credits'
             },
             {
-              name: 'Datos Personales',
+              name: 'Cupones',
               url: '/user/data',
+              ico: 'i-bank-data'
+            },
+            {
+              name: 'Reportes',
+              url: '/user/data',
+              ico: ''
+            }
+          ]
+        },
+        {
+          title: 'Usuarias',
+          items: [
+            {
+              name: 'Usuarias',
+              url: '#',
               ico: 'i-data'
             }
           ]
         },
         {
-          title: 'Compras',
+          title: 'Tienda',
           items: [
             {
-              name: 'Tus Compras',
+              name: 'Blog',
               url: '#',
-              ico: 'i-bag'
+              ico: 'i-blog'
             },
             {
-              name: 'Tus favoritos',
+              name: 'Configuraciones',
               url: '#',
-              ico: 'i-favorite'
-            }
-          ]
-        },
-        {
-          title: 'Ventas',
-          items: [
-            {
-              name: 'Tu closet',
-              url: '#',
-              ico: 'i-closet'
-            },
-            {
-              name: 'Tus Ventas',
-              url: '#',
-              ico: 'i-sale'
-            },
-            {
-              name: 'Valoraciones',
-              url: '#',
-              ico: 'i-start-line'
-            },
-            {
-              name: 'Método de envío',
-              url: '/user/metodos-envios',
-              ico: 'i-shipping'
-            },
-            {
-              name: 'Cerrar sesión',
-              url: '#',
-              ico: ''
+              ico: 'i-edit'
             }
           ]
         }

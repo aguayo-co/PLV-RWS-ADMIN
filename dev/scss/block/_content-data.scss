@@ -1,0 +1,29 @@
+/*------------------------------------*\
+    #Content data
+\*------------------------------------*/
+
+.content-data {
+  width: calc(100% - 284px);
+	padding: 38px 0 0 20px;
+}
+
+.data-header {
+  @include h-clearfix;
+}
+
+.data-header__item {
+  float: right;
+}
+
+@media only screen and (max-width: 1023px) {
+  .data-header {
+    min-width: 680px;
+    overflow-x: scroll;
+  }
+}
+
+@media only screen and (min-width: 1180px) {
+  .content-data {
+    padding: 38px 0 0 50px;
+  }
+}

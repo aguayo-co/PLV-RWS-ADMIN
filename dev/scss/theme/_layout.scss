@@ -58,7 +58,11 @@
 .grid-flex {
   @include flexbox;
 }
-
+@include media-query(max-wide) {
+  .content-grid {
+    padding-left: 262px;
+  }
+}
 // $bp-medium: 768px;
 @include media-query(medium) {
   .layout-slot {
@@ -68,14 +72,15 @@
     width: 76%;
 
   }
+  .content-grid {
+    @include flexbox;
+  }
 }
 
 // $bp-big: 1024px;
 @include media-query(wide) {
   .layout {
-    padding: 46px 0 84px;
+    padding: 0;
   }
-  .content-grid {
-    @include flexbox;
-  }
+  
 }
