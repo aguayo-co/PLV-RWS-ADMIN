@@ -3,12 +3,12 @@
 \*------------------------------------*/
 
 .content-data {
-  width: calc(100% - 284px);
 	padding: 38px 0 0 20px;
 }
 
 .data-header {
   @include h-clearfix;
+  padding-right: 20px;
 }
 
 .data-header__item {

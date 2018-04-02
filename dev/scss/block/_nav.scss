@@ -4,10 +4,12 @@
 
 .nav {
   @include flexbox;
+  padding: 0 20px 40px 0;
   padding-bottom: 40px;
 }
 
 .nav__btn {
+  position: relative;
   display: inline-block;
   width: 11%;
   min-width: 85px;
@@ -19,6 +21,12 @@
   text-transform: uppercase;
   color: $c-default;
   border: 1px solid $c-default;
+  &:after {
+    position: absolute;
+    top: 12px;
+    right: 10px;
+    @include font-rem(16px);
+  }
 }
 
 .nav__text {
@@ -50,6 +58,14 @@
   padding: 10px 10px 11px;
   margin: 0;
   border: none;
+}
+
+.pagination__arrow {
+  &:active,
+  &:focus,
+  &:visited {
+    color: $c-default;
+  }
 }
 
 

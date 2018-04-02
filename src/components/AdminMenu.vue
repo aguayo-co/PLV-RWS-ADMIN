@@ -53,7 +53,7 @@ export default {
             {
               name: 'Reportes',
               url: '/user/data',
-              ico: ''
+              ico: 'i-report'
             }
           ]
         },
@@ -78,7 +78,7 @@ export default {
             {
               name: 'Configuraciones',
               url: '#',
-              ico: 'i-edit'
+              ico: 'i-config'
             }
           ]
         }

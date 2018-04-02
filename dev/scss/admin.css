@@ -240,11 +240,9 @@ template {
   font-weight: normal;
   font-style: normal; }
 
-.i-:before, .i-:after,
+.i-:before,
 [class^="i-"]:before,
-[class^="i-"]:after,
-[class*=" i-"]:before,
-[class*=" i-"]:after {
+[class*=" i-"]:before {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'ico-prilov' !important;
   speak: none;
@@ -287,12 +285,6 @@ template {
 
 .i-filter:before {
   content: "\e90b"; }
-
-.i-filter-admin:before {
-  content: "\e944"; }
-
-.i-filter_after:after {
-  content: "\e944"; }
 
 .i-reload:before {
   content: "\e90c"; }
@@ -435,9 +427,6 @@ template {
 .i-edit:before {
   content: "\e907"; }
 
-.i-blog-admin:before {
-  content: "\e943"; }
-
 .i-start:before {
   content: "\e922"; }
 
@@ -449,30 +438,6 @@ template {
 
 .i-upload:before {
   content: "\e93b"; }
-
-.i-tula:before {
-  content: "\e93c"; }
-
-.i-clock:before {
-  content: "\e93d"; }
-
-.i-sad:before {
-  content: "\e93e"; }
-
-.i-trash:before {
-  content: "\e93f"; }
-
-.i-rocket:before {
-  content: "\e940"; }
-
-.i-config:before {
-  content: "\e941"; }
-
-.i-check:before {
-  content: "\e942"; }
-
-.i-report:before {
-  content: "\e945"; }
 
 /*------------------------------------*	texts links
 \*------------------------------------*/
@@ -6063,14 +6028,13 @@ body {
 /*------------------------------------*    #Content data
 \*------------------------------------*/
 .content-data {
+  width: calc(100% - 284px);
   padding: 38px 0 0 20px; }
 
-.data-header {
-  padding-right: 20px; }
-  .data-header:after {
-    content: '';
-    display: table;
-    clear: both; }
+.data-header:after {
+  content: '';
+  display: table;
+  clear: both; }
 
 .data-header__item {
   float: right; }
@@ -6092,11 +6056,9 @@ body {
   display: -moz-box;
   display: -ms-flexbox;
   display: flex;
-  padding: 0 20px 40px 0;
   padding-bottom: 40px; }
 
 .nav__btn {
-  position: relative;
   display: inline-block;
   width: 11%;
   min-width: 85px;
@@ -6108,12 +6070,6 @@ body {
   text-transform: uppercase;
   color: #000;
   border: 1px solid #000; }
-  .nav__btn:after {
-    position: absolute;
-    top: 12px;
-    right: 10px;
-    font-size: 16px;
-    font-size: 1rem; }
 
 .nav__text {
   width: 26%;
@@ -6140,9 +6096,6 @@ body {
   padding: 10px 10px 11px;
   margin: 0;
   border: none; }
-
-.pagination__arrow:active, .pagination__arrow:focus, .pagination__arrow:visited {
-  color: #000; }
 
 @media only screen and (max-width: 1023px) {
   .nav {
@@ -6187,24 +6140,18 @@ body {
   display: block; }
 
 .crud__cell-img {
-  width: 100%;
-  max-width: 40px;
-  padding-top: 10px;
-  margin-left: -10px; }
+  margin-left: -10px;
+  padding-top: 10px; }
 
 .crud__avatar {
   position: relative; }
   .crud__avatar .avatar__img {
     position: absolute;
-    top: -7px;
+    top: 0;
     left: 0;
     width: 30px;
     height: 30px;
     margin: 0; }
-    .crud__avatar .avatar__img.tool-user__letter {
-      font-size: 22px;
-      font-size: 1.375rem;
-      background-color: #fff; }
   .crud__avatar .avatar__txt {
     padding-left: 40px;
     font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -6220,12 +6167,11 @@ body {
   padding: 5px 10px 4px;
   border-radius: 13px; }
 
-.crud__state_detail.state-0 {
+.crud__state_pending {
   color: #fff;
-  background-color: #fe7676;
-  border: none; }
+  background-color: #fe7676; }
 
-.crud__state_detail {
+.crud__state_published {
   color: #9b9b9b;
   border: 1px solid #9b9b9b; }
 
@@ -6242,12 +6188,11 @@ body {
   display: none; }
 
 .crud__form {
-  padding: 10px 50px 0 10px;
-  text-align: right; }
+  padding-left: 10px; }
 
 .crud__legend {
   display: inline-block;
-  padding-right: 20px;
+  width: 62px;
   vertical-align: middle;
   font-weight: 700;
   text-transform: uppercase;
@@ -6272,9 +6217,16 @@ body {
 
 @media only screen and (max-width: 1023px) {
   .crud {
-    display: block;
     min-width: 700px;
+    overflow-x: scroll;
+    display: block;
     padding-right: 20px; } }
+
+@media only screen and (min-width: 1100px) {
+  .crud__legend {
+    width: 80px; }
+  .crud__btn {
+    padding: 10px 15px; } }
 
 @media only screen and (min-width: 1160px) {
   .crud__toggle {
@@ -6289,7 +6241,12 @@ body {
     padding-left: 20px; }
   .crud__form {
     position: relative;
-    padding-left: 20px; } }
+    padding-left: 20px; }
+  .crud__btn {
+    position: absolute;
+    top: 14px;
+    right: 36px;
+    font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif; } }
 
 /*! Flickity v2.0.11
 http://flickity.metafizzy.co
