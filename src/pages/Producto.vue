@@ -55,8 +55,8 @@
         //Primera fila
         tr.crud__row
           td.crud__cell
-            input#item1.form__input-check(type="checkbox", name="all", value="selectAll")
-            label.form__label_check.i-ok(for="item1")
+            input#item6.form__input-check(type="checkbox", name="all", value="selectAll")
+            label.form__label_check.i-ok(for="item6")
           td.crud__cell
             img.crud__cell-img(src="static/img/product-001.jpg", alt="Producto 1")
           td.crud__cell Blusa negra de seda
@@ -99,8 +99,8 @@
         //Segunda fila
         tr.crud__row
           td.crud__cell
-            input#item1.form__input-check(type="checkbox", name="all", value="selectAll")
-            label.form__label_check.i-ok(for="item1")
+            input#item2.form__input-check(type="checkbox", name="all", value="selectAll")
+            label.form__label_check.i-ok(for="item2")
           td.crud__cell
             img.crud__cell-img(src="static/img/product-001.jpg", alt="Producto 1")
           td.crud__cell Blusa negra de seda
@@ -122,29 +122,29 @@
             form.crud__form(action="")
               p.crud__legend Cambiar estado
               .crud__form-group
-                input#pendiente.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="pendiente") Pendiente
+                input#pendiente1.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="pendiente1") Pendiente
               .crud__form-group
-                input#rechazado.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="rechazado") Rechazado
+                input#rechazado1.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="rechazado1") Rechazado
               .crud__form-group
-                input#aprobado.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="aprobado") Aprobado
+                input#aprobado1.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="aprobado1") Aprobado
               .crud__form-group
-                input#disponible.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="disponible") Disponible
+                input#disponible1.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="disponible1") Disponible
               .crud__form-group
-                input#noDisponible.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="noDisponible") No disponible
+                input#noDisponible1.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="noDisponible1") No disponible
               .crud__form-group
-                input#vendido.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="vendido") Vendido
+                input#vendido1.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="vendido1") Vendido
               input.crud__btn(type="submit", value="Guardar")
         //Tercera fila
         tr.crud__row.crud__toggle-open
           td.crud__cell
-            input#item1.form__input-check(type="checkbox", name="all", value="selectAll")
-            label.form__label_check.i-ok(for="item1")
+            input#item3.form__input-check(type="checkbox", name="all", value="selectAll")
+            label.form__label_check.i-ok(for="item3")
           td.crud__cell
             img.crud__cell-img(src="static/img/product-001.jpg", alt="Producto 1")
           td.crud__cell Blusa negra de seda
@@ -166,29 +166,29 @@
             form.crud__form(action="")
               p.crud__legend Cambiar estado
               .crud__form-group
-                input#pendiente.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="pendiente") Pendiente
+                input#pendiente2.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="pendiente2") Pendiente
               .crud__form-group
-                input#rechazado.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="rechazado") Rechazado
+                input#rechazado2.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="rechazado2") Rechazado
               .crud__form-group
-                input#aprobado.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="aprobado") Aprobado
+                input#aprobado2.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="aprobado2") Aprobado
               .crud__form-group
-                input#disponible.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="disponible") Disponible
+                input#disponible2.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="disponible2") Disponible
               .crud__form-group
-                input#noDisponible.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="noDisponible") No disponible
+                input#noDisponible2.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="noDisponible2") No disponible
               .crud__form-group
-                input#vendido.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="vendido") Vendido
+                input#vendido2.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="vendido2") Vendido
               input.crud__btn(type="submit", value="Guardar")
         //Cuarta fila
         tr.crud__row
           td.crud__cell
-            input#item1.form__input-check(type="checkbox", name="all", value="selectAll")
-            label.form__label_check.i-ok(for="item1")
+            input#item4.form__input-check(type="checkbox", name="all", value="selectAll")
+            label.form__label_check.i-ok(for="item4")
           td.crud__cell
             img.crud__cell-img(src="static/img/product-001.jpg", alt="Producto 1")
           td.crud__cell Blusa negra de seda
@@ -210,29 +210,29 @@
             form.crud__form(action="")
               p.crud__legend Cambiar estado
               .crud__form-group
-                input#pendiente.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="pendiente") Pendiente
+                input#pendiente3.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="pendiente3") Pendiente
               .crud__form-group
-                input#rechazado.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="rechazado") Rechazado
+                input#rechazado3.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="rechazado3") Rechazado
               .crud__form-group
-                input#aprobado.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="aprobado") Aprobado
+                input#aprobado3.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="aprobado3") Aprobado
               .crud__form-group
-                input#disponible.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="disponible") Disponible
+                input#disponible3.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="disponible3") Disponible
               .crud__form-group
-                input#noDisponible.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="noDisponible") No disponible
+                input#noDisponible3.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="noDisponible3") No disponible
               .crud__form-group
-                input#vendido.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="vendido") Vendido
+                input#vendido3.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="vendido3") Vendido
               input.crud__btn(type="submit", value="Guardar")
         //Quinta fila
         tr.crud__row
           td.crud__cell
-            input#item1.form__input-check(type="checkbox", name="all", value="selectAll")
-            label.form__label_check.i-ok(for="item1")
+            input#item5.form__input-check(type="checkbox", name="all", value="selectAll")
+            label.form__label_check.i-ok(for="item5")
           td.crud__cell
             img.crud__cell-img(src="static/img/product-001.jpg", alt="Producto 1")
           td.crud__cell Blusa negra de seda
@@ -254,25 +254,68 @@
             form.crud__form(action="")
               p.crud__legend Cambiar estado
               .crud__form-group
-                input#pendiente.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="pendiente") Pendiente
+                input#pendiente4.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="pendiente4") Pendiente
               .crud__form-group
-                input#rechazado.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="rechazado") Rechazado
+                input#rechazado4.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="rechazado4") Rechazado
               .crud__form-group
-                input#aprobado.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="aprobado") Aprobado
+                input#aprobado4.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="aprobado4") Aprobado
               .crud__form-group
-                input#disponible.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="disponible") Disponible
+                input#disponible4.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="disponible4") Disponible
               .crud__form-group
-                input#noDisponible.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="noDisponible") No disponible
+                input#noDisponible4.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="noDisponible4") No disponible
               .crud__form-group
-                input#vendido.form__input-radio(type="radio", name="state")
-                label.crud__form-label.form__label_radio(for="vendido") Vendido
+                input#vendido4.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="vendido4") Vendido
               input.crud__btn(type="submit", value="Guardar")
-
+        //Sexta fila
+        tr.crud__row
+          td.crud__cell
+            input#item6.form__input-check(type="checkbox", name="all", value="selectAll")
+            label.form__label_check.i-ok(for="item6")
+          td.crud__cell
+            img.crud__cell-img(src="static/img/product-001.jpg", alt="Producto 1")
+          td.crud__cell Blusa negra de seda
+          td.crud__cell Zara
+          td.crud__cell $&nbsp;25.000
+          td.crud__cell $&nbsp;15.000
+          td.crud__cell 20% 
+            small.crud__cell-small ($ 3.000)
+          td.crud__cell 
+            figure.crud__avatar.avatar
+              img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
+              figcaption.avatar__txt Daniela Villanueva
+          td.crud__cell
+            p.crud__state.crud__state_published Publicado
+            a.crud__toggle.i-next
+              span.crud__toggle_btn-txt.hidden botón
+        tr
+          td(colspan="9")
+            form.crud__form(action="")
+              p.crud__legend Cambiar estado
+              .crud__form-group
+                input#pendiente5.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="pendiente5") Pendiente
+              .crud__form-group
+                input#rechazado5.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="rechazado5") Rechazado
+              .crud__form-group
+                input#aprobado5.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="aprobado5") Aprobado
+              .crud__form-group
+                input#disponible5.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="disponible5") Disponible
+              .crud__form-group
+                input#noDisponible5.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="noDisponible5") No disponible
+              .crud__form-group
+                input#vendido5.form__input-radio(type="radio", name="state")
+                label.crud__form-label.form__label_radio(for="vendido5") Vendido
+              input.crud__btn(type="submit", value="Guardar")
 </template>
 
 <script>
