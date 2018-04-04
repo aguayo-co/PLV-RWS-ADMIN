@@ -7,6 +7,19 @@
   background-color: $c-default;
 }
 
+.side {
+  position: fixed;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  max-width: 262px;
+  height: 100%;
+  padding: 38px 0 0 50px;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
 .user-nav {
   color: $c-neutro;
   min-width: 212px;
@@ -56,7 +69,7 @@
     // display: none;
     width: 100%;
     max-width: 262px;
-    height: 100vh;
+    height: 100%;
     padding: 0 0 80px 40px;
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
@@ -69,7 +82,7 @@
 @include media-query(wide) {
   //side paginas 2 slot menu usuario
   .side {
-    position: relative;
+    // position: relative;
     max-width: 284px;
     // &::after {
     //   content: '';

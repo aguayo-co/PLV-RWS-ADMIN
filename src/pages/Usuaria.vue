@@ -1,7 +1,7 @@
 <template lang="pug">
-  .content-data
+  .content-data.content-data_wide
     header.data-header
-      h2.data-header__title.title Productos
+      h2.data-header__title.title Usuarias
       //- .data-header__item(v-if="products[0]")
       .data-header__item
         form.search(action='', method='GET')
@@ -37,7 +37,7 @@
           a(href="#").pagination__arrow.pagination__arrow_next.i-next(@click.prevent='nextPage')
     //Tabla de contenido
     //- table.crud(v-if="products[0]")
-    table.crud
+    table.crud.crud_wide
       thead.crud__head
         tr
           th.crud__th
@@ -45,34 +45,32 @@
               input#all.form__input-check(type="checkbox", name="all", value="selectAll")
               label.form__label_check.i-ok(for="all")
           th.crud__th
-            td.crud__title Foto
-          th.crud__th
-            td.crud__title Nombre
-          th.crud__th
-            td.crud__title Marca
-          th.crud__th
-            td.crud__title P.&nbsp;Original
-          th.crud__th
-            td.crud__title P.&nbsp;Venta
-          th.crud__th
-            td.crud__title Comisión
-          th.crud__th
             td.crud__title Usuaria
           th.crud__th
-            td.crud__title Estado
+            td.crud__title Email
+          th.crud__th
+            td.crud__title Telefono
+          th.crud__th
+            td.crud__title Roles
+          th.crud__th
+            td.crud__title Grupos
+          th.crud__th
+            td.crud__title Vaciones
+          th.crud__th
+            td.crud__title Creditos
+          th.crud__th
+            td.crud__title Productos<br>publicados
+          th.crud__th
+            td.crud__title Productos<br>vendidos
+          th.crud__th
+            td.crud__title Productos<br>comprados
+          th.crud__th
+            td.crud__title Fecha de<br>creación
       tbody.crud__tbody
         tr.crud__row(v-for="(product, index) in products")
           td.crud__cell
             input.form__input-check(:id="'item' + index", type="checkbox", name="all", value="selectAll")
             label.form__label_check.i-ok(:for="'item' + index")
-          td.crud__cell
-            img.crud__cell-img(:src="product.images[0]", :alt="product.title")
-          td.crud__cell {{ product.title }}
-          td.crud__cell {{ product.brand.name }}
-          td.crud__cell ${{ product.original_price | currency }}
-          td.crud__cell(:class='{ "danger": product.price > product.original_price - ( product.original_price * 0.1 ) }') ${{ product.price | currency }}
-          td.crud__cell {{ product.commission }} %
-            small.crud__cell-small (${{ product.price * product.commission/100 | currency }})
           td.crud__cell
             figure.crud__avatar.avatar
               img.avatar__img(v-if="product.user.picture", :src="product.user.picture", :alt="product.user.first_name")
@@ -80,12 +78,18 @@
                 v-else
               ) {{ product.user.first_name.charAt(0) }}
               figcaption.avatar__txt {{ product.user.first_name + ' ' + product.user.last_name }}
-          td.crud__cell
-            p.crud__state.crud__state_detail(:class='"state-" + product.status') {{ product.status | status_code }}
-            a.crud__toggle.i-next
-              span.crud__toggle_btn-txt.hidden botón
+          td.crud__cell geraldine@diaz.com
+          td.crud__cell 3103681000
+          td.crud__cell Vendedora
+          td.crud__cell Priloverstar
+          td.crud__cell.crud__cell_center Si
+          td.crud__cell.crud__cell_center 47
+          td.crud__cell.crud__cell_center 14
+          td.crud__cell.crud__cell_center 8
+          td.crud__cell.crud__cell_center 5
+          td.crud__cell 10/03/2018
         tr
-          td(colspan="9")
+          td(colspan="12")
             form.crud__form(action="")
               p.crud__legend Cambiar estado
               select.form__select
@@ -113,7 +117,8 @@ export default {
       page: 1,
       items: 10,
       filter: {},
-      totalPages: null
+      totalPages: null,
+      wide : true
     }
   },
   methods: {
@@ -137,7 +142,6 @@ export default {
       .then(response => {
         this.totalPages = response.data.to
         this.products = response.data.data
-        console.log(this.products[0].brand)
       })
   }
 }

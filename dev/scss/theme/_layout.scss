@@ -21,7 +21,6 @@
 //- ancho de los contenidos
 .layout-inner {
   width: 96%;
-  max-width: 1280px;
   margin: 0 auto;
 }
 
@@ -58,11 +57,10 @@
 .grid-flex {
   @include flexbox;
 }
-@include media-query(max-wide) {
+
   .content-grid {
-    padding-left: 262px;
+    padding-left: 244px;
   }
-}
 // $bp-medium: 768px;
 @include media-query(medium) {
   .layout-slot {
@@ -72,9 +70,6 @@
     width: 76%;
 
   }
-  .content-grid {
-    @include flexbox;
-  }
 }
 
 // $bp-big: 1024px;
@@ -82,5 +77,9 @@
   .layout {
     padding: 0;
   }
-  
+
+  .content-grid {
+    @include flexbox;
+    padding-left: 258px;
+  }
 }

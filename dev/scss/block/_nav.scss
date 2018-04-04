@@ -4,7 +4,8 @@
 
 .nav {
   @include flexbox;
-  padding: 0 20px 40px 0;
+  @include align-items(center);
+  padding: 0 0 40px 0;
   padding-bottom: 40px;
 }
 
@@ -13,7 +14,7 @@
   display: inline-block;
   width: 11%;
   min-width: 85px;
-  padding: 10px;
+  padding: 10px 14px 10px 10px;
   margin: 0 6px 0;
   margin-bottom: 12px;
   vertical-align: middle;
@@ -24,7 +25,7 @@
   &:after {
     position: absolute;
     top: 12px;
-    right: 10px;
+    right: 6px;
     @include font-rem(16px);
   }
 }
@@ -44,7 +45,7 @@
 }
 
 .pagination__select {
- display: inline-block; 
+  display: inline-block; 
 }
 
 .pagination__item {
@@ -68,18 +69,21 @@
   }
 }
 
-
-@media only screen and (max-width: 1023px) {
+.content-data_wide {
   .nav {
-    min-width: 680px;
-    overflow-x: scroll;
+    min-width: 940px;
+  }
+  .nav__text {
+    width: 30%;
+  }
+  .pagination {
+    width: 40%;
   }
 }
 
 @media only screen and (min-width: 1080px) {
   .nav__text {
     width: 32%;
-    padding: 10px 5px 11px;
   }
   .pagination {
     width: 40%;
