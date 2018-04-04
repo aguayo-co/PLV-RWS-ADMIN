@@ -5,8 +5,8 @@
 .nav {
   @include flexbox;
   @include align-items(center);
+  min-width: 700px;
   padding: 0 0 40px 0;
-  padding-bottom: 40px;
 }
 
 .nav__btn {
@@ -71,7 +71,7 @@
 
 .content-data_wide {
   .nav {
-    min-width: 940px;
+    min-width: 980px;
   }
   .nav__text {
     width: 30%;

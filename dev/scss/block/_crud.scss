@@ -4,6 +4,13 @@
 	width: 100%;
 }
 
+.content-data_wide {
+  .crud {
+    display: table;
+    min-width: 980px;
+  }
+}
+
 .crud__head {
   border-bottom: 1px solid $c-default;
 }
@@ -52,11 +59,16 @@
   position: relative;
   .avatar__img {
     position: absolute;
-    top: -7px;
+    top: 50%;
     left: 0;
     width: 30px;
     height: 30px;
     margin: 0;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
     &.tool-user__letter {
       @include font-rem(22px);
       background-color: $c-neutro;
@@ -158,9 +170,6 @@
     }
   }
   .crud__avatar {
-    .avatar__img {
-      top: 0;
-    }
     .avatar__txt {
       @include font-rem(12px);
     }

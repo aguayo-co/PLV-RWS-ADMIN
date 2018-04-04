@@ -2,7 +2,6 @@
   .content-data.content-data_wide
     header.data-header
       h2.data-header__title.title Usuarias
-      //- .data-header__item(v-if="products[0]")
       .data-header__item
         form.search(action='', method='GET')
           .search__row
@@ -11,7 +10,6 @@
         figure.avatar
           img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
           figcaption.avatar__txt Damarys
-    //- nav.nav(v-if="products[0]")
     nav.nav
       select.form__select(name="acciones en lote")
         option(value="Acciones en lote") Acciones en lote
@@ -36,7 +34,6 @@
         li.pagination__item
           a(href="#").pagination__arrow.pagination__arrow_next.i-next(@click.prevent='nextPage')
     //Tabla de contenido
-    //- table.crud(v-if="products[0]")
     table.crud.crud_wide
       thead.crud__head
         tr
@@ -67,27 +64,27 @@
           th.crud__th
             td.crud__title Fecha de<br>creación
       tbody.crud__tbody
-        tr.crud__row(v-for="(product, index) in products")
+        tr.crud__row(v-for="(user, index) in users")
           td.crud__cell
             input.form__input-check(:id="'item' + index", type="checkbox", name="all", value="selectAll")
             label.form__label_check.i-ok(:for="'item' + index")
           td.crud__cell
             figure.crud__avatar.avatar
-              img.avatar__img(v-if="product.user.picture", :src="product.user.picture", :alt="product.user.first_name")
+              img.avatar__img(v-if="user.picture", :src="user.picture", :alt="user.first_name")
               span.tool-user__letter.avatar__img(
                 v-else
-              ) {{ product.user.first_name.charAt(0) }}
-              figcaption.avatar__txt {{ product.user.first_name + ' ' + product.user.last_name }}
-          td.crud__cell geraldine@diaz.com
-          td.crud__cell 3103681000
-          td.crud__cell Vendedora
-          td.crud__cell Priloverstar
+              ) {{ user.first_name.charAt(0) }}
+              figcaption.avatar__txt {{ user.first_name + ' ' + user.last_name }}
+          td.crud__cell {{ user.email }}
+          td.crud__cell {{ user.phone }}
+          td.crud__cell {{ user.roles[0].name }}
+          td.crud__cell {{ user.groups[0].name }}
           td.crud__cell.crud__cell_center Si
           td.crud__cell.crud__cell_center 47
           td.crud__cell.crud__cell_center 14
           td.crud__cell.crud__cell_center 8
           td.crud__cell.crud__cell_center 5
-          td.crud__cell 10/03/2018
+          td.crud__cell {{ user.created_at }}
         tr
           td(colspan="12")
             form.crud__form(action="")
@@ -107,42 +104,73 @@
 
 <script>
 
-import productAPI from '@/api/product'
+import usersAPI from '@/api/users'
+import userAPI from '@/api/user'
 
 export default {
-  name: 'Producto',
+  name: 'Usuaria',
   data () {
     return {
-      products: [],
+      users: [
+        {
+          created_at: '03-04-2018',
+          email: 'gerald@diaz.com',
+          first_name: 'Geraldine',
+          last_name: 'Diaz',
+          phone: '3102345678',
+          picture: 'static/img/user-avatar.jpg',
+          roles: [
+            {
+              name: 'seller'
+            }
+          ],
+          groups: [
+            {
+              name: 'ItGirl'
+            }
+          ]
+        },
+        {
+          email: 'gerald@diaz.com',
+          first_name: 'Geraldine',
+          last_name: 'Diaz',
+          phone: '3102345678',
+          picture: 'static/img/user-avatar.jpg',
+          roles: [
+            {
+              name: 'seller'
+            }
+          ],
+          groups: [
+            {
+              name: 'ItGirl'
+            }
+          ],
+          created_at: '03-04-2018'
+        }
+      ],
       page: 1,
       items: 10,
       filter: {},
-      totalPages: null,
-      wide : true
+      totalPages: null
     }
   },
   methods: {
-    updateProductList: function () {
-      productAPI.getProducts(this.page, this.items, this.filter)
+    updateUserList: function () {
+      usersAPI.getUsers(this.page, this.items, this.filter)
         .then(response => {
-          this.products = response.data.data
+          this.users = response.data.data
         })
     },
     nextPage: function () {
       this.page += 1
-      this.updateProductList()
+      this.updateUserList()
+      console.log(this.users)
     },
     prevPage: function () {
       if (this.page > 1) this.page -= 1
-      this.updateProductList()
+      this.updateUserList()
     }
-  },
-  created: function () {
-    productAPI.getProducts(this.page, this.items, this.filter)
-      .then(response => {
-        this.totalPages = response.data.to
-        this.products = response.data.data
-      })
   }
 }
 </script>

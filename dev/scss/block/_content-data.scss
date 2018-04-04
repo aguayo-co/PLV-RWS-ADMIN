@@ -8,11 +8,12 @@
 
 .content-data_wide {
   .data-header {
-    min-width: 940px;
+    min-width: 980px;
   }
 }
 
 .data-header {
+  min-width: 700px;
   @include h-clearfix;
   padding-right: 20px;
 }
