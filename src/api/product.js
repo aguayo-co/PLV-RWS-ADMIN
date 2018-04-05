@@ -15,6 +15,6 @@ export default {
       })
     }
     console.log('/api/products?items=' + items + '&page=' + page + queryFilter)
-    return Vue.axios.get('/api/products?items=' + items + '&page=' + page + queryFilter)
+    return Vue.axiosAuth.get('/api/products?items=' + items + '&page=' + page + queryFilter)
   }
 }

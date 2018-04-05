@@ -32,7 +32,7 @@ export default {
           items: [
             {
               name: 'Productos',
-              url: '#',
+              url: '/productos',
               ico: 'i-closet'
             },
             {
@@ -62,7 +62,7 @@ export default {
           items: [
             {
               name: 'Usuarias',
-              url: '#',
+              url: '/usuarias',
               ico: 'i-data'
             }
           ]
