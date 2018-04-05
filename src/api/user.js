@@ -4,6 +4,25 @@
 import Vue from 'vue'
 
 export default {
+
+  getUsers: function (page, items, filter, orderBy) {
+    let queryFilter = ''
+    let queryOrder = ''
+    page = page || 1
+    items = items || 8
+
+    if (filter) {
+      Object.keys(filter).forEach((key) => {
+        queryFilter += '&filter[' + key + ']=' + filter[key]
+      })
+    }
+
+    if (orderBy) queryOrder = '&orderBy=' + orderBy
+
+    console.log('/api/users?items=' + items + '&page=' + page + queryFilter + queryOrder)
+    return Vue.axiosAuth.get('/api/users?items=' + items + '&page=' + page + queryFilter + queryOrder)
+  },
+
   update: function (data) {
     if (window.localStorage.getItem('userId') === null || window.localStorage.getItem('token') === null) {
       return Promise.reject(new Error('No credentials founds.'))
