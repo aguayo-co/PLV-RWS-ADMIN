@@ -1,21 +1,27 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Producto from '@/pages/Producto'
-import Usuaria from '@/pages/Usuaria'
+import Productos from '@/pages/Productos'
+import Usuarios from '@/pages/Usuarios'
+import FormLogin from '@/pages/FormLogin'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/producto',
-      name: 'Producto',
-      component: Producto
+      path: '/login',
+      name: 'login',
+      component: FormLogin
     },
     {
-      path: '/usuaria',
-      name: 'Usuaria',
-      component: Usuaria
+      path: '/productos',
+      name: 'Productos',
+      component: Productos
+    },
+    {
+      path: '/usuarias',
+      name: 'Usuarios',
+      component: Usuarios
     }
   ]
 })

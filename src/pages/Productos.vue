@@ -106,7 +106,7 @@
 import productAPI from '@/api/product'
 
 export default {
-  name: 'Producto',
+  name: 'Productos',
   data () {
     return {
       products: [],
