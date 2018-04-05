@@ -22,7 +22,7 @@
           select.form__select.form__select_small(
           name="numeroItems",
           v-model='items',
-          @change='updateProductList')
+          @change='updateUserList')
             option(value="10") 10
             option(value="20") 20
             option(value="30") 30
@@ -46,7 +46,7 @@
           th.crud__th
             td.crud__title Email
           th.crud__th
-            td.crud__title Telefono
+            td.crud__title Teléfono
           th.crud__th
             td.crud__title Roles
           th.crud__th
@@ -54,7 +54,7 @@
           th.crud__th
             td.crud__title Vaciones
           th.crud__th
-            td.crud__title Creditos
+            td.crud__title Créditos
           th.crud__th
             td.crud__title Productos<br>publicados
           th.crud__th
@@ -73,17 +73,21 @@
               img.avatar__img(v-if="user.picture", :src="user.picture", :alt="user.first_name")
               span.tool-user__letter.avatar__img(
                 v-else
-              ) {{ user.first_name.charAt(0) }}
+              ) {{ user.first_name.charAt(0).toUpperCase() }}
               figcaption.avatar__txt {{ user.first_name + ' ' + user.last_name }}
           td.crud__cell {{ user.email }}
           td.crud__cell {{ user.phone }}
-          td.crud__cell {{ user.roles[0].name }}
-          td.crud__cell {{ user.groups[0].name }}
-          td.crud__cell.crud__cell_center Si
-          td.crud__cell.crud__cell_center 47
-          td.crud__cell.crud__cell_center 14
-          td.crud__cell.crud__cell_center 8
-          td.crud__cell.crud__cell_center 5
+          td.crud__cell
+            ul(v-if='user.groups')
+              li(v-for='group in user.groups') {{ group.name }}
+          td.crud__cell
+            ul(v-if='user.roles')
+              li(v-for='role in user.roles') {{ role.name }}
+          td.crud__cell.crud__cell_center {{ user.vacation_mode ? "Sí" : "No" }}
+          td.crud__cell.crud__cell_center -
+          td.crud__cell.crud__cell_center -
+          td.crud__cell.crud__cell_center -
+          td.crud__cell.crud__cell_center -
           td.crud__cell {{ user.created_at }}
         tr
           td(colspan="12")
@@ -104,60 +108,22 @@
 
 <script>
 
-import usersAPI from '@/api/users'
-import userAPI from '@/api/user'
+import usersAPI from '@/api/user'
 
 export default {
   name: 'Usuaria',
   data () {
     return {
-      users: [
-        {
-          created_at: '03-04-2018',
-          email: 'gerald@diaz.com',
-          first_name: 'Geraldine',
-          last_name: 'Diaz',
-          phone: '3102345678',
-          picture: 'static/img/user-avatar.jpg',
-          roles: [
-            {
-              name: 'seller'
-            }
-          ],
-          groups: [
-            {
-              name: 'ItGirl'
-            }
-          ]
-        },
-        {
-          email: 'gerald@diaz.com',
-          first_name: 'Geraldine',
-          last_name: 'Diaz',
-          phone: '3102345678',
-          picture: 'static/img/user-avatar.jpg',
-          roles: [
-            {
-              name: 'seller'
-            }
-          ],
-          groups: [
-            {
-              name: 'ItGirl'
-            }
-          ],
-          created_at: '03-04-2018'
-        }
-      ],
+      users: [],
       page: 1,
-      items: 10,
+      items: 20,
       filter: {},
-      totalPages: null
+      order: '-id'
     }
   },
   methods: {
     updateUserList: function () {
-      usersAPI.getUsers(this.page, this.items, this.filter)
+      usersAPI.getUsers(this.page, this.items, this.filter, this.order)
         .then(response => {
           this.users = response.data.data
         })
@@ -171,6 +137,13 @@ export default {
       if (this.page > 1) this.page -= 1
       this.updateUserList()
     }
+  },
+  created: function () {
+    usersAPI.getUsers(this.page, this.items, this.filter, this.order)
+      .then(response => {
+        this.users = response.data.data
+      })
   }
+
 }
 </script>
