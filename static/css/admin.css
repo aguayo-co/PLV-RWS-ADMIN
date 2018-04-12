@@ -3524,6 +3524,45 @@ body {
     -webkit-transform: translateY(10px);
             transform: translateY(10px); }
 
+/*------------------------------------*  Formularios editar
+\*------------------------------------*/
+.admin__edit:after {
+  content: '';
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 999;
+  opacity: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  -webkit-transition: all .2s ease;
+  transition: all .2s ease; }
+
+.admin__edit.admin__edit_open:after {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.5);
+  pointer-events: all; }
+
+.edit__slide {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  min-width: 320px;
+  max-width: 460px;
+  height: 100vh;
+  padding: 50px 16px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  color: #000;
+  list-style: none;
+  background-color: #fff; }
+
 /*------------------------------------*	Single Section
 \*------------------------------------*/
 .single__inner {
@@ -6215,43 +6254,6 @@ body {
   .crud__form {
     position: relative;
     padding-left: 20px; } }
-
-.admin__edit:after {
-  content: '';
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  z-index: 999;
-  opacity: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  -webkit-transition: all .2s ease;
-  transition: all .2s ease; }
-
-.admin__edit.admin__edit_open:after {
-  opacity: 1;
-  background-color: rgba(0, 0, 0, 0.5);
-  pointer-events: all; }
-
-.edit__slide {
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 1000;
-  min-width: 320px;
-  max-width: 460px;
-  height: 100vh;
-  padding: 50px 16px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: -ms-autohiding-scrollbar;
-  color: #000;
-  list-style: none;
-  background-color: #fff; }
 
 /*! Flickity v2.0.11
 http://flickity.metafizzy.co
