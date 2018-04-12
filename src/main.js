@@ -3,6 +3,13 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import axiosPlugin from './axios'
+import store from './store'
+import prilovFilters from './filters'
+
+// Load global Axios instances.
+Vue.use(axiosPlugin, store)
+Vue.use(prilovFilters)
 
 Vue.config.productionTip = false
 
@@ -10,6 +17,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

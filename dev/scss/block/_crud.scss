@@ -1,0 +1,229 @@
+// crud
+
+.crud {
+	width: 100%;
+}
+
+.content-data_wide {
+  .crud {
+    display: table;
+    min-width: 980px;
+  }
+}
+
+.crud__head {
+  border-bottom: 1px solid $c-default;
+}
+
+.crud__th {
+  padding: 5px 16px 0 8px;
+  &:first-child {
+    padding-right: 0;
+  }
+}
+
+.crud__title {
+  @include font-rem(16px);
+}
+
+.crud__row {
+  border-bottom: 1px solid $c-neutro-3;
+}
+
+.crud__cell {
+  padding: 8px;
+  font-family: $f-fancy;
+  font-weight: $fw-medium;
+  @include font-rem(14px);
+  &:first-child {
+    padding-left: 10px;
+  }
+}
+
+.crud__cell_center {
+  text-align: center;
+}
+
+.crud__cell-small {
+  display: block;
+}
+
+.crud__cell-img {
+  width: 100%;
+  max-width: 40px;
+  padding-top: 10px;
+  margin-left: -10px;
+}
+
+.crud__avatar {
+  position: relative;
+  .avatar__img {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    margin: 0;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    &.tool-user__letter {
+      @include font-rem(22px);
+      background-color: $c-neutro;
+    }
+  }
+  .avatar__txt {
+    padding-left: 40px;
+    font-family: $f-normal;
+    color: $c-default-5;
+    @include font-rem(13px);
+  }
+}
+
+.crud__state {
+  display: inline-block;
+  font-family: $f-normal;
+  @include font-rem(11px);
+  padding: 5px 10px 4px;
+  border-radius: 13px;
+}
+
+.crud__state_detail {
+  &.state-0 {
+    color: $c-neutro;
+    background-color: $c-brand;
+    border: none;
+  }
+}
+
+.crud__state_detail {
+  color: $c-default-4;
+  border: 1px solid $c-default-4;
+}
+
+.crud__toggle {
+  display: block;
+  text-align: center;
+  &:before {
+    display: inline-block;
+    @include prefixer(transform, rotate(90deg), ("webkit", "moz"));
+  }
+}
+
+.crud__toggle_btn-txt {
+  display: none;
+}
+
+.crud__form {
+  padding: 10px 30px 0 10px;
+  text-align: right;
+}
+
+.crud__legend {
+  display: inline-block;
+  padding-right: 20px;
+  vertical-align: middle;
+  font-weight: $fw-bold;
+  text-transform: uppercase;
+  @include font-rem(14px);
+}
+
+.crud__form-group {
+  display: inline-block;
+}
+
+.crud__form-label {
+  padding: 0 10px 0 20px;
+}
+
+.crud__btn {
+  display: inline-block;
+  padding: 10px 12px;
+  margin-left: 20px;
+  color: $c-neutro;
+  background-color: $c-default;
+}
+
+.crud__toggle-open {
+  background-color: $c-neutro-3;
+}
+
+.content-data_wide {
+  padding-left: 20px;
+  .crud__th {
+    padding-right: 8px;
+    padding-bottom: 10px;
+  }
+  .crud__title {
+    @include font-rem(12px);
+  }
+  .crud__cell {
+    @include font-rem(12px);
+  }
+  .crud__row {
+    .crud__cell {
+      &:last-child {
+        padding-right: 8px;
+      }
+    }
+  }
+  .crud__avatar {
+    .avatar__txt {
+      @include font-rem(12px);
+    }
+  }
+}
+
+@media only screen and (max-width: 1023px) {
+  .crud {
+    display: block;
+    min-width: 700px;
+    padding-right: 20px;
+
+  }
+  .content-data_wide {
+    .crud__row {
+      .crud__cell {
+        &:last-child {
+          padding-right: 20px;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 1160px) {
+  .crud__cell {
+    position: relative;
+  }
+  
+  .crud__state {
+    margin-right: 20px;
+  }
+
+  .crud__toggle {
+    position: absolute;
+    display: block;
+    top: 28px;
+    right: 5px;
+  }
+
+    .crud__form-label {
+      padding: 0 16px 0 28px;
+    }
+}
+
+@media only screen and (min-width: 1190px) {
+  .crud__cell {
+    &:first-child {
+      padding-left: 8px;
+    }
+  }
+
+  .crud__form {
+    position: relative;
+    padding-left: 20px;
+  }
+}

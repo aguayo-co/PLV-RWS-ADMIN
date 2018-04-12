@@ -29,7 +29,9 @@
 \*------------------------------------*/
 
 .page-brand {
+  display: block;
   color: $c-neutro;
+  margin-bottom: 130px;
 }
 
 .brand {
@@ -76,12 +78,12 @@
 
 .search__row {
   position: relative;
+  border: 1px solid $c-default;
 }
 
   .search__input {
     width: 100%;
-    min-width: 176px;
-    padding: 4px 38px 4px 12px;
+    padding: 10px 38px 10px 12px;
     line-height: 1.66;
     letter-spacing: -0.4px;
     color:  $c-default-2;
@@ -92,19 +94,34 @@
   }
   .search__btn {
     position: absolute;
-    right: 12px;
-    top: 50%;
+    right: 10px;
+    top: 10px;
     z-index: 2;
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     padding: 0;
-    margin-top: -8px;
     line-height: 18px;
     text-align: center;
-    color:  $c-default-2;
+    color: #fe7676;
     font-family: 'ico-prilov';
-    @include font-rem(14px);
+    @include font-rem(18px);
     background-color: transparent;
+  }
+  .search,
+  .avatar,
+  .avatar__img,
+  .avatar__txt {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .avatar__img {
+    width: 36px;
+    height: 36px;
+    margin: 0 11px 0 15px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 2px solid $c-brand;;
   }
 
 /*------------------------------------*\
@@ -134,7 +151,6 @@
     background-color: $c-default;
     // border: 1px solid $c-brand;
   }
-
   
   .tool-user__item {
     &:not(:last-child) {
@@ -244,9 +260,7 @@
 
 // point Only mobile -tablet
 @include media-query(max-wide) {
-  .page {
-    padding-top: 60px;
-  }
+  
   .page-header {
     position: fixed;
     top: 0;
@@ -261,7 +275,7 @@
   .page-brand {
     display: block;
     width: 170px;
-    margin: 0 auto;
+    padding-top: 38px;
   }
 }
 

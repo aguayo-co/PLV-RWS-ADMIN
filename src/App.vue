@@ -1,6 +1,5 @@
 <template lang="pug">
 div.page
-  
   //- main content
   main.content-main
     .layout
@@ -20,7 +19,7 @@ import AdminMenu from '@/components/AdminMenu'
 export default {
   name: 'app',
   components: {
-   AdminMenu
+    AdminMenu
   }
 }
 </script>

@@ -27,4 +27,31 @@ npm run e2e
 npm test
 ```
 
+## Dependencias
+
+### Axios
+#### Installation
+``` bash
+npm install --save axios vue-axios
+```
+---
+### Vuex
+URL: https://vuex.vuejs.org/en/installation.html
+#### Installation
+``` bash
+npm install vuex --save-dev
+```
+---
+### Vue.js Server-Side Rendering
+``` bash
+npm install vue vue-server-renderer --save
+```
+---
+### Incluye PUG
+URL: https://gist.github.com/levibostian/96cc285d4235d73f09cdc22f2590ccba
+#### Installation
+``` bash
+npm install pug --save-dev
+```
+
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

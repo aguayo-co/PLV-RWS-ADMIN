@@ -1,0 +1,30 @@
+/*------------------------------------*\
+    #Content data
+\*------------------------------------*/
+
+.content-data {
+	padding: 38px 0 0 20px;
+}
+
+.content-data_wide {
+  .data-header {
+    min-width: 980px;
+  }
+}
+
+.data-header {
+  min-width: 700px;
+  @include h-clearfix;
+  padding-right: 20px;
+}
+
+.data-header__item {
+  float: right;
+}
+
+@media only screen and (min-width: 1180px) {
+  .content-data {
+    width: 100%;
+    padding: 38px 0 0 50px;
+  }
+}
