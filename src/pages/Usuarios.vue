@@ -12,8 +12,6 @@
           figcaption.avatar__txt Damarys
     .admin__edit(
       :class="{ 'admin__edit_open': editActive == true }")
-      p(
-        @click.stop='slideEdit') Abrir Editar usuario
       transition(name='slide-right')
         .edit__slide(
           v-show="editActive == true")
@@ -29,48 +27,35 @@
               .upfile__small
                 .upfile__item
                   .upfile__label
-                    .upfile__text.i-upload(
-                      v-if="mqDesk") Arrastra una foto o
+                    .upfile__text.i-upload Arrastra una foto o
                     .upfile__btn Sube una imagen
                   croppa(
+                    v-model="picture",
+                    :initial-image="selectedUser.picture"
                     :width="300",
                     :height="300",
                     :quality="2",
                     placeholder="",
-                    :prevent-white-space="true"
-                    v-model="picture")
-            .form__row
-              //-To Do: Establecer aspect ratio de esta imagen
-              .form__label Foto cover
-              .upfile__small
-                .upfile__item
-                  .upfile__label
-                    .upfile__text.i-upload(
-                      v-if="mqDesk") Arrastra una foto o
-                    .upfile__btn Sube una imagen
-                  croppa(
-                    :width="600",
-                    :height="100",
-                    :quality="2",
-                    placeholder="",
-                    :prevent-white-space="true"
-                    v-model="cover")
+                    :prevent-white-space="true")
             .form__row
               label.form__label(
                 for="user-name") Nombre
               input.form__control(
+                v-model="selectedUser.first_name",
                 id="user-name",
                 type="text")
             .form__row
               label.form__label(
                 for="user-lastname") Apellido
               input.form__control(
+                v-model="selectedUser.last_name",
                 id="user-lastname",
                 type="text")
             .form__row
               label.form__label(
                 for="user-lastname") Acerca de
               textarea.form__textarea(
+                v-model="selectedUser.about",
                 name="about",
                 maxlength="340")
             .form__row
@@ -78,28 +63,25 @@
                 for="user-email") Correo
               input.form__control(
                 id="user-email",
+                v-model="selectedUser.email",
                 type="email")
             .form__row
               label.form__label(
                 for="user-phone") Teléfono
               input.form__control(
+                v-model="selectedUser.phone",
                 id="user-phone",
                 type="tel")
-            .form__row
-              label.form__label(
-                for="user-password") Contraseña
-              input.form__control(
-                id="user-password",
-                type="password")
-            .form__row
+            .form__row(v-if="selectedUser.roles")
               .form__label Roles
-              input.form__input-radio(
-                id="rol-1",
-                type="radio",
-                name="roles",
-                value="1")
-              label.form__label_radio(
-                for="rol-1") Administradora
+              .row(v-for="role in selectedUser.roles")
+                input.form__input-radio(
+                  :id="'rol-' + role.id",
+                  type="radio",
+                  name="roles[]",
+                  value="1")
+                label.form__label_radio(
+                  :for="'rol-' + role.id") {{ role.name }}
             .form__row
               input.form__input-radio(
                 id="rol-2",
@@ -126,7 +108,7 @@
               label.form__label_radio(
                 for="grupo-2") Prilover
             //-select form
-            .form__row
+            //- .form__row
               label.form__label(
                 for="select") Select
               select.form__select.form__select_big(
@@ -208,7 +190,8 @@
                 v-else
               ) {{ user.first_name.charAt(0).toUpperCase() }}
               figcaption.avatar__txt {{ user.first_name + ' ' + user.last_name }}
-          td.crud__cell {{ user.email }}
+          td.crud__cell
+            a(@click="loadUser(index)") {{ user.email }}
           td.crud__cell {{ user.phone }}
           td.crud__cell
             ul(v-if='user.groups')
@@ -251,6 +234,7 @@ export default {
   data () {
     return {
       users: [],
+      selectedUser: {},
       page: 1,
       items: 20,
       filter: {},
@@ -278,6 +262,11 @@ export default {
     },
     slideEdit: function () {
       this.editActive = !this.editActive
+    },
+    loadUser: function (index) {
+      this.selectedUser = this.users[index]
+      this.picture.refresh()
+      this.slideEdit()
     }
   },
   created: function () {
