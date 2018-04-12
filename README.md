@@ -53,5 +53,17 @@ URL: https://gist.github.com/levibostian/96cc285d4235d73f09cdc22f2590ccba
 ``` bash
 npm install pug --save-dev
 ```
+---
+### vue-croppa
+#### Uso:
+Subir imgen de perfil y producto
+
+#### URL:
+https://github.com/zhanziyang/vue-croppa
+#### Installation
+``` bash
+npm install --save vue-croppa
+```
+---
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

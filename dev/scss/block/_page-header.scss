@@ -31,7 +31,7 @@
 .page-brand {
   display: block;
   color: $c-neutro;
-  margin-bottom: 130px;
+  margin-bottom: 50px;
 }
 
 .brand {
@@ -54,8 +54,8 @@
     .brand__name {
       display: block;
       @include font-rem(23px);
-      font-weight: $fw-bold;
-      font-family: $f-default;
+      font-weight: $fw-light;
+      font-family: $f-fancy;
     }
     // Compra. Usa. Vende.
     .brand__tagline {
@@ -252,12 +252,9 @@
 
     }
   }
-
-/*
-    *Page header
-    *Responsive Desing
-*/
-
+/*------------------------------------*\
+	Page header *Responsive Desing
+\*------------------------------------*/
 // point Only mobile -tablet
 @include media-query(max-wide) {
   
