@@ -2,7 +2,7 @@
 .side
   a.page-brand(href='/', title='Ir a la página de inicio')
     span.brand
-      img.brand__logo(src='/static/img/brand-prilov.png', alt='Prilov Compra. Usa. Vende')
+      img.brand__logo(src='/static/img/brand-prilov.svg', alt='Prilov Compra. Usa. Vende')
       span.brand__typo
         strong.brand__name Prilov.com
         span.brand__tagline  Compra. Usa. Vende.

@@ -10,6 +10,92 @@
         figure.avatar
           img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
           figcaption.avatar__txt Damarys
+    .admin__edit.admin__edit_open 
+      transition(name='slide-right')
+        .edit__slide(
+          v-show="editActive")
+          form.slide__form
+            .form__row
+              .form__label Foto de perfil
+              .upfile__small
+                .upfile__item
+                  .upfile__label
+                    .upfile__text.i-upload(
+                      v-if="mqDesk") Arrastra una foto o
+                    .upfile__btn Sube una imagen
+                  croppa(
+                    :width="300",
+                    :height="300",
+                    :quality="2",
+                    placeholder="",
+                    :prevent-white-space="true"
+                    v-model="picture")
+            .form__row
+              //-To Do: Establecer aspect ratio de esta imagen
+              .form__label Foto cover
+              .upfile__small
+                .upfile__item
+                  .upfile__label
+                    .upfile__text.i-upload(
+                      v-if="mqDesk") Arrastra una foto o
+                    .upfile__btn Sube una imagen
+                  croppa(
+                    :width="600",
+                    :height="100",
+                    :quality="2",
+                    placeholder="",
+                    :prevent-white-space="true"
+                    v-model="cover")
+            .form__row
+              label.form__label(
+                for="user-name") Nombre
+              input.form__control(
+                id="user-name",
+                type="text")
+            .form__row
+              label.form__label(
+                for="user-lastname") Apellido
+              input.form__control(
+                id="user-lastname",
+                type="text")
+            .form__row
+              label.form__label(
+                for="user-lastname") Acerca de
+              textarea.form__textarea(
+                name="about",
+                maxlength="340")
+            .form__row
+              label.form__label(
+                for="user-email") Correo
+              input.form__control(
+                id="user-email",
+                type="email")
+            .form__row
+              label.form__label(
+                for="user-phone") Teléfono
+              input.form__control(
+                id="user-phone",
+                type="tel")
+            .form__row
+              label.form__label(
+                for="user-password") Contraseña
+              input.form__control(
+                id="user-password",
+                type="password")
+            //-select form
+            .form__row
+              label.form__label(
+                for="select") Select
+              select.form__select(
+                name="select",
+                id="select")
+                option(value="1") Item
+                option(value="2") Item
+                option(value="3") Item
+                option(value="4") Item
+            .form__row.form__row_away
+              button.btn.btn_solid.btn_block Guardar
+
     nav.nav
       select.form__select(name="acciones en lote")
         option(value="Acciones en lote") Acciones en lote
@@ -28,11 +114,15 @@
             option(value="30") 30
             option(value="50") 50
         li.pagination__item
-          a(href="#").pagination__arrow.pagination__arrow_prev.i-back(@click.prevent='prevPage')
+          a.pagination__arrow.pagination__arrow_prev.i-back(
+            @click.prevent="prevPage",
+            href="#")
         li.pagination__item 1
         li.pagination__item.pagination__item_txt de 3
         li.pagination__item
-          a(href="#").pagination__arrow.pagination__arrow_next.i-next(@click.prevent='nextPage')
+          a.pagination__arrow.pagination__arrow_next.i-next(
+            @click.prevent="nextPage",
+            href="#")
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
@@ -109,6 +199,9 @@
 <script>
 
 import usersAPI from '@/api/user'
+import Vue from 'vue'
+import Croppa from 'vue-croppa'
+Vue.component('croppa', Croppa.component)
 
 export default {
   name: 'Usuaria',
@@ -118,7 +211,10 @@ export default {
       page: 1,
       items: 20,
       filter: {},
-      order: '-id'
+      order: '-id',
+      editActive: true,
+      picture: null,
+      cover: null
     }
   },
   methods: {
@@ -136,6 +232,9 @@ export default {
     prevPage: function () {
       if (this.page > 1) this.page -= 1
       this.updateUserList()
+    },
+    openEdit: function () {
+      this.editActive = !this.editActive
     }
   },
   created: function () {
