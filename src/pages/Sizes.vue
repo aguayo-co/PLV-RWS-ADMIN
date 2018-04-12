@@ -1,5 +1,5 @@
 <template lang="pug">
-  .content-data.content-data_wide
+  .content-data
     header.data-header
       h2.data-header__title.title Tallas
       .data-header__item
@@ -22,7 +22,7 @@
           select.form__select.form__select_small(
           name="numeroItems",
           v-model='items',
-          @change='updateUserList')
+          @change='updateSizeList')
             option(value="10") 10
             option(value="20") 20
             option(value="30") 30
@@ -36,31 +36,26 @@
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
-        tr
-          th.crud__th
-            td.crud__title
+        tr.crud__row
+          th.crud__title.crud__cell_10
               input#all.form__input-check(type="checkbox", name="all", value="selectAll")
               label.form__label_check.i-ok(for="all")
-          th.crud__th
-            td.crud__title Imagen
-          th.crud__th
-            td.crud__title Nombre
-          th.crud__th
-            td.crud__title Título
-          th.crud__th
-            td.crud__title Fecha de<br>creación
+          th.crud__title.crud__cell_30 Categoria
+          th.crud__title.crud__cell_30 Id
+          th.crud__title.crud__cell_30 Nombre
       tbody.crud__tbody
         tr.crud__row(v-for="(size, index) in sizes")
-          td.crud__cell
-            input.form__input-check(:id="'item' + index", type="checkbox", name="all", value="selectAll")
-            label.form__label_check.i-ok(:for="'item' + index")
-          td.crud__cell(v-if="size.image")
-            img.crud__cell-img(:src="size.image", :alt="size.image")
-          td.crud__cell {{ size.name }}
-          td.crud__cell {{ size.title }}
-          td.crud__cell {{ size.created_at }}
-        tr
-          td(colspan="12")
+          td(colspan="4")
+            table.crud__subtable(width="100%")
+              tr.crud__row(v-for="(children, childIndex) in size.children")
+                td.crud__cell.crud__cell_10
+                  input.form__input-check(:id="'item' + childIndex", type="checkbox", name="all", value="selectAll")
+                  label.form__label_check.i-ok(:for="'item' + childIndex")
+                td.crud__cell.crud__cell_30 {{ size.name }}
+                td.crud__cell.crud__cell_30 {{ children.id }}
+                td.crud__cell.crud__cell_30 {{ children.name }}
+        tr.crud__row
+          td(colspan="4")
             form.crud__form(action="")
               p.crud__legend Cambiar estado
               select.form__select
@@ -85,7 +80,7 @@ export default {
     return {
       sizes: [],
       page: 1,
-      items: 20,
+      items: 10,
       filter: {},
       order: '-id'
     }
@@ -108,7 +103,7 @@ export default {
     }
   },
   created: function () {
-    sizesAPI.getSizes(this.page, this.items, this.filter, this.order)
+    sizesAPI.getSizes(this.page, this.items, this.filter)
       .then(response => {
         this.sizes = response.data.data
       })

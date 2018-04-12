@@ -1,5 +1,4 @@
 // crud
-
 .crud {
 	width: 100%;
 }
@@ -16,7 +15,7 @@
 }
 
 .crud__th {
-  padding: 5px 16px 0 8px;
+  padding: 5px 16px 10px 8px;
   &:first-child {
     padding-right: 0;
   }
@@ -24,6 +23,7 @@
 
 .crud__title {
   @include font-rem(16px);
+  text-align: left;
 }
 
 .crud__row {
@@ -37,6 +37,22 @@
   @include font-rem(14px);
   &:first-child {
     padding-left: 10px;
+  }
+  ul {
+    list-style: none;
+    li {
+      @include flexbox;
+      @include align-items(center);
+      &:before {
+        content: '';
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 6px;
+        background-color: $c-default;
+      }
+    }
   }
 }
 
@@ -52,7 +68,6 @@
   width: 100%;
   max-width: 40px;
   padding-top: 10px;
-  margin-left: -10px;
 }
 
 .crud__avatar {
@@ -154,7 +169,6 @@
   padding-left: 20px;
   .crud__th {
     padding-right: 8px;
-    padding-bottom: 10px;
   }
   .crud__title {
     @include font-rem(12px);
@@ -174,6 +188,14 @@
       @include font-rem(12px);
     }
   }
+}
+.crud__cell_10 {
+  width: 10%;
+  padding: 8px;
+}
+.crud__cell_30 {
+  width: 30%;
+  padding: 8px;  
 }
 
 @media only screen and (max-width: 1023px) {
