@@ -82,7 +82,7 @@ export default {
           items: [
             {
               name: 'Banners',
-              url: '#',
+              url: '/banners',
               ico: 'i-upload'
             },
             {

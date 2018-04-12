@@ -10,6 +10,80 @@
         figure.avatar
           img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
           figcaption.avatar__txt Damarys
+      .admin__edit(
+        :class="{ 'admin__edit_open': editActive == true }")
+        transition(name='slide-right')
+          .edit__slide(
+            v-show="editActive == true")
+            //- .btn_close.modal__btn_close.i-x(
+            //-   @click.stop="slideEdit")
+            //-   span Cerrar
+            //- h3.title Editar usuario
+            h3.slide__header.i-close(
+              @click.stop="slideEdit") Editar banner
+            form.slide__form
+              .form__row
+                .form__label Foto de perfil
+                .upfile__small
+                  .upfile__item
+                    .upfile__label
+                      .upfile__text.i-upload Arrastra una foto o
+                      .upfile__btn Sube una imagen
+                    croppa(
+                      v-model="picture",
+                      :initial-image="selectedBanner.image"
+                      :width="300",
+                      :height="300",
+                      :quality="2",
+                      placeholder="",
+                      :prevent-white-space="true")
+              .form__row
+                label.form__label(
+                  for="user-name") Nombre
+                input.form__control(
+                  v-model="selectedBanner.name",
+                  id="user-name",
+                  type="text")
+              .form__row
+                label.form__label(
+                  for="user-lastname") Título
+                input.form__control(
+                  v-model="selectedBanner.title",
+                  id="user-lastname",
+                  type="text")
+              .form__row
+                label.form__label(
+                  for="user-lastname") Subtítulo
+                textarea.form__textarea(
+                  v-model="selectedBanner.subtitle",
+                  name="text")
+              .form__row
+                label.form__label(
+                  for="user-email") Texto del botón
+                input.form__control(
+                  id="user-email",
+                  v-model="selectedBanner.button_text",
+                  type="email")
+              .form__row
+                label.form__label(
+                  for="user-phone") URL
+                input.form__control(
+                  v-model="selectedBanner.url",
+                  id="user-phone",
+                  type="text")
+              //-select form
+              //- .form__row
+                label.form__label(
+                  for="select") Select
+                select.form__select.form__select_big(
+                  name="select",
+                  id="select")
+                  option(value="1") Item
+                  option(value="2") Item
+                  option(value="3") Item
+                  option(value="4") Item
+              .form__row.form__row_away
+                button.btn.btn_solid.btn_block Guardar
     nav.nav
       select.form__select(name="acciones en lote")
         option(value="Acciones en lote") Acciones en lote
@@ -22,7 +96,7 @@
           select.form__select.form__select_small(
           name="numeroItems",
           v-model='items',
-          @change='updateUserList')
+          @change='updateBannerList')
             option(value="10") 10
             option(value="20") 20
             option(value="30") 30
@@ -54,9 +128,14 @@
           td.crud__cell
             input.form__input-check(:id="'item' + index", type="checkbox", name="all", value="selectAll")
             label.form__label_check.i-ok(:for="'item' + index")
-          td.crud__cell(v-if="banner.image")
-            img.crud__cell-img(:src="banner.image", :alt="banner.image")
-          td.crud__cell {{ banner.name }}
+          td.crud__cell
+            img.crud__cell-img(
+              v-if="banner.image",
+              :src="banner.image",
+              :alt="banner.image")
+            span(v-else) -
+          td.crud__cell
+            a(@click="loadBanner(index)") {{ banner.name }}
           td.crud__cell {{ banner.title }}
           td.crud__cell {{ banner.created_at }}
         tr
@@ -85,10 +164,13 @@ export default {
   data () {
     return {
       banners: [],
+      selectedBanner: {},
       page: 1,
       items: 20,
       filter: {},
-      order: '-id'
+      order: '-id',
+      editActive: false,
+      picture: null
     }
   },
   methods: {
@@ -106,6 +188,14 @@ export default {
     prevPage: function () {
       if (this.page > 1) this.page -= 1
       this.updateBannerList()
+    },
+    slideEdit: function () {
+      this.editActive = !this.editActive
+    },
+    loadBanner: function (index) {
+      this.selectedBanner = this.banners[index]
+      this.picture.refresh()
+      this.slideEdit()
     }
   },
   created: function () {
