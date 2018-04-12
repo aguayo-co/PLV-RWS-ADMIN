@@ -10,10 +10,17 @@
         figure.avatar
           img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
           figcaption.avatar__txt Damarys
-    .admin__edit.admin__edit_open 
+    .admin__edit(
+      :class="{ 'admin__edit_open': editActive == true }")
+      p(
+        @click.stop='slideEdit') Abrir Editar usuario
       transition(name='slide-right')
         .edit__slide(
-          v-show="editActive")
+          v-show="editActive == true")
+          .btn_close.modal__btn_close.i-x(
+            @click.stop="slideEdit")
+            span Cerrar
+          h3.title Editar usuario
           form.slide__form
             .form__row
               .form__label Foto de perfil
@@ -86,7 +93,7 @@
             .form__row
               label.form__label(
                 for="select") Select
-              select.form__select(
+              select.form__select.form__select_big(
                 name="select",
                 id="select")
                 option(value="1") Item
@@ -212,7 +219,7 @@ export default {
       items: 20,
       filter: {},
       order: '-id',
-      editActive: true,
+      editActive: false,
       picture: null,
       cover: null
     }
@@ -233,7 +240,7 @@ export default {
       if (this.page > 1) this.page -= 1
       this.updateUserList()
     },
-    openEdit: function () {
+    slideEdit: function () {
       this.editActive = !this.editActive
     }
   },
