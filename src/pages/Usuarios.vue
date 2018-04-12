@@ -17,10 +17,12 @@
       transition(name='slide-right')
         .edit__slide(
           v-show="editActive == true")
-          .btn_close.modal__btn_close.i-x(
-            @click.stop="slideEdit")
-            span Cerrar
-          h3.title Editar usuario
+          //- .btn_close.modal__btn_close.i-x(
+          //-   @click.stop="slideEdit")
+          //-   span Cerrar
+          //- h3.title Editar usuario
+          h3.slide__header.i-close(
+            @click.stop="slideEdit") Editar usuario
           form.slide__form
             .form__row
               .form__label Foto de perfil
@@ -89,6 +91,40 @@
               input.form__control(
                 id="user-password",
                 type="password")
+            .form__row
+              .form__label Roles
+              input.form__input-radio(
+                id="rol-1",
+                type="radio",
+                name="roles",
+                value="1")
+              label.form__label_radio(
+                for="rol-1") Administradora
+            .form__row
+              input.form__input-radio(
+                id="rol-2",
+                type="radio",
+                name="roles",
+                value="2")
+              label.form__label_radio(
+                for="grupo-2") Vendedora
+            .form__row
+              .form__label Grupos
+              input.form__input-radio(
+                id="grupo-1",
+                type="radio",
+                name="grupos",
+                value="1")
+              label.form__label_radio(
+                for="grupo-1") Prilover Star
+            .form__row
+              input.form__input-radio(
+                id="grupo-2",
+                type="radio",
+                name="grupos",
+                value="2")
+              label.form__label_radio(
+                for="grupo-2") Prilover
             //-select form
             .form__row
               label.form__label(
