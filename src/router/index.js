@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Productos from '@/pages/Productos'
 import Usuarios from '@/pages/Usuarios'
 import Banners from '@/pages/Banners'
+import MenuItems from '@/pages/MenuItems'
 import FormLogin from '@/pages/FormLogin'
 
 Vue.use(Router)
@@ -28,6 +29,11 @@ export default new Router({
       path: '/banners',
       name: 'Banners',
       component: Banners
+    },
+    {
+      path: '/menu-items',
+      name: 'MenuItems',
+      component: MenuItems
     }
   ]
 })
