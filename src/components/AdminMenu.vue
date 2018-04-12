@@ -46,6 +46,11 @@ export default {
               ico: 'i-credits'
             },
             {
+              name: 'Devoluciones',
+              url: '#',
+              ico: 'i-reload'
+            },
+            {
               name: 'Cupones',
               url: '/user/data',
               ico: 'i-bank-data'
@@ -64,6 +69,11 @@ export default {
               name: 'Usuarias',
               url: '/usuarias',
               ico: 'i-data'
+            },
+            {
+              name: 'Solitudes de créditos',
+              url: '#',
+              ico: 'i-sell'
             }
           ]
         },
@@ -71,9 +81,24 @@ export default {
           title: 'Tienda',
           items: [
             {
+              name: 'Banners',
+              url: '#',
+              ico: 'i-upload'
+            },
+            {
+              name: 'Atributos de prenda',
+              url: '#',
+              ico: 'i-tag'
+            },
+            {
+              name: 'Menús',
+              url: '#',
+              ico: 'i-filter'
+            },
+            {
               name: 'Blog',
               url: '#',
-              ico: 'i-blog'
+              ico: 'i-blog-admin'
             },
             {
               name: 'Configuraciones',

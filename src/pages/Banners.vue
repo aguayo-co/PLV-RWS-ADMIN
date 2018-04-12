@@ -1,17 +1,15 @@
 <template lang="pug">
-  .content-data
+  .content-data.content-data_wide
     header.data-header
-      h2.data-header__title.title Productos
-      //- .data-header__item(v-if="products[0]")
+      h2.data-header__title.title Banners
       .data-header__item
         form.search(action='', method='GET')
           .search__row
-            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en productos')
+            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en banners')
             input.search__btn(type='submit', value='')
         figure.avatar
           img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
           figcaption.avatar__txt Damarys
-    //- nav.nav(v-if="products[0]")
     nav.nav
       select.form__select(name="acciones en lote")
         option(value="Acciones en lote") Acciones en lote
@@ -24,7 +22,7 @@
           select.form__select.form__select_small(
           name="numeroItems",
           v-model='items',
-          @change='updateProductList')
+          @change='updateUserList')
             option(value="10") 10
             option(value="20") 20
             option(value="30") 30
@@ -36,8 +34,7 @@
         li.pagination__item
           a.pagination__arrow.pagination__arrow_next.i-next(@click.prevent='nextPage', href="#")
     //Tabla de contenido
-    //- table.crud(v-if="products[0]")
-    table.crud
+    table.crud.crud_wide
       thead.crud__head
         tr
           th.crud__th
@@ -45,47 +42,25 @@
               input#all.form__input-check(type="checkbox", name="all", value="selectAll")
               label.form__label_check.i-ok(for="all")
           th.crud__th
-            td.crud__title Foto
+            td.crud__title Imagen
           th.crud__th
             td.crud__title Nombre
           th.crud__th
-            td.crud__title Marca
+            td.crud__title Título
           th.crud__th
-            td.crud__title P.&nbsp;Original
-          th.crud__th
-            td.crud__title P.&nbsp;Venta
-          th.crud__th
-            td.crud__title Comisión
-          th.crud__th
-            td.crud__title Usuaria
-          th.crud__th
-            td.crud__title Estado
+            td.crud__title Fecha de<br>creación
       tbody.crud__tbody
-        tr.crud__row(v-for="(product, index) in products")
+        tr.crud__row(v-for="(banner, index) in banners")
           td.crud__cell
             input.form__input-check(:id="'item' + index", type="checkbox", name="all", value="selectAll")
             label.form__label_check.i-ok(:for="'item' + index")
-          td.crud__cell
-            img.crud__cell-img(:src="product.images[0]", :alt="product.title")
-          td.crud__cell {{ product.title }}
-          td.crud__cell {{ product.brand.name }}
-          td.crud__cell ${{ product.original_price | currency }}
-          td.crud__cell(:class='{ "danger": product.price > product.original_price - ( product.original_price * 0.1 ) }') ${{ product.price | currency }}
-          td.crud__cell {{ product.commission }} %
-            small.crud__cell-small (${{ product.price * product.commission/100 | currency }})
-          td.crud__cell
-            figure.crud__avatar.avatar
-              img.avatar__img(v-if="product.user.picture", :src="product.user.picture", :alt="product.user.first_name")
-              span.tool-user__letter.avatar__img(
-                v-else
-              ) {{ product.user.first_name.charAt(0) }}
-              figcaption.avatar__txt {{ product.user.first_name + ' ' + product.user.last_name }}
-          td.crud__cell
-            p.crud__state.crud__state_detail(:class='"state-" + product.status') {{ product.status | status_code }}
-            a.crud__toggle.i-next
-              span.crud__toggle_btn-txt.hidden botón
+          td.crud__cell(v-if="banner.image")
+            img.crud__cell-img(:src="banner.image", :alt="banner.image")
+          td.crud__cell {{ banner.name }}
+          td.crud__cell {{ banner.title }}
+          td.crud__cell {{ banner.created_at }}
         tr
-          td(colspan="9")
+          td(colspan="12")
             form.crud__form(action="")
               p.crud__legend Cambiar estado
               select.form__select
@@ -103,42 +78,42 @@
 
 <script>
 
-import productAPI from '@/api/product'
+import bannersAPI from '@/api/banner'
 
 export default {
-  name: 'Productos',
+  name: 'Banners',
   data () {
     return {
-      products: [],
+      banners: [],
       page: 1,
-      items: 10,
+      items: 20,
       filter: {},
-      totalPages: null
+      order: '-id'
     }
   },
   methods: {
-    updateProductList: function () {
-      productAPI.getProducts(this.page, this.items, this.filter)
+    updateBannerList: function () {
+      bannersAPI.getBanners(this.page, this.items, this.filter, this.order)
         .then(response => {
-          this.products = response.data.data
+          this.banners = response.data.data
         })
     },
     nextPage: function () {
       this.page += 1
-      this.updateProductList()
+      this.updateBannerList()
+      console.log(this.users)
     },
     prevPage: function () {
       if (this.page > 1) this.page -= 1
-      this.updateProductList()
+      this.updateBannerList()
     }
   },
   created: function () {
-    productAPI.getProducts(this.page, this.items, this.filter)
+    bannersAPI.getBanners(this.page, this.items, this.filter, this.order)
       .then(response => {
-        this.totalPages = response.data.to
-        this.products = response.data.data
-        console.log(this.products[0].brand)
+        this.banners = response.data.data
       })
   }
+
 }
 </script>
