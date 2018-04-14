@@ -142,7 +142,7 @@
           a.pagination__arrow.pagination__arrow_prev.i-back(
             @click.prevent="prevPage",
             href="#")
-        li.pagination__item 1
+        li.pagination__item {{ page }}
         li.pagination__item.pagination__item_txt de 3
         li.pagination__item
           a.pagination__arrow.pagination__arrow_next.i-next(

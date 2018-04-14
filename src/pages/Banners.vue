@@ -1,5 +1,5 @@
 <template lang="pug">
-  .content-data.content-data_wide
+  .content-data
     header.data-header
       h2.data-header__title.title Banners
       .data-header__item
@@ -111,18 +111,13 @@
     table.crud.crud_wide
       thead.crud__head
         tr
-          th.crud__th
-            td.crud__title
+          th.crud__th.crud__title
               input#all.form__input-check(type="checkbox", name="all", value="selectAll")
               label.form__label_check.i-ok(for="all")
-          th.crud__th
-            td.crud__title Imagen
-          th.crud__th
-            td.crud__title Nombre
-          th.crud__th
-            td.crud__title Título
-          th.crud__th
-            td.crud__title Fecha de<br>creación
+          th.crud__th.crud__title Imagen
+          th.crud__th.crud__title Nombre
+          th.crud__th.crud__title Título
+          th.crud__th.crud__title Fecha de<br>creación
       tbody.crud__tbody
         tr.crud__row(v-for="(banner, index) in banners")
           td.crud__cell
