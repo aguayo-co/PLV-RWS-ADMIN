@@ -86,7 +86,7 @@ export default {
           localStorage.setItem('userId', response.data.id)
 
           this.$store.dispatch('user/setUser', response.data)
-          this.$router.push('/users')
+          this.$router.push('/usuarias')
         })
         .catch(e => {
           var modal

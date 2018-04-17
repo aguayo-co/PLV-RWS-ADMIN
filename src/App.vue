@@ -15,7 +15,6 @@ div.page
 <script>
 
 import AdminMenu from '@/components/AdminMenu'
-import { mapState } from 'vuex'
 
 export default {
   name: 'app',
