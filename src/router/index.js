@@ -5,16 +5,16 @@ import Usuarios from '@/pages/Usuarios'
 import Banners from '@/pages/Banners'
 import Sizes from '@/pages/Sizes'
 import MenuItems from '@/pages/MenuItems'
-import FormLogin from '@/pages/FormLogin'
+import Home from '@/pages/Home'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/login',
-      name: 'login',
-      component: FormLogin
+      path: '/',
+      name: 'Home',
+      component: Home
     },
     {
       path: '/productos',
