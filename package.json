@@ -6,12 +6,15 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev-s": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --https --key .dev/ssl/*-key.pem --cert .dev/ssl/*-crt.pem",
+    "debug-s": "node --inspect-brk ./node_modules/.bin/webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --https --key .dev/ssl/*-key.pem --cert .dev/ssl/*-crt.pem",
     "start": "npm run dev",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "heroku-postbuild": "npm run build"
   },
   "dependencies": {},
   "devDependencies": {
@@ -36,6 +39,7 @@
     "cross-env": "^5.0.1",
     "cross-spawn": "^5.0.1",
     "css-loader": "^0.28.0",
+    "dotenv": "^5.0.1",
     "eslint": "^4.15.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-friendly-formatter": "^3.0.0",
@@ -94,8 +98,8 @@
     "webpack-merge": "^4.1.0"
   },
   "engines": {
-    "node": ">= 6.0.0",
-    "npm": ">= 3.0.0"
+    "node": ">= 9.0.0",
+    "npm": ">= 5.0.0"
   },
   "browserslist": [
     "> 1%",
