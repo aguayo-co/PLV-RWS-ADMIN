@@ -6,7 +6,7 @@ div.page
       //- Datos personales
       .layout-inner
         .content-grid
-          AdminMenu
+          AdminMenu(v-if="userId")
           //- Router Page
           router-view
 
@@ -15,11 +15,17 @@ div.page
 <script>
 
 import AdminMenu from '@/components/AdminMenu'
+import { mapState } from 'vuex'
 
 export default {
   name: 'app',
   components: {
     AdminMenu
+  },
+  computed: {
+    userId: function () {
+      return this.$store.getters['user/token']
+    }
   }
 }
 </script>

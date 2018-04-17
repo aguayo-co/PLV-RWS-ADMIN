@@ -4,16 +4,17 @@ import Productos from '@/pages/Productos'
 import Usuarios from '@/pages/Usuarios'
 import Banners from '@/pages/Banners'
 import Sizes from '@/pages/Sizes'
-import FormLogin from '@/pages/FormLogin'
+import MenuItems from '@/pages/MenuItems'
+import Home from '@/pages/Home'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/login',
-      name: 'login',
-      component: FormLogin
+      path: '/',
+      name: 'Home',
+      component: Home
     },
     {
       path: '/productos',
@@ -34,6 +35,11 @@ export default new Router({
       path: '/tallas',
       name: 'Tallas',
       component: Sizes
+    },
+    {
+      path: '/menu-items',
+      name: 'MenuItems',
+      component: MenuItems
     }
   ]
 })
