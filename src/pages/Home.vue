@@ -1,48 +1,59 @@
 <template lang="pug">
-.form-slot
-  h1.title Bienvenida al administrador de Prilov
-  form.form(
-    v-on:submit='',
-    action='#',
-    submit.prevent='validateBeforeSubmit',
-    method='post'
-  )
-    .form__row(
-      v-bind:class='{ "is-danger": errorTexts.email }'
-    )
-      label.form__label(
-        for='email') Correo
-      span.help(
-        v-if="errorTexts.email"
-      ) {{ errorTexts.email }}
-      input.form__control(
-        v-model='email',
-        id='email',
-        type='email')
-    .form__row(
-      v-bind:class='{ "is-danger": errorTexts.password }'
-    )
-      label.form__label(
-        for='password'
-      ) Contraseña
-      span.help(
-        v-if="errorTexts.password"
-      ) {{ errorTexts.password }}
-      input.form__control(
-        v-model='password',
-        id='password',
-        type='password')
-      p.form__note.form__note_right
-        |¿Olvidaste tu contraseña?
-        | <a class='link_underline' @click='close' href='#/password' title='Ir a recuperar contraseña'>Recuperar contraseña.</a>
-    .form__row.form__row_away
-      button.btn.btn_solid.btn_block(
-        @click.prevent='validateBeforeSubmit') Iniciar sesión
-  .break
-    span.break__txt O
-  router-link.btn.btn_block(
-    to='signup',
-    title='Ir a Registro') Regístrate
+.layout_bg
+  header.page-header
+    .layout-inner
+      span.brand
+        img.brand__logo(src='/static/img/brand-prilov.svg', alt='Prilov Compra. Usa. Vende')
+        span.brand__typo
+          strong.brand__name Prilov.com
+          span.brand__tagline  Compra. Usa. Vende.
+  .modal.modal_scroll
+    .modal__slot.content-slot
+      .content-slot__inner
+        .form-slot
+          h1.title Bienvenida al administrador de Prilov
+          form.form(
+            v-on:submit='',
+            action='#',
+            submit.prevent='validateBeforeSubmit',
+            method='post'
+          )
+            .form__row(
+              v-bind:class='{ "is-danger": errorTexts.email }'
+            )
+              label.form__label(
+                for='email') Correo
+              span.help(
+                v-if="errorTexts.email"
+              ) {{ errorTexts.email }}
+              input.form__control(
+                v-model='email',
+                id='email',
+                type='email')
+            .form__row(
+              v-bind:class='{ "is-danger": errorTexts.password }'
+            )
+              label.form__label(
+                for='password'
+              ) Contraseña
+              span.help(
+                v-if="errorTexts.password"
+              ) {{ errorTexts.password }}
+              input.form__control(
+                v-model='password',
+                id='password',
+                type='password')
+              p.form__note.form__note_right
+                |¿Olvidaste tu contraseña?
+                | <a class='link_underline' @click='close' href='#/password' title='Ir a recuperar contraseña'>Recuperar contraseña.</a>
+            .form__row.form__row_away
+              button.btn.btn_solid.btn_block(
+                @click.prevent='validateBeforeSubmit') Iniciar sesión
+          .break
+            span.break__txt O
+          router-link.btn.btn_block(
+            to='signup',
+            title='Ir a Registro') Regístrate
 </template>
 
 <script>

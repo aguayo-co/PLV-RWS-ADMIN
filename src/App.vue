@@ -1,12 +1,12 @@
 <template lang="pug">
-div.page
+.page
   //- main content
   main.content-main
     .layout
-      //- Datos personales
       .layout-inner
-        .content-grid
-          AdminMenu(v-if="userId")
+        .content(:class="{'content-grid' : userId}")
+          AdminMenu(
+            v-if="userId")
           //- Router Page
           router-view
 

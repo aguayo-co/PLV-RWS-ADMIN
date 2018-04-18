@@ -2,7 +2,7 @@
     // #Main SCSS
 //*------------------------------------*/
 @import "bourbon/bourbon";
-
+// use admin
 @import
   'utils/variables/var-breakpoint',
   'utils/variables/var-color',
@@ -13,11 +13,12 @@
   'utils/mix/mix-mediaquery',
   'utils/helpers/help-center',
   'utils/helpers/help-clearfix';
-
+// use admin
 @import
   'generic/normalize',
   'generic/font-face';
 
+// use admin
 @import
   'theme/anchor',
   'theme/buttons',
@@ -27,18 +28,18 @@
   'theme/media',
   'theme/table',
   'theme/layout';
-
+//Admin
 @import
   'block/page-header',
-  'block/menu',
-  'block/page-footer',
+  // 'block/menu',
+  // 'block/page-footer',
   'block/toggle-box',
   'block/modal',
   'block/notify',
-  'block/banner-slider',
-  'block/banner-top',
-  'block/banner-grid',
-  'block/slider-fullwide',
+  // 'block/banner-slider',
+  // 'block/banner-top',
+  // 'block/banner-grid',
+  // 'block/slider-fullwide',
   'block/slide-to',
   'block/admin-edit';
 

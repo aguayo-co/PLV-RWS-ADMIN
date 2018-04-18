@@ -12,6 +12,9 @@
   ul {
     list-style: none;
   }
+  .brand {
+    @include justify-content(center);
+  }
 
 }
 
@@ -277,12 +280,12 @@
 }
 
 // $bp-wide: 1024px;
-@include media-query(wide) {
-  .page-header {
-    padding: 16px 0 18px;
-  }
+// @include media-query(wide) {
+//   .page-header {
+//     padding: 16px 0 18px;
+//   }
 
-}
+// }
 
 // $bp-large: 1170px;
 @include media-query(large) {
