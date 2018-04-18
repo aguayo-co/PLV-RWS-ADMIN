@@ -45,7 +45,7 @@
                 type='password')
               p.form__note.form__note_right
                 |¿Olvidaste tu contraseña?
-                | <a class='link_underline' @click='close' href='#/password' title='Ir a recuperar contraseña'>Recuperar contraseña.</a>
+                | <a class='link_underline'  href='#' title='Ir a recuperar contraseña'>Recuperar contraseña.</a>
             .form__row.form__row_away
               button.btn.btn_solid.btn_block(
                 @click.prevent='validateBeforeSubmit') Iniciar sesión
@@ -125,9 +125,6 @@ export default {
           this.$store.dispatch('ui/showModal', modal)
           this.$store.dispatch('ui/loginAttempt')
         })
-    },
-    close: function () {
-      this.$store.dispatch('ui/closeModal')
     }
   }
 }

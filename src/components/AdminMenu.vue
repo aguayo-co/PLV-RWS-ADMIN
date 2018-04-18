@@ -1,6 +1,6 @@
 <template lang="pug">
 .side
-  a.page-brand(href='/', title='Ir a la página de inicio')
+  router-link.page-brand(to='/productos', title='Ir a la página de inicio')
     span.brand
       img.brand__logo(src='/static/img/brand-prilov.svg', alt='Prilov Compra. Usa. Vende')
       span.brand__typo
