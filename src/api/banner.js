@@ -16,5 +16,9 @@ export default {
     }
     console.log('/api/banners?items=' + items + '&page=' + page + queryFilter)
     return Vue.axiosAuth.get('/api/banners?items=' + items + '&page=' + page + queryFilter)
+  },
+  update: function (data) {
+    delete data.image
+    return Vue.axiosAuth.patch('/api/banners/' + data.slug, data)
   }
 }
