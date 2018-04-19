@@ -7,15 +7,19 @@ export default {
     const baseOptions = {
       baseURL: store.state.apiUrl,
       headers: {
-        Accept: 'application/json'
+        common: {
+          Accept: 'application/json'
+        }
       }
     }
 
     // Modal base.
-    const baseModal = {
-      name: 'ModalMessage',
-      parameters: {
-        type: 'alert'
+    const baseModal = () => {
+      return {
+        name: 'ModalMessage',
+        parameters: {
+          type: 'alert'
+        }
       }
     }
 
@@ -24,12 +28,12 @@ export default {
      */
 
     /**
-     * Errores de acceso son manejados acá (403 o 401).
+     * Errores de red, servidor y acceso son manejados acá (5xx, 403 o 401).
      * Los demás los dejamos pasar y deben ser manejados por quien hizo
      * la petición.
      */
     const baseErrorPopups = (error) => {
-      const modal = {...baseModal}
+      const modal = {...baseModal()}
       if (error.response && error.response.status === 401) {
         modal.parameters.title = 'No estás autenticado.'
         store.dispatch('user/logOut')
@@ -37,6 +41,14 @@ export default {
       }
       if (error.response && error.response.status === 403) {
         modal.parameters.title = 'No tiene permiso para esto.'
+        store.dispatch('ui/showModal', modal)
+      }
+      if (error.response && error.response.status >= 500) {
+        modal.parameters.title = 'Algo ha fallado, por favor revisa tu conexión e intenta nuevamente.'
+        store.dispatch('ui/showModal', modal)
+      }
+      if (!error.response) {
+        modal.parameters.title = 'Algo ha fallado, por favor revisa tu conexión e intenta nuevamente.'
         store.dispatch('ui/showModal', modal)
       }
       throw error
@@ -56,10 +68,10 @@ export default {
      * Asegura que tengamos un token.
      */
     const ensureToken = (config) => {
-      const token = store.getters['user/token']
-      const userId = store.getters['user/userId']
+      const token = window.localStorage.getItem('token')
+      const userId = window.localStorage.getItem('userId')
       if (token === null || userId === null) {
-        const modal = {...baseModal}
+        const modal = {...baseModal()}
         modal.parameters.title = 'No estás autenticado.'
         store.dispatch('ui/showModal', modal)
         throw new Error('No credentials founds.')
@@ -73,7 +85,7 @@ export default {
      */
 
     /**
-     * Axios sin autenticación.
+     * Axios no autenticado.
      */
     Vue.axios = axios.create(baseOptions)
     Vue.axios.interceptors.request.use((config) => {
