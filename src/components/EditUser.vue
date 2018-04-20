@@ -21,12 +21,14 @@
                 .upfile__btn Sube una imagen
               croppa(
                 v-model="picture",
-                :initial-image="selectedUser.picture"
-                :width="300",
-                :height="300",
+                :width="280",
+                :height="280",
                 :quality="2",
                 placeholder="",
                 :prevent-white-space="true")
+                img(
+                  slot="initial",
+                  :src="selectedUser.picture")
         .form__row
           label.form__label(
             for="user-name") Nombre
@@ -80,7 +82,7 @@
               value="null")
             label.form__label-checkbox.i-ok(
               for="rol-1",
-              v-model="rol.id") Vendedora {{ rol.id }}
+              v-model="rol.id") Vendedora
           .row
             input.form__input-check(
               id="rol-2",
@@ -89,7 +91,7 @@
               value="2",
               v-model="rol.id")
             label.form__label-checkbox.i-ok(
-              for="rol-2") Compradora {{ rol.id }}
+              for="rol-2") Compradora
           .row
             input.form__input-check(
             id="rol-3",
@@ -98,7 +100,7 @@
             value="1",
             v-model="rol.id")
             label.form__label-checkbox.i-ok(
-              for="rol-3") Administradora {{ rol.id }}
+              for="rol-3") Administradora
         .form__row(v-if="selectedUser.group")
           .form__label Roles
           .row

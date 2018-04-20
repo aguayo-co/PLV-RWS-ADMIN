@@ -724,6 +724,43 @@ select {
   }
 }
 
+.form__row_grid {
+  @include flexbox;
+  @include flex-wrap(wrap);
+  @include justify-content(center);
+  .upfile__small {
+    max-width: 170px;
+    margin: 0 8px;
+  }
+  .upfile__item {
+    height: 100%;
+  }
+  .upfile__text {
+    padding: 0 10px 20px;
+    &:before {
+      @include font-rem(50px);
+    }
+  }
+  .croppa-container {
+    width: 160px;
+  }
+  .upfile__btn {
+    padding: 10px;
+    @include font-rem(12px);
+  }
+}
+
+.edit__slide_large {
+  .form__row {
+    max-width: 440px;
+    margin: 0 auto;
+  }
+  .form__row_grid {
+    max-width: initial;
+    padding-bottom: 40px;
+  }
+}
+
 // $bp-medium: 768px;
 @include media-query(medium) {
   .form__edit_txt {
