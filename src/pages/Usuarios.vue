@@ -173,6 +173,7 @@ export default {
       .then(response => {
         this.totalPages = response.data.to
         this.users = response.data.data
+        console.log(this.users)
       })
   }
 

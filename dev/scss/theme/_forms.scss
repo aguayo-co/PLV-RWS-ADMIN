@@ -348,6 +348,11 @@ select {
       display: block;
     }
   }
+  &:checked+.form__label-checkbox {
+    &:before {
+      display: block;
+    }
+  }
 }
 .form__check {
   .form__label_check {
@@ -686,6 +691,37 @@ select {
 .form-file__txt {
   width: 70%;
   padding: 11px 20px 13px;
+}
+
+//Form edit
+.form__label-checkbox {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  padding-left: 30px;
+  &:before {
+    position: absolute;
+    top: 5px;
+    left: 2px;
+    z-index: 1;
+    display: none;
+    cursor: pointer;
+    color: $c-brand;
+    font-weight: $fw-bold;
+    @include font-rem(8px);
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 0;
+    width: 13px;
+    height: 13px;
+    cursor: pointer;
+    border: 1px solid $c-default-4;
+    border-radius: 3px;
+  }
 }
 
 // $bp-medium: 768px;

@@ -922,8 +922,6 @@ select {
   opacity: 0; }
   .form__input-check:checked + .form__label_check:before {
     display: block; }
-  .form__input-check:checked + .form__label-checkbox:before {
-    display: block; }
 
 .form__check .form__label_check {
   color: #9b9b9b; }
