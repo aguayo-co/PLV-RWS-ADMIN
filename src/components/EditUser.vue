@@ -21,12 +21,14 @@
                 .upfile__btn Sube una imagen
               croppa(
                 v-model="picture",
-                :initial-image="selectedUser.picture"
-                :width="300",
-                :height="300",
+                :width="280",
+                :height="280",
                 :quality="2",
                 placeholder="",
                 :prevent-white-space="true")
+                img(
+                  slot="initial",
+                  :src="selectedUser.picture")
         .form__row
           label.form__label(
             for="user-name") Nombre
@@ -64,50 +66,78 @@
             type="tel")
         .form__row(v-if="selectedUser.roles")
           .form__label Roles
-          .row(v-for="role in selectedUser.roles")
-            input.form__input-radio(
-              :id="'rol-' + role.id",
-              type="radio",
-              name="roles[]",
-              value="1")
-            label.form__label_radio(
-              :for="'rol-' + role.id") {{ role.name }}
-        .form__row
-          input.form__input-radio(
-            id="rol-2",
-            type="radio",
+          //- .row(v-for="role in selectedUser.roles")
+          //-   input.form__input-radio(
+          //-     :id="'rol-' + role.id",
+          //-     type="radio",
+          //-     name="roles",
+          //-     value="1")
+          //-   label.form__label_radio(
+          //-     :for="'rol-' + role.id") {{ role.name }}
+          .row
+            input.form__input-check(
+              id="rol-1",
+              type="checkbox",
+              name="roles",
+              value="null")
+            label.form__label-checkbox.i-ok(
+              for="rol-1",
+              v-model="rol.id") Vendedora
+          .row
+            input.form__input-check(
+              id="rol-2",
+              type="checkbox",
+              name="roles",
+              value="2",
+              v-model="rol.id")
+            label.form__label-checkbox.i-ok(
+              for="rol-2") Compradora
+          .row
+            input.form__input-check(
+            id="rol-3",
+            type="checkbox",
             name="roles",
-            value="2")
-          label.form__label_radio(
-            for="grupo-2") Vendedora
-        .form__row
-          .form__label Grupos
-          input.form__input-radio(
-            id="grupo-1",
-            type="radio",
-            name="grupos",
-            value="1")
-          label.form__label_radio(
-            for="grupo-1") Prilover Star
-        .form__row
-          input.form__input-radio(
-            id="grupo-2",
-            type="radio",
-            name="grupos",
-            value="2")
-          label.form__label_radio(
-            for="grupo-2") Prilover
+            value="1",
+            v-model="rol.id")
+            label.form__label-checkbox.i-ok(
+              for="rol-3") Administradora
+        .form__row(v-if="selectedUser.group")
+          .form__label Roles
+          .row
+            input.form__input-check(
+              id="group-1",
+              type="checkbox",
+              name="groups",
+              value="1")
+            label.form__label-checkbox.i-ok(
+              for="group-1") PriloverStar
+          .row
+            input.form__input-check(
+              id="group-2",
+              type="checkbox",
+              name="groups",
+              value="1",
+              v-model="group")
+            label.form__label-checkbox.i-ok(
+              for="group-2") It Girl
+          .row
+            input.form__input-check(
+              id="group-3",
+              type="checkbox",
+              name="groups",
+              value="1")
+            label.form__label-checkbox.i-ok(
+              for="group-3") Prilovers We Love
         //-select form
         //- .form__row
-          label.form__label(
-            for="select") Select
-          select.form__select.form__select_big(
-            name="select",
-            id="select")
-            option(value="1") Item
-            option(value="2") Item
-            option(value="3") Item
-            option(value="4") Item
+        //-   label.form__label(
+        //-     for="select") Select
+        //-   select.form__select.form__select_big(
+        //-     name="select",
+        //-     id="select")
+        //-     option(value="1") PriloverStar
+        //-     option(value="2") It Girl
+        //-     option(value="3") Prilovers We Love
         .form__row.form__row_away
           button.btn.btn_solid.btn_block Guardar
 </template>
@@ -131,6 +161,12 @@ export default {
   computed: {
     selectedUser: function () {
       return this.user
+    },
+    rol: function () {
+      return this.user.roles
+    },
+    group: function () {
+      return this.user.groups
     }
   },
   updated: function () {
