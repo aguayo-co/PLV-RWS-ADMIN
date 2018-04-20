@@ -77,7 +77,7 @@
             type="radio",
             name="estados",
             value="0",
-            v-model="status")
+            v-model.number="selectedProduct.status")
           label.form__label_radio(
             for="estado-1") Pendiente
         .form__row
@@ -86,7 +86,7 @@
             type="radio",
             name="estados",
             value="1",
-            v-model="status")
+            v-model.number="selectedProduct.status")
           label.form__label_radio(
             for="estado-2") Rechazado
         .form__row
@@ -95,7 +95,7 @@
             type="radio",
             name="estados",
             value="10",
-            v-model="status")
+            v-model.number="selectedProduct.status")
           label.form__label_radio(
             for="estado-3") Aprobado
         .form__row
@@ -103,37 +103,28 @@
             id="estado-4",
             type="radio",
             name="estados",
-            value="1",
-            v-model="status")
+            value="19",
+            v-model.number="selectedProduct.status")
           label.form__label_radio(
-            for="estado-4") Rechazado
+            for="estado-4") Disponible
         .form__row
           input.form__input-radio(
             id="estado-5",
             type="radio",
             name="estados",
-            value="19",
-            v-model="status")
+            value="30",
+            v-model.number="selectedProduct.status")
           label.form__label_radio(
-            for="estado-5") Disponible
+            for="estado-5") Vendido
         .form__row
           input.form__input-radio(
             id="estado-6",
             type="radio",
             name="estados",
-            value="30",
-            v-model="status")
-          label.form__label_radio(
-            for="estado-6") Vendido
-        .form__row
-          input.form__input-radio(
-            id="estado-7",
-            type="radio",
-            name="estados",
             value="31",
-            v-model="status")
+            v-model.number="selectedProduct.status")
           label.form__label_radio(
-            for="estado-7") Deshabilitado
+            for="estado-6") Deshabilitado
         .form__row.form__row_away
           button.btn.btn_solid.btn_block(@click.prevent="save") Guardar
 </template>
@@ -150,7 +141,8 @@ export default {
   name: 'EditProduct',
   data () {
     return {
-      pictures: [null, null, null, null]
+      pictures: [null, null, null, null],
+      status: 0
     }
   },
   watch: {
@@ -158,14 +150,12 @@ export default {
       this.pictures.forEach((image) => {
         if (image) image.refresh()
       })
+      this.status = this.product.status
     }
   },
   computed: {
     selectedProduct: function () {
       return this.product
-    },
-    status: function () {
-      return this.product.status
     }
   },
   methods: {
@@ -173,6 +163,7 @@ export default {
       productsAPI.update(this.selectedProduct)
         .then(response => {
           console.log('Ok')
+          this.$emit('closeEdit')
         })
     }
   }
