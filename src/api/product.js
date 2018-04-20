@@ -16,5 +16,10 @@ export default {
     }
     console.log('/api/products?items=' + items + '&page=' + page + queryFilter)
     return Vue.axiosAuth.get('/api/products?items=' + items + '&page=' + page + queryFilter)
+  },
+  update: function (data) {
+    const updateData = {...data}
+    delete updateData.images
+    return Vue.axiosAuth.patch('/api/products/' + data.id, updateData)
   }
 }
