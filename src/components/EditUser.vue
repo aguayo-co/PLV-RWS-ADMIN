@@ -114,14 +114,14 @@
 
 <script>
 
-import usersAPI from '@/api/user'
+// import usersAPI from '@/api/user'
 import Vue from 'vue'
 import Croppa from 'vue-croppa'
 Vue.component('croppa', Croppa.component)
 
 export default {
   props: ['user', 'active'],
-  name: 'Usuaria',
+  name: 'EditUser',
   data () {
     return {
       picture: null,

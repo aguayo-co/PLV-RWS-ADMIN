@@ -11,6 +11,12 @@
         figure.avatar
           img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
           figcaption.avatar__txt Damarys
+
+    EditProduct(
+      :product="selectedProduct",
+      :active="editActive",
+      @closeEdit="slideEdit")
+
     //- nav.nav(v-if="products[0]")
     nav.nav
       select.form__select(name="acciones en lote")
@@ -31,8 +37,8 @@
             option(value="50") 50
         li.pagination__item
           a.pagination__arrow.pagination__arrow_prev.i-back(@click.prevent='prevPage', href="#")
-        li.pagination__item 1
-        li.pagination__item.pagination__item_txt de 3
+        li.pagination__item {{ page }}
+        li.pagination__item.pagination__item_txt de {{totalPages}}
         li.pagination__item
           a.pagination__arrow.pagination__arrow_next.i-next(@click.prevent='nextPage', href="#")
     //Tabla de contenido
@@ -67,7 +73,8 @@
             label.form__label_check.i-ok(:for="'item' + index")
           td.crud__cell
             img.crud__cell-img(:src="product.images[0]", :alt="product.title")
-          td.crud__cell {{ product.title }}
+          td.crud__cell
+            a(@click="loadProduct(index)") {{ product.title }}
           td.crud__cell {{ product.brand.name }}
           td.crud__cell ${{ product.original_price | currency }}
           td.crud__cell(:class='{ "danger": product.price > product.original_price - ( product.original_price * 0.1 ) }') ${{ product.price | currency }}
@@ -104,15 +111,27 @@
 <script>
 
 import productAPI from '@/api/product'
+import Vue from 'vue'
+import Croppa from 'vue-croppa'
+import EditProduct from '@/components/EditProduct'
+Vue.component('croppa', Croppa.component)
 
 export default {
   name: 'Productos',
+  components: {
+    EditProduct
+  },
   data () {
     return {
       products: [],
+      selectedProduct: {},
       page: 1,
       items: 10,
       filter: {},
+      order: '-id',
+      editActive: false,
+      picture: null,
+      cover: null,
       totalPages: null
     }
   },
@@ -130,6 +149,13 @@ export default {
     prevPage: function () {
       if (this.page > 1) this.page -= 1
       this.updateProductList()
+    },
+    slideEdit: function () {
+      this.editActive = !this.editActive
+    },
+    loadProduct: function (index) {
+      this.selectedProduct = this.products[index]
+      this.slideEdit()
     }
   },
   created: function () {
@@ -137,7 +163,6 @@ export default {
       .then(response => {
         this.totalPages = response.data.to
         this.products = response.data.data
-        console.log(this.products[0].brand)
       })
   }
 }

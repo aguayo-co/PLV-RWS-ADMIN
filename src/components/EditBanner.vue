@@ -91,8 +91,8 @@ export default {
     }
   },
   methods: {
-    save: function() {
-        bannersAPI.update(this.selectedBanner)
+    save: function () {
+      bannersAPI.update(this.selectedBanner)
         .then(response => {
           console.log('Ok')
         })

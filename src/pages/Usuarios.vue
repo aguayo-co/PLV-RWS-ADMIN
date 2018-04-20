@@ -38,7 +38,7 @@
             @click.prevent="prevPage",
             href="#")
         li.pagination__item {{ page }}
-        li.pagination__item.pagination__item_txt de 3
+        li.pagination__item.pagination__item_txt de {{totalPages}}
         li.pagination__item
           a.pagination__arrow.pagination__arrow_next.i-next(
             @click.prevent="nextPage",
@@ -140,7 +140,8 @@ export default {
       order: '-id',
       editActive: false,
       picture: null,
-      cover: null
+      cover: null,
+      totalPages: null
     }
   },
   methods: {
@@ -170,6 +171,7 @@ export default {
   created: function () {
     usersAPI.getUsers(this.page, this.items, this.filter, this.order)
       .then(response => {
+        this.totalPages = response.data.to
         this.users = response.data.data
       })
   }
