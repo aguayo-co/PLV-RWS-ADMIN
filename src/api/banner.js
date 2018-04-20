@@ -18,7 +18,8 @@ export default {
     return Vue.axiosAuth.get('/api/banners?items=' + items + '&page=' + page + queryFilter)
   },
   update: function (data) {
-    delete data.image
-    return Vue.axiosAuth.patch('/api/banners/' + data.slug, data)
+    const updateData = {...data}
+    delete updateData.image
+    return Vue.axiosAuth.patch('/api/banners/' + data.slug, updateData)
   }
 }

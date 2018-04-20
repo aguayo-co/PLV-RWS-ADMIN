@@ -13,20 +13,21 @@
         @click.stop="$emit('closeEdit')") Editar producto
       form.slide__form
         .form__row
-          .form__label Foto del producto
-          .upfile__small
+          .upfile__small(v-for="(image, index) in selectedProduct.images")
             .upfile__item
               .upfile__label
                 .upfile__text.i-upload Arrastra una foto o
                 .upfile__btn Sube una imagen
               croppa(
-                v-model="picture",
-                :initial-image="selectedProduct.initialImage"
+                v-model="pictures[index]",
                 :width="300",
-                :height="300",
+                :height="450",
                 :quality="2",
                 placeholder="",
                 :prevent-white-space="true")
+                img(
+                  slot="initial",
+                  :src="image")
         .form__row
           label.form__label(
             for="product-name") Nombre
@@ -133,25 +134,15 @@
             v-model="status")
           label.form__label_radio(
             for="estado-2") Deshabilitado
-        //-select form
-        //- .form__row
-          label.form__label(
-            for="select") Select
-          select.form__select.form__select_big(
-            name="select",
-            id="select")
-            option(value="1") Item
-            option(value="2") Item
-            option(value="3") Item
-            option(value="4") Item
         .form__row.form__row_away
-          button.btn.btn_solid.btn_block Guardar
+          button.btn.btn_solid.btn_block(@click.prevent="save") Guardar
 </template>
 
 <script>
 
 import Vue from 'vue'
 import Croppa from 'vue-croppa'
+import productsAPI from '@/api/product'
 Vue.component('croppa', Croppa.component)
 
 export default {
@@ -159,8 +150,14 @@ export default {
   name: 'EditProduct',
   data () {
     return {
-      picture: null,
-      cover: null
+      pictures: [null, null, null, null]
+    }
+  },
+  watch: {
+    product: function () {
+      this.pictures.forEach((image) => {
+        if (image) image.refresh()
+      })
     }
   },
   computed: {
@@ -171,8 +168,13 @@ export default {
       return this.product.status
     }
   },
-  updated: function () {
-    this.picture.refresh()
+  methods: {
+    save: function () {
+      productsAPI.update(this.selectedProduct)
+        .then(response => {
+          console.log('Ok')
+        })
+    }
   }
 
 }
