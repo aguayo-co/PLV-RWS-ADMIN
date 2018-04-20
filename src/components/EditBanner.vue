@@ -95,6 +95,7 @@ export default {
       bannersAPI.update(this.selectedBanner)
         .then(response => {
           console.log('Ok')
+          this.$emit('closeEdit')
         })
     }
   },
