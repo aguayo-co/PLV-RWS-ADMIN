@@ -44,6 +44,72 @@
   border: 2px dashed $c-brand;
   background-color: rgba($c-neutro-3, .5);
 }
+.delete {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  @include prefixer(transform, translate(-50%, -50%), ("webkit", "moz"));
+  display: inline-block;
+  min-width: 120px;
+  padding: 10px;
+  text-align: center;
+  color: $c-default;
+  @include font-rem(14px);
+  font-family: $f-default;
+  font-weight: $fw-regular;
+  border: 2px solid $c-default;
+  background-color: $c-neutro;
+  z-index: 3;
+}
+
+.type-1 {
+  .upfile__item {
+    width: 440px;
+    height: 140px;
+  }
+  .upfile__label {
+    @include font-rem(16px);
+  }
+    .upfile__text {
+      padding-bottom: 10px;
+      &:before {
+        padding-bottom: 10px;
+        @include font-rem(38px);
+      }
+    }
+    .upfile__btn {
+      padding: 6px 10px;
+      @include font-rem(14px);
+    }
+}
+
+.type-2 {
+  .upfile__item {
+    width: 440px;
+    height: 265px;
+  }
+}
+
+.type-3 {
+  .upfile__item {
+    width: 440px;
+    height: 299px;
+  }
+}
+
+.type-4 {
+  .upfile__item {
+    width: 364px;
+    height: 421px;
+  }
+}
+
+.type-5 {
+  .upfile__item {
+    width: 440px;
+    height: 270px;
+  }
+}
 
 .upfile__title {
   padding-bottom: 20px;

@@ -10,6 +10,10 @@
         figure.avatar
           img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
           figcaption.avatar__txt Damarys
+    EditSize(
+      :size="selectedSize",
+      :active="editActive",
+      @closeEdit="slideEdit")
     nav.nav
       select.form__select(name="acciones en lote")
         option(value="Acciones en lote") Acciones en lote
@@ -53,7 +57,8 @@
                   label.form__label_check.i-ok(:for="'item' + childIndex")
                 td.crud__cell.crud__cell_30 {{ size.name }}
                 td.crud__cell.crud__cell_30 {{ children.id }}
-                td.crud__cell.crud__cell_30 {{ children.name }}
+                td.crud__cell.crud__cell_30
+                  a(@click="loadSize(index)") {{ children.name }}
         tr.crud__row
           td(colspan="4")
             form.crud__form(action="")
@@ -73,16 +78,25 @@
 
 <script>
 import sizesAPI from '@/api/size'
+// import Vue from 'vue'
+import EditSize from '@/components/EditSize'
 
 export default {
+  props: ['size', 'active'],
   name: 'Sizes',
+  components: {
+    EditSize
+  },
   data () {
     return {
       sizes: [],
+      selectedSize: {},
       page: 1,
       items: 10,
       filter: {},
-      order: '-id'
+      order: '-id',
+      editActive: false,
+      totalPages: null
     }
   },
   methods: {
@@ -100,6 +114,13 @@ export default {
     prevPage: function () {
       if (this.page > 1) this.page -= 1
       this.updateSizeList()
+    },
+    slideEdit: function () {
+      this.editActive = !this.editActive
+    },
+    loadSize: function (index) {
+      this.selectedSize = this.sizes[index]
+      this.slideEdit()
     }
   },
   created: function () {
