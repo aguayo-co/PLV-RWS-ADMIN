@@ -86,6 +86,11 @@ export default {
               ico: 'i-upload'
             },
             {
+              name: 'Carousel Principal',
+              url: '/sliders',
+              ico: 'i-insta'
+            },
+            {
               name: 'Atributos de prenda',
               url: '#',
               ico: 'i-tag'
