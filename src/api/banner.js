@@ -21,5 +21,12 @@ export default {
     const updateData = {...data}
     delete updateData.image
     return Vue.axiosAuth.patch('/api/banners/' + data.slug, updateData)
+  },
+  updateWithImage: function (data) {
+    var formData = new FormData()
+    Object.keys(data).forEach((key) => {
+      formData.append(key, data[key])
+    })
+    return Vue.axiosAuth.patch('/api/banners/' + data.slug, formData)
   }
 }
