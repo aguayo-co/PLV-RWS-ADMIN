@@ -8,6 +8,7 @@ import Sizes from '@/pages/Sizes'
 import MenuItems from '@/pages/MenuItems'
 import Home from '@/pages/Home'
 import Colors from '@/pages/Colors'
+import Brands from '@/pages/Brands'
 
 Vue.use(Router)
 
@@ -50,8 +51,13 @@ export default new Router({
     },
     {
       path: '/colores',
-      name: 'Colords',
+      name: 'Colors',
       component: Colors
+    },
+    {
+      path: '/marcas',
+      name: 'Brands',
+      component: Brands
     }
   ]
 })
