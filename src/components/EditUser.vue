@@ -116,10 +116,10 @@ export default {
   methods: {
     save: function () {
       usersAPI.update(this.selectedUser)
-      .then(response => {
-        console.log('Ok')
-        this.$emit('closeEdit')
-      })
+        .then(response => {
+          console.log('Ok')
+          this.$emit('closeEdit')
+        })
     },
     removeImage: function () {
       this.toggleImageDelete = false

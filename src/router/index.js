@@ -7,6 +7,7 @@ import Sliders from '@/pages/Sliders'
 import Sizes from '@/pages/Sizes'
 import MenuItems from '@/pages/MenuItems'
 import Home from '@/pages/Home'
+import Colors from '@/pages/Colors'
 
 Vue.use(Router)
 
@@ -46,6 +47,11 @@ export default new Router({
       path: '/menu-items',
       name: 'MenuItems',
       component: MenuItems
+    },
+    {
+      path: '/colores',
+      name: 'Colords',
+      component: Colors
     }
   ]
 })
