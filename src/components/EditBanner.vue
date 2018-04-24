@@ -2,7 +2,7 @@
 .admin__edit.banner(
   :class="{ 'admin__edit_open': editActive == true }")
   transition(name='slide-right')
-    .edit__slide(
+    .edit__slide.edit__slide_large(
       v-show="active == true")
       //- .btn_close.modal__btn_close.i-x(
       //-   @click.stop="slideEdit")
@@ -12,19 +12,57 @@
         @click.stop="$emit('closeEdit')") Editar banner
       form.slide__form
         .form__row
-          .form__label Foto de perfil
-          .upfile__small
+          label.form__label(
+            for='tipo') Tipo de Banner
+          select.form__select(
+            ref='tipo'
+            id='tipo'
+            v-model='type')
+            optgroup(label='Tipo de banner')
+              option(
+                v-for='type in types'
+                :value='type.id'
+              ) {{ type.name }}
+        .form__row(v-show="type !== 0 && !imageChanged")
+          .form__label Imagen del banner
+          .upfile(:class="'type-'+type")
             .upfile__item
+              a.delete(
+                v-show='toggleImageDelete',
+                @click='removeImage') Eliminar
               .upfile__label
                 .upfile__text.i-upload Arrastra una foto o
                 .upfile__btn Sube una imagen
               croppa(
+                v-if="type !== 0",
                 v-model="picture",
-                :initial-image="selectedBanner.image"
-                :width="300",
-                :height="300",
+                :width="types[type].width",
+                :height="types[type].height",
                 :quality="2",
                 placeholder="",
+                new-image-drawn="addImage",
+                :prevent-white-space="true")
+                img(
+                  slot="initial",
+                  :src="selectedBanner.image")
+        .form__row(v-show="type !== 0 && imageChanged")
+          .form__label Nueva imagen
+          .upfile(:class="'type-'+type")
+            .upfile__item
+              a.delete(
+                v-show='toggleImageDelete',
+                @click='removeImage') Eliminar
+              .upfile__label
+                .upfile__text.i-upload Arrastra una foto o
+                .upfile__btn Sube una imagen
+              croppa(
+                v-if="type !== 0",
+                v-model="newpicture",
+                :width="types[type].width",
+                :height="types[type].height",
+                :quality="2",
+                placeholder="",
+                new-image-drawn="addImage",
                 :prevent-white-space="true")
         .form__row
           label.form__label(
@@ -87,25 +125,78 @@ export default {
   name: 'EditBanner',
   data () {
     return {
-      picture: null
+      picture: null,
+      newpicture: null,
+      type: 0,
+      types: [
+        { id: 0, name: 'Sin imagen' },
+        { id: 1, name: 'Banner para categoría', width: 1280, height: 400 },
+        { id: 2, name: 'Home #1', width: 594, height: 356 },
+        { id: 3, name: 'Home #2', width: 524, height: 354 },
+        { id: 4, name: 'Home #3', width: 360, height: 417 },
+        { id: 5, name: 'Banner de menú', width: 410, height: 250 }
+      ],
+      toggleImageDelete: true,
+      imageChanged: false
+    }
+  },
+  watch: {
+    banner: function () {
+      this.imageChanged = false
+      if (this.banner.name.includes('top')) this.type = 0
+      if (this.banner.name.includes('categoria')) this.type = 1
+      if (this.banner.name.includes('sm')) this.type = 2
+      if (this.banner.name.includes('md')) this.type = 3
+      if (this.banner.name.includes('wide')) this.type = 4
+      if (this.banner.name.includes('campaign')) this.type = 5
     }
   },
   methods: {
     save: function () {
-      bannersAPI.update(this.selectedBanner)
-        .then(response => {
-          console.log('Ok')
-        })
+      const modal = {
+        name: 'ModalMessage',
+        parameters: {
+          type: 'preload',
+          title: 'Estamos cargando la nueva imagen'
+        }
+      }
+      if (this.imageChanged) {
+        if (this.newpicture.hasImage()) {
+          this.$store.dispatch('ui/showModal', modal)
+          this.newpicture.generateBlob((blob) => {
+            this.banner.image = blob
+            bannersAPI.updateWithImage(this.selectedBanner)
+              .then(response => {
+                console.log('Ok with image')
+                this.$store.dispatch('ui/closeModal')
+                this.$emit('closeEdit')
+              })
+          })
+        }
+      } else {
+        bannersAPI.update(this.selectedBanner)
+          .then(response => {
+            console.log('Ok')
+            this.$emit('closeEdit')
+          })
+      }
+    },
+    removeImage: function (index) {
+      this.toggleImageDelete = false
+      this.picture.remove()
+      this.imageChanged = true
+    },
+    addImage: function (index) {
+      this.toggleImageDelete = true
     }
   },
   computed: {
     selectedBanner: function () {
       return this.banner
+    },
+    editActive: function () {
+      return this.active
     }
-  },
-  updated: function () {
-    this.picture.refresh()
   }
-
 }
 </script>
