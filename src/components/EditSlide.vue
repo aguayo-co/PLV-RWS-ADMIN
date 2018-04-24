@@ -122,6 +122,13 @@
             type="text")
         .form__row
           label.form__label(
+            for="small_text") Letra chica
+          input.form__control(
+            v-model="selectedSlide.small_text",
+            id="small_text",
+            type="text")
+        .form__row
+          label.form__label(
             for='font_color') Color del texto
           select.form__select(
             ref='font_color'
