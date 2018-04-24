@@ -16,5 +16,9 @@ export default {
     }
     console.log('/api/sizes?items=' + items + '&page=' + page + queryFilter)
     return Vue.axiosAuth.get('/api/sizes?items=' + items + '&page=' + page + queryFilter)
+  },
+  update: function (data) {
+    const updateData = {...data}
+    return Vue.axiosAuth.patch('/api/sizes/' + data.id, updateData)
   }
 }

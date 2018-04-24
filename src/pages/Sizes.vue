@@ -12,6 +12,7 @@
           figcaption.avatar__txt Damarys
     EditSize(
       :size="selectedSize",
+      :sizeParent="selectedSizes",
       :active="editActive",
       @closeEdit="slideEdit")
     nav.nav
@@ -58,7 +59,7 @@
                 td.crud__cell.crud__cell_30 {{ size.name }}
                 td.crud__cell.crud__cell_30 {{ children.id }}
                 td.crud__cell.crud__cell_30
-                  a(@click="loadSize(index)") {{ children.name }}
+                  a(@click="loadSize(index, childIndex)") {{ children.name }}
         tr.crud__row
           td(colspan="4")
             form.crud__form(action="")
@@ -82,7 +83,7 @@ import sizesAPI from '@/api/size'
 import EditSize from '@/components/EditSize'
 
 export default {
-  props: ['size', 'active'],
+  props: ['size', 'sizeParent', 'active'],
   name: 'Sizes',
   components: {
     EditSize
@@ -90,7 +91,9 @@ export default {
   data () {
     return {
       sizes: [],
+      sizesChildren: [],
       selectedSize: {},
+      selectedSizes: {},
       page: 1,
       items: 10,
       filter: {},
@@ -118,8 +121,9 @@ export default {
     slideEdit: function () {
       this.editActive = !this.editActive
     },
-    loadSize: function (index) {
-      this.selectedSize = this.sizes[index]
+    loadSize: function (index, indexChildren) {
+      this.selectedSizes = this.sizes[index]
+      this.selectedSize = this.sizes[index].children[indexChildren]
       this.slideEdit()
     }
   },
