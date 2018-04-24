@@ -86,6 +86,11 @@ export default {
               ico: 'i-upload'
             },
             {
+              name: 'Tallas',
+              url: '/tallas',
+              ico: 'i-closet'
+            },
+            {
               name: 'Carousel Principal',
               url: '/sliders',
               ico: 'i-insta'
