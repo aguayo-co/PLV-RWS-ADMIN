@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Productos from '@/pages/Productos'
 import Usuarios from '@/pages/Usuarios'
 import Banners from '@/pages/Banners'
+import Sliders from '@/pages/Sliders'
 import Sizes from '@/pages/Sizes'
 import MenuItems from '@/pages/MenuItems'
 import Home from '@/pages/Home'
@@ -30,6 +31,11 @@ export default new Router({
       path: '/banners',
       name: 'Banners',
       component: Banners
+    },
+    {
+      path: '/sliders',
+      name: 'Sliders',
+      component: Sliders
     },
     {
       path: '/tallas',

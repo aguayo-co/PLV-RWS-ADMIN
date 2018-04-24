@@ -131,9 +131,9 @@ export default {
       types: [
         { id: 0, name: 'Sin imagen' },
         { id: 1, name: 'Banner para categoría', width: 1280, height: 400 },
-        { id: 2, name: 'Home #1', width: 594, height: 356 },
+        { id: 2, name: 'Home #3', width: 594, height: 356 },
         { id: 3, name: 'Home #2', width: 524, height: 354 },
-        { id: 4, name: 'Home #3', width: 360, height: 417 },
+        { id: 4, name: 'Home #1', width: 360, height: 417 },
         { id: 5, name: 'Banner de menú', width: 410, height: 250 }
       ],
       toggleImageDelete: true,
@@ -145,9 +145,9 @@ export default {
       this.imageChanged = false
       if (this.banner.name.includes('top')) this.type = 0
       if (this.banner.name.includes('categoria')) this.type = 1
-      if (this.banner.name.includes('sm')) this.type = 2
+      if (this.banner.name.includes('sm')) this.type = 4
       if (this.banner.name.includes('md')) this.type = 3
-      if (this.banner.name.includes('wide')) this.type = 4
+      if (this.banner.name.includes('wide')) this.type = 2
       if (this.banner.name.includes('campaign')) this.type = 5
     }
   },
