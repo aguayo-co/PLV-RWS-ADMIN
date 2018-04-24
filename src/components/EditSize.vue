@@ -27,7 +27,7 @@
             for="size-id") Nombre
           input.form__control(
             id="size-id",
-            v-model="selectedSize.children.name",
+            v-model="selectedSize.name",
             type="text")
         .form__row.form__row_away
           button.btn.btn_solid.btn_block(@click.prevent="save") Guardar

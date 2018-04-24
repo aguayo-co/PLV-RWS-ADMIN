@@ -58,7 +58,7 @@
                 td.crud__cell.crud__cell_30 {{ size.name }}
                 td.crud__cell.crud__cell_30 {{ children.id }}
                 td.crud__cell.crud__cell_30
-                  a(@click="loadSize(index)") {{ children.name }}
+                  a(@click="loadSize(index, childIndex)") {{ children.name }}
         tr.crud__row
           td(colspan="4")
             form.crud__form(action="")
@@ -90,6 +90,7 @@ export default {
   data () {
     return {
       sizes: [],
+      sizesChildren: [],
       selectedSize: {},
       page: 1,
       items: 10,
@@ -104,6 +105,7 @@ export default {
       sizesAPI.getSizes(this.page, this.items, this.filter, this.order)
         .then(response => {
           this.sizes = response.data.data
+          // this.sizesChildren = response.data.data
         })
     },
     nextPage: function () {
@@ -118,8 +120,8 @@ export default {
     slideEdit: function () {
       this.editActive = !this.editActive
     },
-    loadSize: function (index) {
-      this.selectedSize = this.sizes[index]
+    loadSize: function (index, indexChildren) {
+      this.selectedSize = this.sizes[index].children[indexChildren]
       this.slideEdit()
     }
   },
