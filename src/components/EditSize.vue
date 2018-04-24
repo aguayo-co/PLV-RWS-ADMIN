@@ -6,22 +6,24 @@
     .edit__slide(
       v-show="active == true")
       h3.slide__header.i-close(
-        @click.stop="$emit('closeEdit')") Editar producto
+        @click.stop="$emit('closeEdit')") Editar tallas
       form.slide__form
         .form__row
           label.form__label(
             for="size-category") Categoria
-          input.form__control(
-            id="size-category",
-            v-model="selectedSize.name",
-            type="text")
+          //- input.form__control(
+          //-   id="size-category",
+          //-   v-model="selectedSizes.name",
+          //-   type="text")
+          p(v-model="selectedSizes.name") {{ selectedSizes.name }}
         .form__row
           label.form__label(
             for="size-id") Id
-          input.form__control(
-            id="size-id",
-            v-model="selectedSize.id",
-            type="text")
+          //- input.form__control(
+          //-   id="size-id",
+          //-   v-model="selectedSize.id",
+          //-   type="text")
+          p(v-model="selectedSize.id") {{ selectedSize.id }}
         .form__row
           label.form__label(
             for="size-id") Nombre
@@ -41,7 +43,7 @@ import sizesAPI from '@/api/size'
 Vue.component('croppa', Croppa.component)
 
 export default {
-  props: ['size', 'active'],
+  props: ['size', 'sizeParent', 'active'],
   name: 'EditSize',
   // data () {
   //   return {
@@ -52,6 +54,9 @@ export default {
   computed: {
     selectedSize: function () {
       return this.size
+    },
+    selectedSizes: function () {
+      return this.sizeParent
     }
   },
   methods: {

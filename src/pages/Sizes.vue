@@ -12,6 +12,7 @@
           figcaption.avatar__txt Damarys
     EditSize(
       :size="selectedSize",
+      :sizeParent="selectedSizes",
       :active="editActive",
       @closeEdit="slideEdit")
     nav.nav
@@ -82,7 +83,7 @@ import sizesAPI from '@/api/size'
 import EditSize from '@/components/EditSize'
 
 export default {
-  props: ['size', 'active'],
+  props: ['size', 'sizeParent', 'active'],
   name: 'Sizes',
   components: {
     EditSize
@@ -92,6 +93,7 @@ export default {
       sizes: [],
       sizesChildren: [],
       selectedSize: {},
+      selectedSizes: {},
       page: 1,
       items: 10,
       filter: {},
@@ -105,7 +107,6 @@ export default {
       sizesAPI.getSizes(this.page, this.items, this.filter, this.order)
         .then(response => {
           this.sizes = response.data.data
-          // this.sizesChildren = response.data.data
         })
     },
     nextPage: function () {
@@ -121,6 +122,7 @@ export default {
       this.editActive = !this.editActive
     },
     loadSize: function (index, indexChildren) {
+      this.selectedSizes = this.sizes[index]
       this.selectedSize = this.sizes[index].children[indexChildren]
       this.slideEdit()
     }
