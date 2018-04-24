@@ -751,7 +751,6 @@ select {
   padding: 14px 24px; }
 
 .form__select {
-  width: 16%;
   min-width: 148px;
   padding: 0 18px 0 12px;
   margin-bottom: 12px;
@@ -4114,6 +4113,62 @@ body {
   width: 100%;
   border: 2px dashed #f65a66;
   background-color: rgba(239, 239, 239, 0.5); }
+
+.delete {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  display: inline-block;
+  min-width: 120px;
+  padding: 10px;
+  text-align: center;
+  color: #000;
+  font-size: 14px;
+  font-size: 0.875rem;
+  font-family: "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  border: 2px solid #000;
+  background-color: #fff;
+  z-index: 3; }
+
+.type-1 .upfile__item {
+  width: 440px;
+  height: 140px; }
+
+.type-1 .upfile__label {
+  font-size: 16px;
+  font-size: 1rem; }
+
+.type-1 .upfile__text {
+  padding-bottom: 10px; }
+  .type-1 .upfile__text:before {
+    padding-bottom: 10px;
+    font-size: 38px;
+    font-size: 2.375rem; }
+
+.type-1 .upfile__btn {
+  padding: 6px 10px;
+  font-size: 14px;
+  font-size: 0.875rem; }
+
+.type-2 .upfile__item {
+  width: 440px;
+  height: 265px; }
+
+.type-3 .upfile__item {
+  width: 440px;
+  height: 299px; }
+
+.type-4 .upfile__item {
+  width: 364px;
+  height: 421px; }
+
+.type-5 .upfile__item {
+  width: 440px;
+  height: 270px; }
 
 .upfile__title {
   padding-bottom: 20px;
