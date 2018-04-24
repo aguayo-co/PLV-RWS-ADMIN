@@ -20,6 +20,7 @@ export default {
   update: function (data) {
     const updateData = {...data}
     delete updateData.image
+    delete updateData.image_mobile
     return Vue.axiosAuth.patch('/api/sliders/' + data.slug, updateData)
   },
   updateWithImage: function (data) {

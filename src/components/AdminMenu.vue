@@ -106,8 +106,8 @@ export default {
               ico: 'i-insta'
             },
             {
-              name: 'Atributos de prenda',
-              url: '#',
+              name: 'Colores',
+              url: '/colores',
               ico: 'i-tag'
             },
             {
