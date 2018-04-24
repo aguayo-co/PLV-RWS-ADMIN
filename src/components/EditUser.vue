@@ -16,6 +16,9 @@
           .form__label Foto de perfil
           .upfile__small
             .upfile__item
+              a.delete(
+                v-show='toggleImageDelete',
+                @click='removeImage') Eliminar
               .upfile__label
                 .upfile__text.i-upload Arrastra una foto o
                 .upfile__btn Sube una imagen
@@ -64,82 +67,19 @@
             v-model="selectedUser.phone",
             id="user-phone",
             type="tel")
-        .form__row(v-if="selectedUser.roles")
-          .form__label Roles
-          //- .row(v-for="role in selectedUser.roles")
-          //-   input.form__input-radio(
-          //-     :id="'rol-' + role.id",
-          //-     type="radio",
-          //-     name="roles",
-          //-     value="1")
-          //-   label.form__label_radio(
-          //-     :for="'rol-' + role.id") {{ role.name }}
-          .row
+        .form__row
+          .form__label Grupos
+          .row(v-for="group in this.groups")
             input.form__input-check(
-              id="rol-1",
+              v-model="selectedUser.group_ids"
+              :id="'group-' + group.id",
               type="checkbox",
               name="roles",
-              value="null")
+              :value="group.id")
             label.form__label-checkbox.i-ok(
-              for="rol-1",
-              v-model="rol.id") Vendedora
-          .row
-            input.form__input-check(
-              id="rol-2",
-              type="checkbox",
-              name="roles",
-              value="2",
-              v-model="rol.id")
-            label.form__label-checkbox.i-ok(
-              for="rol-2") Compradora
-          .row
-            input.form__input-check(
-            id="rol-3",
-            type="checkbox",
-            name="roles",
-            value="1",
-            v-model="rol.id")
-            label.form__label-checkbox.i-ok(
-              for="rol-3") Administradora
-        .form__row(v-if="selectedUser.group")
-          .form__label Roles
-          .row
-            input.form__input-check(
-              id="group-1",
-              type="checkbox",
-              name="groups",
-              value="1")
-            label.form__label-checkbox.i-ok(
-              for="group-1") PriloverStar
-          .row
-            input.form__input-check(
-              id="group-2",
-              type="checkbox",
-              name="groups",
-              value="1",
-              v-model="group")
-            label.form__label-checkbox.i-ok(
-              for="group-2") It Girl
-          .row
-            input.form__input-check(
-              id="group-3",
-              type="checkbox",
-              name="groups",
-              value="1")
-            label.form__label-checkbox.i-ok(
-              for="group-3") Prilovers We Love
-        //-select form
-        //- .form__row
-        //-   label.form__label(
-        //-     for="select") Select
-        //-   select.form__select.form__select_big(
-        //-     name="select",
-        //-     id="select")
-        //-     option(value="1") PriloverStar
-        //-     option(value="2") It Girl
-        //-     option(value="3") Prilovers We Love
+              :for="'group-' + group.id") {{ group.name }}
         .form__row.form__row_away
-          button.btn.btn_solid.btn_block Guardar
+          button.btn.btn_solid.btn_block(@click.prevent="save") Guardar
 </template>
 
 <script>
@@ -147,6 +87,7 @@
 // import usersAPI from '@/api/user'
 import Vue from 'vue'
 import Croppa from 'vue-croppa'
+import usersAPI from '@/api/user'
 Vue.component('croppa', Croppa.component)
 
 export default {
@@ -155,7 +96,10 @@ export default {
   data () {
     return {
       picture: null,
-      cover: null
+      cover: null,
+      groups: [],
+      toggleImageDelete: true,
+      imageChanged: false
     }
   },
   computed: {
@@ -169,8 +113,28 @@ export default {
       return this.user.groups
     }
   },
+  methods: {
+    save: function () {
+      usersAPI.update(this.selectedUser)
+      .then(response => {
+        console.log('Ok')
+        this.$emit('closeEdit')
+      })
+    },
+    removeImage: function () {
+      this.toggleImageDelete = false
+      this.picture.remove()
+      this.imageChanged = true
+    }
+  },
   updated: function () {
     this.picture.refresh()
+  },
+  created: function () {
+    usersAPI.getUserGroups()
+      .then(response => {
+        this.groups = response.data.data
+      })
   }
 
 }
