@@ -23,18 +23,18 @@ export default {
     return Vue.axiosAuth.get('/api/users?items=' + items + '&page=' + page + queryFilter + queryOrder)
   },
   update: function (data) {
-    const updateData = {...data}
-    delete updateData.phone
-    delete updateData.picture
-    delete updateData.cover
-    delete updateData.favorite_address_id
-    return Vue.axiosAuth.patch('/api/users/' + data.id, updateData)
+    return Vue.axiosAuth.patch('/api/users/' + data.id, data)
   },
 
   updateWithFile: function (data) {
     var formData = new FormData()
     Object.keys(data).forEach((key) => {
-      formData.append(key, data[key])
+      if (key === 'group_ids') {
+        formData.append(key + '[]', data[key][0])
+        formData.append(key + '[]', data[key][1])
+      } else {
+        formData.append(key, data[key])
+      }
     })
     return Vue.axiosAuth.patch('/api/users/' + data.id, formData)
   },
