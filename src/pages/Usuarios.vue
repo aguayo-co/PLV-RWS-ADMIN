@@ -95,10 +95,10 @@
             ul(v-if='user.roles')
               li(v-for='role in user.roles') {{ role.name }}
           td.crud__cell.crud__cell_center {{ user.vacation_mode ? "Sí" : "No" }}
-          td.crud__cell.crud__cell_center -
-          td.crud__cell.crud__cell_center -
-          td.crud__cell.crud__cell_center -
-          td.crud__cell.crud__cell_center -
+          td.crud__cell.crud__cell_center {{ user.credits }}
+          td.crud__cell.crud__cell_center {{ user.published_products_count }}
+          td.crud__cell.crud__cell_center {{ user.sold_products_count }}
+          td.crud__cell.crud__cell_center {{ user.purchased_products_count }}
           td.crud__cell {{ user.created_at }}
         tr
           td(colspan="12")

@@ -8,6 +8,7 @@ import Sizes from '@/pages/Sizes'
 import MenuItems from '@/pages/MenuItems'
 import Home from '@/pages/Home'
 import Colors from '@/pages/Colors'
+import Transfers from '@/pages/Transfers'
 
 Vue.use(Router)
 
@@ -52,6 +53,11 @@ export default new Router({
       path: '/colores',
       name: 'Colords',
       component: Colors
+    },
+    {
+      path: '/manual-transfers',
+      name: 'Transferencias',
+      component: Transfers
     }
   ]
 })
