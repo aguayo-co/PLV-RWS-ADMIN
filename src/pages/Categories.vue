@@ -38,7 +38,7 @@
         li.pagination__item
           a.pagination__arrow.pagination__arrow_next.i-next(@click.prevent='nextPage', href="#")
     //Tabla de contenido
-    table.crud.crud_wide(v-if="categoriesParent")
+    table.crud.crud_wide
       thead.crud__head
         tr.crud__row
           th.crud__title.crud__cell_12
@@ -51,23 +51,23 @@
       tbody.crud__tbody
         tr.crud__row
           td(colspan="5")
-            table.crud(v-for="(categoryChildren, subIndex) in categoriesParent.children")
+            table.crud(v-for="(parent, index) in categories.children")
               tr.crud__row
                 th.crud__title.crud__cell_12
                   input#all.form__input-check(type="checkbox", name="all", value="selectAll")
                   label.form__label_check.i-ok(for="all")
-                th.crud__title.crud__cell_22 {{ categoryChildren.name }}
-                th.crud__title.crud__cell_22 /{{ categoryChildren.slug }}
-                th.crud__title.crud__cell_22 {{ categoryChildren.created_at }}
-                th.crud__title.crud__cell_22 {{ categoryChildren.updated_at }}
+                th.crud__title.crud__cell_22 {{ parent.name }}
+                th.crud__title.crud__cell_22 {{ parent.slug }}
+                th.crud__title.crud__cell_22 {{ parent.created_at }}
+                th.crud__title.crud__cell_22 {{ parent.updated_at }}
               tbody.crud__tbody
-                tr.crud__row(v-for="(categoryChildrenChildren, subSubIndex) in categoryChildren.children")
+                tr.crud__row(v-for="(children, subIndex) in parent.children")
                   td.crud__cell
                     input.form__input-check( type="checkbox", name="all", value="selectAll")
                     label.form__label_check.i-ok
-                  td.crud__cell.crud__cell_22 {{ categoryChildrenChildren.name }}
-                  td.crud__cell.crud__cell_22 {{ categoryChildrenChildren.slug }}
-                    a(@click="loadCategory(index)")
+                  td.crud__cell.crud__cell_22 {{ '—— ' + children.name }}
+                  td.crud__cell.crud__cell_22 {{ children.slug }}
+                    a(@click="loadCategory(subIndex)")
                   td.crud__cell.crud__cell_22 .
                   td.crud__cell.crud__cell_22 ..
         tr.crud__row
@@ -101,7 +101,6 @@ export default {
   data () {
     return {
       categories: [],
-      categoriesParent: [],
       selectedCategory: {},
       page: 1,
       items: 10,
@@ -139,7 +138,6 @@ export default {
     categoriesAPI.getAll()
       .then(response => {
         this.categories = response.data.data[0]
-        this.categoriesParent = this.categories
         this.categories.children.forEach((category, index) => {
           categoriesAPI.getBySlug(category.slug)
             .then(response => {
