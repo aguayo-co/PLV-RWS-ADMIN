@@ -9,6 +9,7 @@ import MenuItems from '@/pages/MenuItems'
 import Home from '@/pages/Home'
 import Colors from '@/pages/Colors'
 import Brands from '@/pages/Brands'
+import Categories from '@/pages/Categories'
 
 Vue.use(Router)
 
@@ -58,6 +59,12 @@ export default new Router({
       path: '/marcas',
       name: 'Brands',
       component: Brands
+    },
+    {
+      path: '/categorias',
+      name: 'Categories',
+      component: Categories
     }
+
   ]
 })
