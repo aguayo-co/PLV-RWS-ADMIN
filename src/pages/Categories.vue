@@ -68,8 +68,8 @@
                   td.crud__cell.crud__cell_22 {{ categoryChildrenChildren.name }}
                   td.crud__cell.crud__cell_22 {{ categoryChildrenChildren.slug }}
                     a(@click="loadCategory(index)")
-                  td.crud__cell.crud__cell_22 ..
                   td.crud__cell.crud__cell_22 .
+                  td.crud__cell.crud__cell_22 ..
         tr.crud__row
           td(colspan="5")
             form.crud__form(action="")
