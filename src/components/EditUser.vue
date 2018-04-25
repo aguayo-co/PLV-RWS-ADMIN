@@ -28,10 +28,13 @@
                 :height="280",
                 :quality="2",
                 placeholder="",
-                :prevent-white-space="true")
+                :prevent-white-space="true",
+                :show-remove-button="false",
+                :new-image-drawn="addImage")
                 img(
+                  crossorigin
                   slot="initial",
-                  :src="selectedUser.picture")
+                  :src="selectedUser.picture + '?d=123'")
         .form__row
           label.form__label(
             for="user-name") Nombre
@@ -90,6 +93,17 @@ import Croppa from 'vue-croppa'
 import usersAPI from '@/api/user'
 Vue.component('croppa', Croppa.component)
 
+const userFields = {
+  id: null,
+  picture: null,
+  first_name: null,
+  last_name: null,
+  about: null,
+  email: null,
+  phone: null,
+  group_ids: null
+}
+
 export default {
   props: ['user', 'active'],
   name: 'EditUser',
@@ -115,20 +129,39 @@ export default {
   },
   methods: {
     save: function () {
-      usersAPI.update(this.selectedUser)
-        .then(response => {
-          console.log('Ok')
-          this.$emit('closeEdit')
-        })
+      let user = {}
+      Object.keys(userFields).forEach((key) => {
+        user[key] = this.selectedUser[key]
+      })
+
+      if (this.imageChanged) {
+        if (this.picture.hasImage()) {
+          this.picture.generateBlob((blob) => {
+            user.picture = blob
+            usersAPI.updateWithFile(user)
+              .then(response => {
+                console.log('Ok with image')
+                this.$emit('closeEdit')
+              })
+          })
+        }
+      } else {
+        delete user.picture
+        usersAPI.update(user)
+          .then(response => {
+            console.log('Ok')
+            this.$emit('closeEdit')
+          })
+      }
     },
     removeImage: function () {
       this.toggleImageDelete = false
       this.picture.remove()
       this.imageChanged = true
+    },
+    addImage: function () {
+      this.toggleImageDelete = true
     }
-  },
-  updated: function () {
-    this.picture.refresh()
   },
   created: function () {
     usersAPI.getUserGroups()
