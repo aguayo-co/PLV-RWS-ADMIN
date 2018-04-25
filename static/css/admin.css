@@ -2284,7 +2284,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 998;
+  z-index: 1006;
   width: 100%;
   min-height: 100vh;
   padding-top: 70px;
@@ -5411,6 +5411,14 @@ body {
 
 .crud__cell_30 {
   width: 30%;
+  padding: 8px; }
+
+.crud__cell_12 {
+  width: 12%;
+  padding: 8px; }
+
+.crud__cell_22 {
+  width: 22%;
   padding: 8px; }
 
 @media only screen and (max-width: 1023px) {
