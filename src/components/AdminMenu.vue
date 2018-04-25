@@ -91,6 +91,11 @@ export default {
               ico: 'i-closet'
             },
             {
+              name: 'Marcas',
+              url: '/marcas',
+              ico: 'i-edit-line'
+            },
+            {
               name: 'Carousel Principal',
               url: '/sliders',
               ico: 'i-insta'
@@ -98,6 +103,11 @@ export default {
             {
               name: 'Colores',
               url: '/colores',
+              ico: 'i-tag'
+            },
+            {
+              name: 'Categorias',
+              url: '/categorias',
               ico: 'i-tag'
             },
             {
