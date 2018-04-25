@@ -62,7 +62,7 @@
                 :height="types[type].height",
                 :quality="2",
                 placeholder="",
-                new-image-drawn="addImage",
+                :new-image-drawn="addImage",
                 :prevent-white-space="true")
         .form__row
           label.form__label(

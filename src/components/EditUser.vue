@@ -131,7 +131,7 @@ export default {
     save: function () {
       let user = {}
       Object.keys(userFields).forEach((key) => {
-        user[key] = this.selectedUser[key]
+        if (this.selectedUser[key]) user[key] = this.selectedUser[key]
       })
 
       if (this.imageChanged) {
