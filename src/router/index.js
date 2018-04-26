@@ -10,6 +10,7 @@ import Home from '@/pages/Home'
 import Colors from '@/pages/Colors'
 import Brands from '@/pages/Brands'
 import Categories from '@/pages/Categories'
+import Payments from '@/pages/Payments'
 
 Vue.use(Router)
 
@@ -64,7 +65,11 @@ export default new Router({
       path: '/categorias',
       name: 'Categories',
       component: Categories
+    },
+    {
+      path: '/payments',
+      name: 'Payments',
+      component: Payments
     }
-
   ]
 })
