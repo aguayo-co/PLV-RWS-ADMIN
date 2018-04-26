@@ -53,20 +53,20 @@
           td(colspan="5")
             table.crud(v-for="(parent, index) in categories.children")
               tr.crud__row
-                th.crud__title.crud__cell_12
+                th.crud__cell.crud__cell_12
                   input#all.form__input-check(type="checkbox", name="all", value="selectAll")
                   label.form__label_check.i-ok(for="all")
-                th.crud__title.crud__cell_22 {{ parent.name }}
-                th.crud__title.crud__cell_22 {{ parent.slug }}
-                th.crud__title.crud__cell_22 {{ parent.created_at }}
-                th.crud__title.crud__cell_22 {{ parent.updated_at }}
+                th.crud__cell.crud__cell_22 {{ parent.name }}
+                th.crud__cell.crud__cell_22 {{ '/' + parent.slug }}
+                th.crud__cell.crud__cell_22 {{ parent.created_at }}
+                th.crud__cell.crud__cell_22 {{ parent.updated_at }}
               tbody.crud__tbody
                 tr.crud__row(v-for="(children, subIndex) in parent.children")
                   td.crud__cell
                     input.form__input-check( type="checkbox", name="all", value="selectAll")
                     label.form__label_check.i-ok
                   td.crud__cell.crud__cell_22 {{ '—— ' + children.name }}
-                  td.crud__cell.crud__cell_22 {{ children.slug }}
+                  td.crud__cell.crud__cell_22 {{ '/' + children.slug }}
                     a(@click="loadCategory(subIndex)")
                   td.crud__cell.crud__cell_22 .
                   td.crud__cell.crud__cell_22 ..
