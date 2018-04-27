@@ -5206,6 +5206,9 @@ body {
   margin: 0;
   text-align: center; }
 
+.nav__text_wide {
+  width: 100%; }
+
 .pagination {
   display: inline-block;
   width: 38%;
@@ -5234,12 +5237,17 @@ body {
 .content-data_wide .nav__text {
   width: 30%; }
 
+.content-data_wide .nav__text_wide {
+  width: 100%; }
+
 .content-data_wide .pagination {
   width: 40%; }
 
 @media only screen and (min-width: 1080px) {
   .nav__text {
     width: 32%; }
+  .nav__text_wide {
+    width: 100%; }
   .pagination {
     width: 40%; } }
 

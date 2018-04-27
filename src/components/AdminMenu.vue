@@ -111,6 +111,11 @@ export default {
               ico: 'i-tag'
             },
             {
+              name: 'Métodos de envío',
+              url: '/metodos-envio',
+              ico: 'i-shipping'
+            },
+            {
               name: 'Menús',
               url: '#',
               ico: 'i-filter'
