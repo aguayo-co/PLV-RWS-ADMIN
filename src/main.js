@@ -6,10 +6,12 @@ import router from './router'
 import axiosPlugin from './axios'
 import store from './store'
 import prilovFilters from './filters'
+import VueTextareaAutosize from 'vue-textarea-autosize'
 
 // Load global Axios instances.
 Vue.use(axiosPlugin, store)
 Vue.use(prilovFilters)
+Vue.use(VueTextareaAutosize)
 
 Vue.config.productionTip = false
 

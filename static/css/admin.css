@@ -813,7 +813,8 @@ select {
   padding: 10px 12px;
   line-height: 1.4;
   font-family: "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  border: 1px solid #4a4a4a; }
+  border: 1px solid #4a4a4a;
+  resize: none; }
 
 .form__label-link {
   color: #000;
@@ -5205,6 +5206,9 @@ body {
   margin: 0;
   text-align: center; }
 
+.nav__text_wide {
+  width: 100%; }
+
 .pagination {
   display: inline-block;
   width: 38%;
@@ -5233,12 +5237,17 @@ body {
 .content-data_wide .nav__text {
   width: 30%; }
 
+.content-data_wide .nav__text_wide {
+  width: 100%; }
+
 .content-data_wide .pagination {
   width: 40%; }
 
 @media only screen and (min-width: 1080px) {
   .nav__text {
     width: 32%; }
+  .nav__text_wide {
+    width: 100%; }
   .pagination {
     width: 40%; } }
 
@@ -5270,7 +5279,8 @@ body {
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 500;
   font-size: 14px;
-  font-size: 0.875rem; }
+  font-size: 0.875rem;
+  text-align: left; }
   .crud__cell:first-child {
     padding-left: 10px; }
   .crud__cell ul {

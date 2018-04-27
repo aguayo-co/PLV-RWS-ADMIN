@@ -211,6 +211,7 @@ select {
   line-height: 1.4;
   font-family: $f-default;
   border: 1px solid $c-default-2;
+  resize: none;
 }
 .form__label-link {
   color: $c-default;

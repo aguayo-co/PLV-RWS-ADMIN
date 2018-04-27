@@ -5,7 +5,7 @@
       .data-header__item
         form.search(action='', method='GET')
           .search__row
-            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en productos')
+            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en usuarias')
             input.search__btn(type='submit', value='')
         figure.avatar
           img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
@@ -22,7 +22,7 @@
         option(value="Publicado") Publicado
         option(value="No disponible") No disponible
       a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text Se han encontrado 56 productos
+      p.nav__text Se han encontrado {{ totalItems }} usuarias
       ul.pagination
         li.pagination__select
           select.form__select.form__select_small(
@@ -141,7 +141,8 @@ export default {
       editActive: false,
       picture: null,
       cover: null,
-      totalPages: null
+      totalPages: null,
+      totalItems: null
     }
   },
   methods: {
@@ -152,9 +153,10 @@ export default {
         })
     },
     nextPage: function () {
-      this.page += 1
-      this.updateUserList()
-      console.log(this.users)
+      if (this.page < this.totalPages) {
+        this.page += 1
+        this.updateUserList()
+      }
     },
     prevPage: function () {
       if (this.page > 1) this.page -= 1
@@ -171,7 +173,8 @@ export default {
   created: function () {
     usersAPI.getUsers(this.page, this.items, this.filter, this.order)
       .then(response => {
-        this.totalPages = response.data.to
+        this.totalPages = response.data.last_page
+        this.totalItems = response.data.total
         this.users = response.data.data
       })
   }
