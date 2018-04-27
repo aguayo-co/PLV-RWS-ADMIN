@@ -6,7 +6,7 @@
     .edit__slide(
       v-show="active == true")
       h3.slide__header.i-close(
-        @click.stop="$emit('closeEdit')") Editar métodos de envio
+        @click.stop="$emit('closeEdit')") Editar campañas
       form.slide__form
         .form__row
           label.form__label(
@@ -18,17 +18,11 @@
         .form__row
           label.form__label(
             for="color-name") Fecha de creación
-          input.form__control(
-            id="color-name",
-            v-model="selectedCampaign.created_at",
-            type="text")
+          p(v-model="selectedCampaign.created_at") {{ selectedCampaign.created_at }}
         .form__row
           label.form__label(
             for="color-id") Fecha de actualización
-          input.form__control(
-            id="color-name",
-            v-model="selectedCampaign.updated_at",
-            type="text")
+          p(v-model="selectedCampaign.updated_at") {{ selectedCampaign.updated_at }}
         .form__row.form__row_away
           button.btn.btn_solid.btn_block(@click.prevent="save") Guardar
 </template>

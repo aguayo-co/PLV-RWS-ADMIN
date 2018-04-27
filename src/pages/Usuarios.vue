@@ -1,7 +1,7 @@
 <template lang="pug">
   .content-data.content-data_wide
     header.data-header
-      h2.data-header__title.title Usuarias
+      h2.data-header__title.title Usuarios
       .data-header__item
         form.search(action='', method='GET')
           .search__row
