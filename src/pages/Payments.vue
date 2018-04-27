@@ -1,7 +1,7 @@
 <template lang="pug">
   .content-data
     header.data-header
-      h2.data-header__title.title Banners
+      h2.data-header__title.title Transferencias bancarias
       .data-header__item
         form.search(action='', method='GET')
           .search__row
@@ -43,23 +43,21 @@
           th.crud__th.crud__title Comprobante
           th.crud__th.crud__title Total
           th.crud__th.crud__title # Orden
-          th.crud__th.crud__title Detalle
           th.crud__th.crud__title Usuaria
       tbody.crud__tbody
-        tr.crud__row(v-for="(order, index) in orders")
+        tr.crud__row(v-for="(payment, index) in payments")
           td.crud__cell
             input.form__input-check(:id="'item' + index", type="checkbox", name="all", value="selectAll")
             label.form__label_check.i-ok(:for="'item' + index")
           td.crud__cell
             img.crud__cell-img(
-              v-if="order.payments[0].image",
-              :src="banner.image",
-              :alt="banner.image")
+              v-if="payment.transfer_receipt",
+              :src="payment.transfer_receipt",
+              :alt="'Recibo-' + payment.id")
             span(v-else) -
+          td.crud__cell ${{ payment.request_data.amount | currency }}
+          td.crud__cell {{ payment.order_id }}
           td.crud__cell
-            a(@click="loadBanner(index)") {{ banner.name }}
-          td.crud__cell {{ banner.title }}
-          td.crud__cell {{ banner.created_at }}
         tr
           td(colspan="12")
             form.crud__form(action="")
@@ -79,7 +77,7 @@
 
 <script>
 
-import ordersAPI from '@/api/order'
+import paymentsAPI from '@/api/payment'
 
 export default {
   name: 'Transfers',
@@ -87,31 +85,31 @@ export default {
   },
   data () {
     return {
-      transfers: [],
+      payments: [],
       selectedOrder: {},
       page: 1,
       items: 20,
       filter: {
-        status: '20,20'
+        gateway: 'Transfer'
       },
       order: '-id',
       editActive: false
     }
   },
   methods: {
-    updateOrderList: function () {
-      ordersAPI.getOrders(this.page, this.items, this.filter, this.order)
+    updatePaymentList: function () {
+      paymentsAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
-          this.orders = response.data.data
+          this.payments = response.data.data
         })
     },
     nextPage: function () {
       this.page += 1
-      this.updateOrderList()
+      this.updatePaymentList()
     },
     prevPage: function () {
       if (this.page > 1) this.page -= 1
-      this.updateOrderList()
+      this.updatePaymentList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -122,11 +120,9 @@ export default {
     }
   },
   created: function () {
-    ordersAPI.getOrders(this.page, this.items, this.filter, this.order)
+    paymentsAPI.get(this.page, this.items, this.filter, this.order)
       .then(response => {
-        response.data.data.forEach((order) => {
-          if (order.payments.filter)
-        })
+        this.payments = response.data.data
       })
   }
 
