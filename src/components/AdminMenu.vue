@@ -116,6 +116,11 @@ export default {
               ico: 'i-shipping'
             },
             {
+              name: 'Campañas',
+              url: '/campaigns',
+              ico: 'i-rocket'
+            },
+            {
               name: 'Menús',
               url: '#',
               ico: 'i-filter'
