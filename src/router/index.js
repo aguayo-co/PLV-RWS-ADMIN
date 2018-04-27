@@ -11,6 +11,7 @@ import Colors from '@/pages/Colors'
 import Brands from '@/pages/Brands'
 import Categories from '@/pages/Categories'
 import Payments from '@/pages/Payments'
+import ShippingMethods from '@/pages/ShippingMethods'
 
 Vue.use(Router)
 
@@ -70,6 +71,11 @@ export default new Router({
       path: '/payments',
       name: 'Payments',
       component: Payments
+    },
+    {
+      path: '/metodos-envio',
+      name: 'ShipingMethods',
+      component: ShippingMethods
     }
   ]
 })
