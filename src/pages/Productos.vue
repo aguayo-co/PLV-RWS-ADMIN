@@ -24,7 +24,7 @@
         option(value="Publicado") Publicado
         option(value="No disponible") No disponible
       a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text Se han encontrado 56 productos
+      p.nav__text Se han encontrado {{ totalItems }} productos
       ul.pagination
         li.pagination__select
           select.form__select.form__select_small(
@@ -132,7 +132,8 @@ export default {
       editActive: false,
       picture: null,
       cover: null,
-      totalPages: null
+      totalPages: null,
+      totalItems: null
     }
   },
   methods: {
@@ -161,7 +162,8 @@ export default {
   created: function () {
     productAPI.getProducts(this.page, this.items, this.filter)
       .then(response => {
-        this.totalPages = response.data.to
+        this.totalPages = response.data.last_page
+        this.totalItems = response.data.total
         this.products = response.data.data
       })
   }
