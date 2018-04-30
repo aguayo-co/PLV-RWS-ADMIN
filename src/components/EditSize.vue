@@ -6,7 +6,7 @@
     .edit__slide(
       v-show="active == true")
       h3.slide__header.i-close(
-        @click.stop="$emit('closeEdit')") Editar tallas
+        @click.stop="$emit('closeEdit')") Editar talla
       form.slide__form
         .form__row
           label.form__label(

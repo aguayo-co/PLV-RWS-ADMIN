@@ -1,7 +1,7 @@
 <template lang="pug">
   .content-data
     header.data-header
-      h2.data-header__title.title Métodos de envio
+      h2.data-header__title.title Métodos de envío
       .data-header__item
         form.search(action='', method='GET')
           .search__row

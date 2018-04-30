@@ -6,7 +6,7 @@
     .edit__slide(
       v-show="active == true")
       h3.slide__header.i-close(
-        @click.stop="$emit('closeEdit')") Editar marcas
+        @click.stop="$emit('closeEdit')") Editar marca
       form.slide__form
         .form__row
           label.form__label(

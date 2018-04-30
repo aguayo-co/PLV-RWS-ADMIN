@@ -1,7 +1,7 @@
 <template lang="pug">
   .content-data
     header.data-header
-      h2.data-header__title.title Colores
+      h2.data-header__title.title Categorias
       .data-header__item
         form.search(action='', method='GET')
           .search__row
