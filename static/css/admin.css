@@ -1037,12 +1037,14 @@ select {
 	form toggle color form
 \*------------------------------------*/
 .toggle-select {
-  margin-top: -12px; }
+  margin-top: -12px;
+  cursor: pointer; }
 
 .toggle-select__list {
-  list-style: none;
   margin: 0 0 12px 0;
   padding: 4px 8px;
+  list-style: none;
+  cursor: pointer;
   border-bottom: 1px solid #4a4a4a;
   border-left: 1px solid #4a4a4a;
   border-right: 1px solid #4a4a4a; }
@@ -1290,6 +1292,10 @@ select {
               flex-grow: 0; }
       .form__group .form__row:not(:last-child) {
         margin-right: 12px; }
+      .form__group .form__row.color {
+        -webkit-box-flex: 1;
+            -ms-flex-positive: 1;
+                flex-grow: 1; }
   .form__text {
     font-size: 16px;
     font-size: 1rem; } }
@@ -2016,7 +2022,7 @@ body {
   display: inline-block;
   width: 16px;
   height: 16px;
-  line-height: 15px;
+  line-height: 16px;
   text-align: center;
   color: #fff;
   font-size: 12px;
@@ -2497,6 +2503,7 @@ body {
 .user-nav__link {
   position: relative;
   padding-left: 36px;
+  text-transform: capitalize;
   color: #fff; }
   .user-nav__link:before {
     position: absolute;
@@ -2661,6 +2668,11 @@ body {
   margin: 0 auto;
   overflow: hidden;
   border-radius: 50%; }
+  .user-data__avatar .tool-user__letter {
+    line-height: 114px;
+    color: #fff;
+    font-size: 80px;
+    font-size: 5rem; }
 
 .user-data__img {
   width: 100%;
@@ -4715,8 +4727,8 @@ body {
 .data-total {
   margin: 16px 0;
   padding: 8px 0;
-  border-top: 1px solid #efefef;
-  border-bottom: 1px solid #efefef; }
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000; }
 
 .data-total__label {
   font-weight: 700;

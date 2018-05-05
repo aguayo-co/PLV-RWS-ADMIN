@@ -44,6 +44,7 @@
     .user-nav__link {
       position: relative;
       padding-left: 36px;
+      text-transform: capitalize;
       color: $c-neutro;
       &:before {
         position: absolute;
