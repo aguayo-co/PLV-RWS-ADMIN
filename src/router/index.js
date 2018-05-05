@@ -10,7 +10,7 @@ import Home from '@/pages/Home'
 import Colors from '@/pages/Colors'
 import Brands from '@/pages/Brands'
 import Categories from '@/pages/Categories'
-import Payments from '@/pages/Payments'
+import Transfers from '@/pages/Transfers'
 import ShippingMethods from '@/pages/ShippingMethods'
 import Campaigns from '@/pages/Campaigns'
 import Sales from '@/pages/Sales'
@@ -70,9 +70,9 @@ export default new Router({
       component: Categories
     },
     {
-      path: '/payments',
-      name: 'Payments',
-      component: Payments
+      path: '/transfers',
+      name: 'Transfers',
+      component: Transfers
     },
     {
       path: '/metodos-envio',
