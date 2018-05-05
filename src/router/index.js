@@ -13,6 +13,7 @@ import Categories from '@/pages/Categories'
 import Payments from '@/pages/Payments'
 import ShippingMethods from '@/pages/ShippingMethods'
 import Campaigns from '@/pages/Campaigns'
+import Sales from '@/pages/Sales'
 
 Vue.use(Router)
 
@@ -82,6 +83,11 @@ export default new Router({
       path: '/campaigns',
       name: 'Campaigns',
       component: Campaigns
+    },
+    {
+      path: '/sales',
+      name: 'Sales',
+      component: Sales
     }
   ]
 })
