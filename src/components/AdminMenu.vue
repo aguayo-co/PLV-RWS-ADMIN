@@ -1,6 +1,6 @@
 <template lang="pug">
 .side
-  a.page-brand(href='/', title='Ir a la página de inicio')
+  router-link.page-brand(to='/productos', title='Ir a la página de inicio')
     span.brand
       img.brand__logo(src='/static/img/brand-prilov.svg', alt='Prilov Compra. Usa. Vende')
       span.brand__typo
@@ -86,9 +86,39 @@ export default {
               ico: 'i-upload'
             },
             {
-              name: 'Atributos de prenda',
-              url: '#',
+              name: 'Tallas',
+              url: '/tallas',
+              ico: 'i-closet'
+            },
+            {
+              name: 'Marcas',
+              url: '/marcas',
+              ico: 'i-edit-line'
+            },
+            {
+              name: 'Carousel Principal',
+              url: '/sliders',
+              ico: 'i-insta'
+            },
+            {
+              name: 'Colores',
+              url: '/colores',
               ico: 'i-tag'
+            },
+            {
+              name: 'Categorias',
+              url: '/categorias',
+              ico: 'i-tag'
+            },
+            {
+              name: 'Métodos de envío',
+              url: '/metodos-envio',
+              ico: 'i-shipping'
+            },
+            {
+              name: 'Campañas',
+              url: '/campaigns',
+              ico: 'i-rocket'
             },
             {
               name: 'Menús',

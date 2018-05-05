@@ -35,6 +35,7 @@
   font-family: $f-fancy;
   font-weight: $fw-medium;
   @include font-rem(14px);
+  text-align: left;
   &:first-child {
     padding-left: 10px;
   }
@@ -196,6 +197,14 @@
 .crud__cell_30 {
   width: 30%;
   padding: 8px;  
+}
+.crud__cell_12 {
+  width: 12%;
+  padding: 8px;
+}
+.crud__cell_22 {
+  width: 22%;
+  padding: 8px;
 }
 
 @media only screen and (max-width: 1023px) {

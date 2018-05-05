@@ -1,18 +1,17 @@
 <template lang="pug">
   .content-data
     header.data-header
-      h2.data-header__title.title Tallas
+      h2.data-header__title.title Campañas
       .data-header__item
         form.search(action='', method='GET')
           .search__row
-            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en Tallas')
+            input#searchMain.search__input(type='text', name='search', placeholder='Buscar campañas')
             input.search__btn(type='submit', value='')
         figure.avatar
           img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
           figcaption.avatar__txt Damarys
-    EditSize(
-      :size="selectedSize",
-      :sizeParent="selectedSizes",
+    EditCampaigns(
+      :campaign="selectedCampaign",
       :active="editActive",
       @closeEdit="slideEdit")
     nav.nav
@@ -21,21 +20,21 @@
         option(value="Publicado") Publicado
         option(value="No disponible") No disponible
       a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text Se han encontrado 56 productos
+      p.nav__text Se han encontrado {{ campaigns.length }} productos
       ul.pagination
         li.pagination__select
           select.form__select.form__select_small(
           name="numeroItems",
           v-model='items',
-          @change='updateSizeList')
+          @change='updateCampaignList')
             option(value="10") 10
             option(value="20") 20
             option(value="30") 30
             option(value="50") 50
         li.pagination__item
           a.pagination__arrow.pagination__arrow_prev.i-back(@click.prevent='prevPage', href="#")
-        li.pagination__item 1
-        li.pagination__item.pagination__item_txt de 3
+        li.pagination__item {{ page }}
+        li.pagination__item.pagination__item_txt  de {{ totalPages }}
         li.pagination__item
           a.pagination__arrow.pagination__arrow_next.i-next(@click.prevent='nextPage', href="#")
     //Tabla de contenido
@@ -45,23 +44,20 @@
           th.crud__title.crud__cell_10
               input#all.form__input-check(type="checkbox", name="all", value="selectAll")
               label.form__label_check.i-ok(for="all")
-          th.crud__title.crud__cell_30 Categoria
-          th.crud__title.crud__cell_30 Id
           th.crud__title.crud__cell_30 Nombre
+          th.crud__title.crud__cell_30 Fecha de creación
+          th.crud__title.crud__cell_30 Fecha de actualización
       tbody.crud__tbody
-        tr.crud__row(v-for="(size, index) in sizes")
-          td(colspan="4")
-            table.crud__subtable(width="100%")
-              tr.crud__row(v-for="(children, childIndex) in size.children")
-                td.crud__cell.crud__cell_10
-                  input.form__input-check(:id="'item' + childIndex", type="checkbox", name="all", value="selectAll")
-                  label.form__label_check.i-ok(:for="'item' + childIndex")
-                td.crud__cell.crud__cell_30 {{ size.name }}
-                td.crud__cell.crud__cell_30 {{ children.id }}
-                td.crud__cell.crud__cell_30
-                  a(@click="loadSize(index, childIndex)") {{ children.name }}
+        tr.crud__row(v-for="(campaign, index) in campaigns")
+          td.crud__cell.crud__cell_10
+            input.form__input-check(:id="'campaign' + index", type="checkbox", name="all", value="selectAll")
+            label.form__label_check.i-ok(:for="'campaign' + index")
+          td.crud__cell.crud__cell_30
+            a(@click="loadCampaign(index)") {{ campaign.name }}
+          td.crud__cell.crud__cell_30 {{ campaign.created_at }}
+          td.crud__cell.crud__cell_30 {{ campaign.updated_at }}
         tr.crud__row
-          td(colspan="4")
+          td(colspan="5")
             form.crud__form(action="")
               p.crud__legend Cambiar estado
               select.form__select
@@ -78,59 +74,60 @@
 </template>
 
 <script>
-import sizesAPI from '@/api/size'
+import campaignAPI from '@/api/campaign'
 // import Vue from 'vue'
-import EditSize from '@/components/EditSize'
+import EditCampaigns from '@/components/EditCampaigns'
 
 export default {
-  props: ['size', 'sizeParent', 'active'],
-  name: 'Sizes',
+  props: ['campaign', 'active'],
+  name: 'Campaigns',
   components: {
-    EditSize
+    EditCampaigns
   },
   data () {
     return {
-      sizes: [],
-      sizesChildren: [],
-      selectedSize: {},
-      selectedSizes: {},
+      campaigns: [],
+      selectedCampaign: {},
       page: 1,
       items: 10,
       filter: {},
       order: '-id',
       editActive: false,
-      totalPages: null
+      totalPages: null,
+      totalItems: null
     }
   },
   methods: {
-    updateSizeList: function () {
-      sizesAPI.getSizes(this.page, this.items, this.filter, this.order)
+    updateCampaignList: function () {
+      campaignAPI.getCampaigns(this.page, this.items, this.filter, this.order)
         .then(response => {
-          this.sizes = response.data.data
+          this.campaigns = response.data.data
         })
     },
     nextPage: function () {
-      this.page += 1
-      this.updateSizeList()
-      console.log(this.users)
+      if (this.page < this.totalPages) {
+        this.page += 1
+        this.updateUserList()
+      }
     },
     prevPage: function () {
       if (this.page > 1) this.page -= 1
-      this.updateSizeList()
+      this.updateCampaignList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
     },
-    loadSize: function (index, indexChildren) {
-      this.selectedSizes = this.sizes[index]
-      this.selectedSize = this.sizes[index].children[indexChildren]
+    loadCampaign: function (index) {
+      this.selectedCampaign = this.campaigns[index]
       this.slideEdit()
     }
   },
   created: function () {
-    sizesAPI.getSizes(this.page, this.items, this.filter)
+    campaignAPI.getCampaigns(this.page, this.items, this.filter)
       .then(response => {
-        this.sizes = response.data.data
+        this.totalPages = response.data.last_page
+        this.totalItems = response.data.total
+        this.campaigns = response.data.data
       })
   }
 

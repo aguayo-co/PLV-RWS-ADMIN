@@ -1,7 +1,7 @@
 <template lang="pug">
   .content-data
     header.data-header
-      h2.data-header__title.title Tallas
+      h2.data-header__title.title Colores
       .data-header__item
         form.search(action='', method='GET')
           .search__row
@@ -10,9 +10,8 @@
         figure.avatar
           img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
           figcaption.avatar__txt Damarys
-    EditSize(
-      :size="selectedSize",
-      :sizeParent="selectedSizes",
+    EditColor(
+      :color="selectedColor",
       :active="editActive",
       @closeEdit="slideEdit")
     nav.nav
@@ -27,7 +26,7 @@
           select.form__select.form__select_small(
           name="numeroItems",
           v-model='items',
-          @change='updateSizeList')
+          @change='updateColorList')
             option(value="10") 10
             option(value="20") 20
             option(value="30") 30
@@ -45,23 +44,21 @@
           th.crud__title.crud__cell_10
               input#all.form__input-check(type="checkbox", name="all", value="selectAll")
               label.form__label_check.i-ok(for="all")
-          th.crud__title.crud__cell_30 Categoria
           th.crud__title.crud__cell_30 Id
           th.crud__title.crud__cell_30 Nombre
+          th.crud__title.crud__cell_30 Codigo Hexadecimal
       tbody.crud__tbody
-        tr.crud__row(v-for="(size, index) in sizes")
-          td(colspan="4")
-            table.crud__subtable(width="100%")
-              tr.crud__row(v-for="(children, childIndex) in size.children")
-                td.crud__cell.crud__cell_10
-                  input.form__input-check(:id="'item' + childIndex", type="checkbox", name="all", value="selectAll")
-                  label.form__label_check.i-ok(:for="'item' + childIndex")
-                td.crud__cell.crud__cell_30 {{ size.name }}
-                td.crud__cell.crud__cell_30 {{ children.id }}
-                td.crud__cell.crud__cell_30
-                  a(@click="loadSize(index, childIndex)") {{ children.name }}
+        tr.crud__row(v-for="(color, index) in colors")
+          td.crud__cell.crud__cell_10
+            input.form__input-check(:id="'item' + index", type="checkbox", name="all", value="selectAll")
+            label.form__label_check.i-ok(:for="'item' + index")
+          td.crud__cell.crud__cell_30 {{ color.id }}
+          td.crud__cell.crud__cell_30 {{ color.name }}
+          td.crud__cell.crud__cell_30
+            span.color-circlespan.color-circle(:style='{ backgroundColor: color.hex_code }')
+            a(@click="loadColor(index)") {{ color.hex_code }}
         tr.crud__row
-          td(colspan="4")
+          td(colspan="5")
             form.crud__form(action="")
               p.crud__legend Cambiar estado
               select.form__select
@@ -78,22 +75,20 @@
 </template>
 
 <script>
-import sizesAPI from '@/api/size'
+import colorsAPI from '@/api/color'
 // import Vue from 'vue'
-import EditSize from '@/components/EditSize'
+import EditColor from '@/components/EditColor'
 
 export default {
-  props: ['size', 'sizeParent', 'active'],
-  name: 'Sizes',
+  props: ['color', 'active'],
+  name: 'Colors',
   components: {
-    EditSize
+    EditColor
   },
   data () {
     return {
-      sizes: [],
-      sizesChildren: [],
-      selectedSize: {},
-      selectedSizes: {},
+      colors: [],
+      selectedColor: {},
       page: 1,
       items: 10,
       filter: {},
@@ -103,34 +98,33 @@ export default {
     }
   },
   methods: {
-    updateSizeList: function () {
-      sizesAPI.getSizes(this.page, this.items, this.filter, this.order)
+    updateColorList: function () {
+      colorsAPI.getColors(this.page, this.items, this.filter, this.order)
         .then(response => {
-          this.sizes = response.data.data
+          this.colors = response.data.data
         })
     },
     nextPage: function () {
       this.page += 1
-      this.updateSizeList()
+      this.updateColorList()
       console.log(this.users)
     },
     prevPage: function () {
       if (this.page > 1) this.page -= 1
-      this.updateSizeList()
+      this.updateColorList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
     },
-    loadSize: function (index, indexChildren) {
-      this.selectedSizes = this.sizes[index]
-      this.selectedSize = this.sizes[index].children[indexChildren]
+    loadColor: function (index) {
+      this.selectedColor = this.colors[index]
       this.slideEdit()
     }
   },
   created: function () {
-    sizesAPI.getSizes(this.page, this.items, this.filter)
+    colorsAPI.getColors(this.page, this.items, this.filter)
       .then(response => {
-        this.sizes = response.data.data
+        this.colors = response.data.data
       })
   }
 

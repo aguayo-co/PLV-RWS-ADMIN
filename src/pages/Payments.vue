@@ -1,20 +1,15 @@
 <template lang="pug">
   .content-data
     header.data-header
-      h2.data-header__title.title Tallas
+      h2.data-header__title.title Transferencias bancarias
       .data-header__item
         form.search(action='', method='GET')
           .search__row
-            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en Tallas')
+            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en banners')
             input.search__btn(type='submit', value='')
         figure.avatar
           img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
           figcaption.avatar__txt Damarys
-    EditSize(
-      :size="selectedSize",
-      :sizeParent="selectedSizes",
-      :active="editActive",
-      @closeEdit="slideEdit")
     nav.nav
       select.form__select(name="acciones en lote")
         option(value="Acciones en lote") Acciones en lote
@@ -27,7 +22,7 @@
           select.form__select.form__select_small(
           name="numeroItems",
           v-model='items',
-          @change='updateSizeList')
+          @change='updateOrderList')
             option(value="10") 10
             option(value="20") 20
             option(value="30") 30
@@ -41,27 +36,30 @@
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
-        tr.crud__row
-          th.crud__title.crud__cell_10
+        tr
+          th.crud__th.crud__title
               input#all.form__input-check(type="checkbox", name="all", value="selectAll")
               label.form__label_check.i-ok(for="all")
-          th.crud__title.crud__cell_30 Categoria
-          th.crud__title.crud__cell_30 Id
-          th.crud__title.crud__cell_30 Nombre
+          th.crud__th.crud__title Comprobante
+          th.crud__th.crud__title Total
+          th.crud__th.crud__title # Orden
+          th.crud__th.crud__title Usuaria
       tbody.crud__tbody
-        tr.crud__row(v-for="(size, index) in sizes")
-          td(colspan="4")
-            table.crud__subtable(width="100%")
-              tr.crud__row(v-for="(children, childIndex) in size.children")
-                td.crud__cell.crud__cell_10
-                  input.form__input-check(:id="'item' + childIndex", type="checkbox", name="all", value="selectAll")
-                  label.form__label_check.i-ok(:for="'item' + childIndex")
-                td.crud__cell.crud__cell_30 {{ size.name }}
-                td.crud__cell.crud__cell_30 {{ children.id }}
-                td.crud__cell.crud__cell_30
-                  a(@click="loadSize(index, childIndex)") {{ children.name }}
-        tr.crud__row
-          td(colspan="4")
+        tr.crud__row(v-for="(payment, index) in payments")
+          td.crud__cell
+            input.form__input-check(:id="'item' + index", type="checkbox", name="all", value="selectAll")
+            label.form__label_check.i-ok(:for="'item' + index")
+          td.crud__cell
+            img.crud__cell-img(
+              v-if="payment.transfer_receipt",
+              :src="payment.transfer_receipt",
+              :alt="'Recibo-' + payment.id")
+            span(v-else) -
+          td.crud__cell ${{ payment.request_data.amount | currency }}
+          td.crud__cell {{ payment.order_id }}
+          td.crud__cell
+        tr
+          td(colspan="12")
             form.crud__form(action="")
               p.crud__legend Cambiar estado
               select.form__select
@@ -78,59 +76,53 @@
 </template>
 
 <script>
-import sizesAPI from '@/api/size'
-// import Vue from 'vue'
-import EditSize from '@/components/EditSize'
+
+import paymentsAPI from '@/api/payment'
 
 export default {
-  props: ['size', 'sizeParent', 'active'],
-  name: 'Sizes',
+  name: 'Transfers',
   components: {
-    EditSize
   },
   data () {
     return {
-      sizes: [],
-      sizesChildren: [],
-      selectedSize: {},
-      selectedSizes: {},
+      payments: [],
+      selectedOrder: {},
       page: 1,
-      items: 10,
-      filter: {},
+      items: 20,
+      filter: {
+        gateway: 'Transfer'
+      },
       order: '-id',
-      editActive: false,
-      totalPages: null
+      editActive: false
     }
   },
   methods: {
-    updateSizeList: function () {
-      sizesAPI.getSizes(this.page, this.items, this.filter, this.order)
+    updatePaymentList: function () {
+      paymentsAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
-          this.sizes = response.data.data
+          this.payments = response.data.data
         })
     },
     nextPage: function () {
       this.page += 1
-      this.updateSizeList()
-      console.log(this.users)
+      this.updatePaymentList()
     },
     prevPage: function () {
       if (this.page > 1) this.page -= 1
-      this.updateSizeList()
+      this.updatePaymentList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
     },
-    loadSize: function (index, indexChildren) {
-      this.selectedSizes = this.sizes[index]
-      this.selectedSize = this.sizes[index].children[indexChildren]
+    loadBanner: function (index) {
+      this.selectedOrder = this.orders[index]
       this.slideEdit()
     }
   },
   created: function () {
-    sizesAPI.getSizes(this.page, this.items, this.filter)
+    paymentsAPI.get(this.page, this.items, this.filter, this.order)
       .then(response => {
-        this.sizes = response.data.data
+        this.payments = response.data.data
       })
   }
 

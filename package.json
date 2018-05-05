@@ -16,7 +16,9 @@
     "build": "node build/build.js",
     "heroku-postbuild": "npm run build"
   },
-  "dependencies": {},
+  "dependencies": {
+    "vue-textarea-autosize": "^1.0.4"
+  },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
     "axios": "^0.18.0",

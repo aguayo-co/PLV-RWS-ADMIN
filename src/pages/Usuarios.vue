@@ -1,125 +1,20 @@
 <template lang="pug">
   .content-data.content-data_wide
     header.data-header
-      h2.data-header__title.title Usuarias
+      h2.data-header__title.title Usuarios
       .data-header__item
         form.search(action='', method='GET')
           .search__row
-            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en productos')
+            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en usuarias')
             input.search__btn(type='submit', value='')
         figure.avatar
           img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
           figcaption.avatar__txt Damarys
-    .admin__edit(
-      :class="{ 'admin__edit_open': editActive == true }")
-      transition(name='slide-right')
-        .edit__slide(
-          v-show="editActive == true")
-          //- .btn_close.modal__btn_close.i-x(
-          //-   @click.stop="slideEdit")
-          //-   span Cerrar
-          //- h3.title Editar usuario
-          h3.slide__header.i-close(
-            @click.stop="slideEdit") Editar usuario
-          form.slide__form
-            .form__row
-              .form__label Foto de perfil
-              .upfile__small
-                .upfile__item
-                  .upfile__label
-                    .upfile__text.i-upload Arrastra una foto o
-                    .upfile__btn Sube una imagen
-                  croppa(
-                    v-model="picture",
-                    :initial-image="selectedUser.picture"
-                    :width="300",
-                    :height="300",
-                    :quality="2",
-                    placeholder="",
-                    :prevent-white-space="true")
-            .form__row
-              label.form__label(
-                for="user-name") Nombre
-              input.form__control(
-                v-model="selectedUser.first_name",
-                id="user-name",
-                type="text")
-            .form__row
-              label.form__label(
-                for="user-lastname") Apellido
-              input.form__control(
-                v-model="selectedUser.last_name",
-                id="user-lastname",
-                type="text")
-            .form__row
-              label.form__label(
-                for="user-lastname") Acerca de
-              textarea.form__textarea(
-                v-model="selectedUser.about",
-                name="about",
-                maxlength="340")
-            .form__row
-              label.form__label(
-                for="user-email") Correo
-              input.form__control(
-                id="user-email",
-                v-model="selectedUser.email",
-                type="email")
-            .form__row
-              label.form__label(
-                for="user-phone") Teléfono
-              input.form__control(
-                v-model="selectedUser.phone",
-                id="user-phone",
-                type="tel")
-            .form__row(v-if="selectedUser.roles")
-              .form__label Roles
-              .row(v-for="role in selectedUser.roles")
-                input.form__input-radio(
-                  :id="'rol-' + role.id",
-                  type="radio",
-                  name="roles[]",
-                  value="1")
-                label.form__label_radio(
-                  :for="'rol-' + role.id") {{ role.name }}
-            .form__row
-              input.form__input-radio(
-                id="rol-2",
-                type="radio",
-                name="roles",
-                value="2")
-              label.form__label_radio(
-                for="grupo-2") Vendedora
-            .form__row
-              .form__label Grupos
-              input.form__input-radio(
-                id="grupo-1",
-                type="radio",
-                name="grupos",
-                value="1")
-              label.form__label_radio(
-                for="grupo-1") Prilover Star
-            .form__row
-              input.form__input-radio(
-                id="grupo-2",
-                type="radio",
-                name="grupos",
-                value="2")
-              label.form__label_radio(
-                for="grupo-2") Prilover
-            //-select form
-            //- .form__row
-              label.form__label(
-                for="select") Select
-              select.form__select.form__select_big(
-                name="select",
-                id="select")
-                option(value="1") Item
-                option(value="2") Item
-                option(value="3") Item
-                option(value="4") Item
-            .form__row.form__row_away
-              button.btn.btn_solid.btn_block Guardar
+
+    EditUser(
+      :user="selectedUser",
+      :active="editActive",
+      @closeEdit="slideEdit")
 
     nav.nav
       select.form__select(name="acciones en lote")
@@ -127,7 +22,7 @@
         option(value="Publicado") Publicado
         option(value="No disponible") No disponible
       a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text Se han encontrado 56 productos
+      p.nav__text Se han encontrado {{ totalItems }} usuarias
       ul.pagination
         li.pagination__select
           select.form__select.form__select_small(
@@ -143,7 +38,7 @@
             @click.prevent="prevPage",
             href="#")
         li.pagination__item {{ page }}
-        li.pagination__item.pagination__item_txt de 3
+        li.pagination__item.pagination__item_txt de {{totalPages}}
         li.pagination__item
           a.pagination__arrow.pagination__arrow_next.i-next(
             @click.prevent="nextPage",
@@ -163,9 +58,9 @@
           th.crud__th
             td.crud__title Teléfono
           th.crud__th
-            td.crud__title Roles
-          th.crud__th
             td.crud__title Grupos
+          th.crud__th
+            td.crud__title Roles
           th.crud__th
             td.crud__title Vaciones
           th.crud__th
@@ -184,14 +79,14 @@
             input.form__input-check(:id="'item' + index", type="checkbox", name="all", value="selectAll")
             label.form__label_check.i-ok(:for="'item' + index")
           td.crud__cell
-            figure.crud__avatar.avatar
-              img.avatar__img(v-if="user.picture", :src="user.picture", :alt="user.first_name")
-              span.tool-user__letter.avatar__img(
-                v-else
-              ) {{ user.first_name.charAt(0).toUpperCase() }}
-              figcaption.avatar__txt {{ user.first_name + ' ' + user.last_name }}
-          td.crud__cell
-            a(@click="loadUser(index)") {{ user.email }}
+            a(@click="loadUser(index)")
+              figure.crud__avatar.avatar
+                img.avatar__img(v-if="user.picture", :src="user.picture", :alt="user.first_name")
+                span.tool-user__letter.avatar__img(
+                  v-else
+                ) {{ user.first_name.charAt(0).toUpperCase() }}
+                figcaption.avatar__txt {{ user.first_name + ' ' + user.last_name }}
+          td.crud__cell {{ user.email }}
           td.crud__cell {{ user.phone }}
           td.crud__cell
             ul(v-if='user.groups')
@@ -200,10 +95,10 @@
             ul(v-if='user.roles')
               li(v-for='role in user.roles') {{ role.name }}
           td.crud__cell.crud__cell_center {{ user.vacation_mode ? "Sí" : "No" }}
-          td.crud__cell.crud__cell_center -
-          td.crud__cell.crud__cell_center -
-          td.crud__cell.crud__cell_center -
-          td.crud__cell.crud__cell_center -
+          td.crud__cell.crud__cell_center {{ user.credits }}
+          td.crud__cell.crud__cell_center {{ user.published_products_count }}
+          td.crud__cell.crud__cell_center {{ user.sold_products_count }}
+          td.crud__cell.crud__cell_center {{ user.purchased_products_count }}
           td.crud__cell {{ user.created_at }}
         tr
           td(colspan="12")
@@ -227,10 +122,14 @@
 import usersAPI from '@/api/user'
 import Vue from 'vue'
 import Croppa from 'vue-croppa'
+import EditUser from '@/components/EditUser'
 Vue.component('croppa', Croppa.component)
 
 export default {
   name: 'Usuaria',
+  components: {
+    EditUser
+  },
   data () {
     return {
       users: [],
@@ -241,7 +140,9 @@ export default {
       order: '-id',
       editActive: false,
       picture: null,
-      cover: null
+      cover: null,
+      totalPages: null,
+      totalItems: null
     }
   },
   methods: {
@@ -252,9 +153,10 @@ export default {
         })
     },
     nextPage: function () {
-      this.page += 1
-      this.updateUserList()
-      console.log(this.users)
+      if (this.page < this.totalPages) {
+        this.page += 1
+        this.updateUserList()
+      }
     },
     prevPage: function () {
       if (this.page > 1) this.page -= 1
@@ -265,13 +167,14 @@ export default {
     },
     loadUser: function (index) {
       this.selectedUser = this.users[index]
-      this.picture.refresh()
       this.slideEdit()
     }
   },
   created: function () {
     usersAPI.getUsers(this.page, this.items, this.filter, this.order)
       .then(response => {
+        this.totalPages = response.data.last_page
+        this.totalItems = response.data.total
         this.users = response.data.data
       })
   }

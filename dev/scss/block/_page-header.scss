@@ -67,6 +67,7 @@
       @include font-rem(10px);
       font-weight: $fw-medium;
       font-family: $f-fancy;
+      @include letter-spacing(1.5px);
     }
 
 /*------------------------------------*\

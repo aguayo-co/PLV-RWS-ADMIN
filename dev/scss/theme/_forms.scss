@@ -138,7 +138,7 @@ select {
 
 //Input select
 .form__select {
-  width: 16%;
+  // width: 16%;
   min-width: 148px;
   padding: 0 18px 0 12px;
   margin-bottom: 12px;
@@ -211,6 +211,7 @@ select {
   line-height: 1.4;
   font-family: $f-default;
   border: 1px solid $c-default-2;
+  resize: none;
 }
 .form__label-link {
   color: $c-default;
@@ -344,6 +345,11 @@ select {
   z-index: -1;
   opacity: 0;
   &:checked+.form__label_check {
+    &:before {
+      display: block;
+    }
+  }
+  &:checked+.form__label-checkbox {
     &:before {
       display: block;
     }
@@ -688,6 +694,74 @@ select {
 .form-file__txt {
   width: 70%;
   padding: 11px 20px 13px;
+}
+
+//Form edit
+.form__label-checkbox {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  padding-left: 30px;
+  &:before {
+    position: absolute;
+    top: 5px;
+    left: 2px;
+    z-index: 1;
+    display: none;
+    cursor: pointer;
+    color: $c-brand;
+    font-weight: $fw-bold;
+    @include font-rem(8px);
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 0;
+    width: 13px;
+    height: 13px;
+    cursor: pointer;
+    border: 1px solid $c-default-4;
+    border-radius: 3px;
+  }
+}
+
+.form__row_grid {
+  @include flexbox;
+  @include flex-wrap(wrap);
+  @include justify-content(center);
+  .upfile__small {
+    max-width: 170px;
+    margin: 0 8px;
+  }
+  .upfile__item {
+    height: 100%;
+  }
+  .upfile__text {
+    padding: 0 10px 20px;
+    &:before {
+      @include font-rem(50px);
+    }
+  }
+  .croppa-container {
+    width: 160px;
+  }
+  .upfile__btn {
+    padding: 10px;
+    @include font-rem(12px);
+  }
+}
+
+.edit__slide_large {
+  .form__row {
+    max-width: 440px;
+    margin: 0 auto;
+  }
+  .form__row_grid {
+    max-width: initial;
+    padding-bottom: 40px;
+  }
 }
 
 // $bp-medium: 768px;

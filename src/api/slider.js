@@ -1,10 +1,10 @@
 /**
- * API Calls related to products and their properties
+ * API Calls related to Sliders and their properties
  */
 import Vue from 'vue'
 
 export default {
-  getBanners: function (page, items, filter) {
+  get: function (page, items, filter) {
     let queryFilter = ''
     page = page || 1
     items = items || 8
@@ -14,19 +14,20 @@ export default {
         queryFilter += '&filter[' + key + ']=' + filter[key]
       })
     }
-    console.log('/api/banners?items=' + items + '&page=' + page + queryFilter)
-    return Vue.axiosAuth.get('/api/banners?items=' + items + '&page=' + page + queryFilter)
+    console.log('/api/sliders?items=' + items + '&page=' + page + queryFilter)
+    return Vue.axiosAuth.get('/api/sliders?items=' + items + '&page=' + page + queryFilter)
   },
   update: function (data) {
     const updateData = {...data}
     delete updateData.image
-    return Vue.axiosAuth.patch('/api/banners/' + data.slug, updateData)
+    delete updateData.image_mobile
+    return Vue.axiosAuth.patch('/api/sliders/' + data.slug, updateData)
   },
   updateWithImage: function (data) {
     var formData = new FormData()
     Object.keys(data).forEach((key) => {
       formData.append(key, data[key])
     })
-    return Vue.axiosAuth.patch('/api/banners/' + data.slug, formData)
+    return Vue.axiosAuth.patch('/api/sliders/' + data.slug, formData)
   }
 }

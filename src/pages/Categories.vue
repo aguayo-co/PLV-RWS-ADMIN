@@ -1,7 +1,7 @@
 <template lang="pug">
   .content-data
     header.data-header
-      h2.data-header__title.title Tallas
+      h2.data-header__title.title Categorias
       .data-header__item
         form.search(action='', method='GET')
           .search__row
@@ -10,9 +10,8 @@
         figure.avatar
           img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
           figcaption.avatar__txt Damarys
-    EditSize(
-      :size="selectedSize",
-      :sizeParent="selectedSizes",
+    EditCategory(
+      :category="selectedCategory",
       :active="editActive",
       @closeEdit="slideEdit")
     nav.nav
@@ -27,7 +26,7 @@
           select.form__select.form__select_small(
           name="numeroItems",
           v-model='items',
-          @change='updateSizeList')
+          @change='updateCategoryList')
             option(value="10") 10
             option(value="20") 20
             option(value="30") 30
@@ -42,26 +41,37 @@
     table.crud.crud_wide
       thead.crud__head
         tr.crud__row
-          th.crud__title.crud__cell_10
+          th.crud__title.crud__cell_12
               input#all.form__input-check(type="checkbox", name="all", value="selectAll")
               label.form__label_check.i-ok(for="all")
-          th.crud__title.crud__cell_30 Categoria
-          th.crud__title.crud__cell_30 Id
-          th.crud__title.crud__cell_30 Nombre
+          th.crud__title.crud__cell_22 Categoria
+          th.crud__title.crud__cell_22 Ruta
+          th.crud__title.crud__cell_22 Creación
+          th.crud__title.crud__cell_22 Modificación
       tbody.crud__tbody
-        tr.crud__row(v-for="(size, index) in sizes")
-          td(colspan="4")
-            table.crud__subtable(width="100%")
-              tr.crud__row(v-for="(children, childIndex) in size.children")
-                td.crud__cell.crud__cell_10
-                  input.form__input-check(:id="'item' + childIndex", type="checkbox", name="all", value="selectAll")
-                  label.form__label_check.i-ok(:for="'item' + childIndex")
-                td.crud__cell.crud__cell_30 {{ size.name }}
-                td.crud__cell.crud__cell_30 {{ children.id }}
-                td.crud__cell.crud__cell_30
-                  a(@click="loadSize(index, childIndex)") {{ children.name }}
         tr.crud__row
-          td(colspan="4")
+          td(colspan="5")
+            table.crud(v-for="(parent, index) in categories.children")
+              tr.crud__row
+                th.crud__cell.crud__cell_12
+                  input#all.form__input-check(type="checkbox", name="all", value="selectAll")
+                  label.form__label_check.i-ok(for="all")
+                th.crud__cell.crud__cell_22 {{ parent.name }}
+                th.crud__cell.crud__cell_22 {{ '/' + parent.slug }}
+                th.crud__cell.crud__cell_22 {{ parent.created_at }}
+                th.crud__cell.crud__cell_22 {{ parent.updated_at }}
+              tbody.crud__tbody
+                tr.crud__row(v-for="(children, subIndex) in parent.children")
+                  td.crud__cell
+                    input.form__input-check( type="checkbox", name="all", value="selectAll")
+                    label.form__label_check.i-ok
+                  td.crud__cell.crud__cell_22 {{ '—— ' + children.name }}
+                  td.crud__cell.crud__cell_22 {{ '/' + children.slug }}
+                    a(@click="loadCategory(subIndex)")
+                  td.crud__cell.crud__cell_22 .
+                  td.crud__cell.crud__cell_22 ..
+        tr.crud__row
+          td(colspan="5")
             form.crud__form(action="")
               p.crud__legend Cambiar estado
               select.form__select
@@ -78,22 +88,20 @@
 </template>
 
 <script>
-import sizesAPI from '@/api/size'
+import categoriesAPI from '@/api/category'
 // import Vue from 'vue'
-import EditSize from '@/components/EditSize'
+import EditCategory from '@/components/EditCategory'
 
 export default {
-  props: ['size', 'sizeParent', 'active'],
-  name: 'Sizes',
+  props: ['category', 'active'],
+  name: 'Categories',
   components: {
-    EditSize
+    EditCategory
   },
   data () {
     return {
-      sizes: [],
-      sizesChildren: [],
-      selectedSize: {},
-      selectedSizes: {},
+      categories: [],
+      selectedCategory: {},
       page: 1,
       items: 10,
       filter: {},
@@ -103,36 +111,41 @@ export default {
     }
   },
   methods: {
-    updateSizeList: function () {
-      sizesAPI.getSizes(this.page, this.items, this.filter, this.order)
+    updateCategoryList: function () {
+      categoriesAPI.getCategories(this.page, this.items, this.filter, this.order)
         .then(response => {
-          this.sizes = response.data.data
+          this.categories = response.data.data
         })
     },
     nextPage: function () {
       this.page += 1
-      this.updateSizeList()
+      this.updateCategoryList()
       console.log(this.users)
     },
     prevPage: function () {
       if (this.page > 1) this.page -= 1
-      this.updateSizeList()
+      this.updateCategoryList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
     },
-    loadSize: function (index, indexChildren) {
-      this.selectedSizes = this.sizes[index]
-      this.selectedSize = this.sizes[index].children[indexChildren]
+    loadCategory: function (index) {
+      this.selectedCategory = this.categories[index]
       this.slideEdit()
     }
   },
   created: function () {
-    sizesAPI.getSizes(this.page, this.items, this.filter)
+    categoriesAPI.getAll()
       .then(response => {
-        this.sizes = response.data.data
+        this.categories = response.data.data[0]
+        this.categories.children.forEach((category, index) => {
+          categoriesAPI.getBySlug(category.slug)
+            .then(response => {
+              this.categories.children[index].children = response.data.children
+            })
+        })
       })
   }
-
 }
+
 </script>

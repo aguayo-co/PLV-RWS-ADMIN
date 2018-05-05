@@ -1,18 +1,17 @@
 <template lang="pug">
   .content-data
     header.data-header
-      h2.data-header__title.title Tallas
+      h2.data-header__title.title Slides de Carousel Principal
       .data-header__item
         form.search(action='', method='GET')
           .search__row
-            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en Tallas')
+            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en banners')
             input.search__btn(type='submit', value='')
         figure.avatar
           img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
           figcaption.avatar__txt Damarys
-    EditSize(
-      :size="selectedSize",
-      :sizeParent="selectedSizes",
+    EditSlide(
+      :slide="selectedSlider",
       :active="editActive",
       @closeEdit="slideEdit")
     nav.nav
@@ -27,7 +26,7 @@
           select.form__select.form__select_small(
           name="numeroItems",
           v-model='items',
-          @change='updateSizeList')
+          @change='updateSliderList')
             option(value="10") 10
             option(value="20") 20
             option(value="30") 30
@@ -41,27 +40,37 @@
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
-        tr.crud__row
-          th.crud__title.crud__cell_10
+        tr
+          th.crud__th.crud__title
               input#all.form__input-check(type="checkbox", name="all", value="selectAll")
               label.form__label_check.i-ok(for="all")
-          th.crud__title.crud__cell_30 Categoria
-          th.crud__title.crud__cell_30 Id
-          th.crud__title.crud__cell_30 Nombre
+          th.crud__th.crud__title Imagen
+          th.crud__th.crud__title Nombre
+          th.crud__th.crud__title Título
+          th.crud__th.crud__title Botón
+          th.crud__th.crud__title Orientación
+          th.crud__th.crud__title Color de fuente
+          th.crud__th.crud__title Prioridad
       tbody.crud__tbody
-        tr.crud__row(v-for="(size, index) in sizes")
-          td(colspan="4")
-            table.crud__subtable(width="100%")
-              tr.crud__row(v-for="(children, childIndex) in size.children")
-                td.crud__cell.crud__cell_10
-                  input.form__input-check(:id="'item' + childIndex", type="checkbox", name="all", value="selectAll")
-                  label.form__label_check.i-ok(:for="'item' + childIndex")
-                td.crud__cell.crud__cell_30 {{ size.name }}
-                td.crud__cell.crud__cell_30 {{ children.id }}
-                td.crud__cell.crud__cell_30
-                  a(@click="loadSize(index, childIndex)") {{ children.name }}
-        tr.crud__row
-          td(colspan="4")
+        tr.crud__row(v-for="(banner, index) in slides")
+          td.crud__cell
+            input.form__input-check(:id="'item' + index", type="checkbox", name="all", value="selectAll")
+            label.form__label_check.i-ok(:for="'item' + index")
+          td.crud__cell
+            img.crud__cell-img(
+              v-if="banner.image",
+              :src="banner.image",
+              :alt="banner.image")
+            span(v-else) -
+          td.crud__cell
+            a(@click="loadSlide(index)") {{ banner.name }}
+          td.crud__cell {{ banner.main_text }}
+          td.crud__cell {{ banner.button_text }}
+          td.crud__cell {{ banner.orientation === 'left' ? "Izquierda" : "Derecha"  }}
+          td.crud__cell {{ banner.font_color === 'bg_white' ? "Negro" : "Blanco"  }}
+          td.crud__cell {{ banner.priority }}
+        tr
+          td(colspan="12")
             form.crud__form(action="")
               p.crud__legend Cambiar estado
               select.form__select
@@ -78,59 +87,53 @@
 </template>
 
 <script>
-import sizesAPI from '@/api/size'
-// import Vue from 'vue'
-import EditSize from '@/components/EditSize'
+
+import slidersAPI from '@/api/slider'
+import EditSlide from '@/components/EditSlide'
 
 export default {
-  props: ['size', 'sizeParent', 'active'],
-  name: 'Sizes',
+  name: 'Sliders',
   components: {
-    EditSize
+    EditSlide
   },
   data () {
     return {
-      sizes: [],
-      sizesChildren: [],
-      selectedSize: {},
-      selectedSizes: {},
+      slides: [],
+      selectedSlider: {},
       page: 1,
-      items: 10,
+      items: 20,
       filter: {},
-      order: '-id',
-      editActive: false,
-      totalPages: null
+      order: 'priority',
+      editActive: false
     }
   },
   methods: {
-    updateSizeList: function () {
-      sizesAPI.getSizes(this.page, this.items, this.filter, this.order)
+    updateSliderList: function () {
+      slidersAPI.getBanners(this.page, this.items, this.filter, this.order)
         .then(response => {
-          this.sizes = response.data.data
+          this.slides = response.data.data
         })
     },
     nextPage: function () {
       this.page += 1
-      this.updateSizeList()
-      console.log(this.users)
+      this.updateSliderList()
     },
     prevPage: function () {
       if (this.page > 1) this.page -= 1
-      this.updateSizeList()
+      this.updateSliderList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
     },
-    loadSize: function (index, indexChildren) {
-      this.selectedSizes = this.sizes[index]
-      this.selectedSize = this.sizes[index].children[indexChildren]
+    loadSlide: function (index) {
+      this.selectedSlider = this.slides[index]
       this.slideEdit()
     }
   },
   created: function () {
-    sizesAPI.getSizes(this.page, this.items, this.filter)
+    slidersAPI.get(this.page, this.items, this.filter, this.order)
       .then(response => {
-        this.sizes = response.data.data
+        this.slides = response.data.data
       })
   }
 
