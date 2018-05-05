@@ -21,22 +21,12 @@
         option(value="No disponible") No disponible
       a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
       p.nav__text Se han encontrado 56 productos
-      ul.pagination
-        li.pagination__select
-          select.form__select.form__select_small(
-          name="numeroItems",
-          v-model='items',
-          @change='updateBannerList')
-            option(value="10") 10
-            option(value="20") 20
-            option(value="30") 30
-            option(value="50") 50
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_prev.i-back(@click.prevent='prevPage', href="#")
-        li.pagination__item 1
-        li.pagination__item.pagination__item_txt de 3
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_next.i-next(@click.prevent='nextPage', href="#")
+      // Pager
+      Pager(
+        :currentPage="page",
+        :totalPages="totalPages",
+        @pageChanged="onPageChanged",
+        @itemsChanged="onItemsChanged")
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
@@ -84,18 +74,21 @@
 
 import bannersAPI from '@/api/banner'
 import EditBanner from '@/components/EditBanner'
+import Pager from '@/components/Pager'
 
 export default {
   name: 'Banners',
   components: {
-    EditBanner
+    EditBanner,
+    Pager
   },
   data () {
     return {
       banners: [],
       selectedBanner: {},
+      totalPages: null,
       page: 1,
-      items: 20,
+      items: 2,
       filter: {},
       order: '-id',
       editActive: false,
@@ -109,13 +102,16 @@ export default {
           this.banners = response.data.data
         })
     },
-    nextPage: function () {
-      this.page += 1
+    onPageChanged: function (direction) {
+      if (direction === 'next') {
+        this.page += 1
+      } else {
+        if (this.page > 1) this.page -= 1
+      }
       this.updateBannerList()
-      console.log(this.users)
     },
-    prevPage: function () {
-      if (this.page > 1) this.page -= 1
+    onItemsChanged: function (items) {
+      this.items = items
       this.updateBannerList()
     },
     slideEdit: function () {
@@ -130,6 +126,7 @@ export default {
     bannersAPI.getBanners(this.page, this.items, this.filter, this.order)
       .then(response => {
         this.banners = response.data.data
+        this.totalPages = response.data.last_page
       })
   }
 
