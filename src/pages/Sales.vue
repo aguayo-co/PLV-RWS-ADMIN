@@ -34,39 +34,98 @@
           th.crud__th.crud__title
               input#all.form__input-check(type="checkbox", name="all", value="selectAll")
               label.form__label_check.i-ok(for="all")
-          th.crud__th.crud__title Imagen
-          th.crud__th.crud__title Nombre
-          th.crud__th.crud__title Título
-          th.crud__th.crud__title Fecha de<br>creación
+          th.crud__th.crud__title #Orden
+          th.crud__th.crud__title #Venta
+          th.crud__th.crud__title Fecha
+          th.crud__th.crud__title Productos
+          th.crud__th.crud__title Comisión
+          th.crud__th.crud__title Compradora
+          th.crud__th.crud__title Vendedora
+          th.crud__th.crud__title Subtotal
+          th.crud__th.crud__title Envío
+          th.crud__th.crud__title Método
+          th.crud__th.crud__title Créditos
+          th.crud__th.crud__title Cupón
+          th.crud__th.crud__title Estado
       tbody.crud__tbody
-        tr.crud__row(v-for="(sale, index) in sales")
+        tr.crud__row(
+          v-for="(sale, index) in sales")
+          //- Checkbox #1
           td.crud__cell
             input.form__input-check(:id="'item' + index", type="checkbox", name="all", value="selectAll")
             label.form__label_check.i-ok(:for="'item' + index")
-          td.crud__cell
-            img.crud__cell-img(
-              v-if="sale.image",
-              :src="sale.image",
-              :alt="sale.image")
-            span(v-else) -
-          td.crud__cell
-            a(@click="loadBanner(index)") {{ sale.name }}
-          td.crud__cell {{ sale.title }}
+          //- Id Orden #2
+          td.crud__cell {{ sale.order_id }}
+          //- Id Ventas #3
+          td.crud__cell {{ sale.id }}
+          //- Fecha #4
           td.crud__cell {{ sale.created_at }}
+          //- Productos #5
+          td.crud__cell
+            ul
+              li(v-for="product in sale.products") 
+                img.crud__cell-img(
+                  :src="product.images[0]",
+                  :alt="product.title")
+                p.crud__text_small {{ product.title }}
+                p.crud__text_small {{ product.price }}
+          //- Comisión #6
+          td.crud__cell {{ sale.commission | currency }}
+          //- Compradora #7
+          td.crud__cell {{ sale.user.first_name }} {{ sale.user.last_name }}
+          //- Vendedora #8
+          td.crud__cell {{ sale.order.user.first_name }} {{ sale.order.user.last_name }}
+          //- Subtotal #9
+          td.crud__cell {{ sale.total - sale.shipping_cost | currency}}
+          //- Envío #10
+          td.crud__cell {{ sale.shipping_cost }}
+          //- Metodo #11
+          td.crud__cell
+            span(v-if="sale.shipping_method") {{ sale.shipping_method.name }}
+            span(v-else) -
+          //- Credito amount #12 
+          td.crud__cell 
+            span(
+              v-if="sale.credits_transactions.length > 1") {{ sale.credits_transactions.amount }}
+            span(v-else) -
+          //- Cupon #13
+          td.crud__cell 
+            span(
+              v-if="sale.coupon") {{ sale.coupon.code }}
+            span(v-else) -
+          //- Estado #14
+          td.crud__cell {{ sale.status | sale_status }}
         tr
-          td(colspan="12")
+          td(colspan="14")
             form.crud__form(action="")
               p.crud__legend Cambiar estado
               select.form__select
-                option(value="Pendiente") Pendiente
-                option(value="Rechazado") Rechazado
-                option(value="Aprobado") Aprobado
-                option(value="Disponible") Disponible
-                option(value="No disponible") No disponible
-                option(value="Vendido") Vendido
+                option(value="Carro de compras") Carro de compras
+                option(value="En pago") En pago
+                option(value="Pagada") Pagada
+                option(value="Enviada") Enviada
+                option(value="Entregada") Entregada
+                option(value="Recibida") Recibida
+                option(value="Completada") Completada
+                // red
+                option(value="Completada con devolución") Completada con devolución
+                // red
+                option(value="Completada con devolución parcial") Completada con devolución parcial
+                option(value="Enviada") Enviada
+                option(value="Entregada") Entregada
+                option(value="Cancelada") Cancelada
               input.crud__btn(type="submit", value="Guardar")
         //Tercera fila
         //class para row gris en tabla: .crud__toggle-open
+        //-Trash
+        // enlaces a panel de edición
+        //- a(@click="loadBanner(index)") {{ sale.name }}
+        //Imagen condicional
+        //- img.crud__cell-img(
+        //-   v-if="sale.image",
+        //-   :src="sale.image",
+        //-   :alt="sale.image")
+        //- span(v-else) -
 
 </template>
 
@@ -107,7 +166,7 @@ export default {
     slideEdit: function () {
       this.editActive = !this.editActive
     },
-    loadBanner: function (index) {
+    loadSale: function (index) {
       this.selectedSale = this.sales[index]
       this.slideEdit()
     }
