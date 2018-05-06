@@ -16,5 +16,10 @@ export default {
     }
     console.log('/api/payments?items=' + items + '&page=' + page + queryFilter)
     return Vue.axiosAuth.get('/api/payments?items=' + items + '&page=' + page + queryFilter)
+  },
+  update: function (data) {
+    const updateData = { ...data
+    }
+    return Vue.axiosAuth.patch('/api/payments/' + data.id, updateData)
   }
 }

@@ -17,6 +17,7 @@
     "heroku-postbuild": "npm run build"
   },
   "dependencies": {
+    "vue-moment": "^3.2.0",
     "vue-textarea-autosize": "^1.0.4"
   },
   "devDependencies": {
