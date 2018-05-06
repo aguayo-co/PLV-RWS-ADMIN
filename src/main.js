@@ -12,6 +12,7 @@ import VueTextareaAutosize from 'vue-textarea-autosize'
 Vue.use(axiosPlugin, store)
 Vue.use(prilovFilters)
 Vue.use(VueTextareaAutosize)
+Vue.use(require('vue-moment'))
 
 Vue.config.productionTip = false
 

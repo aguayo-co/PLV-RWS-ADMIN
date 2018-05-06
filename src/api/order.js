@@ -16,5 +16,8 @@ export default {
     }
     console.log('/api/orders?items=' + items + '&page=' + page + queryFilter)
     return Vue.axiosAuth.get('/api/orders?items=' + items + '&page=' + page + queryFilter)
+  },
+  getOrderById: function (orderId) {
+    return Vue.axiosAuth.get('/api/orders/' + orderId)
   }
 }
