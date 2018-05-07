@@ -766,6 +766,26 @@ select {
   width: 100%;
 }
 
+.form__approved {
+  text-align: center;
+  .form__label_check {
+    height: 14px;
+    margin-right: 10px;
+  }
+}
+
+.form__txt-approved {
+  display: block;
+}
+
+.form__rejected {
+  position: relative;
+}
+
+.form__btn-rejected {
+  margin: 10px;
+}
+
 // $bp-medium: 768px;
 @include media-query(medium) {
   .form__edit_txt {
