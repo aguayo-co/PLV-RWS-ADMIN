@@ -14,7 +14,14 @@
             :src="selectedTransfer.transfer_receipt",
             alt="")
           p ¿Es un comprobante por ${{ selectedTransfer.request_data.amount | currency }} realizado en {{ selectedTransfer.created_at | moment("MMMM, DD YYYY") }} por {{ selectedTransfer.order.user.first_name + selectedTransfer.order.user.last_name }} ?
-          button.btn(@click.prevent="save") Aprobar
+          input#approved.form__input-check(
+            type="checkbox",
+            value="algo",
+            v-model="checked")
+          label.form__label_check.i-ok(for="approved") {{ checked }}
+          button.btn(
+            :class="{'hola': checked}",
+            @click.prevent="save") Aprobar
           .break
             span.break__txt O
           a.link_underline(href="#") Rechazar
@@ -32,7 +39,8 @@ export default {
   name: 'EditTransfer',
   data () {
     return {
-      selectedTransfer: {}
+      selectedTransfer: {},
+      checked: false
     }
   },
   methods: {

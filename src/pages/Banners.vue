@@ -29,7 +29,7 @@
         @itemsChanged="onItemsChanged")
     ul.content-actions
       li
-        button.btn.btn_solid.btn_block(@click="create") Crear banner
+        button.btn.btn_solid.btn_auto.i-plus(@click="create") Crear banner
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
