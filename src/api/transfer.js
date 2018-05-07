@@ -23,6 +23,6 @@ export default {
     return Vue.axiosAuth.patch('/api/payments/' + data.id, updateData)
   },
   approved: function (data) {
-    return Vue.axiosAuth.post('/callback/gateway/transfer/' + data)
+    return Vue.axiosAuth.post('/callback/gateway/transfer', data)
   }
 }

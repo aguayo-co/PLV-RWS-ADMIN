@@ -137,7 +137,7 @@ export default {
     transfersAPI.get(this.page, this.items, this.filter, this.order)
       .then(response => {
         this.payments = response.data.data
-        console.log(this.payments)
+        // console.log(this.payments)
       })
   }
 }

@@ -23,7 +23,7 @@
               | ¿Es un comprobante por ${{ selectedTransfer.request_data.amount | currency }} realizado en {{ selectedTransfer.created_at | moment("MMMM, DD YYYY") }} por {{ selectedTransfer.order.user.first_name + selectedTransfer.order.user.last_name }} ?
             button.btn(
               :class="{'btn_enabled': checked, 'btn_disabled': checked == false || null}",
-              @click="approved") Aprobar
+              @click.prevent="approved") Aprobar
             .break
               span.break__txt O
             .form__rejected
@@ -65,16 +65,24 @@ export default {
     },
     toggleBox: function () {
       this.rejected = !this.rejected
+    },
+    approved: function () {
+      // console.log(this.selectedTransfer.request_data.reference)
+      const data = {
+        reference: this.selectedTransfer.request_data.reference,
+        status: 'approved'
+      }
+      transfersAPI.approved(data)
+        .then(response => {
+          console.log('Ok')
+          this.$emit('closeEdit')
+        })
     }
-    // approved: function () {
-    //   transfersAPI.approved()
-    // console.log('ok')
-    // }
   },
   watch: {
     transfer: function () {
       this.selectedTransfer = this.transfer
-      // console.log(this.selectedTransfer)
+      // console.log(this.selectedTransfer.request_data.reference)
     }
   }
 }
