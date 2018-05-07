@@ -11,84 +11,50 @@
       h3.slide__header.i-close(
         @click.stop="$emit('closeEdit')") Editar Slide
       form.slide__form
-        .form__row(v-show="!imageChanged.desktop && selectedSlide.image")
-          .form__label Imagen para Desktop
+        .form__row
+          .form__label Imagen para Desktop (1280x472)
           .upfile.slide__desktop
             .upfile__item
               a.delete(
-                v-show="toggleImageDelete.desktop",
-                @click="removeImage('desktop')") Eliminar
+                v-show="toggleImageDelete.image",
+                @click="removeImage('image')") Eliminar
               .upfile__label
                 .upfile__text.i-upload Arrastra una foto o
                 .upfile__btn Sube una imagen
               croppa(
-                v-model="desktopPicture",
+                v-model="pictures.image",
                 :width="1280",
-                :height="720",
-                :quality="2",
+                :height="472",
+                :quality="1",
                 placeholder="",
-                new-image-drawn="addImage('desktop')",
+                new-image-drawn="addImage('image')",
                 :prevent-white-space="true")
                 img(
+                  crossorigin,
                   slot="initial",
-                  :src="selectedSlide.image")
-        .form__row(v-show="imageChanged.desktop")
-          .form__label Nueva imagen para Desktop
+                  :src="selectedSlide.image + '?d=123'")
+        .form__row
+          .form__label Imagen para Mobile (600x800)
           .upfile.slide__desktop
             .upfile__item
               a.delete(
-                v-show="toggleImageDelete.desktop",
-                @click="removeImage('desktop')") Eliminar
+                v-show="toggleImageDelete.image_mobile",
+                @click="removeImage('image_mobile')") Eliminar
               .upfile__label
                 .upfile__text.i-upload Arrastra una foto o
                 .upfile__btn Sube una imagen
               croppa(
-                v-model="desktopPicture",
-                :width="1280",
-                :height="720",
-                :quality="2",
+                v-model="pictures.image_mobile",
+                :width="600",
+                :height="800",
+                :quality="1",
                 placeholder="",
-                new-image-drawn="addImage('desktop')",
-                :prevent-white-space="true")
-        .form__row(v-show="!imageChanged.mobile && selectedSlide.image_mobile")
-          .form__label Imagen para Mobile
-          .upfile.slide__desktop
-            .upfile__item
-              a.delete(
-                v-show="toggleImageDelete.desktop",
-                @click="removeImage('mobile')") Eliminar
-              .upfile__label
-                .upfile__text.i-upload Arrastra una foto o
-                .upfile__btn Sube una imagen
-              croppa(
-                v-model="desktopPicture",
-                :width="640",
-                :height="950",
-                :quality="2",
-                placeholder="",
-                new-image-drawn="addImage('mobile')",
+                new-image-drawn="addImage('image_mobile')",
                 :prevent-white-space="true")
                 img(
+                  crossorigin,
                   slot="initial",
-                  :src="selectedSlide.image_mobile")
-        .form__row(v-show="imageChanged.mobile")
-          .form__label Nueva imagen para Mobile
-          .upfile.slide__desktop
-            .upfile__item
-              a.delete(
-                v-show="toggleImageDelete.desktop",
-                @click="removeImage('mobile')") Eliminar
-              .upfile__label
-                .upfile__text.i-upload Arrastra una foto o
-                .upfile__btn Sube una imagen
-              croppa(
-                v-model="desktopPicture",
-                :width="640",
-                :height="950",
-                :quality="2",
-                placeholder="",
-                new-image-drawn="addImage('mobile')",
-                :prevent-white-space="true")
+                  :src="selectedSlide.image_mobile + '?d=123'")
         .form__row
           label.form__label(
             for="name") Nombre
@@ -151,17 +117,6 @@
             v-model="selectedSlide.url",
             id="url",
             type="text")
-        //-select form
-        //- .form__row
-          label.form__label(
-            for="select") Select
-          select.form__select.form__select_big(
-            name="select",
-            id="select")
-            option(value="1") Item
-            option(value="2") Item
-            option(value="3") Item
-            option(value="4") Item
         .form__row.form__row_away
           button.btn.btn_solid.btn_block(@click.prevent="save") Guardar
 </template>
@@ -178,46 +133,113 @@ export default {
   name: 'EditSlide',
   data () {
     return {
-      desktopPicture: null,
-      newDesktopPicture: null,
-      mobilePicture: null,
-      newMobilePicture: null,
+      errorLog: {},
+      pictures: {
+        image: null,
+        image_mobile: null
+      },
       toggleImageDelete: {
-        mobile: false,
-        desktop: false
+        image: false,
+        image_mobile: false
       },
       imageChanged: {
-        mobile: false,
-        desktop: false
-      },
-      imagesToUpload: {
-        desktop: null,
-        mobile: null
+        image: false,
+        image_mobile: false
       }
     }
   },
   watch: {
     slide: function () {
-      if (!this.slide.image) this.imageChanged.desktop = true
-      if (!this.slide.image_mobile) this.imageChanged.mobile = true
+      if (this.slide.id) {
+        this.toggleImageDelete.image_mobile = true
+        this.toggleImageDelete.image = true
+      }
     }
   },
   methods: {
     save: function () {
-      slidersAPI.update(this.selectedSlide)
-        .then(response => {
-          console.log('Ok')
-          this.$emit('closeEdit')
+      // If banner has id we are updating else creating
+      this.selectedSlide.id ? this.update() : this.create()
+    },
+    create: function () {
+      let newSlide = this.selectedSlide
+      const modal = {
+        name: 'ModalMessage',
+        parameters: {
+          type: 'preload',
+          title: 'Estamos cargando las imagenes del slider'
+        }
+      }
+      this.$store.dispatch('ui/showModal', modal)
+      this.pictures.image.generateBlob((blobDesktop) => {
+        newSlide.image = blobDesktop
+        this.pictures.image_mobile.generateBlob((blobMobile) => {
+          newSlide.image_mobile = blobMobile
+          slidersAPI.create(newSlide)
+            .then(response => {
+              this.$store.dispatch('ui/closeModal')
+              this.$emit('closeEdit')
+            })
         })
+      })
+    },
+    update: function () {
+      let imagesToLoad = []
+      Object.keys(this.imageChanged).forEach((key) => {
+        // If image changed add to imagesToLoad
+        if (this.imageChanged[key]) imagesToLoad.push(key)
+      })
+      // If not image has changed
+      if (imagesToLoad.length === 0) {
+        slidersAPI.update(this.selectedSlide)
+          .then(response => {
+            console.log('Ok')
+            this.$emit('closeEdit')
+          })
+      } else {
+        const modal = {
+          name: 'ModalMessage',
+          parameters: {
+            type: 'preload',
+            title: 'Estamos cargando las imagenes del slider'
+          }
+        }
+        this.$store.dispatch('ui/showModal', modal)
+        let updatedSlide = this.selectedSlide
+        delete updatedSlide.image
+        delete updatedSlide.image_mobile
+        // For each imageToLoad
+        imagesToLoad.forEach((key, index) => {
+          console.log(key)
+          if (this.pictures[key].hasImage()) {
+            this.pictures[key].generateBlob((blob) => {
+              updatedSlide[key] = blob
+              // If last image to load
+              if (index === imagesToLoad.length - 1) {
+                slidersAPI.updateWithImage(updatedSlide)
+                  .then((response) => {
+                    this.$store.dispatch('ui/closeModal')
+                    this.$emit('closeEdit')
+                  })
+              }
+            })
+          }
+        })
+      }
     },
     removeImage: function (type) {
       this.toggleImageDelete[type] = false
-      type === 'dektop' ? this.desktopPicture.remove() : this.mobilePicture.remove()
-      type === 'dektop' ? this.newDesktopPicture.remove() : this.newMobilePicture.remove()
+      this.pictures[type].remove()
       this.imageChanged[type] = true
     },
     addImage: function (type) {
       this.toggleImageDelete[type] = true
+    },
+    validateBeforeCreate: function () {
+      this.errorLog = {}
+      if (!this.selectedSlide.image.hasImage()) this.errorLog.image = 'Debes cargar una imagen Desktop para este slide'
+      if (!this.selectedSlide.image_mobile.hasImage()) this.errorLog.image_mobile = 'Debes cargar una imagen Mobile para este slide'
+      if (!this.selectedSlide.name) this.errorLog.image = 'Debes ingresar un nombre para este slide'
     }
   },
   computed: {
