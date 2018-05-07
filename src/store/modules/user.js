@@ -107,13 +107,18 @@ const actions = {
 
 const mutations = {
   set (state, user) {
-    const baseUser = baseUserGenerator()
-    Object.keys(baseUser).forEach((key) => {
-      state[key] = user[key]
-    })
-    if (user.api_token) {
-      window.localStorage.setItem('token', user.api_token)
-      window.localStorage.setItem('userId', user.id)
+    const isAdmin = user.roles.filter(x => x.name === 'admin')[0]
+    if (isAdmin) {
+      const baseUser = baseUserGenerator()
+      Object.keys(baseUser).forEach((key) => {
+        state[key] = user[key]
+      })
+      if (user.api_token) {
+        window.localStorage.setItem('token', user.api_token)
+        window.localStorage.setItem('userId', user.id)
+      }
+    } else {
+      this.commit('clear')
     }
   },
   setAddresses: function (state, addresses) {
