@@ -762,6 +762,10 @@ select {
   }
 }
 
+.form__img {
+  width: 100%;
+}
+
 // $bp-medium: 768px;
 @include media-query(medium) {
   .form__edit_txt {
