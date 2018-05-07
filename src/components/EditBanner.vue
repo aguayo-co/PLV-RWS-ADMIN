@@ -9,7 +9,7 @@
       //-   span Cerrar
       //- h3.title Editar usuario
       h3.slide__header.i-close(
-        @click.stop="$emit('closeEdit')") Editar banner
+        @click.stop="$emit('closeEdit')") {{ selectedBanner.id ? 'Editar banner' : 'Crear banner' }}
       form.slide__form
         .form__row
           label.form__label(
@@ -23,7 +23,7 @@
                 v-for='type in types'
                 :value='type.id'
               ) {{ type.name }}
-        .form__row(v-show="type !== 0 && !imageChanged")
+        .form__row(v-show="type !== 0")
           .form__label Imagen del banner
           .upfile(:class="'type-'+type")
             .upfile__item
@@ -34,7 +34,7 @@
                 .upfile__text.i-upload Arrastra una foto o
                 .upfile__btn Sube una imagen
               croppa(
-                v-if="type !== 0",
+                v-show="type !== 0",
                 v-model="picture",
                 :width="types[type].width",
                 :height="types[type].height",
@@ -43,27 +43,10 @@
                 new-image-drawn="addImage",
                 :prevent-white-space="true")
                 img(
+                  crossorigin
+                  v-if="selectedBanner.image"
                   slot="initial",
-                  :src="selectedBanner.image")
-        .form__row(v-show="type !== 0 && imageChanged")
-          .form__label Nueva imagen
-          .upfile(:class="'type-'+type")
-            .upfile__item
-              a.delete(
-                v-show='toggleImageDelete',
-                @click='removeImage') Eliminar
-              .upfile__label
-                .upfile__text.i-upload Arrastra una foto o
-                .upfile__btn Sube una imagen
-              croppa(
-                v-if="type !== 0",
-                v-model="newpicture",
-                :width="types[type].width",
-                :height="types[type].height",
-                :quality="2",
-                placeholder="",
-                :new-image-drawn="addImage",
-                :prevent-white-space="true")
+                  :src="selectedBanner.image + '?d=123'")
         .form__row
           label.form__label(
             for="user-name") Nombre
@@ -93,22 +76,11 @@
             type="email")
         .form__row
           label.form__label(
-            for="user-phone") URL
+            for="url") URL
           input.form__control(
             v-model="selectedBanner.url",
-            id="user-phone",
+            id="url",
             type="text")
-        //-select form
-        //- .form__row
-          label.form__label(
-            for="select") Select
-          select.form__select.form__select_big(
-            name="select",
-            id="select")
-            option(value="1") Item
-            option(value="2") Item
-            option(value="3") Item
-            option(value="4") Item
         .form__row.form__row_away
           button.btn.btn_solid.btn_block(@click.prevent="save") Guardar
 </template>
@@ -126,7 +98,6 @@ export default {
   data () {
     return {
       picture: null,
-      newpicture: null,
       type: 0,
       types: [
         { id: 0, name: 'Sin imagen' },
@@ -143,16 +114,51 @@ export default {
   watch: {
     banner: function () {
       this.imageChanged = false
-      if (this.banner.name.includes('top')) this.type = 0
-      if (this.banner.name.includes('categoria')) this.type = 1
-      if (this.banner.name.includes('sm')) this.type = 4
-      if (this.banner.name.includes('md')) this.type = 3
-      if (this.banner.name.includes('wide')) this.type = 2
-      if (this.banner.name.includes('campaign')) this.type = 5
+      // If banner has id we are editing instead of creating
+      if (this.banner.id) {
+        if (this.banner.name.includes('top')) this.type = 0
+        if (this.banner.name.includes('categoria')) this.type = 1
+        if (this.banner.name.includes('sm')) this.type = 4
+        if (this.banner.name.includes('md')) this.type = 3
+        if (this.banner.name.includes('wide')) this.type = 2
+        if (this.banner.name.includes('campaign')) this.type = 5
+      }
     }
   },
   methods: {
     save: function () {
+      // If banner has id we are updating else creating
+      this.selectedBanner.id ? this.update() : this.create()
+    },
+    create: function () {
+      const newBanner = this.selectedBanner
+      const modal = {
+        name: 'ModalMessage',
+        parameters: {
+          type: 'preload',
+          title: 'Estamos cargando la imagen del banner'
+        }
+      }
+      if (this.picture.hasImage()) {
+        this.$store.dispatch('ui/showModal', modal)
+        this.picture.generateBlob((blob) => {
+          this.banner.image = blob
+          bannersAPI.create(newBanner)
+            .then(response => {
+              console.log('New with image')
+              this.$store.dispatch('ui/closeModal')
+              this.$emit('closeEdit')
+            })
+        })
+      } else {
+        bannersAPI.create(newBanner)
+          .then(response => {
+            console.log('New plain banner')
+            this.$emit('closeEdit')
+          })
+      }
+    },
+    update: function () {
       const modal = {
         name: 'ModalMessage',
         parameters: {
@@ -161,9 +167,9 @@ export default {
         }
       }
       if (this.imageChanged) {
-        if (this.newpicture.hasImage()) {
+        if (this.picture.hasImage()) {
           this.$store.dispatch('ui/showModal', modal)
-          this.newpicture.generateBlob((blob) => {
+          this.picture.generateBlob((blob) => {
             this.banner.image = blob
             bannersAPI.updateWithImage(this.selectedBanner)
               .then(response => {

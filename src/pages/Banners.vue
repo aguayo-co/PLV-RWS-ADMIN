@@ -27,6 +27,9 @@
         :totalPages="totalPages",
         @pageChanged="onPageChanged",
         @itemsChanged="onItemsChanged")
+    ul.content-actions
+      li
+        button.btn.btn_solid.btn_block(@click="create") Crear banner
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
@@ -53,21 +56,6 @@
             a(@click="loadBanner(index)") {{ banner.name }}
           td.crud__cell {{ banner.title }}
           td.crud__cell {{ banner.created_at }}
-        tr
-          td(colspan="12")
-            form.crud__form(action="")
-              p.crud__legend Cambiar estado
-              select.form__select
-                option(value="Pendiente") Pendiente
-                option(value="Rechazado") Rechazado
-                option(value="Aprobado") Aprobado
-                option(value="Disponible") Disponible
-                option(value="No disponible") No disponible
-                option(value="Vendido") Vendido
-              input.crud__btn(type="submit", value="Guardar")
-        //Tercera fila
-        //class para row gris en tabla: .crud__toggle-open
-
 </template>
 
 <script>
@@ -88,7 +76,7 @@ export default {
       selectedBanner: {},
       totalPages: null,
       page: 1,
-      items: 2,
+      items: 10,
       filter: {},
       order: '-id',
       editActive: false,
@@ -119,6 +107,10 @@ export default {
     },
     loadBanner: function (index) {
       this.selectedBanner = this.banners[index]
+      this.slideEdit()
+    },
+    create: function () {
+      this.selectedBanner = {}
       this.slideEdit()
     }
   },
