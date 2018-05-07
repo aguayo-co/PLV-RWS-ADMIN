@@ -142,7 +142,7 @@ export default {
       if (this.picture.hasImage()) {
         this.$store.dispatch('ui/showModal', modal)
         this.picture.generateBlob((blob) => {
-          this.banner.image = blob
+          this.newBanner.image = blob
           bannersAPI.create(newBanner)
             .then(response => {
               console.log('New with image')

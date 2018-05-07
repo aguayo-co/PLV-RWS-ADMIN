@@ -29,5 +29,12 @@ export default {
       formData.append(key, data[key])
     })
     return Vue.axiosAuth.patch('/api/sliders/' + data.slug, formData)
+  },
+  create: function (data) {
+    var formData = new FormData()
+    Object.keys(data).forEach((key) => {
+      formData.append(key, data[key])
+    })
+    return Vue.axiosAuth.post('/api/sliders/', formData)
   }
 }
