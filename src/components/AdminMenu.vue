@@ -37,7 +37,7 @@ export default {
             },
             {
               name: 'Ventas',
-              url: '#',
+              url: '/sales',
               ico: 'i-sale'
             },
             {
