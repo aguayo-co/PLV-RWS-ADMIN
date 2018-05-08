@@ -1,12 +1,12 @@
 <template lang="pug">
-  figure.avatar(
+  figure.crud__avatar(
     v-if='user.id')
     //-vue variable Notificaciones usuario
     img.avatar__img(
       v-if='user.picture'
       :src='user.picture',
       :alt='user.first_name')
-    span.avatar__letter(
+    span.tool-user__letter.avatar__img(
       v-else) {{ user.first_name.charAt(0) }}
     //-vue variable user name
     figcaption.avatar__txt  {{ user.first_name }}
