@@ -7,9 +7,7 @@
           .search__row
             input#searchMain.search__input(type='text', name='search', placeholder='Buscar en banners')
             input.search__btn(type='submit', value='')
-        figure.avatar
-          img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
-          figcaption.avatar__txt Damarys
+        UserAvatar
     EditTransfer(
       :transfer="selectedTransfer",
       :active="editActive",
@@ -77,6 +75,7 @@
 
 <script>
 
+import UserAvatar from '@/components/UserAvatar'
 import Pager from '@/components/Pager'
 import EditTransfer from '@/components/EditTransfer'
 import transfersAPI from '@/api/transfer'
@@ -86,6 +85,7 @@ export default {
   name: 'Transfers',
   components: {
     Pager,
+    UserAvatar,
     EditTransfer
   },
   data () {
