@@ -1,6 +1,6 @@
 <template lang="pug">
 .admin__edit(
-  v-if="selectedBrand",
+  v-if="selectedCategory",
   :class="{ 'admin__edit_open': active == true }")
   transition(name='slide-right')
     .edit__slide(
@@ -11,20 +11,20 @@
         .form__row
           label.form__label(
             for="size-category") Id
-          p(v-model="selectedBrand.name") {{ selectedBrand.id }}
+          p(v-model="selectedCategory.name") {{ selectedCategory.id }}
         .form__row
           label.form__label(
             for="color-name") Nombre
           input.form__control(
             id="color-name",
-            v-model="selectedBrand.name",
+            v-model="selectedCategory.name",
             type="text")
         .form__row
           label.form__label(
             for="color-id") Url
           input.form__control(
             id="color-id",
-            v-model="selectedBrand.url",
+            v-model="selectedCategory.url",
             type="text")
         .form__row.form__row_away
           button.btn.btn_solid.btn_block(@click.prevent="save") Guardar
@@ -36,16 +36,16 @@
 import categoriesAPI from '@/api/category'
 
 export default {
-  props: ['brand', 'active'],
+  props: ['category', 'active'],
   name: 'EditCategory',
   computed: {
-    selectedBrand: function () {
-      return this.brand
+    selectedCategory: function () {
+      return this.category
     }
   },
   methods: {
     save: function () {
-      categoriesAPI.update(this.selectedBrand)
+      categoriesAPI.update(this.selectedCategory)
         .then(response => {
           console.log('Ok')
           this.$emit('closeEdit')
