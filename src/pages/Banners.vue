@@ -25,6 +25,9 @@
         :totalPages="totalPages",
         @pageChanged="onPageChanged",
         @itemsChanged="onItemsChanged")
+    ul.content-actions
+      li
+        button.btn.btn_solid.btn_auto.i-plus(@click="create") Crear banner
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
@@ -97,7 +100,7 @@ export default {
       selectedBanner: {},
       totalPages: null,
       page: 1,
-      items: 2,
+      items: 10,
       filter: {},
       order: '-id',
       editActive: false,
@@ -128,6 +131,10 @@ export default {
     },
     loadBanner: function (index) {
       this.selectedBanner = this.banners[index]
+      this.slideEdit()
+    },
+    create: function () {
+      this.selectedBanner = {}
       this.slideEdit()
     }
   },

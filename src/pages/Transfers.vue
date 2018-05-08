@@ -39,6 +39,7 @@
           th.crud__th.crud__title # Orden
           th.crud__th.crud__title Usuaria
           th.crud__th.crud__title Fecha de creación
+          th.crud__th.crud__title Estado
       tbody.crud__tbody
         tr.crud__row(v-for="(payment, index) in payments")
           td.crud__cell
@@ -53,8 +54,10 @@
               span(v-else) -
           td.crud__cell ${{ payment.request_data.amount | currency }}
           td.crud__cell {{ payment.order_id }}
-          td.crud__cell {{ getOrderById(payment.order_id).user }}
+          td.crud__cell {{ payment.order.user.first_name + ' ' + payment.order.user.last_name }}
           td.crud__cell {{ payment.created_at | moment("MMMM, D YYYY") }}
+          td.crud__cell
+            p.crud__state.crud__state_detail(:class='"state-" + payment.status') {{ payment.status | payment_status }}
         tr
           td(colspan="12")
             form.crud__form(action="")
@@ -137,7 +140,7 @@ export default {
     transfersAPI.get(this.page, this.items, this.filter, this.order)
       .then(response => {
         this.payments = response.data.data
-        console.log(this.payments)
+        // console.log(this.payments)
       })
   }
 }

@@ -21,5 +21,11 @@ export default {
     const updateData = { ...data
     }
     return Vue.axiosAuth.patch('/api/payments/' + data.id, updateData)
+  },
+  approved: function (data) {
+    return Vue.axiosAuth.post('/callback/gateway/transfer', data)
+  },
+  rejected: function (data) {
+    return Vue.axiosAuth.post('/callback/gateway/transfer', data)
   }
 }

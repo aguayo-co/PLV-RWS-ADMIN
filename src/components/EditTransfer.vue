@@ -13,11 +13,31 @@
           img.form__img(v-if="selectedTransfer.transfer_receipt",
             :src="selectedTransfer.transfer_receipt",
             alt="")
-          p ¿Es un comprobante por ${{ selectedTransfer.request_data.amount | currency }} realizado en {{ selectedTransfer.created_at | moment("MMMM, DD YYYY") }} por {{ selectedTransfer.order.user.first_name + selectedTransfer.order.user.last_name }} ?
-          button.btn(@click.prevent="save") Aprobar
-          .break
-            span.break__txt O
-          a.link_underline(href="#") Rechazar
+          .form__approved
+            p.form__txt-approved
+              input#approved.form__input-check(
+                  type="checkbox",
+                  value="algo",
+                  v-model="checked")
+              label.form__label_check.i-ok(for="approved")
+              | ¿Es un comprobante por ${{ selectedTransfer.request_data.amount | currency }} realizado en {{ selectedTransfer.created_at | moment("MMMM, DD YYYY") }} por {{ selectedTransfer.order.user.first_name + selectedTransfer.order.user.last_name }} ?
+            button.btn(
+              :class="{'btn_enabled': checked, 'btn_disabled': checked == false || null}",
+              @click.prevent="approved") Aprobar
+            .break
+              span.break__txt O
+            .form__rejected
+              a.link_underline(
+                @click='toggleBox') Rechazar
+              transition(name='toggle-scale')
+                .toggle-box.toggle-box_rejected(
+                    v-show='rejectedCheck')
+                  p ¿estas seguro que deseas rechazar esta transferencia?
+                  button.form__btn-rejected.link_underline(
+                    href="#",
+                    @click.prevent="rejected") si
+                  a.form__btn-rejected.link_underline(href="#",
+                    @click.prevent="$emit('closeEdit')") no
 </template>
 
 <script>
@@ -32,7 +52,9 @@ export default {
   name: 'EditTransfer',
   data () {
     return {
-      selectedTransfer: {}
+      selectedTransfer: {},
+      checked: false,
+      rejectedCheck: false
     }
   },
   methods: {
@@ -42,11 +64,39 @@ export default {
           console.log('Ok')
           this.$emit('closeEdit')
         })
+    },
+    toggleBox: function () {
+      this.rejectedCheck = !this.rejectedCheck
+    },
+    approved: function () {
+      // console.log(this.selectedTransfer.request_data.reference)
+      const data = {
+        reference: this.selectedTransfer.request_data.reference,
+        status: 'approved'
+      }
+      transfersAPI.approved(data)
+        .then(response => {
+          console.log('Ok')
+          this.$emit('closeEdit')
+        })
+    },
+    rejected: function () {
+      // console.log(this.selectedTransfer.request_data.reference)
+      const data = {
+        reference: this.selectedTransfer.request_data.reference,
+        status: 'rejected'
+      }
+      transfersAPI.rejected(data)
+        .then(response => {
+          console.log('Ok')
+          this.$emit('closeEdit')
+        })
     }
   },
   watch: {
     transfer: function () {
       this.selectedTransfer = this.transfer
+      // console.log(this.selectedTransfer.request_data.reference)
     }
   }
 }
