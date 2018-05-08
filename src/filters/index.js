@@ -38,9 +38,9 @@ export default {
         case 90:
           return 'Completada'
         case 91:
-          return 'Completada con devolución'
+          return 'Devolución'
         case 92:
-          return 'Completada con devolución parcial'
+          return 'Devolución parcial'
         case 99:
           return 'Cancelada'
         default:
