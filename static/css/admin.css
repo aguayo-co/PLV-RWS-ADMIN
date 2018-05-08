@@ -1321,6 +1321,21 @@ select {
 .form__img {
   width: 100%; }
 
+.form__approved {
+  text-align: center; }
+  .form__approved .form__label_check {
+    height: 14px;
+    margin-right: 10px; }
+
+.form__txt-approved {
+  display: block; }
+
+.form__rejected {
+  position: relative; }
+
+.form__btn-rejected {
+  margin: 10px; }
+
 @media only screen and (min-width: 768px) {
   .form__edit_txt {
     width: 100%;
@@ -1675,12 +1690,12 @@ body {
 
 .break {
   position: relative;
-  padding: 12px 0 24px;
+  padding: 24px 0;
   text-align: center; }
   .break::before {
     content: '';
     position: absolute;
-    top: 50%;
+    top: 30px;
     display: block;
     width: 100%;
     height: 1px;
@@ -2229,6 +2244,10 @@ body {
   -webkit-transform-origin: center top 0;
   transform-origin: center top 0;
   will-change: transform, opacity; }
+
+.toggle-box_rejected {
+  left: 0;
+  width: 100%; }
 
 .toggle-box__list {
   will-change: transform;
