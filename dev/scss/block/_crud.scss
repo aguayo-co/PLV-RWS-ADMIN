@@ -29,6 +29,9 @@
 .crud__row {
   border-bottom: 1px solid $c-neutro-3;
 }
+.crud__row_open {
+  cursor: pointer;
+}
 
 .crud__cell {
   padding: 8px;
@@ -70,7 +73,15 @@
   max-width: 40px;
   padding-top: 10px;
 }
-
+// Textos
+.crud__text_small {
+  margin: 0;
+  @include font-rem(12px);
+}
+.crud__user {
+  min-height: 30px;
+  margin-bottom: 10px;
+}
 .crud__avatar {
   position: relative;
   .avatar__img {
@@ -106,8 +117,11 @@
   border-radius: 13px;
 }
 
+// ver valores en filters/index.js
 .crud__state_detail {
-  &.state-0 {
+  &.state-0,
+  &.state-91,
+  &.state-92 {
     color: $c-neutro;
     background-color: $c-brand;
     border: none;
@@ -202,9 +216,25 @@
   width: 12%;
   padding: 8px;
 }
+
 .crud__cell_22 {
   width: 22%;
   padding: 8px;
+}
+.crud__cell {
+  .crud__list {
+    list-style: none;
+    .crud__cell-img {
+      padding-top: 0;
+      margin-right: 10px;
+    }
+    li {
+      &:before {
+        display: none;
+        opacity: 0;
+      }
+    }
+  }
 }
 
 @media only screen and (max-width: 1023px) {
@@ -230,9 +260,9 @@
     position: relative;
   }
   
-  .crud__state {
-    margin-right: 20px;
-  }
+  // .crud__state {
+  //   margin-right: 20px;
+  // }
 
   .crud__toggle {
     position: absolute;
