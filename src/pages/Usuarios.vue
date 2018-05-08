@@ -7,9 +7,7 @@
           .search__row
             input#searchMain.search__input(type='text', name='search', placeholder='Buscar en usuarias')
             input.search__btn(type='submit', value='')
-        figure.avatar
-          img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
-          figcaption.avatar__txt Damarys
+        UserAvatar
 
     EditUser(
       :user="selectedUser",
@@ -49,8 +47,13 @@
         tr
           th.crud__th
             td.crud__title
-              input#all.form__input-check(type="checkbox", name="all", value="selectAll")
-              label.form__label_check.i-ok(for="all")
+              input.form__input-check(
+                type="checkbox",
+                id="all"
+                name="all",
+                value="selectAll")
+              label.form__label_check.i-ok(
+                for="all")
           th.crud__th
             td.crud__title Usuaria
           th.crud__th
@@ -74,18 +77,24 @@
           th.crud__th
             td.crud__title Fecha de<br>creación
       tbody.crud__tbody
-        tr.crud__row(v-for="(user, index) in users")
+        tr.crud__row.crud__row_open(
+          @click="loadUser(index)",
+          v-for="(user, index) in users")
           td.crud__cell
-            input.form__input-check(:id="'item' + index", type="checkbox", name="all", value="selectAll")
-            label.form__label_check.i-ok(:for="'item' + index")
+            input.form__input-check(
+              type="checkbox",
+              :id="'item' + index",
+              :name="'item' + index",
+              :value="index")
+            label.form__label_check.i-ok(
+              :for="'item' + index")
           td.crud__cell
-            a(@click="loadUser(index)")
-              figure.crud__avatar.avatar
-                img.avatar__img(v-if="user.picture", :src="user.picture", :alt="user.first_name")
-                span.tool-user__letter.avatar__img(
-                  v-else
-                ) {{ user.first_name.charAt(0).toUpperCase() }}
-                figcaption.avatar__txt {{ user.first_name + ' ' + user.last_name }}
+            figure.crud__avatar.avatar
+              img.avatar__img(v-if="user.picture", :src="user.picture", :alt="user.first_name")
+              span.tool-user__letter.avatar__img(
+                v-else
+              ) {{ user.first_name.charAt(0).toUpperCase() }}
+              figcaption.avatar__txt {{ user.first_name + ' ' + user.last_name }}
           td.crud__cell {{ user.email }}
           td.crud__cell {{ user.phone }}
           td.crud__cell
@@ -123,12 +132,14 @@ import usersAPI from '@/api/user'
 import Vue from 'vue'
 import Croppa from 'vue-croppa'
 import EditUser from '@/components/EditUser'
+import UserAvatar from '@/components/UserAvatar'
 Vue.component('croppa', Croppa.component)
 
 export default {
   name: 'Usuaria',
   components: {
-    EditUser
+    EditUser,
+    UserAvatar
   },
   data () {
     return {

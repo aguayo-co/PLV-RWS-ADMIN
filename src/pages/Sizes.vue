@@ -7,9 +7,7 @@
           .search__row
             input#searchMain.search__input(type='text', name='search', placeholder='Buscar en Tallas')
             input.search__btn(type='submit', value='')
-        figure.avatar
-          img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
-          figcaption.avatar__txt Damarys
+        UserAvatar
     EditSize(
       :size="selectedSize",
       :sizeParent="selectedSizes",
@@ -43,23 +41,36 @@
       thead.crud__head
         tr.crud__row
           th.crud__title.crud__cell_10
-              input#all.form__input-check(type="checkbox", name="all", value="selectAll")
-              label.form__label_check.i-ok(for="all")
+              input.form__input-check(
+                type="checkbox",
+                id="all",
+                name="all",
+                value="selectAll")
+              label.form__label_check.i-ok(
+                for="all")
           th.crud__title.crud__cell_30 Categoria
           th.crud__title.crud__cell_30 Id
           th.crud__title.crud__cell_30 Nombre
       tbody.crud__tbody
-        tr.crud__row(v-for="(size, index) in sizes")
+        tr.crud__row.crud__row_open(
+          @click="loadShipping(index)",
+          v-for="(size, index) in sizes")
           td(colspan="4")
             table.crud__subtable(width="100%")
-              tr.crud__row(v-for="(children, childIndex) in size.children")
+              tr.crud__row.crud__row_open(
+                @click="loadSize(index, childIndex)",
+                v-for="(children, childIndex) in size.children")
                 td.crud__cell.crud__cell_10
-                  input.form__input-check(:id="'item' + childIndex", type="checkbox", name="all", value="selectAll")
-                  label.form__label_check.i-ok(:for="'item' + childIndex")
+                  input.form__input-check(
+                    type="checkbox",
+                    :id="'item' + index",
+                    :name="'item' + index",
+                    :value="index")
+                  label.form__label_check.i-ok(
+                    :for="'item' + childIndex")
                 td.crud__cell.crud__cell_30 {{ size.name }}
                 td.crud__cell.crud__cell_30 {{ children.id }}
-                td.crud__cell.crud__cell_30
-                  a(@click="loadSize(index, childIndex)") {{ children.name }}
+                td.crud__cell.crud__cell_30 {{ children.name }}
         tr.crud__row
           td(colspan="4")
             form.crud__form(action="")
@@ -81,12 +92,14 @@
 import sizesAPI from '@/api/size'
 // import Vue from 'vue'
 import EditSize from '@/components/EditSize'
+import UserAvatar from '@/components/UserAvatar'
 
 export default {
   props: ['size', 'sizeParent', 'active'],
   name: 'Sizes',
   components: {
-    EditSize
+    EditSize,
+    UserAvatar
   },
   data () {
     return {

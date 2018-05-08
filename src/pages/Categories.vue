@@ -7,9 +7,7 @@
           .search__row
             input#searchMain.search__input(type='text', name='search', placeholder='Buscar en Tallas')
             input.search__btn(type='submit', value='')
-        figure.avatar
-          img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
-          figcaption.avatar__txt Damarys
+        UserAvatar
     EditCategory(
       :category="selectedCategory",
       :active="editActive",
@@ -51,23 +49,33 @@
       tbody.crud__tbody
         tr.crud__row
           td(colspan="5")
-            table.crud(v-for="(parent, index) in categories.children")
+            table.crud(
+              v-for="(parent, index) in categories.children",)
               tr.crud__row
                 th.crud__cell.crud__cell_12
-                  input#all.form__input-check(type="checkbox", name="all", value="selectAll")
-                  label.form__label_check.i-ok(for="all")
+                  input.form__input-check(
+                    type="checkbox",
+                    id="all"
+                    name="all",
+                    value="selectAll")
+                  label.form__label_check.i-ok(
+                    for="all")
                 th.crud__cell.crud__cell_22 {{ parent.name }}
                 th.crud__cell.crud__cell_22 {{ '/' + parent.slug }}
-                th.crud__cell.crud__cell_22 {{ parent.created_at }}
-                th.crud__cell.crud__cell_22 {{ parent.updated_at }}
+                th.crud__cell.crud__cell_22 {{ parent.created_at | moment("D [de] MMM YY") }}
+                th.crud__cell.crud__cell_22 {{ parent.updated_at | moment("D [de] MMM YY") }}
               tbody.crud__tbody
-                tr.crud__row(v-for="(children, subIndex) in parent.children")
+                tr.crud__row.crud__row_open(
+                  v-for="(children, subIndex) in parent.children",
+                  @click="loadCategory(subIndex)")
                   td.crud__cell
-                    input.form__input-check( type="checkbox", name="all", value="selectAll")
+                    input.form__input-check(
+                      type="checkbox",
+                      name="all",
+                      value="selectAll")
                     label.form__label_check.i-ok
                   td.crud__cell.crud__cell_22 {{ '—— ' + children.name }}
                   td.crud__cell.crud__cell_22 {{ '/' + children.slug }}
-                    a(@click="loadCategory(subIndex)")
                   td.crud__cell.crud__cell_22 .
                   td.crud__cell.crud__cell_22 ..
         tr.crud__row
@@ -91,12 +99,14 @@
 import categoriesAPI from '@/api/category'
 // import Vue from 'vue'
 import EditCategory from '@/components/EditCategory'
+import UserAvatar from '@/components/UserAvatar'
 
 export default {
   props: ['category', 'active'],
   name: 'Categories',
   components: {
-    EditCategory
+    EditCategory,
+    UserAvatar
   },
   data () {
     return {

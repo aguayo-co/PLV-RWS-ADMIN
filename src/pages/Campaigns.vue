@@ -7,9 +7,7 @@
           .search__row
             input#searchMain.search__input(type='text', name='search', placeholder='Buscar campañas')
             input.search__btn(type='submit', value='')
-        figure.avatar
-          img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
-          figcaption.avatar__txt Damarys
+        UserAvatar
     EditCampaigns(
       :campaign="selectedCampaign",
       :active="editActive",
@@ -42,18 +40,29 @@
       thead.crud__head
         tr.crud__row
           th.crud__title.crud__cell_10
-              input#all.form__input-check(type="checkbox", name="all", value="selectAll")
-              label.form__label_check.i-ok(for="all")
+              input.form__input-check(
+                type="checkbox",
+                id="all"
+                name="all",
+                value="selectAll")
+              label.form__label_check.i-ok(
+                for="all")
           th.crud__title.crud__cell_30 Nombre
           th.crud__title.crud__cell_30 Fecha de creación
           th.crud__title.crud__cell_30 Fecha de actualización
       tbody.crud__tbody
-        tr.crud__row(v-for="(campaign, index) in campaigns")
+        tr.crud__row.crud__row_open(
+          @click="loadCampaign(index)",
+          v-for="(campaign, index) in campaigns")
           td.crud__cell.crud__cell_10
-            input.form__input-check(:id="'campaign' + index", type="checkbox", name="all", value="selectAll")
-            label.form__label_check.i-ok(:for="'campaign' + index")
-          td.crud__cell.crud__cell_30
-            a(@click="loadCampaign(index)") {{ campaign.name }}
+            input.form__input-check(
+              type="checkbox",
+              :id="'item' + index",
+              :name="'item' + index",
+              :value="index")
+            label.form__label_check.i-ok(
+              :for="'campaign' + index")
+          td.crud__cell.crud__cell_30 {{ campaign.name }}
           td.crud__cell.crud__cell_30 {{ campaign.created_at }}
           td.crud__cell.crud__cell_30 {{ campaign.updated_at }}
         tr.crud__row
@@ -77,12 +86,14 @@
 import campaignAPI from '@/api/campaign'
 // import Vue from 'vue'
 import EditCampaigns from '@/components/EditCampaigns'
+import UserAvatar from '@/components/UserAvatar'
 
 export default {
   props: ['campaign', 'active'],
   name: 'Campaigns',
   components: {
-    EditCampaigns
+    EditCampaigns,
+    UserAvatar
   },
   data () {
     return {

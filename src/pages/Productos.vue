@@ -8,10 +8,7 @@
           .search__row
             input#searchMain.search__input(type='text', name='search', placeholder='Buscar en productos')
             input.search__btn(type='submit', value='')
-        figure.avatar
-          img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
-          figcaption.avatar__txt Damarys
-
+        UserAvatar
     EditProduct(
       :product="selectedProduct",
       :active="editActive",
@@ -48,8 +45,13 @@
         tr
           th.crud__th
             td.crud__title
-              input#all.form__input-check(type="checkbox", name="all", value="selectAll")
-              label.form__label_check.i-ok(for="all")
+              input.form__input-check(
+                type="checkbox",
+                id="all"
+                name="all",
+                value="selectAll")
+              label.form__label_check.i-ok(
+                for="all")
           th.crud__th
             td.crud__title Foto
           th.crud__th
@@ -67,14 +69,20 @@
           th.crud__th
             td.crud__title Estado
       tbody.crud__tbody
-        tr.crud__row(v-for="(product, index) in products")
+        tr.crud__row.crud__row_open(
+          @click="loadProduct(index)",
+          v-for="(product, index) in products")
           td.crud__cell
-            input.form__input-check(:id="'item' + index", type="checkbox", name="all", value="selectAll")
-            label.form__label_check.i-ok(:for="'item' + index")
+            input.form__input-check(
+              type="checkbox",
+              :id="'item' + index",
+              :name="'item' + index",
+              :value="index")
+            label.form__label_check.i-ok(
+              :for="'item' + index")
           td.crud__cell
             img.crud__cell-img(:src="product.images[0]", :alt="product.title")
-          td.crud__cell
-            a(@click="loadProduct(index)") {{ product.title }}
+          td.crud__cell {{ product.title }}
           td.crud__cell {{ product.brand.name }}
           td.crud__cell ${{ product.original_price | currency }}
           td.crud__cell(:class='{ "danger": product.price > product.original_price - ( product.original_price * 0.1 ) }') ${{ product.price | currency }}
@@ -114,12 +122,14 @@ import productAPI from '@/api/product'
 import Vue from 'vue'
 import Croppa from 'vue-croppa'
 import EditProduct from '@/components/EditProduct'
+import UserAvatar from '@/components/UserAvatar'
 Vue.component('croppa', Croppa.component)
 
 export default {
   name: 'Productos',
   components: {
-    EditProduct
+    EditProduct,
+    UserAvatar
   },
   data () {
     return {

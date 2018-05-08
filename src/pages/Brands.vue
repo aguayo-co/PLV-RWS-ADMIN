@@ -7,9 +7,7 @@
           .search__row
             input#searchMain.search__input(type='text', name='search', placeholder='Buscar en Tallas')
             input.search__btn(type='submit', value='')
-        figure.avatar
-          img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
-          figcaption.avatar__txt Damarys
+        UserAvatar
     EditBrand(
       :brand="selectedBrand",
       :active="editActive",
@@ -42,19 +40,30 @@
       thead.crud__head
         tr.crud__row
           th.crud__title.crud__cell_10
-              input#all.form__input-check(type="checkbox", name="all", value="selectAll")
-              label.form__label_check.i-ok(for="all")
+              input.form__input-check(
+                type="checkbox",
+                id="all"
+                name="all",
+                value="selectAll")
+              label.form__label_check.i-ok(
+                for="all")
           th.crud__title.crud__cell_30 Id
           th.crud__title.crud__cell_30 Nombre
           th.crud__title.crud__cell_30 Codigo Hexadecimal
       tbody.crud__tbody
-        tr.crud__row(v-for="(brand, index) in brands")
+        tr.crud__row.crud__row_open(
+          @click="loadBrand(index)",
+          v-for="(brand, index) in brands")
           td.crud__cell.crud__cell_10
-            input.form__input-check(:id="'item' + index", type="checkbox", name="all", value="selectAll")
-            label.form__label_check.i-ok(:for="'item' + index")
+            input.form__input-check(
+              type="checkbox",
+              :id="'item' + index",
+              :name="'item' + index",
+              :value="index")
+            label.form__label_check.i-ok(
+              :for="'item' + index")
           td.crud__cell.crud__cell_30 {{ brand.id }}
-          td.crud__cell.crud__cell_30
-            a(@click="loadBrand(index)") {{ brand.name }}
+          td.crud__cell.crud__cell_30 {{ brand.name }}
           td.crud__cell.crud__cell_30 {{ brand.url }}
         tr.crud__row
           td(colspan="5")
@@ -77,12 +86,14 @@
 import brandsAPI from '@/api/brand'
 // import Vue from 'vue'
 import EditBrand from '@/components/EditBrand'
+import UserAvatar from '@/components/UserAvatar'
 
 export default {
   props: ['brand', 'active'],
   name: 'Brands',
   components: {
-    EditBrand
+    EditBrand,
+    UserAvatar
   },
   data () {
     return {
