@@ -24,5 +24,8 @@ export default {
   },
   approved: function (data) {
     return Vue.axiosAuth.post('/callback/gateway/transfer', data)
+  },
+  rejected: function (data) {
+    return Vue.axiosAuth.post('/callback/gateway/transfer', data)
   }
 }

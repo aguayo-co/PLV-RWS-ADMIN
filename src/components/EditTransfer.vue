@@ -31,9 +31,11 @@
                 @click='toggleBox') Rechazar
               transition(name='toggle-scale')
                 .toggle-box.toggle-box_rejected(
-                    v-show='rejected')
+                    v-show='rejectedCheck')
                   p ¿estas seguro que deseas rechazar esta transferencia?
-                  a.form__btn-rejected.link_underline(href="#") si
+                  button.form__btn-rejected.link_underline(
+                    href="#",
+                    @click.prevent="rejected") si
                   a.form__btn-rejected.link_underline(href="#",
                     @click.prevent="$emit('closeEdit')") no
 </template>
@@ -52,7 +54,7 @@ export default {
     return {
       selectedTransfer: {},
       checked: false,
-      rejected: false
+      rejectedCheck: false
     }
   },
   methods: {
@@ -64,7 +66,7 @@ export default {
         })
     },
     toggleBox: function () {
-      this.rejected = !this.rejected
+      this.rejectedCheck = !this.rejectedCheck
     },
     approved: function () {
       // console.log(this.selectedTransfer.request_data.reference)
@@ -73,6 +75,18 @@ export default {
         status: 'approved'
       }
       transfersAPI.approved(data)
+        .then(response => {
+          console.log('Ok')
+          this.$emit('closeEdit')
+        })
+    },
+    rejected: function () {
+      // console.log(this.selectedTransfer.request_data.reference)
+      const data = {
+        reference: this.selectedTransfer.request_data.reference,
+        status: 'rejected'
+      }
+      transfersAPI.rejected(data)
         .then(response => {
           console.log('Ok')
           this.$emit('closeEdit')

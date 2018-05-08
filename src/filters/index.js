@@ -20,5 +20,22 @@ export default {
           return 'Deshabilitado'
       }
     })
+
+    Vue.filter('payment_status', function (value) {
+      switch (value) {
+        case 0:
+          return 'Pendiente'
+        case 1:
+          return 'En proceso'
+        case 10:
+          return 'Aprobado'
+        case 98:
+          return 'Error'
+        case 99:
+          return 'Cancelado'
+        default:
+          return 'Deshabilitado'
+      }
+    })
   }
 }
