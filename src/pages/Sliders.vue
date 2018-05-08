@@ -21,23 +21,10 @@
         option(value="No disponible") No disponible
       a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
       p.nav__text Se han encontrado 56 productos
-      ul.pagination
-        li.pagination__select
-          select.form__select.form__select_small(
-          name="numeroItems",
-          v-model='items',
-          @change='updateSliderList')
-            option(value="10") 10
-            option(value="20") 20
-            option(value="30") 30
-            option(value="50") 50
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_prev.i-back(@click.prevent='prevPage', href="#")
-        li.pagination__item 1
-        li.pagination__item.pagination__item_txt de 3
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_next.i-next(@click.prevent='nextPage', href="#")
-    //Tabla de contenido
+    ul.content-actions
+      li
+        button.btn.btn_solid.btn_auto.i-plus(@click="create") Crear Slide
+    // Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
         tr
@@ -108,6 +95,10 @@ export default {
     }
   },
   methods: {
+    create: function () {
+      this.selectedSlider = {}
+      this.slideEdit()
+    },
     updateSliderList: function () {
       slidersAPI.getBanners(this.page, this.items, this.filter, this.order)
         .then(response => {

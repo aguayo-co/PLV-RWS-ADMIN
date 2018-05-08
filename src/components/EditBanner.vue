@@ -44,9 +44,8 @@
                 :prevent-white-space="true")
                 img(
                   crossorigin
-                  v-if="selectedBanner.image"
                   slot="initial",
-                  :src="selectedBanner.image + '?d=123'")
+                  :src="selectedBanner.image + '?d=234'")
         .form__row
           label.form__label(
             for="user-name") Nombre
@@ -101,7 +100,7 @@ export default {
       type: 0,
       types: [
         { id: 0, name: 'Sin imagen' },
-        { id: 1, name: 'Banner para categoría', width: 1280, height: 400 },
+        { id: 1, name: 'Banner para categoría', width: 1280, height: 380 },
         { id: 2, name: 'Home #3', width: 594, height: 356 },
         { id: 3, name: 'Home #2', width: 524, height: 354 },
         { id: 4, name: 'Home #1', width: 360, height: 417 },
@@ -142,7 +141,7 @@ export default {
       if (this.picture.hasImage()) {
         this.$store.dispatch('ui/showModal', modal)
         this.picture.generateBlob((blob) => {
-          this.banner.image = blob
+          this.newBanner.image = blob
           bannersAPI.create(newBanner)
             .then(response => {
               console.log('New with image')
