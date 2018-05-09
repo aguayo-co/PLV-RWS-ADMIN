@@ -19,38 +19,32 @@
         option(value="No disponible") No disponible
       a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
       p.nav__text Se han encontrado 56 productos
-      ul.pagination
-        li.pagination__select
-          select.form__select.form__select_small(
-          name="numeroItems",
-          v-model='items',
-          @change='updateCategoryList')
-            option(value="10") 10
-            option(value="20") 20
-            option(value="30") 30
-            option(value="50") 50
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_prev.i-back(@click.prevent='prevPage', href="#")
-        li.pagination__item 1
-        li.pagination__item.pagination__item_txt de 3
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_next.i-next(@click.prevent='nextPage', href="#")
+      // Pager
+      Pager(
+        :currentPage="page",
+        :totalPages="totalPages",
+        @pageChanged="onPageChanged",
+        @itemsChanged="onItemsChanged")
+    //Crear item de categoria
+    ul.content-actions
+      li
+        button.btn.btn_solid.btn_auto.i-plus(@click="create") Crear item de categoria
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
-        tr.crud__row
+        tr
           th.crud__title.crud__cell_12
               input#all.form__input-check(type="checkbox", name="all", value="selectAll")
               label.form__label_check.i-ok(for="all")
           th.crud__title.crud__cell_22 Categoria
-          th.crud__title.crud__cell_22 Ruta
+          th.crud__title.crud__cell_22 Url
           th.crud__title.crud__cell_22 Creación
           th.crud__title.crud__cell_22 Modificación
       tbody.crud__tbody
         tr.crud__row
           td(colspan="5")
             table.crud(
-              v-for="(parent, index) in categories.children",)
+              v-for="(parent, index) in theCategories",)
               tr.crud__row
                 th.crud__cell.crud__cell_12
                   input.form__input-check(
@@ -74,10 +68,10 @@
                       name="all",
                       value="selectAll")
                     label.form__label_check.i-ok
-                  td.crud__cell.crud__cell_22 {{ '—— ' + children.name }}
+                  td.crud__cell.crud__cell_22 {{ '&#8735; ' + children.name }}
                   td.crud__cell.crud__cell_22 {{ '/' + children.slug }}
-                  td.crud__cell.crud__cell_22 .
-                  td.crud__cell.crud__cell_22 ..
+                  td.crud__cell.crud__cell_22 {{ children.created_at | moment("D [de] MMM YY") }}
+                  td.crud__cell.crud__cell_22 {{ children.updated_at | moment("D [de] MMM YY") }}
         tr.crud__row
           td(colspan="5")
             form.crud__form(action="")
@@ -97,7 +91,7 @@
 
 <script>
 import categoriesAPI from '@/api/category'
-// import Vue from 'vue'
+import Pager from '@/components/Pager'
 import EditCategory from '@/components/EditCategory'
 import UserAvatar from '@/components/UserAvatar'
 
@@ -105,19 +99,21 @@ export default {
   props: ['category', 'active'],
   name: 'Categories',
   components: {
-    EditCategory,
-    UserAvatar
+    Pager,
+    UserAvatar,
+    EditCategory
   },
   data () {
     return {
       categories: [],
       selectedCategory: {},
+      totalPages: null,
       page: 1,
       items: 10,
       filter: {},
       order: '-id',
       editActive: false,
-      totalPages: null
+      theCategories: {}
     }
   },
   methods: {
@@ -127,26 +123,35 @@ export default {
           this.categories = response.data.data
         })
     },
-    nextPage: function () {
-      this.page += 1
+    onPageChanged: function (direction) {
+      if (direction === 'next') {
+        this.page += 1
+      } else {
+        if (this.page > 1) this.page -= 1
+      }
       this.updateCategoryList()
-      console.log(this.users)
     },
-    prevPage: function () {
-      if (this.page > 1) this.page -= 1
+    onItemsChanged: function (items) {
+      this.items = items
       this.updateCategoryList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
+      console.log('ok')
     },
     loadCategory: function (index) {
-      this.selectedCategory = this.categories[index]
+      this.selectedCategory = this.categories.children[index]
+      this.slideEdit()
+    },
+    create: function () {
+      this.selectedCategory = {}
       this.slideEdit()
     }
   },
   created: function () {
     categoriesAPI.getAll()
       .then(response => {
+        this.theCategories = response.data.data
         this.categories = response.data.data[0]
         this.categories.children.forEach((category, index) => {
           categoriesAPI.getBySlug(category.slug)

@@ -116,11 +116,11 @@ export default {
       } else {
         if (this.page > 1) this.page -= 1
       }
-      this.updateBannerList()
+      this.updatePaymentList()
     },
     onItemsChanged: function (items) {
       this.items = items
-      this.updateBannerList()
+      this.updatePaymentList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive

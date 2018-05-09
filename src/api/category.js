@@ -13,5 +13,8 @@ export default {
   update: function (data) {
     const updateData = {...data}
     return Vue.axiosAuth.patch('/api/categories/' + data.slug, updateData)
+  },
+  create: function (data) {
+    return Vue.axiosAuth.post('/api/categories/', data)
   }
 }
