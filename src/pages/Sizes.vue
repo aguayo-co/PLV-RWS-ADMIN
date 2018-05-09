@@ -19,23 +19,13 @@
         option(value="Publicado") Publicado
         option(value="No disponible") No disponible
       a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text Se han encontrado 56 productos
-      ul.pagination
-        li.pagination__select
-          select.form__select.form__select_small(
-          name="numeroItems",
-          v-model='items',
-          @change='updateSizeList')
-            option(value="10") 10
-            option(value="20") 20
-            option(value="30") 30
-            option(value="50") 50
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_prev.i-back(@click.prevent='prevPage', href="#")
-        li.pagination__item 1
-        li.pagination__item.pagination__item_txt de 3
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_next.i-next(@click.prevent='nextPage', href="#")
+      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'talla' : 'tallas' }}
+      // Paginador
+      Pager(
+        :currentPage="page",
+        :totalPages="totalPages",
+        @pageChanged="onPageChanged",
+        @itemsChanged="onItemsChanged")
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
@@ -90,7 +80,7 @@
 
 <script>
 import sizesAPI from '@/api/size'
-// import Vue from 'vue'
+import Pager from '@/components/Pager'
 import EditSize from '@/components/EditSize'
 import UserAvatar from '@/components/UserAvatar'
 
@@ -98,6 +88,7 @@ export default {
   props: ['size', 'sizeParent', 'active'],
   name: 'Sizes',
   components: {
+    Pager,
     EditSize,
     UserAvatar
   },
@@ -107,29 +98,33 @@ export default {
       sizesChildren: [],
       selectedSize: {},
       selectedSizes: {},
+      totalPages: null,
+      totalItems: null,
       page: 1,
       items: 10,
       filter: {},
       order: '-id',
-      editActive: false,
-      totalPages: null
+      editActive: false
     }
   },
   methods: {
-    updateSizeList: function () {
+    updateList: function () {
       sizesAPI.getSizes(this.page, this.items, this.filter, this.order)
         .then(response => {
           this.sizes = response.data.data
         })
     },
-    nextPage: function () {
-      this.page += 1
-      this.updateSizeList()
-      console.log(this.users)
+    onPageChanged: function (direction) {
+      if (direction === 'next') {
+        this.page += 1
+      } else {
+        if (this.page > 1) this.page -= 1
+      }
+      this.updateList()
     },
-    prevPage: function () {
-      if (this.page > 1) this.page -= 1
-      this.updateSizeList()
+    onItemsChanged: function (items) {
+      this.items = items
+      this.updateList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -143,6 +138,8 @@ export default {
   created: function () {
     sizesAPI.getSizes(this.page, this.items, this.filter)
       .then(response => {
+        this.totalItems = response.data.total
+        this.totalPages = response.data.last_page
         this.sizes = response.data.data
       })
   }

@@ -17,7 +17,7 @@
         option(value="Acciones en lote") Acciones en lote
         option(value="Publicado") Publicado
         option(value="No disponible") No disponible
-      p.nav__text.nav__text_wide Se han encontrado {{ totalItems }} métodos de envío
+      p.nav__text.nav__text_wide Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'método de envío' : 'métodos de envío' }}
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head

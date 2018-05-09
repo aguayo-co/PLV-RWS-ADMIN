@@ -18,7 +18,7 @@
         option(value="Publicado") Publicado
         option(value="No disponible") No disponible
       a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text Se han encontrado 56 productos
+      p.nav__text.nav__text_wide Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'slide de carousel' : 'slides de carousel' }}
     ul.content-actions
       li
         button.btn.btn_solid.btn_auto.i-plus(@click="create") Crear Slide
@@ -97,8 +97,10 @@ export default {
     return {
       slides: [],
       selectedSlider: {},
+      totalPages: null,
+      totalItems: null,
       page: 1,
-      items: 20,
+      items: 10,
       filter: {},
       order: 'priority',
       editActive: false
@@ -109,19 +111,23 @@ export default {
       this.selectedSlider = {}
       this.slideEdit()
     },
-    updateSliderList: function () {
-      slidersAPI.getBanners(this.page, this.items, this.filter, this.order)
+    updateList: function () {
+      slidersAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
           this.slides = response.data.data
         })
     },
-    nextPage: function () {
-      this.page += 1
-      this.updateSliderList()
+    onPageChanged: function (direction) {
+      if (direction === 'next') {
+        this.page += 1
+      } else {
+        if (this.page > 1) this.page -= 1
+      }
+      this.updateList()
     },
-    prevPage: function () {
-      if (this.page > 1) this.page -= 1
-      this.updateSliderList()
+    onItemsChanged: function (items) {
+      this.items = items
+      this.updateList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -134,6 +140,8 @@ export default {
   created: function () {
     slidersAPI.get(this.page, this.items, this.filter, this.order)
       .then(response => {
+        this.totalItems = response.data.total
+        this.totalPages = response.data.last_page
         this.slides = response.data.data
       })
   }

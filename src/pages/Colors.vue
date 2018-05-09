@@ -20,7 +20,7 @@
       a.nav__btn.i-filter_after(
         href="#",
         title="Filtrar") Filtrar
-      p.nav__text Se han encontrado {{ totalItems }} colores
+      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'color' : 'colores' }}
       // Paginador
       Pager(
         :currentPage="page",
