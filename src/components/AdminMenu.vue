@@ -59,6 +59,11 @@ export default {
               name: 'Reportes',
               url: '/user/data',
               ico: 'i-report'
+            },
+            {
+              name: 'Créditos transaccionales',
+              url: '/credit-transactions',
+              ico: 'i-credits'
             }
           ]
         },

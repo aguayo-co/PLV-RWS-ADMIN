@@ -16,6 +16,7 @@ import Campaigns from '@/pages/Campaigns'
 import Sales from '@/pages/Sales'
 import Groups from '@/pages/Groups'
 import Conditions from '@/pages/Conditions'
+import CreditsTransactions from '@/pages/CreditsTransactions'
 
 Vue.use(Router)
 
@@ -100,6 +101,10 @@ export default new Router({
       path: '/conditions',
       name: 'Conditions',
       component: Conditions
+    }, {
+      path: '/credit-transactions',
+      name: 'CreditsTransactions',
+      component: CreditsTransactions
     }
   ]
 })
