@@ -106,6 +106,11 @@ export default {
               ico: 'i-edit-line'
             },
             {
+              name: 'Condiciones',
+              url: '/conditions',
+              ico: 'i-tag'
+            },
+            {
               name: 'Carousel Principal',
               url: '/sliders',
               ico: 'i-insta'

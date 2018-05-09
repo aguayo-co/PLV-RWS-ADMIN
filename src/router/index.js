@@ -15,6 +15,7 @@ import ShippingMethods from '@/pages/ShippingMethods'
 import Campaigns from '@/pages/Campaigns'
 import Sales from '@/pages/Sales'
 import Groups from '@/pages/Groups'
+import Conditions from '@/pages/Conditions'
 
 Vue.use(Router)
 
@@ -89,10 +90,16 @@ export default new Router({
       path: '/sales',
       name: 'Sales',
       component: Sales
-    }, {
+    },
+    {
       path: '/groups',
       name: 'Groups',
       component: Groups
+    },
+    {
+      path: '/conditions',
+      name: 'Conditions',
+      component: Conditions
     }
   ]
 })
