@@ -33,10 +33,10 @@
     table.crud.crud_wide
       thead.crud__head
         tr
-          th.crud__title.crud__cell_12
+          th.crud__title.crud__cell_check
               input#all.form__input-check(type="checkbox", name="all", value="selectAll")
               label.form__label_check.i-ok(for="all")
-          th.crud__title.crud__cell_22 Categoria
+          th.crud__title.crud__cell_30 Categoria
           th.crud__title.crud__cell_22 Url
           th.crud__title.crud__cell_22 Creación
           th.crud__title.crud__cell_22 Modificación
@@ -46,7 +46,7 @@
             table.crud(
               v-for="(parent, index) in theCategories",)
               tr.crud__row
-                th.crud__cell.crud__cell_12
+                th.crud__cell.crud__cell_check
                   input.form__input-check(
                     type="checkbox",
                     id="all"
@@ -54,7 +54,7 @@
                     value="selectAll")
                   label.form__label_check.i-ok(
                     for="all")
-                th.crud__cell.crud__cell_22 {{ parent.name }}
+                th.crud__cell.crud__cell_30 {{ parent.name }}
                 th.crud__cell.crud__cell_22 {{ '/' + parent.slug }}
                 th.crud__cell.crud__cell_22 {{ parent.created_at | moment("D [de] MMM YY") }}
                 th.crud__cell.crud__cell_22 {{ parent.updated_at | moment("D [de] MMM YY") }}
@@ -68,10 +68,10 @@
                       name="all",
                       value="selectAll")
                     label.form__label_check.i-ok
-                  td.crud__cell.crud__cell_22 {{ '&#8735; ' + children.name }}
-                  td.crud__cell.crud__cell_22 {{ '/' + children.slug }}
-                  td.crud__cell.crud__cell_22 {{ children.created_at | moment("D [de] MMM YY") }}
-                  td.crud__cell.crud__cell_22 {{ children.updated_at | moment("D [de] MMM YY") }}
+                  td.crud__cell {{ '&#8735; ' + children.name }}
+                  td.crud__cell {{ '/' + children.slug }}
+                  td.crud__cell {{ children.created_at | moment("D [de] MMM YY") }}
+                  td.crud__cell {{ children.updated_at | moment("D [de] MMM YY") }}
         tr.crud__row
           td(colspan="5")
             form.crud__form(action="")
