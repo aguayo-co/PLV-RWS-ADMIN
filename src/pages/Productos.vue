@@ -22,22 +22,12 @@
         option(value="No disponible") No disponible
       a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
       p.nav__text Se han encontrado {{ totalItems }} productos
-      ul.pagination
-        li.pagination__select
-          select.form__select.form__select_small(
-          name="numeroItems",
-          v-model='items',
-          @change='updateProductList')
-            option(value="10") 10
-            option(value="20") 20
-            option(value="30") 30
-            option(value="50") 50
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_prev.i-back(@click.prevent='prevPage', href="#")
-        li.pagination__item {{ page }}
-        li.pagination__item.pagination__item_txt de {{totalPages}}
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_next.i-next(@click.prevent='nextPage', href="#")
+      // Paginador
+      Pager(
+        :currentPage="page",
+        :totalPages="totalPages",
+        @pageChanged="onPageChanged",
+        @itemsChanged="onItemsChanged")
     //Tabla de contenido
     //- table.crud(v-if="products[0]")
     table.crud
@@ -121,6 +111,7 @@
 import productAPI from '@/api/product'
 import Vue from 'vue'
 import Croppa from 'vue-croppa'
+import Pager from '@/components/Pager'
 import EditProduct from '@/components/EditProduct'
 import UserAvatar from '@/components/UserAvatar'
 Vue.component('croppa', Croppa.component)
@@ -128,6 +119,7 @@ Vue.component('croppa', Croppa.component)
 export default {
   name: 'Productos',
   components: {
+    Pager,
     EditProduct,
     UserAvatar
   },
@@ -135,31 +127,35 @@ export default {
     return {
       products: [],
       selectedProduct: {},
+      totalPages: null,
+      totalItems: null,
       page: 1,
       items: 10,
       filter: {},
       order: '-id',
       editActive: false,
       picture: null,
-      cover: null,
-      totalPages: null,
-      totalItems: null
+      cover: null
     }
   },
   methods: {
-    updateProductList: function () {
-      productAPI.getProducts(this.page, this.items, this.filter)
+    updateList: function () {
+      productAPI.get(this.page, this.items, this.filter)
         .then(response => {
           this.products = response.data.data
         })
     },
-    nextPage: function () {
-      this.page += 1
-      this.updateProductList()
+    onPageChanged: function (direction) {
+      if (direction === 'next') {
+        this.page += 1
+      } else {
+        if (this.page > 1) this.page -= 1
+      }
+      this.updateList()
     },
-    prevPage: function () {
-      if (this.page > 1) this.page -= 1
-      this.updateProductList()
+    onItemsChanged: function (items) {
+      this.items = items
+      this.updateList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -170,10 +166,10 @@ export default {
     }
   },
   created: function () {
-    productAPI.getProducts(this.page, this.items, this.filter)
+    productAPI.get(this.page, this.items, this.filter)
       .then(response => {
-        this.totalPages = response.data.last_page
         this.totalItems = response.data.total
+        this.totalPages = response.data.last_page
         this.products = response.data.data
       })
   }

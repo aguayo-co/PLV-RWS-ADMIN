@@ -18,8 +18,8 @@
         option(value="Publicado") Publicado
         option(value="No disponible") No disponible
       a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text Se han encontrado 56 productos
-      // Pager
+      p.nav__text Se han encontrado {{ totalItems }} ventas
+      // Paginador
       Pager(
         :currentPage="page",
         :totalPages="totalPages",
@@ -156,12 +156,14 @@
 <script>
 
 import salesAPI from '@/api/sale'
+import Pager from '@/components/Pager'
 import EditSale from '@/components/EditSale'
 import UserAvatar from '@/components/UserAvatar'
 
 export default {
   name: 'Sales',
   components: {
+    Pager,
     EditSale,
     UserAvatar
   },
@@ -169,6 +171,8 @@ export default {
     return {
       sales: [],
       selectedSale: {},
+      totalPages: null,
+      totalItems: null,
       page: 1,
       items: 20,
       filter: {},
@@ -178,7 +182,11 @@ export default {
     }
   },
   methods: {
-    updateBannerList: function () {
+    updateList: function () {
+      salesAPI.get(this.page, this.items, this.filter, this.order)
+        .then(response => {
+          this.sales = response.data.data
+        })
     },
     onPageChanged: function (direction) {
       if (direction === 'next') {
@@ -186,9 +194,11 @@ export default {
       } else {
         if (this.page > 1) this.page -= 1
       }
+      this.updateList()
     },
     onItemsChanged: function (items) {
       this.items = items
+      this.updateList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -201,6 +211,8 @@ export default {
   created: function () {
     salesAPI.get(this.page, this.items, this.filter, this.order)
       .then(response => {
+        this.totalItems = response.data.total
+        this.totalPages = response.data.last_page
         this.sales = response.data.data
       })
   }

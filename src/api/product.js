@@ -4,7 +4,7 @@
 import Vue from 'vue'
 
 export default {
-  getProducts: function (page, items, filter) {
+  get: function (page, items, filter) {
     let queryFilter = ''
     page = page || 1
     items = items || 8

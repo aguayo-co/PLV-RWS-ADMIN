@@ -21,26 +21,12 @@
         option(value="No disponible") No disponible
       a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
       p.nav__text Se han encontrado {{ totalItems }} usuarias
-      ul.pagination
-        li.pagination__select
-          select.form__select.form__select_small(
-          name="numeroItems",
-          v-model='items',
-          @change='updateUserList')
-            option(value="10") 10
-            option(value="20") 20
-            option(value="30") 30
-            option(value="50") 50
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_prev.i-back(
-            @click.prevent="prevPage",
-            href="#")
-        li.pagination__item {{ page }}
-        li.pagination__item.pagination__item_txt de {{totalPages}}
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_next.i-next(
-            @click.prevent="nextPage",
-            href="#")
+      // Paginador
+      Pager(
+        :currentPage="page",
+        :totalPages="totalPages",
+        @pageChanged="onPageChanged",
+        @itemsChanged="onItemsChanged")
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
@@ -131,13 +117,16 @@
 import usersAPI from '@/api/user'
 import Vue from 'vue'
 import Croppa from 'vue-croppa'
+import Pager from '@/components/Pager'
 import EditUser from '@/components/EditUser'
 import UserAvatar from '@/components/UserAvatar'
+
 Vue.component('croppa', Croppa.component)
 
 export default {
   name: 'Usuaria',
   components: {
+    Pager,
     EditUser,
     UserAvatar
   },
@@ -145,33 +134,35 @@ export default {
     return {
       users: [],
       selectedUser: {},
+      totalPages: null,
+      totalItems: null,
       page: 1,
       items: 20,
       filter: {},
       order: '-id',
       editActive: false,
       picture: null,
-      cover: null,
-      totalPages: null,
-      totalItems: null
+      cover: null
     }
   },
   methods: {
-    updateUserList: function () {
-      usersAPI.getUsers(this.page, this.items, this.filter, this.order)
+    updateList: function () {
+      usersAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
           this.users = response.data.data
         })
     },
-    nextPage: function () {
-      if (this.page < this.totalPages) {
+    onPageChanged: function (direction) {
+      if (direction === 'next') {
         this.page += 1
-        this.updateUserList()
+      } else {
+        if (this.page > 1) this.page -= 1
       }
+      this.updateList()
     },
-    prevPage: function () {
-      if (this.page > 1) this.page -= 1
-      this.updateUserList()
+    onItemsChanged: function (items) {
+      this.items = items
+      this.updateList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -182,7 +173,7 @@ export default {
     }
   },
   created: function () {
-    usersAPI.getUsers(this.page, this.items, this.filter, this.order)
+    usersAPI.get(this.page, this.items, this.filter, this.order)
       .then(response => {
         this.totalPages = response.data.last_page
         this.totalItems = response.data.total
