@@ -111,12 +111,12 @@ export default {
         })
     },
     onPageChanged: function (direction) {
-      if (direction === 'next') {
+      if (direction === 'next' && this.page < this.totalPages) {
         this.page += 1
-      } else {
-        if (this.page > 1) this.page -= 1
+      } else if (direction === 'prev' && this.page > 1) {
+        this.page -= 1
       }
-      this.updatePaymentList()
+      this.updateList()
     },
     onItemsChanged: function (items) {
       this.items = items
