@@ -113,7 +113,7 @@ export default {
     updateList: function () {
       groupsAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
-          this.group = response.data.data
+          this.groups = response.data.data
         })
     },
     onPageChanged: function (direction) {
