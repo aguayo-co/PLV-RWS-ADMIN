@@ -94,7 +94,7 @@
           td.crud__cell.crud__cell_center {{ user.published_products_count }}
           td.crud__cell.crud__cell_center {{ user.sold_products_count }}
           td.crud__cell.crud__cell_center {{ user.purchased_products_count }}
-          td.crud__cell {{ user.created_at }}
+          td.crud__cell {{ user.created_at | moment("D [de] MMM YY") }}
         tr
           td(colspan="12")
             form.crud__form(action="")

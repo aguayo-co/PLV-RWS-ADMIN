@@ -31,7 +31,7 @@
     table.crud.crud_wide
       thead.crud__head
         tr
-          th.crud__title.crud__cell_10
+          th.crud__title.crud__cell_check
               input.form__input-check(
                 type="checkbox",
                 id="all"
@@ -39,23 +39,23 @@
                 value="selectAll")
               label.form__label_check.i-ok(
                 for="all")
-          th.crud__title.crud__cell_30 Id
+          th.crud__title Id
           th.crud__title.crud__cell_30 Nombre
-          th.crud__title.crud__cell_30 Codigo Hexadecimal
+          th.crud__title Codigo Hexadecimal
       tbody.crud__tbody
         tr.crud__row.crud__row_open(
           @click="loadColor(index)",
           v-for="(color, index) in colors")
-          td.crud__cell.crud__cell_10
+          td.crud__cell
             input.form__input-check(
               type="checkbox",
               :id="'item' + index",
               :name="'item' + index",
               :value="index")
             label.form__label_check.i-ok(:for="'item' + index")
-          td.crud__cell.crud__cell_30 {{ color.id }}
-          td.crud__cell.crud__cell_30 {{ color.name }}
-          td.crud__cell.crud__cell_30
+          td.crud__cell {{ color.id }}
+          td.crud__cell {{ color.name }}
+          td.crud__cell
             span.color-circlespan.color-circle(
               :style='{ backgroundColor: color.hex_code }')
             span {{ color.hex_code }}

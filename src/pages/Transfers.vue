@@ -53,7 +53,7 @@
           td.crud__cell ${{ payment.request_data.amount | currency }}
           td.crud__cell {{ payment.order_id }}
           td.crud__cell {{ payment.order.user.first_name + ' ' + payment.order.user.last_name }}
-          td.crud__cell {{ payment.created_at | moment("MMMM, D YYYY") }}
+          td.crud__cell {{ payment.created_at | moment("D [de] MMM YY") }}
           td.crud__cell
             p.crud__state.crud__state_detail(:class='"state-" + payment.status') {{ payment.status | payment_status }}
         tr
