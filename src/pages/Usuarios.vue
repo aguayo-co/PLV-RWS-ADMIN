@@ -89,8 +89,8 @@
           td.crud__cell {{ user.email }}
           td.crud__cell {{ user.phone }}
           td.crud__cell
-            ul(v-if='user.groups')
-              li(v-for='group in user.groups') {{ group.name }}
+            ul(v-if='user.groups_ids')
+              li(v-for='group_id in user.groups_ids') {{ group_id }}
           td.crud__cell
             ul(v-if='user.roles')
               li(v-for='role in user.roles') {{ role.name }}
