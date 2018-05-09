@@ -21,7 +21,7 @@
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
-        tr.crud__row
+        tr
           th.crud__title.crud__cell_check
             input.form__input-check(
               type="checkbox",
