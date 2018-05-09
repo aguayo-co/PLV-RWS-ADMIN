@@ -13,6 +13,11 @@
   will-change: transform, opacity;
 }
 
+.toggle-box_rejected {
+  left: 0;
+  width: 100%;
+}
+
 .toggle-box__list {
   will-change: transform;
   -webkit-transform: scale(1);

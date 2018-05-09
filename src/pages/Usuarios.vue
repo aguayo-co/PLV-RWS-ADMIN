@@ -7,9 +7,7 @@
           .search__row
             input#searchMain.search__input(type='text', name='search', placeholder='Buscar en usuarias')
             input.search__btn(type='submit', value='')
-        figure.avatar
-          img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
-          figcaption.avatar__txt Damarys
+        UserAvatar
 
     EditUser(
       :user="selectedUser",
@@ -22,35 +20,26 @@
         option(value="Publicado") Publicado
         option(value="No disponible") No disponible
       a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text Se han encontrado {{ totalItems }} usuarias
-      ul.pagination
-        li.pagination__select
-          select.form__select.form__select_small(
-          name="numeroItems",
-          v-model='items',
-          @change='updateUserList')
-            option(value="10") 10
-            option(value="20") 20
-            option(value="30") 30
-            option(value="50") 50
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_prev.i-back(
-            @click.prevent="prevPage",
-            href="#")
-        li.pagination__item {{ page }}
-        li.pagination__item.pagination__item_txt de {{totalPages}}
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_next.i-next(
-            @click.prevent="nextPage",
-            href="#")
+      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'usuaria' : 'usuarias' }}
+      // Paginador
+      Pager(
+        :currentPage="page",
+        :totalPages="totalPages",
+        @pageChanged="onPageChanged",
+        @itemsChanged="onItemsChanged")
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
         tr
           th.crud__th
             td.crud__title
-              input#all.form__input-check(type="checkbox", name="all", value="selectAll")
-              label.form__label_check.i-ok(for="all")
+              input.form__input-check(
+                type="checkbox",
+                id="all"
+                name="all",
+                value="selectAll")
+              label.form__label_check.i-ok(
+                for="all")
           th.crud__th
             td.crud__title Usuaria
           th.crud__th
@@ -74,18 +63,24 @@
           th.crud__th
             td.crud__title Fecha de<br>creación
       tbody.crud__tbody
-        tr.crud__row(v-for="(user, index) in users")
+        tr.crud__row.crud__row_open(
+          @click="loadUser(index)",
+          v-for="(user, index) in users")
           td.crud__cell
-            input.form__input-check(:id="'item' + index", type="checkbox", name="all", value="selectAll")
-            label.form__label_check.i-ok(:for="'item' + index")
+            input.form__input-check(
+              type="checkbox",
+              :id="'item' + index",
+              :name="'item' + index",
+              :value="index")
+            label.form__label_check.i-ok(
+              :for="'item' + index")
           td.crud__cell
-            a(@click="loadUser(index)")
-              figure.crud__avatar.avatar
-                img.avatar__img(v-if="user.picture", :src="user.picture", :alt="user.first_name")
-                span.tool-user__letter.avatar__img(
-                  v-else
-                ) {{ user.first_name.charAt(0).toUpperCase() }}
-                figcaption.avatar__txt {{ user.first_name + ' ' + user.last_name }}
+            figure.crud__avatar.avatar
+              img.avatar__img(v-if="user.picture", :src="user.picture", :alt="user.first_name")
+              span.tool-user__letter.avatar__img(
+                v-else
+              ) {{ user.first_name.charAt(0).toUpperCase() }}
+              figcaption.avatar__txt {{ user.first_name + ' ' + user.last_name }}
           td.crud__cell {{ user.email }}
           td.crud__cell {{ user.phone }}
           td.crud__cell
@@ -122,45 +117,52 @@
 import usersAPI from '@/api/user'
 import Vue from 'vue'
 import Croppa from 'vue-croppa'
+import Pager from '@/components/Pager'
 import EditUser from '@/components/EditUser'
+import UserAvatar from '@/components/UserAvatar'
+
 Vue.component('croppa', Croppa.component)
 
 export default {
   name: 'Usuaria',
   components: {
-    EditUser
+    Pager,
+    EditUser,
+    UserAvatar
   },
   data () {
     return {
       users: [],
       selectedUser: {},
+      totalPages: null,
+      totalItems: null,
       page: 1,
       items: 20,
       filter: {},
       order: '-id',
       editActive: false,
       picture: null,
-      cover: null,
-      totalPages: null,
-      totalItems: null
+      cover: null
     }
   },
   methods: {
-    updateUserList: function () {
-      usersAPI.getUsers(this.page, this.items, this.filter, this.order)
+    updateList: function () {
+      usersAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
           this.users = response.data.data
         })
     },
-    nextPage: function () {
-      if (this.page < this.totalPages) {
+    onPageChanged: function (direction) {
+      if (direction === 'next') {
         this.page += 1
-        this.updateUserList()
+      } else {
+        if (this.page > 1) this.page -= 1
       }
+      this.updateList()
     },
-    prevPage: function () {
-      if (this.page > 1) this.page -= 1
-      this.updateUserList()
+    onItemsChanged: function (items) {
+      this.items = items
+      this.updateList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -171,7 +173,7 @@ export default {
     }
   },
   created: function () {
-    usersAPI.getUsers(this.page, this.items, this.filter, this.order)
+    usersAPI.get(this.page, this.items, this.filter, this.order)
       .then(response => {
         this.totalPages = response.data.last_page
         this.totalItems = response.data.total

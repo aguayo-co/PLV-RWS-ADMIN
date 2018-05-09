@@ -9,7 +9,7 @@
       //-   span Cerrar
       //- h3.title Editar usuario
       h3.slide__header.i-close(
-        @click.stop="$emit('closeEdit')") Editar Slide
+        @click.stop="$emit('closeEdit')") {{ selectedSlide.id ? 'Editar slide' : 'Crear slide' }}
       form.slide__form
         .form__row
           .form__label Imagen para Desktop (1280x472)

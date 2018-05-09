@@ -7,9 +7,7 @@
           .search__row
             input#searchMain.search__input(type='text', name='search', placeholder='Buscar en banners')
             input.search__btn(type='submit', value='')
-        figure.avatar
-          img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
-          figcaption.avatar__txt Damarys
+        UserAvatar
       .admin__edit(
         :class="{ 'admin__edit_open': editActive == true }")
         transition(name='slide-right')
@@ -78,8 +76,13 @@
         tr
           th.crud__th
             td.crud__title
-              input#all.form__input-check(type="checkbox", name="all", value="selectAll")
-              label.form__label_check.i-ok(for="all")
+              input.form__input-check(
+                type="checkbox",
+                id="all"
+                name="all",
+                value="selectAll")
+              label.form__label_check.i-ok(
+                for="all")
           th.crud__th
             td.crud__title Nombre
           th.crud__th
@@ -89,12 +92,18 @@
           th.crud__th
             td.crud__title Padre
       tbody.crud__tbody
-        tr.crud__row(v-for="(item, index) in menuItems")
+        tr.crud__row.crud__row_open(
+          @click="loadItem(index)",
+          v-for="(item, index) in menuItems")
           td.crud__cell
-            input.form__input-check(:id="'item' + index", type="checkbox", name="all", value="selectAll")
-            label.form__label_check.i-ok(:for="'item' + index")
-          td.crud__cell
-            a(@click="loadItem(index)") {{ item.name }}
+            input.form__input-check(
+              type="checkbox",
+              :id="'item' + index",
+              :name="'item' + index",
+              :value="index")
+            label.form__label_check.i-ok(
+              :for="'item' + index")
+          td.crud__cell {{ item.name }}
           td.crud__cell {{ item.url }}
           td.crud__cell {{ item.icon }}
           td.crud__cell {{ item.parent_id }}
@@ -118,9 +127,13 @@
 <script>
 
 import menusAPI from '@/api/menu'
+import UserAvatar from '@/components/UserAvatar'
 
 export default {
   name: 'MenuItems',
+  components: {
+    UserAvatar
+  },
   data () {
     return {
       menuItems: [],

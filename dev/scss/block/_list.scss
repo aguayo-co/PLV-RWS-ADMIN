@@ -162,8 +162,8 @@
   .data-total {
     margin: 16px 0;
     padding: 8px 0;
-    border-top: 1px solid $c-neutro-3;
-    border-bottom: 1px solid $c-neutro-3;
+    border-top: 1px solid $c-default;
+    border-bottom: 1px solid $c-default;
   }
   .data-total__label {
     font-weight: $fw-bold;
@@ -328,6 +328,10 @@
     padding: 40px 0;
   }
   .list__frame {
+    position: -webkit-sticky;
+    position: -moz-sticky;
+    position: -ms-sticky;
+    position: -o-sticky;
     position: sticky;
     top: 30px;
   }

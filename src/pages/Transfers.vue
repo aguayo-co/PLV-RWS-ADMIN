@@ -7,9 +7,7 @@
           .search__row
             input#searchMain.search__input(type='text', name='search', placeholder='Buscar en banners')
             input.search__btn(type='submit', value='')
-        figure.avatar
-          img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
-          figcaption.avatar__txt Damarys
+        UserAvatar
     EditTransfer(
       :transfer="selectedTransfer",
       :active="editActive",
@@ -39,6 +37,7 @@
           th.crud__th.crud__title # Orden
           th.crud__th.crud__title Usuaria
           th.crud__th.crud__title Fecha de creación
+          th.crud__th.crud__title Estado
       tbody.crud__tbody
         tr.crud__row(v-for="(payment, index) in payments")
           td.crud__cell
@@ -53,8 +52,10 @@
               span(v-else) -
           td.crud__cell ${{ payment.request_data.amount | currency }}
           td.crud__cell {{ payment.order_id }}
-          td.crud__cell {{ getOrderById(payment.order_id).user }}
+          td.crud__cell {{ payment.order.user.first_name + ' ' + payment.order.user.last_name }}
           td.crud__cell {{ payment.created_at | moment("MMMM, D YYYY") }}
+          td.crud__cell
+            p.crud__state.crud__state_detail(:class='"state-" + payment.status') {{ payment.status | payment_status }}
         tr
           td(colspan="12")
             form.crud__form(action="")
@@ -74,6 +75,7 @@
 
 <script>
 
+import UserAvatar from '@/components/UserAvatar'
 import Pager from '@/components/Pager'
 import EditTransfer from '@/components/EditTransfer'
 import transfersAPI from '@/api/transfer'
@@ -83,6 +85,7 @@ export default {
   name: 'Transfers',
   components: {
     Pager,
+    UserAvatar,
     EditTransfer
   },
   data () {
@@ -113,11 +116,11 @@ export default {
       } else {
         if (this.page > 1) this.page -= 1
       }
-      this.updateBannerList()
+      this.updatePaymentList()
     },
     onItemsChanged: function (items) {
       this.items = items
-      this.updateBannerList()
+      this.updatePaymentList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -137,7 +140,7 @@ export default {
     transfersAPI.get(this.page, this.items, this.filter, this.order)
       .then(response => {
         this.payments = response.data.data
-        console.log(this.payments)
+        // console.log(this.payments)
       })
   }
 }

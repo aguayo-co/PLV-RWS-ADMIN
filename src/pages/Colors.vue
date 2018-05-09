@@ -7,9 +7,7 @@
           .search__row
             input#searchMain.search__input(type='text', name='search', placeholder='Buscar en Tallas')
             input.search__btn(type='submit', value='')
-        figure.avatar
-          img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
-          figcaption.avatar__txt Damarys
+        UserAvatar
     EditColor(
       :color="selectedColor",
       :active="editActive",
@@ -19,44 +17,48 @@
         option(value="Acciones en lote") Acciones en lote
         option(value="Publicado") Publicado
         option(value="No disponible") No disponible
-      a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text Se han encontrado 56 productos
-      ul.pagination
-        li.pagination__select
-          select.form__select.form__select_small(
-          name="numeroItems",
-          v-model='items',
-          @change='updateColorList')
-            option(value="10") 10
-            option(value="20") 20
-            option(value="30") 30
-            option(value="50") 50
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_prev.i-back(@click.prevent='prevPage', href="#")
-        li.pagination__item 1
-        li.pagination__item.pagination__item_txt de 3
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_next.i-next(@click.prevent='nextPage', href="#")
+      a.nav__btn.i-filter_after(
+        href="#",
+        title="Filtrar") Filtrar
+      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'color' : 'colores' }}
+      // Paginador
+      Pager(
+        :currentPage="page",
+        :totalPages="totalPages",
+        @pageChanged="onPageChanged",
+        @itemsChanged="onItemsChanged")
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
-        tr.crud__row
+        tr
           th.crud__title.crud__cell_10
-              input#all.form__input-check(type="checkbox", name="all", value="selectAll")
-              label.form__label_check.i-ok(for="all")
+              input.form__input-check(
+                type="checkbox",
+                id="all"
+                name="all",
+                value="selectAll")
+              label.form__label_check.i-ok(
+                for="all")
           th.crud__title.crud__cell_30 Id
           th.crud__title.crud__cell_30 Nombre
           th.crud__title.crud__cell_30 Codigo Hexadecimal
       tbody.crud__tbody
-        tr.crud__row(v-for="(color, index) in colors")
+        tr.crud__row.crud__row_open(
+          @click="loadColor(index)",
+          v-for="(color, index) in colors")
           td.crud__cell.crud__cell_10
-            input.form__input-check(:id="'item' + index", type="checkbox", name="all", value="selectAll")
+            input.form__input-check(
+              type="checkbox",
+              :id="'item' + index",
+              :name="'item' + index",
+              :value="index")
             label.form__label_check.i-ok(:for="'item' + index")
           td.crud__cell.crud__cell_30 {{ color.id }}
           td.crud__cell.crud__cell_30 {{ color.name }}
           td.crud__cell.crud__cell_30
-            span.color-circlespan.color-circle(:style='{ backgroundColor: color.hex_code }')
-            a(@click="loadColor(index)") {{ color.hex_code }}
+            span.color-circlespan.color-circle(
+              :style='{ backgroundColor: color.hex_code }')
+            span {{ color.hex_code }}
         tr.crud__row
           td(colspan="5")
             form.crud__form(action="")
@@ -76,42 +78,49 @@
 
 <script>
 import colorsAPI from '@/api/color'
-// import Vue from 'vue'
+import Pager from '@/components/Pager'
 import EditColor from '@/components/EditColor'
+import UserAvatar from '@/components/UserAvatar'
 
 export default {
   props: ['color', 'active'],
   name: 'Colors',
   components: {
-    EditColor
+    Pager,
+    EditColor,
+    UserAvatar
   },
   data () {
     return {
       colors: [],
       selectedColor: {},
+      totalPages: null,
+      totalItems: null,
       page: 1,
       items: 10,
       filter: {},
       order: '-id',
-      editActive: false,
-      totalPages: null
+      editActive: false
     }
   },
   methods: {
-    updateColorList: function () {
-      colorsAPI.getColors(this.page, this.items, this.filter, this.order)
+    updateList: function () {
+      colorsAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
           this.colors = response.data.data
         })
     },
-    nextPage: function () {
-      this.page += 1
-      this.updateColorList()
-      console.log(this.users)
+    onPageChanged: function (direction) {
+      if (direction === 'next') {
+        this.page += 1
+      } else {
+        if (this.page > 1) this.page -= 1
+      }
+      this.updateList()
     },
-    prevPage: function () {
-      if (this.page > 1) this.page -= 1
-      this.updateColorList()
+    onItemsChanged: function (items) {
+      this.items = items
+      this.updateList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -122,8 +131,10 @@ export default {
     }
   },
   created: function () {
-    colorsAPI.getColors(this.page, this.items, this.filter)
+    colorsAPI.get(this.page, this.items, this.filter)
       .then(response => {
+        this.totalItems = response.data.total
+        this.totalPages = response.data.last_page
         this.colors = response.data.data
       })
   }

@@ -7,9 +7,7 @@
           .search__row
             input#searchMain.search__input(type='text', name='search', placeholder='Buscar')
             input.search__btn(type='submit', value='')
-        figure.avatar
-          img.avatar__img(src="static/img/user-avatar.jpg", alt="Avatar")
-          figcaption.avatar__txt Damarys
+        UserAvatar
     EditShippingMethods(
       :shipping="selectedShipping",
       :active="editActive",
@@ -19,26 +17,37 @@
         option(value="Acciones en lote") Acciones en lote
         option(value="Publicado") Publicado
         option(value="No disponible") No disponible
-      p.nav__text.nav__text_wide Se han encontrado {{ shippingMethods.length }} productos
+      p.nav__text.nav__text_wide Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'método de envío' : 'métodos de envío' }}
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
-        tr.crud__row
-          th.crud__title.crud__cell_10
-              input#all.form__input-check(type="checkbox", name="all", value="selectAll")
-              label.form__label_check.i-ok(for="all")
-          th.crud__title.crud__cell_30 Nombre
-          th.crud__title.crud__cell_30 Descripción vendedora
-          th.crud__title.crud__cell_30 Descripción compradora
+        tr
+          th.crud__title.crud__cell_check
+            input.form__input-check(
+              type="checkbox",
+              id="all"
+              name="all",
+              value="selectAll")
+            label.form__label_check.i-ok(
+              for="all")
+          th.crud__title.crud__cell_22 Nombre
+          th.crud__title Descripción vendedora
+          th.crud__title Descripción compradora
       tbody.crud__tbody
-        tr.crud__row(v-for="(shippingMethod, index) in shippingMethods")
-          td.crud__cell.crud__cell_10
-            input.form__input-check(:id="'shipping' + index", type="checkbox", name="all", value="selectAll")
-            label.form__label_check.i-ok(:for="'shipping' + index")
-          td.crud__cell.crud__cell_30
-            a(@click="loadShipping(index)") {{ shippingMethod.name }}
-          td.crud__cell.crud__cell_30 {{ shippingMethod.description_seller }}
-          td.crud__cell.crud__cell_30 {{ shippingMethod.description_buyer }}
+        tr.crud__row.crud__row_open(
+          @click="loadShipping(index)",
+          v-for="(shippingMethod, index) in shippingMethods")
+          td.crud__cell
+            input.form__input-check(
+              type="checkbox",
+              :id="'item' + index",
+              :name="'item' + index",
+              :value="index")
+            label.form__label_check.i-ok(
+              :for="'item' + index")
+          td.crud__cell {{ shippingMethod.name }}
+          td.crud__cell.crud__cell_legible {{ shippingMethod.description_seller }}
+          td.crud__cell.crud__cell_legible {{ shippingMethod.description_buyer }}
         tr.crud__row
           td(colspan="5")
             form.crud__form(action="")
@@ -58,42 +67,47 @@
 
 <script>
 import shippingAPI from '@/api/shippingMethod'
-// import Vue from 'vue'
 import EditShippingMethods from '@/components/EditShippingMethods'
+import UserAvatar from '@/components/UserAvatar'
 
 export default {
   props: ['shipping', 'active'],
   name: 'ShippingMethods',
   components: {
-    EditShippingMethods
+    EditShippingMethods,
+    UserAvatar
   },
   data () {
     return {
       shippingMethods: [],
       selectedShipping: {},
+      totalPages: null,
+      totalItems: null,
       page: 1,
       items: 10,
       filter: {},
       order: '-id',
-      editActive: false,
-      totalPages: null
+      editActive: false
     }
   },
   methods: {
-    updateShippingList: function () {
-      shippingAPI.getShippings(this.page, this.items, this.filter, this.order)
+    updateList: function () {
+      shippingAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
           this.shippingMethods = response.data.data
         })
     },
-    nextPage: function () {
-      this.page += 1
-      this.updateShippingList()
-      console.log(this.users)
+    onPageChanged: function (direction) {
+      if (direction === 'next') {
+        this.page += 1
+      } else {
+        if (this.page > 1) this.page -= 1
+      }
+      this.updateList()
     },
-    prevPage: function () {
-      if (this.page > 1) this.page -= 1
-      this.updateShippingList()
+    onItemsChanged: function (items) {
+      this.items = items
+      this.updateList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -104,8 +118,10 @@ export default {
     }
   },
   created: function () {
-    shippingAPI.getShippings(this.page, this.items, this.filter)
+    shippingAPI.get(this.page, this.items, this.filter)
       .then(response => {
+        this.totalItems = response.data.total
+        this.totalPages = response.data.last_page
         this.shippingMethods = response.data.data
       })
   }

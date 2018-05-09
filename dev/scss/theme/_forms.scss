@@ -492,12 +492,14 @@ select {
 \*------------------------------------*/
 .toggle-select {
   margin-top: -12px;
+  cursor: pointer;
 }
 
 .toggle-select__list {
-  list-style: none;
   margin: 0 0 12px 0;
   padding: 4px 8px;
+  list-style: none;
+  cursor: pointer;
   border-bottom: 1px solid $c-default-2;
   border-left: 1px solid $c-default-2;
   border-right: 1px solid $c-default-2;
@@ -766,6 +768,26 @@ select {
   width: 100%;
 }
 
+.form__approved {
+  text-align: center;
+  .form__label_check {
+    height: 14px;
+    margin-right: 10px;
+  }
+}
+
+.form__txt-approved {
+  display: block;
+}
+
+.form__rejected {
+  position: relative;
+}
+
+.form__btn-rejected {
+  margin: 10px;
+}
+
 // $bp-medium: 768px;
 @include media-query(medium) {
   .form__edit_txt {
@@ -820,6 +842,9 @@ select {
       flex-grow: 0;
       &:not(:last-child) {
         margin-right: 12px;
+      }
+      &.color {
+        flex-grow: 1;
       }
     }
   }
