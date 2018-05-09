@@ -81,6 +81,11 @@ export default {
           title: 'Tienda',
           items: [
             {
+              name: 'Slides',
+              url: '/sliders',
+              ico: 'i-upload'
+            },
+            {
               name: 'Banners',
               url: '/banners',
               ico: 'i-upload'

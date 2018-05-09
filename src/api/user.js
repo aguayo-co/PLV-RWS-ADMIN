@@ -5,7 +5,7 @@ import Vue from 'vue'
 
 export default {
 
-  getUsers: function (page, items, filter, orderBy) {
+  get: function (page, items, filter, orderBy) {
     let queryFilter = ''
     let queryOrder = ''
     page = page || 1

@@ -18,7 +18,7 @@
         option(value="Publicado") Publicado
         option(value="No disponible") No disponible
       a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text Se han encontrado 56 productos
+      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'banner' : 'banners' }}
       // Pager
       Pager(
         :currentPage="page",
@@ -99,6 +99,7 @@ export default {
       banners: [],
       selectedBanner: {},
       totalPages: null,
+      totalItems: null,
       page: 1,
       items: 10,
       filter: {},
@@ -108,8 +109,8 @@ export default {
     }
   },
   methods: {
-    updateBannerList: function () {
-      bannersAPI.getBanners(this.page, this.items, this.filter, this.order)
+    updateList: function () {
+      bannersAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
           this.banners = response.data.data
         })
@@ -120,11 +121,11 @@ export default {
       } else {
         if (this.page > 1) this.page -= 1
       }
-      this.updateBannerList()
+      this.updateList()
     },
     onItemsChanged: function (items) {
       this.items = items
-      this.updateBannerList()
+      this.updateList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -141,8 +142,9 @@ export default {
   created: function () {
     bannersAPI.getBanners(this.page, this.items, this.filter, this.order)
       .then(response => {
-        this.banners = response.data.data
+        this.totalItems = response.data.total
         this.totalPages = response.data.last_page
+        this.banners = response.data.data
       })
   }
 }

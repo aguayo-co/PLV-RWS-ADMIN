@@ -18,23 +18,13 @@
         option(value="Publicado") Publicado
         option(value="No disponible") No disponible
       a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text Se han encontrado 56 productos
-      ul.pagination
-        li.pagination__select
-          select.form__select.form__select_small(
-          name="numeroItems",
-          v-model='items',
-          @change='updateBrandList')
-            option(value="10") 10
-            option(value="20") 20
-            option(value="30") 30
-            option(value="50") 50
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_prev.i-back(@click.prevent='prevPage', href="#")
-        li.pagination__item 1
-        li.pagination__item.pagination__item_txt de 3
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_next.i-next(@click.prevent='nextPage', href="#")
+      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'marca' : 'marcas' }}
+      // Paginador
+      Pager(
+        :currentPage="page",
+        :totalPages="totalPages",
+        @pageChanged="onPageChanged",
+        @itemsChanged="onItemsChanged")
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
@@ -84,7 +74,7 @@
 
 <script>
 import brandsAPI from '@/api/brand'
-// import Vue from 'vue'
+import Pager from '@/components/Pager'
 import EditBrand from '@/components/EditBrand'
 import UserAvatar from '@/components/UserAvatar'
 
@@ -92,6 +82,7 @@ export default {
   props: ['brand', 'active'],
   name: 'Brands',
   components: {
+    Pager,
     EditBrand,
     UserAvatar
   },
@@ -99,29 +90,33 @@ export default {
     return {
       brands: [],
       selectedBrand: {},
+      totalPages: null,
+      totalItems: null,
       page: 1,
       items: 10,
       filter: {},
       order: '-id',
-      editActive: false,
-      totalPages: null
+      editActive: false
     }
   },
   methods: {
-    updateBrandList: function () {
-      brandsAPI.getBrand(this.page, this.items, this.filter, this.order)
+    updateList: function () {
+      brandsAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
           this.brands = response.data.data
         })
     },
-    nextPage: function () {
-      this.page += 1
-      this.updateBrandList()
-      console.log(this.users)
+    onPageChanged: function (direction) {
+      if (direction === 'next') {
+        this.page += 1
+      } else {
+        if (this.page > 1) this.page -= 1
+      }
+      this.updateList()
     },
-    prevPage: function () {
-      if (this.page > 1) this.page -= 1
-      this.updateBrandList()
+    onItemsChanged: function (items) {
+      this.items = items
+      this.updateList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -132,8 +127,10 @@ export default {
     }
   },
   created: function () {
-    brandsAPI.getBrands(this.page, this.items, this.filter)
+    brandsAPI.get(this.page, this.items, this.filter)
       .then(response => {
+        this.totalPages = response.data.last_page
+        this.totalItems = response.data.total
         this.brands = response.data.data
       })
   }
