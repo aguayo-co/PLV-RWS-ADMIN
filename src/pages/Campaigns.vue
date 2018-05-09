@@ -29,7 +29,7 @@
     table.crud.crud_wide
       thead.crud__head
         tr
-          th.crud__title.crud__cell_10
+          th.crud__title.crud__cell_check
               input.form__input-check(
                 type="checkbox",
                 id="all"
@@ -38,13 +38,13 @@
               label.form__label_check.i-ok(
                 for="all")
           th.crud__title.crud__cell_30 Nombre
-          th.crud__title.crud__cell_30 Fecha de creación
-          th.crud__title.crud__cell_30 Fecha de actualización
+          th.crud__title Fecha de creación
+          th.crud__title Fecha de actualización
       tbody.crud__tbody
         tr.crud__row.crud__row_open(
           @click="loadCampaign(index)",
           v-for="(campaign, index) in campaigns")
-          td.crud__cell.crud__cell_10
+          td.crud__cell
             input.form__input-check(
               type="checkbox",
               :id="'item' + index",
@@ -52,9 +52,9 @@
               :value="index")
             label.form__label_check.i-ok(
               :for="'campaign' + index")
-          td.crud__cell.crud__cell_30 {{ campaign.name }}
-          td.crud__cell.crud__cell_30 {{ campaign.created_at }}
-          td.crud__cell.crud__cell_30 {{ campaign.updated_at }}
+          td.crud__cell {{ campaign.name }}
+          td.crud__cell {{ campaign.created_at | moment("D [de] MMM YY") }}
+          td.crud__cell {{ campaign.updated_at | moment("D [de] MMM YY") }}
         tr.crud__row
           td(colspan="5")
             form.crud__form(action="")
