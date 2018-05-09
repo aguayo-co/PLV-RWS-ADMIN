@@ -140,7 +140,7 @@ export default {
     }
   },
   created: function () {
-    bannersAPI.getBanners(this.page, this.items, this.filter, this.order)
+    bannersAPI.get(this.page, this.items, this.filter, this.order)
       .then(response => {
         this.totalItems = response.data.total
         this.totalPages = response.data.last_page

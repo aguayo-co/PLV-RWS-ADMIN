@@ -20,5 +20,12 @@ export default {
   update: function (data) {
     const updateData = {...data}
     return Vue.axiosAuth.patch('/api/groups/' + data.slug, updateData)
+  },
+  create: function (data) {
+    var formData = new FormData()
+    Object.keys(data).forEach((key) => {
+      formData.append(key, data[key])
+    })
+    return Vue.axiosAuth.post('/api/groups/', formData)
   }
 }

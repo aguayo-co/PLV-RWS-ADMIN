@@ -6,25 +6,25 @@
     .edit__slide(
       v-show="active == true")
       h3.slide__header.i-close(
-        @click.stop="$emit('closeEdit')") Editar color
+        @click.stop="$emit('closeEdit')") {{ selectedGroup.id ? 'Editar grupo' : 'Crear grupo' }}
       form.slide__form
-        .form__row
+        .form__row(v-if="selectedGroup.id")
           label.form__label(
             for="id-group") Id
           p(v-model="selectedGroup.name") {{ selectedGroup.id }}
         .form__row
           label.form__label(
-            for="color-name") Nombre
+            for="group-name") Nombre
           input.form__control(
-            id="color-name",
+            id="group-name",
             v-model="selectedGroup.name",
             type="text")
-        .form__row
+        .form__row(v-if="!selectedGroup.id")
           label.form__label(
-            for="color-id") Código hexadecimal
+            for="group-name") Ruta
           input.form__control(
-            id="color-id",
-            v-model="selectedGroup.hex_code",
+            id="group-name",
+            v-model="selectedGroup.slug",
             type="text")
         .form__row.form__row_away
           button.btn.btn_solid.btn_block(@click.prevent="save") Guardar
@@ -34,24 +34,41 @@
 
 import Vue from 'vue'
 import Croppa from 'vue-croppa'
-import colorsAPI from '@/api/color'
+import groupsAPI from '@/api/group'
 Vue.component('croppa', Croppa.component)
 
 export default {
   props: ['group', 'active'],
   name: 'EditGroup',
-  computed: {
-    selectedGroup: function () {
-      return this.group
-    }
-  },
   methods: {
     save: function () {
-      colorsAPI.update(this.selectedGroup)
+      // If banner has id we are updating else creating
+      this.selectedGroup.id ? this.update() : this.create()
+    },
+    create: function () {
+      let newGroup = this.selectedGroup
+      groupsAPI.create(newGroup)
+        .then(response => {
+          console.log('Grupo creado')
+          this.$emit('closeEdit')
+          this.$emit('updateItems')
+          console.log('Tabla actualizada')
+        })
+    },
+    update: function () {
+      groupsAPI.update(this.selectedGroup)
         .then(response => {
           console.log('Ok')
           this.$emit('closeEdit')
         })
+    }
+  },
+  computed: {
+    selectedGroup: function () {
+      return this.group
+    },
+    editActive: function () {
+      return this.active
     }
   }
 

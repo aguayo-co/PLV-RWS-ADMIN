@@ -11,7 +11,8 @@
     EditGroup(
       :group="selectedGroup",
       :active="editActive",
-      @closeEdit="slideEdit")
+      @closeEdit="slideEdit",
+      @updateItems="updateList")
     nav.nav
       select.form__select(name="acciones en lote")
         option(value="Acciones en lote") Acciones en lote
@@ -27,6 +28,9 @@
         :totalPages="totalPages",
         @pageChanged="onPageChanged",
         @itemsChanged="onItemsChanged")
+    ul.content-actions
+      li
+        button.btn.btn_solid.btn_auto.i-plus(@click="create") Crear grupo
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
@@ -54,8 +58,8 @@
               :value="index")
             label.form__label_check.i-ok(:for="'item' + index")
           td.crud__cell.crud__cell_30 {{ group.name}}
-          td.crud__cell.crud__cell_30 {{ group.created_at }}
-          td.crud__cell.crud__cell_30 {{ group.updated_at }}
+          td.crud__cell.crud__cell_30 {{ group.created_at | moment("D [de] MMM YY") }}
+          td.crud__cell.crud__cell_30 {{ group.updated_at | moment("D [de] MMM YY") }}
         tr.crud__row
           td(colspan="5")
             form.crud__form(action="")
@@ -80,7 +84,7 @@ import EditGroup from '@/components/EditGroup'
 import UserAvatar from '@/components/UserAvatar'
 
 export default {
-  props: ['group', 'active'],
+  // props: ['group', 'active'],
   name: 'Groups',
   components: {
     Pager,
@@ -100,7 +104,12 @@ export default {
       editActive: false
     }
   },
+
   methods: {
+    create: function () {
+      this.selectedGroup = {}
+      this.slideEdit()
+    },
     updateList: function () {
       groupsAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {

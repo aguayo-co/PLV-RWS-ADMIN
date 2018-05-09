@@ -74,6 +74,11 @@ export default {
               name: 'Solitudes de créditos',
               url: '#',
               ico: 'i-sell'
+            },
+            {
+              name: 'Grupos',
+              url: '/groups',
+              ico: 'i-start'
             }
           ]
         },
