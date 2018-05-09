@@ -25,6 +25,10 @@
         :totalPages="totalPages",
         @pageChanged="onPageChanged",
         @itemsChanged="onItemsChanged")
+    //Crear item de categoria
+    ul.content-actions
+      li
+        button.btn.btn_solid.btn_auto.i-plus(@click="create") Crear item de categoria
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
@@ -33,7 +37,7 @@
               input#all.form__input-check(type="checkbox", name="all", value="selectAll")
               label.form__label_check.i-ok(for="all")
           th.crud__title.crud__cell_22 Categoria
-          th.crud__title.crud__cell_22 Ruta
+          th.crud__title.crud__cell_22 Url
           th.crud__title.crud__cell_22 Creación
           th.crud__title.crud__cell_22 Modificación
       tbody.crud__tbody
@@ -136,7 +140,11 @@ export default {
       console.log('ok')
     },
     loadCategory: function (index) {
-      this.selectedCategory = this.categories.children[index].children
+      this.selectedCategory = this.categories.children[index]
+      this.slideEdit()
+    },
+    create: function () {
+      this.selectedCategory = {}
       this.slideEdit()
     }
   },
