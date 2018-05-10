@@ -147,7 +147,7 @@ export default {
             },
             {
               name: 'Menús',
-              url: '#',
+              url: '/menu-items',
               ico: 'i-filter'
             },
             {
