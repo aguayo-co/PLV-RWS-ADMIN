@@ -5,13 +5,14 @@
       .data-header__item
         form.search(action='', method='GET')
           .search__row
-            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en Tallas')
+            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en Menús')
             input.search__btn(type='submit', value='')
         UserAvatar
     EditMenuItems(
       :menu="selectedMenu",
       :active="editActive",
-      @closeEdit="slideEdit")
+      @closeEdit="slideEdit",
+      @updateItems="updateList")
     nav.nav
       select.form__select(name="acciones en lote")
         option(value="Acciones en lote") Acciones en lote
@@ -55,7 +56,7 @@
                   label.form__label_check.i-ok(
                     for="all")
                 th.crud__cell.crud__cell_30.crud__row_open(@click="loadMenu(index)") {{ parent.name }}
-                th.crud__cell.crud__cell_22(v-if="parent.slug") {{ '/' + parent.slug }}
+                th.crud__cell.crud__cell_22(v-if="parent.slug") {{ parent.slug }}
                 th.crud__cell.crud__cell_22(v-else) &nbsp;
                 th.crud__cell.crud__cell_22 {{ parent.created_at | moment("D [de] MMM YY") }}
                 th.crud__cell.crud__cell_22 {{ parent.updated_at | moment("D [de] MMM YY") }}
@@ -145,13 +146,12 @@ export default {
       items: 10,
       filter: {},
       order: '-id',
-      editActive: false,
-      theCategories: {}
+      editActive: false
     }
   },
   methods: {
     updateList: function () {
-      menuItemsAPI.get(this.page, this.items, this.filter, this.order)
+      menuItemsAPI.getAll(this.page, this.items, this.filter, this.order)
         .then(response => {
           this.categories = response.data.data
         })
@@ -182,6 +182,7 @@ export default {
         .then(response => {
           this.selectedMenu = response.data
         })
+      console.log(this.selectedMenu)
       this.slideEdit()
     },
     create: function () {

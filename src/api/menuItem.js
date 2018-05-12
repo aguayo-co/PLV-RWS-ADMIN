@@ -21,15 +21,29 @@ export default {
     console.log('/api/menu_items/' + item)
     return Vue.axios.get('/api/menu_items/' + item)
   },
+  getItems: function () {
+    console.log('/api/menu_items/')
+    return Vue.axios.get('/api/menu_items/')
+  },
   update: function (data) {
-    const updateData = {...data}
+    const updateData = {
+      id: data.id,
+      name: data.name,
+      url: data.url
+    }
     return Vue.axiosAuth.patch('/api/menu_items/' + data.id, updateData)
   },
   create: function (data) {
-    var formData = new FormData()
-    Object.keys(data).forEach((key) => {
-      formData.append(key, data[key])
-    })
-    return Vue.axiosAuth.post('/api/menus/', formData)
+    if (data.parent_id) {
+      // const formData = {
+      //   parent_id: data.menu_id,
+      //   name: data.name,
+      //   url: data.url
+      // }
+      delete data.menu_id
+      return Vue.axiosAuth.post('/api/menu_items/', data)
+    } else {
+      return Vue.axiosAuth.post('/api/menus/', data)
+    }
   }
 }
