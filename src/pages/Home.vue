@@ -92,7 +92,6 @@ export default {
       }
       userAPI.login(payload)
         .then(response => {
-          console.log(response.data)
           localStorage.setItem('token', response.data.api_token)
           localStorage.setItem('userId', response.data.id)
 
@@ -126,6 +125,9 @@ export default {
           this.$store.dispatch('ui/loginAttempt')
         })
     }
+  },
+  created: function () {
+    this.$store.dispatch('user/loadUser')
   }
 }
 </script>

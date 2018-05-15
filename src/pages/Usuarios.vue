@@ -10,6 +10,7 @@
         UserAvatar
 
     EditUser(
+      :groups="groups",
       :user="selectedUser",
       :active="editActive",
       @closeEdit="slideEdit")
@@ -84,8 +85,8 @@
           td.crud__cell {{ user.email }}
           td.crud__cell {{ user.phone }}
           td.crud__cell
-            ul(v-if='user.groups')
-              li(v-for='group in user.groups') {{ group.name }}
+            ul(v-if='user.group_ids.length > 0')
+              li(v-for='group_id in user.group_ids') {{ groups.filter(x => x.id === group_id)[0].name }}
           td.crud__cell
             ul(v-if='user.roles')
               li(v-for='role in user.roles') {{ role.name }}
@@ -115,6 +116,7 @@
 <script>
 
 import usersAPI from '@/api/user'
+import groupsAPI from '@/api/group'
 import Vue from 'vue'
 import Croppa from 'vue-croppa'
 import Pager from '@/components/Pager'
@@ -142,7 +144,8 @@ export default {
       order: '-id',
       editActive: false,
       picture: null,
-      cover: null
+      cover: null,
+      groups: []
     }
   },
   methods: {
@@ -178,6 +181,10 @@ export default {
         this.totalPages = response.data.last_page
         this.totalItems = response.data.total
         this.users = response.data.data
+      })
+    groupsAPI.get()
+      .then(response => {
+        this.groups = response.data.data
       })
   }
 
