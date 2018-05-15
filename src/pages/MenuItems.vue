@@ -1,52 +1,18 @@
 <template lang="pug">
-  .content-data.content-data_wide
+  .content-data
     header.data-header
       h2.data-header__title.title Menús
       .data-header__item
         form.search(action='', method='GET')
           .search__row
-            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en banners')
+            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en Menús')
             input.search__btn(type='submit', value='')
         UserAvatar
-      .admin__edit(
-        :class="{ 'admin__edit_open': editActive == true }")
-        transition(name='slide-right')
-          .edit__slide(
-            v-show="editActive == true")
-            //- .btn_close.modal__btn_close.i-x(
-            //-   @click.stop="slideEdit")
-            //-   span Cerrar
-            //- h3.title Editar usuario
-            h3.slide__header.i-close(
-              @click.stop="slideEdit") Editar banner
-            form.slide__form
-              .form__row
-                label.form__label(
-                  for="user-name") Nombre
-                input.form__control(
-                  v-model="selectedItem.name",
-                  id="user-name",
-                  type="text")
-              .form__row
-                label.form__label(
-                  for="user-lastname") Url
-                input.form__control(
-                  v-model="selectedItem.url",
-                  id="user-lastname",
-                  type="text")
-              //-select form
-              //- .form__row
-                label.form__label(
-                  for="select") Select
-                select.form__select.form__select_big(
-                  name="select",
-                  id="select")
-                  option(value="1") Item
-                  option(value="2") Item
-                  option(value="3") Item
-                  option(value="4") Item
-              .form__row.form__row_away
-                button.btn.btn_solid.btn_block Guardar
+    EditMenuItems(
+      :menu="selectedMenu",
+      :active="editActive",
+      @closeEdit="slideEdit",
+      @updateItems="updateList")
     nav.nav
       select.form__select(name="acciones en lote")
         option(value="Acciones en lote") Acciones en lote
@@ -54,61 +20,92 @@
         option(value="No disponible") No disponible
       a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
       p.nav__text Se han encontrado 56 productos
-      ul.pagination
-        li.pagination__select
-          select.form__select.form__select_small(
-          name="numeroItems",
-          v-model='items',
-          @change='updateMenuItemsList')
-            option(value="10") 10
-            option(value="20") 20
-            option(value="30") 30
-            option(value="50") 50
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_prev.i-back(@click.prevent='prevPage', href="#")
-        li.pagination__item 1
-        li.pagination__item.pagination__item_txt de 3
-        li.pagination__item
-          a.pagination__arrow.pagination__arrow_next.i-next(@click.prevent='nextPage', href="#")
+      // Pager
+      Pager(
+        :currentPage="page",
+        :totalPages="totalPages",
+        @pageChanged="onPageChanged",
+        @itemsChanged="onItemsChanged")
+    //Crear item de categoria
+    ul.content-actions
+      li
+        button.btn.btn_solid.btn_auto.i-plus(@click="create") Crear item de categoria
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
         tr
-          th.crud__th
-            td.crud__title
-              input.form__input-check(
-                type="checkbox",
-                id="all"
-                name="all",
-                value="selectAll")
-              label.form__label_check.i-ok(
-                for="all")
-          th.crud__th
-            td.crud__title Nombre
-          th.crud__th
-            td.crud__title Url
-          th.crud__th
-            td.crud__title Ícono
-          th.crud__th
-            td.crud__title Padre
+          th.crud__title.crud__cell.crud__cell_check
+              input#all.form__input-check(type="checkbox", name="all", value="selectAll")
+              label.form__label_check.i-ok(for="all")
+          th.crud__title.crud__cell_30 Categoria
+          th.crud__title.crud__cell_22 Url
+          th.crud__title.crud__cell_22 Creación
+          th.crud__title.crud__cell_22 Modificación
       tbody.crud__tbody
-        tr.crud__row.crud__row_open(
-          @click="loadItem(index)",
-          v-for="(item, index) in menuItems")
-          td.crud__cell
-            input.form__input-check(
-              type="checkbox",
-              :id="'item' + index",
-              :name="'item' + index",
-              :value="index")
-            label.form__label_check.i-ok(
-              :for="'item' + index")
-          td.crud__cell {{ item.name }}
-          td.crud__cell {{ item.url }}
-          td.crud__cell {{ item.icon }}
-          td.crud__cell {{ item.parent_id }}
-        tr
-          td(colspan="12")
+        tr.crud__row
+          td(colspan="5")
+            table.crud(
+              v-for="(parent, index) in menus")
+              tr.crud__row
+                th.crud__cell.crud__cell_check
+                  input.form__input-check(
+                    type="checkbox",
+                    id="all"
+                    name="all",
+                    value="selectAll")
+                  label.form__label_check.i-ok(
+                    for="all")
+                th.crud__cell.crud__cell_30.crud__row_open(@click="loadMenu(index)") {{ parent.name }}
+                th.crud__cell.crud__cell_22(v-if="parent.slug") {{ parent.slug }}
+                th.crud__cell.crud__cell_22(v-else) &nbsp;
+                th.crud__cell.crud__cell_22 {{ parent.created_at | moment("D [de] MMM YY") }}
+                th.crud__cell.crud__cell_22 {{ parent.updated_at | moment("D [de] MMM YY") }}
+              tbody.crud__tbody
+                tr.crud__row(
+                  v-for="(children, subIndex) in parent.items")
+                  td(colspan="5")
+                    table.crud
+                      thead.crud__tbody
+                        th.crud__cell
+                          input.form__input-check(
+                            type="checkbox",
+                            name="all",
+                            value="selectAll")
+                          label.form__label_check.i-ok
+                        th.crud__cell.crud__cell_30.crud__row_open(@click="loadMenuItem(children.id)") &nbsp;&nbsp;&nbsp; {{ '&#8735; ' + children.name }}
+                        th.crud__cell.crud__cell_22(v-if="children.url") {{ children.url }}
+                        th.crud__cell.crud__cell_22(v-else) &nbsp;
+                        th.crud__cell.crud__cell_22 {{ children.created_at | moment("D [de] MMM YY") }}
+                        th.crud__cell.crud__cell_22 {{ children.updated_at | moment("D [de] MMM YY") }}
+                      tbody
+                        tr(v-for="(item, index) in children.children")
+                          td(colspan="5")
+                            table.crud
+                              thead
+                                th.crud__cell
+                                  input.form__input-check(
+                                    type="checkbox",
+                                    name="all",
+                                    value="selectAll")
+                                  label.form__label_check.i-ok
+                                th.crud__cell.crud__cell_30.crud__row_open(@click="loadMenuItem(item.id)") &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ '&#8735; ' + item.name }}
+                                th.crud__cell.crud__cell_22 {{ item.url }}
+                                th.crud__cell.crud__cell_22 {{ item.created_at | moment("D [de] MMM YY") }}
+                                th.crud__cell.crud__cell_22 {{ item.updated_at | moment("D [de] MMM YY") }}
+                              tbody
+                                tr(v-for="(itemChildren, index) in item.children")
+                                  td.crud__cell
+                                    input.form__input-check(
+                                      type="checkbox",
+                                      name="all",
+                                      value="selectAll")
+                                    label.form__label_check.i-ok
+                                  td.crud__cell.crud__cell_30.crud__row_open(@click="loadMenuItem(itemChildren.id)") &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ '&#8735; ' + itemChildren.name }}
+                                  td.crud__cell.crud__cell_22 {{ itemChildren.url }}
+                                  td.crud__cell.crud__cell_22 {{ itemChildren.created_at | moment("D [de] MMM YY") }}
+                                  td.crud__cell.crud__cell_22 {{ itemChildren.updated_at | moment("D [de] MMM YY") }}
+        tr.crud__row
+          td(colspan="5")
             form.crud__form(action="")
               p.crud__legend Cambiar estado
               select.form__select
@@ -125,56 +122,80 @@
 </template>
 
 <script>
-
-import menusAPI from '@/api/menu'
+import menuItemsAPI from '@/api/menuItem'
+import Pager from '@/components/Pager'
+import EditMenuItems from '@/components/EditMenuItems'
 import UserAvatar from '@/components/UserAvatar'
 
 export default {
   name: 'MenuItems',
   components: {
-    UserAvatar
+    Pager,
+    UserAvatar,
+    EditMenuItems
   },
   data () {
     return {
-      menuItems: [],
-      selectedItem: {},
+      menus: [],
+      menuItem: {},
+      selectedMenu: {},
+      index: 0,
+      subIndex: 0,
+      totalPages: null,
       page: 1,
-      items: 20,
+      items: 10,
       filter: {},
       order: '-id',
       editActive: false
     }
   },
   methods: {
-    updateMenuItemsList: function () {
-      menusAPI.getMenus(this.page, this.items, this.filter, this.order)
+    updateList: function () {
+      menuItemsAPI.getAll(this.page, this.items, this.filter, this.order)
         .then(response => {
-          this.menuItems = response.data.data
+          this.categories = response.data.data
         })
     },
-    nextPage: function () {
-      this.page += 1
-      this.updateMenuItemsList()
-      console.log(this.users)
+    onPageChanged: function (direction) {
+      if (direction === 'next' && this.page < this.totalPages) {
+        this.page += 1
+      } else if (direction === 'prev' && this.page > 1) {
+        this.page -= 1
+      }
+      this.updateList()
     },
-    prevPage: function () {
-      if (this.page > 1) this.page -= 1
-      this.updateMenuItemsList()
+    onItemsChanged: function (items) {
+      this.items = items
+      this.updateList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
+      console.log('ok')
     },
-    loadItem: function (index) {
-      this.selectedItem = this.menuItems[index]
+    loadMenu: function (index) {
+      console.log('index: ' + index)
+      this.selectedMenu = this.menus[index]
+      this.slideEdit()
+    },
+    loadMenuItem: function (itemId) {
+      menuItemsAPI.get(itemId)
+        .then(response => {
+          this.selectedMenu = response.data
+        })
+      console.log(this.selectedMenu)
+      this.slideEdit()
+    },
+    create: function () {
+      this.selectedMenu = {}
       this.slideEdit()
     }
   },
   created: function () {
-    menusAPI.getMenus(this.page, this.items, this.filter, this.order)
+    menuItemsAPI.getAll()
       .then(response => {
-        this.menuItems = response.data.data
+        this.menus = response.data.data
       })
   }
-
 }
+
 </script>

@@ -59,6 +59,11 @@ export default {
               name: 'Reportes',
               url: '/user/data',
               ico: 'i-report'
+            },
+            {
+              name: 'Créditos transaccionales',
+              url: '/credit-transactions',
+              ico: 'i-credits'
             }
           ]
         },
@@ -74,6 +79,11 @@ export default {
               name: 'Solitudes de créditos',
               url: '#',
               ico: 'i-sell'
+            },
+            {
+              name: 'Grupos',
+              url: '/groups',
+              ico: 'i-start'
             }
           ]
         },
@@ -99,6 +109,11 @@ export default {
               name: 'Marcas',
               url: '/marcas',
               ico: 'i-edit-line'
+            },
+            {
+              name: 'Condiciones',
+              url: '/conditions',
+              ico: 'i-tag'
             },
             {
               name: 'Carousel Principal',
@@ -132,7 +147,7 @@ export default {
             },
             {
               name: 'Menús',
-              url: '#',
+              url: '/menu-items',
               ico: 'i-filter'
             },
             {
