@@ -118,7 +118,7 @@ const mutations = {
         window.localStorage.setItem('userId', user.id)
       }
     } else {
-      this.commit('clear')
+      this.commit('user/clear')
     }
   },
   setAddresses: function (state, addresses) {
