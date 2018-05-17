@@ -166,7 +166,7 @@ export default {
     }
   },
   created: function () {
-    productAPI.get(this.page, this.items, this.filter)
+    productAPI.get(this.page, this.items, this.filter, this.order)
       .then(response => {
         this.totalItems = response.data.total
         this.totalPages = response.data.last_page
