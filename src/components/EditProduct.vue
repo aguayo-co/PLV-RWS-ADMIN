@@ -37,11 +37,7 @@
             type="text")
         .form__row(v-if="selectedProduct.brand")
           label.form__label(
-            for="product-brand") Marca
-          input.form__control(
-            v-model="selectedProduct.brand.name",
-            id="product-brand",
-            type="text")
+            for="product-brand") Marca: {{ selectedProduct.brand.name }}
         .form__row
           label.form__label(
             for="product-originalPrice") Precio original
@@ -63,16 +59,9 @@
             id="product-commission",
             v-model="selectedProduct.commission",
             type="text")
-        .form__row(v-if="selectedProduct.user")
-          label.form__label(
-            for="product-user") Usuaria
-          input.form__control(
-            v-model="selectedProduct.user.first_name",
-            id="product-user",
-            type="text")
         .form__row
-          label.form__label Estado del producto: {{ selectedProduct.state | status_code }}
-        .form__row
+          label.form__label Estado del producto: {{ selectedProduct.status | status_code }}
+        .form__row(v-if="enabledStateChange")
           label.form__label(
             for='state') Cambiar estado
           select.form__select(
@@ -84,7 +73,7 @@
                 v-for='state in availableStates'
                 :value='state.id'
               ) {{ state.name }}
-        .form__row
+        .form__row(v-if="enabledStateChange")
           .form__label Añadir una nota para el cambio
           input.form__control(
             v-model="selectedProduct.admin_notes",
@@ -123,7 +112,7 @@ export default {
       return this.product
     },
     availableStates () {
-      if (this.selectedProduct.status === 0) {
+      if (this.status === 0) {
         const states = [
           { id: 0, name: 'No publicado' },
           { id: 1, name: 'Rechazado' },
@@ -131,23 +120,30 @@ export default {
         ]
         return states
       }
-      if (this.selectedProduct.status === 19) {
+      if (this.status === 19) {
         const states = [
           { id: 2, name: 'Oculto' },
           { id: 19, name: 'Disponible' }
         ]
         return states
       }
-      if (this.selectedProduct.status === 10) {
+      if (this.status === 10) {
         const states = [
           { id: 2, name: 'Oculto' },
           { id: 10, name: 'Disponible' }
         ]
         return states
       }
+      if (this.status === 1) {
+        const states = [
+          { id: 1, name: 'Rechazado' },
+          { id: 10, name: 'Aprobado' }
+        ]
+        return states
+      }
     },
     enabledStateChange () {
-      if (this.selectedProduct.status <= 20) return true
+      if (this.status <= 20) return true
       return false
     }
   },
