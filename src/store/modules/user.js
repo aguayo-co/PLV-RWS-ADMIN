@@ -9,20 +9,8 @@ const baseUserGenerator = () => {
     email: null,
     first_name: null,
     last_name: null,
-    about: null,
-    cover: null,
-    credits: null,
     picture: null,
-    phone: null,
-    favorite_address_id: null,
-    purchased_products_count: null,
-    published_products_count: null,
-    sold_products_count: null,
-    followers_count: null,
-    following_count: null,
-    roles: [],
-    groups: [],
-    shipping_methods: []
+    roles: []
   }
 }
 
@@ -34,13 +22,12 @@ const baseStateGenerator = () => {
 }
 
 const getters = {
-  full_name: state => state.first_name + ' ' + state.last_name,
   roles: state => state.roles,
   id: state => state.id
 }
 
 const actions = {
-  loadUser ({commit, dispatch}) {
+  loadUser ({ commit, dispatch }) {
     const userId = window.localStorage.getItem('userId')
     if (!userId) {
       return
@@ -55,71 +42,63 @@ const actions = {
         console.log('No autenticado')
       })
   },
-  loadAddresses ({commit, state}) {
+  loadAddresses ({ commit, state }) {
     return userAddressesAPI.load(state.id).then(response => {
       commit('setAddresses', response.data.data)
       return response
     })
   },
-  update ({commit, state}, data) {
+  update ({ commit, state }, data) {
     data.id = state.id
     return userAPI.update(data).then(response => {
       commit('set', response.data)
       return response
     })
   },
-  updateWithFile ({commit, state}, data) {
+  updateWithFile ({ commit, state }, data) {
     data.id = state.id
     return userAPI.updateWithFile(data).then(response => {
       commit('set', response.data)
       return response
     })
   },
-  createAddress ({commit, state}, data) {
+  createAddress ({ commit, state }, data) {
     data.user_id = state.id
     return userAddressesAPI.create(data).then(response => {
       commit('setAddress', response.data)
       return response
     })
   },
-  updateAddress ({commit, state}, data) {
+  updateAddress ({ commit, state }, data) {
     data.user_id = state.id
     return userAddressesAPI.update(data).then(response => {
       commit('setAddress', response.data)
       return response
     })
   },
-  deleteAddress ({commit, state}, data) {
+  deleteAddress ({ commit, state }, data) {
     data.user_id = state.id
     return userAddressesAPI.delete(data).then(response => {
       commit('removeAddress', data)
       return response
     })
   },
-  logOut ({commit}) {
+  logOut ({ commit }) {
     commit('clear')
   },
-  setUser ({commit, dispatch}, user) {
-    commit('set', user)
-    dispatch('loadAddresses')
+  setUser ({ commit, dispatch }, user) {
+    window.localStorage.setItem('token', user.api_token)
+    window.localStorage.setItem('userId', user.id)
+    dispatch('loadUser')
   }
 }
 
 const mutations = {
   set (state, user) {
-    const isAdmin = user.roles.filter(x => x.name === 'admin')[0]
-    if (isAdmin) {
-      const baseUser = baseUserGenerator()
-      Object.keys(baseUser).forEach((key) => {
-        state[key] = user[key]
-      })
-      if (user.api_token) {
-        window.localStorage.setItem('token', user.api_token)
-        window.localStorage.setItem('userId', user.id)
-      }
-    } else {
-      this.commit('user/clear')
-    }
+    const baseUser = baseUserGenerator()
+    Object.keys(baseUser).forEach((key) => {
+      state[key] = user[key]
+    })
   },
   setAddresses: function (state, addresses) {
     Object.keys(addresses).forEach(function (key) {
@@ -129,6 +108,9 @@ const mutations = {
   },
   setAddress: function (state, address) {
     Vue.set(state.addresses, address.id, address)
+  },
+  setNotifications: function (state, notifications) {
+    state.notifications = notifications.total
   },
   removeAddress: function (state, address) {
     Vue.delete(state.addresses, address.id)

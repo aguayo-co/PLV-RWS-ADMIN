@@ -4,9 +4,9 @@
       h2.data-header__title.title Productos
       //- .data-header__item(v-if="products[0]")
       .data-header__item
-        form.search(action='', method='GET')
+        form.search(action='', method='GET' @submit.prevent="search")
           .search__row
-            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en productos')
+            input#searchMain.search__input(v-model="query", type='text', name='search', placeholder='Buscar en productos')
             input.search__btn(type='submit', value='')
         UserAvatar
     EditProduct(
@@ -133,14 +133,18 @@ export default {
       items: 10,
       filter: {},
       order: '-id',
+      query: '',
       editActive: false,
       picture: null,
       cover: null
     }
   },
   methods: {
+    search: function () {
+      this.updateList()
+    },
     updateList: function () {
-      productAPI.get(this.page, this.items, this.filter)
+      productAPI.get(this.page, this.items, this.filter, this.order, this.query)
         .then(response => {
           this.products = response.data.data
         })

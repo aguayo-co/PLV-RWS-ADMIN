@@ -113,6 +113,7 @@ export default {
       bannersAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
           this.banners = response.data.data
+          this.totalPages = response.data.last_page
         })
     },
     onPageChanged: function (direction) {

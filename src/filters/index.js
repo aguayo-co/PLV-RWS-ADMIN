@@ -63,5 +63,15 @@ export default {
           return 'Deshabilitado'
       }
     })
+    Vue.filter('groups', function (value) {
+      switch (value) {
+        case 1:
+          return 'Prilover Star'
+        case 2:
+          return 'It Girls'
+        case 3:
+          return 'Prilovers We Love'
+      }
+    })
   }
 }
