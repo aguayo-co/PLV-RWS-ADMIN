@@ -11,7 +11,8 @@
     .modal__slot.content-slot
       .content-slot__inner
         .form-slot
-          h1.title Bienvenida al administrador de Prilov
+          h1.title Panel de administración de Prilov
+          p.form__info.i-alert-info(v-if="loginError") No podemos reconocer tu usuario y contraseña.
           form.form(
             v-on:submit='',
             action='#',
@@ -64,7 +65,8 @@ export default {
     return {
       email: '',
       password: '',
-      errorTexts: {}
+      errorTexts: {},
+      loginError: false
     }
   },
   methods: {
@@ -92,26 +94,14 @@ export default {
       }
       userAPI.login(payload)
         .then(response => {
-          localStorage.setItem('token', response.data.api_token)
-          localStorage.setItem('userId', response.data.id)
-
           this.$store.dispatch('user/setUser', response.data)
-          this.$router.push('/usuarias')
+          this.$router.push({ name: 'productos' })
         })
-        .catch(e => {
-          var modal
-
+        .catch((e) => {
           if (this.$store.getters['ui/loginAttempts'] < 3) {
-            modal = {
-              name: 'ModalMessage',
-              parameters: {
-                type: 'alert',
-                title: '¡Ups! Parece que ocurrió un error',
-                body: Object.values(e.response.data.errors)[0]
-              }
-            }
+            this.loginError = true
           } else {
-            modal = {
+            var modal = {
               name: 'ModalMessage',
               parameters: {
                 type: 'alert',
@@ -120,8 +110,8 @@ export default {
                 primaryButtonURL: 'password'
               }
             }
+            this.$store.dispatch('ui/showModal', modal)
           }
-          this.$store.dispatch('ui/showModal', modal)
           this.$store.dispatch('ui/loginAttempt')
         })
     }
