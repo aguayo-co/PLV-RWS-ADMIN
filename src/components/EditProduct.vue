@@ -71,60 +71,25 @@
             id="product-user",
             type="text")
         .form__row
-          .form__label Estado
-          input.form__input-radio(
-            id="estado-1",
-            type="radio",
-            name="estados",
-            value="0",
-            v-model.number="selectedProduct.status")
-          label.form__label_radio(
-            for="estado-1") Pendiente
+          label.form__label Estado del producto: {{ selectedProduct.state | status_code }}
         .form__row
-          input.form__input-radio(
-            id="estado-2",
-            type="radio",
-            name="estados",
-            value="1",
-            v-model.number="selectedProduct.status")
-          label.form__label_radio(
-            for="estado-2") Rechazado
+          label.form__label(
+            for='state') Cambiar estado
+          select.form__select(
+            ref='state'
+            id='state'
+            v-model='selectedProduct.status')
+            optgroup(label='Cambiar estado de producto')
+              option(
+                v-for='state in availableStates'
+                :value='state.id'
+              ) {{ state.name }}
         .form__row
-          input.form__input-radio(
-            id="estado-3",
-            type="radio",
-            name="estados",
-            value="10",
-            v-model.number="selectedProduct.status")
-          label.form__label_radio(
-            for="estado-3") Aprobado
-        .form__row
-          input.form__input-radio(
-            id="estado-4",
-            type="radio",
-            name="estados",
-            value="19",
-            v-model.number="selectedProduct.status")
-          label.form__label_radio(
-            for="estado-4") Disponible
-        .form__row
-          input.form__input-radio(
-            id="estado-5",
-            type="radio",
-            name="estados",
-            value="30",
-            v-model.number="selectedProduct.status")
-          label.form__label_radio(
-            for="estado-5") Vendido
-        .form__row
-          input.form__input-radio(
-            id="estado-6",
-            type="radio",
-            name="estados",
-            value="31",
-            v-model.number="selectedProduct.status")
-          label.form__label_radio(
-            for="estado-6") Deshabilitado
+          .form__label Añadir una nota para el cambio
+          input.form__control(
+            v-model="selectedProduct.admin_notes",
+            id="admin_notes",
+            type="text")
         .form__row.form__row_away
           button.btn.btn_solid.btn_block(@click.prevent="save") Guardar
 </template>
@@ -154,8 +119,36 @@ export default {
     }
   },
   computed: {
-    selectedProduct: function () {
+    selectedProduct () {
       return this.product
+    },
+    availableStates () {
+      if (this.selectedProduct.status === 0) {
+        const states = [
+          { id: 0, name: 'No publicado' },
+          { id: 1, name: 'Rechazado' },
+          { id: 10, name: 'Aprobado' }
+        ]
+        return states
+      }
+      if (this.selectedProduct.status === 19) {
+        const states = [
+          { id: 2, name: 'Oculto' },
+          { id: 19, name: 'Disponible' }
+        ]
+        return states
+      }
+      if (this.selectedProduct.status === 10) {
+        const states = [
+          { id: 2, name: 'Oculto' },
+          { id: 10, name: 'Disponible' }
+        ]
+        return states
+      }
+    },
+    enabledStateChange () {
+      if (this.selectedProduct.status <= 20) return true
+      return false
     }
   },
   methods: {
