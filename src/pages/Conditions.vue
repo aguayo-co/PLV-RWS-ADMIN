@@ -1,17 +1,18 @@
 <template lang="pug">
   .content-data
     header.data-header
-      h2.data-header__title.title Colores
+      h2.data-header__title.title Condiciones
       .data-header__item
         form.search(action='', method='GET')
           .search__row
-            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en Tallas')
+            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en condiciones')
             input.search__btn(type='submit', value='')
         UserAvatar
-    EditColor(
-      :color="selectedColor",
+    EditCondition(
+      :condition="selectedCondition",
       :active="editActive",
-      @closeEdit="slideEdit")
+      @closeEdit="slideEdit",
+      @updateItems="updateList")
     nav.nav
       select.form__select(name="acciones en lote")
         option(value="Acciones en lote") Acciones en lote
@@ -20,18 +21,21 @@
       a.nav__btn.i-filter_after(
         href="#",
         title="Filtrar") Filtrar
-      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'color' : 'colores' }}
+      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'condición' : 'condiciones' }}
       // Paginador
       Pager(
         :currentPage="page",
         :totalPages="totalPages",
         @pageChanged="onPageChanged",
         @itemsChanged="onItemsChanged")
+    ul.content-actions
+      li
+        button.btn.btn_solid.btn_auto.i-plus(@click="create") Crear condiciones
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
         tr
-          th.crud__title.crud__cell_check
+          th.crud__title.crud__cell_10
               input.form__input-check(
                 type="checkbox",
                 id="all"
@@ -39,26 +43,23 @@
                 value="selectAll")
               label.form__label_check.i-ok(
                 for="all")
-          th.crud__title Id
           th.crud__title.crud__cell_30 Nombre
-          th.crud__title Codigo Hexadecimal
+          th.crud__title.crud__cell_30 Fecha de creación
+          th.crud__title.crud__cell_30 Fecha de modificación
       tbody.crud__tbody
         tr.crud__row.crud__row_open(
-          @click="loadColor(index)",
-          v-for="(color, index) in colors")
-          td.crud__cell
+          @click="loadGroup(index)",
+          v-for="(group, index) in conditions")
+          td.crud__cell.crud__cell_10
             input.form__input-check(
               type="checkbox",
               :id="'item' + index",
               :name="'item' + index",
               :value="index")
             label.form__label_check.i-ok(:for="'item' + index")
-          td.crud__cell {{ color.id }}
-          td.crud__cell {{ color.name }}
-          td.crud__cell
-            span.color-circlespan.color-circle(
-              :style='{ backgroundColor: color.hex_code }')
-            span {{ color.hex_code }}
+          td.crud__cell.crud__cell_30 {{ group.name}}
+          td.crud__cell.crud__cell_30 {{ group.created_at | moment("D [de] MMM YY") }}
+          td.crud__cell.crud__cell_30 {{ group.updated_at | moment("D [de] MMM YY") }}
         tr.crud__row
           td(colspan="5")
             form.crud__form(action="")
@@ -77,23 +78,22 @@
 </template>
 
 <script>
-import colorsAPI from '@/api/color'
+import conditionsAPI from '@/api/condition'
 import Pager from '@/components/Pager'
-import EditColor from '@/components/EditColor'
+import EditCondition from '@/components/EditCondition'
 import UserAvatar from '@/components/UserAvatar'
 
 export default {
-  props: ['color', 'active'],
-  name: 'Colors',
+  name: 'Conditions',
   components: {
     Pager,
-    EditColor,
+    EditCondition,
     UserAvatar
   },
   data () {
     return {
-      colors: [],
-      selectedColor: {},
+      conditions: [],
+      selectedCondition: {},
       totalPages: null,
       totalItems: null,
       page: 1,
@@ -104,10 +104,14 @@ export default {
     }
   },
   methods: {
+    create: function () {
+      this.selectedCondition = {}
+      this.slideEdit()
+    },
     updateList: function () {
-      colorsAPI.get(this.page, this.items, this.filter, this.order)
+      conditionsAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
-          this.colors = response.data.data
+          this.conditions = response.data.data
         })
     },
     onPageChanged: function (direction) {
@@ -125,17 +129,17 @@ export default {
     slideEdit: function () {
       this.editActive = !this.editActive
     },
-    loadColor: function (index) {
-      this.selectedColor = this.colors[index]
+    loadGroup: function (index) {
+      this.selectedCondition = this.conditions[index]
       this.slideEdit()
     }
   },
   created: function () {
-    colorsAPI.get(this.page, this.items, this.filter)
+    conditionsAPI.get(this.page, this.items, this.filter)
       .then(response => {
         this.totalItems = response.data.total
         this.totalPages = response.data.last_page
-        this.colors = response.data.data
+        this.conditions = response.data.data
       })
   }
 

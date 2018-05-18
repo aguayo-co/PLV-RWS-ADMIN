@@ -72,7 +72,7 @@
             type="tel")
         .form__row
           .form__label Grupos
-          .row(v-for="group in this.groups")
+          .row(v-for="group in groups")
             input.form__input-check(
               v-model="selectedUser.group_ids"
               :id="'group-' + group.id",
@@ -105,13 +105,12 @@ const userFields = {
 }
 
 export default {
-  props: ['user', 'active'],
+  props: ['user', 'active', 'groups'],
   name: 'EditUser',
   data () {
     return {
       picture: null,
       cover: null,
-      groups: [],
       toggleImageDelete: true,
       imageChanged: false
     }
@@ -122,9 +121,6 @@ export default {
     },
     rol: function () {
       return this.user.roles
-    },
-    group: function () {
-      return this.user.groups
     }
   },
   methods: {
@@ -162,13 +158,6 @@ export default {
     addImage: function () {
       this.toggleImageDelete = true
     }
-  },
-  created: function () {
-    usersAPI.getUserGroups()
-      .then(response => {
-        this.groups = response.data.data
-      })
   }
-
 }
 </script>

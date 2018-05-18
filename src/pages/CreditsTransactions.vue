@@ -1,17 +1,13 @@
 <template lang="pug">
   .content-data
     header.data-header
-      h2.data-header__title.title Colores
+      h2.data-header__title.title Créditos transaccionales
       .data-header__item
         form.search(action='', method='GET')
           .search__row
-            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en Tallas')
+            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en créditos')
             input.search__btn(type='submit', value='')
         UserAvatar
-    EditColor(
-      :color="selectedColor",
-      :active="editActive",
-      @closeEdit="slideEdit")
     nav.nav
       select.form__select(name="acciones en lote")
         option(value="Acciones en lote") Acciones en lote
@@ -20,7 +16,7 @@
       a.nav__btn.i-filter_after(
         href="#",
         title="Filtrar") Filtrar
-      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'color' : 'colores' }}
+      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'crédito' : 'créditos' }}
       // Paginador
       Pager(
         :currentPage="page",
@@ -31,7 +27,7 @@
     table.crud.crud_wide
       thead.crud__head
         tr
-          th.crud__title.crud__cell_check
+          th.crud__title.crud__cell_10
               input.form__input-check(
                 type="checkbox",
                 id="all"
@@ -39,26 +35,27 @@
                 value="selectAll")
               label.form__label_check.i-ok(
                 for="all")
-          th.crud__title Id
-          th.crud__title.crud__cell_30 Nombre
-          th.crud__title Codigo Hexadecimal
+          th.crud__title.crud__cell_22 Monto
+          th.crud__title.crud__cell_22 Estado de tranferencia
+          th.crud__title.crud__cell_22 Fecha de creación
+          th.crud__title.crud__cell_22 Fecha de modificación
       tbody.crud__tbody
-        tr.crud__row.crud__row_open(
-          @click="loadColor(index)",
-          v-for="(color, index) in colors")
-          td.crud__cell
+        tr.crud__row(
+          v-for="(credit, index) in credits")
+          td.crud__cell.crud__cell_10
             input.form__input-check(
               type="checkbox",
               :id="'item' + index",
               :name="'item' + index",
               :value="index")
             label.form__label_check.i-ok(:for="'item' + index")
-          td.crud__cell {{ color.id }}
-          td.crud__cell {{ color.name }}
-          td.crud__cell
-            span.color-circlespan.color-circle(
-              :style='{ backgroundColor: color.hex_code }')
-            span {{ color.hex_code }}
+          td.crud__cell.crud__cell_22 {{ credit.amount | currency }}
+          td.crud__cell.crud__cell_22(v-if="credit.transfer_status == null") --
+          td.crud__cell.crud__cell_22(v-else) {{ credit.transfer_status }}
+          td.crud__cell.crud__cell_22(v-if="credit.created_at == null") --
+          td.crud__cell.crud__cell_22(v-else) {{ credit.created_at | moment("D [de] MMM YY, h:mm:ss a") }}
+          td.crud__cell.crud__cell_22(v-if="credit.updated_at== null") --
+          td.crud__cell.crud__cell_22(v-else) {{ credit.updated_at | moment("D [de] MMM YY, h:mm:ss a") }}
         tr.crud__row
           td(colspan="5")
             form.crud__form(action="")
@@ -77,23 +74,20 @@
 </template>
 
 <script>
-import colorsAPI from '@/api/color'
+import creditsAPI from '@/api/creditTransaction'
 import Pager from '@/components/Pager'
-import EditColor from '@/components/EditColor'
 import UserAvatar from '@/components/UserAvatar'
 
 export default {
-  props: ['color', 'active'],
-  name: 'Colors',
+  name: 'CreditsTransactions',
   components: {
     Pager,
-    EditColor,
     UserAvatar
   },
   data () {
     return {
-      colors: [],
-      selectedColor: {},
+      credits: [],
+      selectedCredit: {},
       totalPages: null,
       totalItems: null,
       page: 1,
@@ -103,11 +97,12 @@ export default {
       editActive: false
     }
   },
+
   methods: {
     updateList: function () {
-      colorsAPI.get(this.page, this.items, this.filter, this.order)
+      creditsAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
-          this.colors = response.data.data
+          this.credits = response.data.data
         })
     },
     onPageChanged: function (direction) {
@@ -121,21 +116,14 @@ export default {
     onItemsChanged: function (items) {
       this.items = items
       this.updateList()
-    },
-    slideEdit: function () {
-      this.editActive = !this.editActive
-    },
-    loadColor: function (index) {
-      this.selectedColor = this.colors[index]
-      this.slideEdit()
     }
   },
   created: function () {
-    colorsAPI.get(this.page, this.items, this.filter)
+    creditsAPI.get(this.page, this.items, this.filter)
       .then(response => {
         this.totalItems = response.data.total
         this.totalPages = response.data.last_page
-        this.colors = response.data.data
+        this.credits = response.data.data
       })
   }
 

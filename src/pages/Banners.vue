@@ -117,10 +117,10 @@ export default {
         })
     },
     onPageChanged: function (direction) {
-      if (direction === 'next') {
+      if (direction === 'next' && this.page < this.totalPages) {
         this.page += 1
-      } else {
-        if (this.page > 1) this.page -= 1
+      } else if (direction === 'prev' && this.page > 1) {
+        this.page -= 1
       }
       this.updateList()
     },
@@ -141,7 +141,7 @@ export default {
     }
   },
   created: function () {
-    bannersAPI.getBanners(this.page, this.items, this.filter, this.order)
+    bannersAPI.get(this.page, this.items, this.filter, this.order)
       .then(response => {
         this.totalItems = response.data.total
         this.totalPages = response.data.last_page

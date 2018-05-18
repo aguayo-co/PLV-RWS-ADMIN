@@ -39,6 +39,7 @@
   font-weight: $fw-medium;
   @include font-rem(14px);
   text-align: left;
+  word-break: break-all;
   &:first-child {
     padding-left: 10px;
   }

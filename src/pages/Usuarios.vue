@@ -10,6 +10,7 @@
         UserAvatar
 
     EditUser(
+      :groups="groups",
       :user="selectedUser",
       :active="editActive",
       @closeEdit="slideEdit")
@@ -115,6 +116,7 @@
 <script>
 
 import usersAPI from '@/api/user'
+import groupsAPI from '@/api/group'
 import Vue from 'vue'
 import Croppa from 'vue-croppa'
 import Pager from '@/components/Pager'
@@ -142,7 +144,8 @@ export default {
       order: '-id',
       editActive: false,
       picture: null,
-      cover: null
+      cover: null,
+      groups: []
     }
   },
   methods: {
@@ -153,10 +156,10 @@ export default {
         })
     },
     onPageChanged: function (direction) {
-      if (direction === 'next') {
+      if (direction === 'next' && this.page < this.totalPages) {
         this.page += 1
-      } else {
-        if (this.page > 1) this.page -= 1
+      } else if (direction === 'prev' && this.page > 1) {
+        this.page -= 1
       }
       this.updateList()
     },
@@ -178,6 +181,10 @@ export default {
         this.totalPages = response.data.last_page
         this.totalItems = response.data.total
         this.users = response.data.data
+      })
+    groupsAPI.get()
+      .then(response => {
+        this.groups = response.data.data
       })
   }
 
