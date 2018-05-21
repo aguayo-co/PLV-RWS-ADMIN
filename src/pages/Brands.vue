@@ -39,7 +39,7 @@
                 for="all")
           th.crud__title.crud__cell_30 Id
           th.crud__title.crud__cell_30 Nombre
-          th.crud__title.crud__cell_30 Codigo Hexadecimal
+          th.crud__title.crud__cell_30 Url
       tbody.crud__tbody
         tr.crud__row.crud__row_open(
           @click="loadBrand(index)",
@@ -54,7 +54,7 @@
               :for="'item' + index")
           td.crud__cell.crud__cell_30 {{ brand.id }}
           td.crud__cell.crud__cell_30 {{ brand.name }}
-          td.crud__cell.crud__cell_30 {{ brand.url }}
+          td.crud__cell.crud__cell_30 /{{ brand.slug }}
         tr.crud__row
           td(colspan="5")
             form.crud__form(action="")
