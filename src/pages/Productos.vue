@@ -40,8 +40,7 @@
     table.crud
       thead.crud__head
         tr
-          th.crud__th
-            td.crud__title
+          th.crud__th.crud__title
               input.form__input-check(
                 type="checkbox",
                 id="all"
@@ -49,22 +48,14 @@
                 value="selectAll")
               label.form__label_check.i-ok(
                 for="all")
-          th.crud__th
-            td.crud__title Foto
-          th.crud__th
-            td.crud__title Nombre
-          th.crud__th
-            td.crud__title Marca
-          th.crud__th
-            td.crud__title P.&nbsp;Original
-          th.crud__th
-            td.crud__title P.&nbsp;Venta
-          th.crud__th
-            td.crud__title Comisión
-          th.crud__th
-            td.crud__title Usuaria
-          th.crud__th
-            td.crud__title Estado
+          th.crud__th.crud__title Foto
+          th.crud__th.crud__title Nombre
+          th.crud__th.crud__title Marca
+          th.crud__th.crud__title Precio original
+          th.crud__th.crud__title Precio venta
+          th.crud__th.crud__title Comisión
+          th.crud__th.crud__title Usuaria
+          th.crud__th.crud__title Estado
       tbody.crud__tbody
         tr.crud__row.crud__row_open(
           @click="loadProduct(index)",
