@@ -39,7 +39,7 @@
   font-weight: $fw-medium;
   @include font-rem(14px);
   text-align: left;
-  word-break: break-all;
+  // word-break: break-all;
   &:first-child {
     padding-left: 10px;
   }
@@ -61,8 +61,13 @@
   }
 }
 
+
 .crud__cell_center {
   text-align: center;
+}
+
+.crud__cell_120 {
+  min-width: 120px;
 }
 
 .crud__cell-small {

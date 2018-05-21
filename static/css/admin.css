@@ -5245,6 +5245,8 @@ body {
   align-items: center;
   min-width: 700px;
   padding: 0 0 40px 0; }
+  .nav .form__select {
+    margin-right: 10px; }
 
 .nav__btn {
   position: relative;
@@ -5350,8 +5352,7 @@ body {
   font-weight: 500;
   font-size: 14px;
   font-size: 0.875rem;
-  text-align: left;
-  word-break: break-all; }
+  text-align: left; }
   .crud__cell:first-child {
     padding-left: 10px; }
   .crud__cell ul {
@@ -5378,6 +5379,9 @@ body {
 
 .crud__cell_center {
   text-align: center; }
+
+.crud__cell_120 {
+  min-width: 120px; }
 
 .crud__cell-small {
   display: block; }
