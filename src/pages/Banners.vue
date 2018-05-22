@@ -43,7 +43,7 @@
           th.crud__th.crud__title Imagen
           th.crud__th.crud__title Nombre
           th.crud__th.crud__title Título
-          th.crud__th.crud__title Fecha de<br>creación
+          th.crud__th.crud__title Fecha de creación
       tbody.crud__tbody
         tr.crud__row.crud__row_open(
           @click="loadBanner(index)",

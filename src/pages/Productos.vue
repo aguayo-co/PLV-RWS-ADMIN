@@ -20,7 +20,14 @@
         option(value="Acciones en lote") Acciones en lote
         option(value="Publicado") Publicado
         option(value="No disponible") No disponible
-      a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
+      select.form__select.i-filter_after(
+        name="acciones en lote",
+        v-model="filter.status",
+        @change="updateList")
+        option(v-for="(state, index) in status",
+          :value="state.id"
+          ) {{ state.name }}
+      //- a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
       p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'producto' : 'productos' }}
       // Paginador
       Pager(
@@ -33,8 +40,7 @@
     table.crud
       thead.crud__head
         tr
-          th.crud__th
-            td.crud__title
+          th.crud__th.crud__title
               input.form__input-check(
                 type="checkbox",
                 id="all"
@@ -42,22 +48,14 @@
                 value="selectAll")
               label.form__label_check.i-ok(
                 for="all")
-          th.crud__th
-            td.crud__title Foto
-          th.crud__th
-            td.crud__title Nombre
-          th.crud__th
-            td.crud__title Marca
-          th.crud__th
-            td.crud__title P.&nbsp;Original
-          th.crud__th
-            td.crud__title P.&nbsp;Venta
-          th.crud__th
-            td.crud__title Comisión
-          th.crud__th
-            td.crud__title Usuaria
-          th.crud__th
-            td.crud__title Estado
+          th.crud__th.crud__title Foto
+          th.crud__th.crud__title Nombre
+          th.crud__th.crud__title Marca
+          th.crud__th.crud__title Precio original
+          th.crud__th.crud__title Precio venta
+          th.crud__th.crud__title Comisión
+          th.crud__th.crud__title Usuaria
+          th.crud__th.crud__title Estado
       tbody.crud__tbody
         tr.crud__row.crud__row_open(
           @click="loadProduct(index)",
@@ -87,8 +85,8 @@
               figcaption.avatar__txt {{ product.user.first_name + ' ' + product.user.last_name }}
           td.crud__cell
             p.crud__state.crud__state_detail(:class='"state-" + product.status') {{ product.status | status_code }}
-            a.crud__toggle.i-next
-              span.crud__toggle_btn-txt.hidden botón
+            //- a.crud__toggle.i-next
+            //-   span.crud__toggle_btn-txt.hidden botón
         tr
           td(colspan="9")
             form.crud__form(action="")
@@ -131,7 +129,21 @@ export default {
       totalItems: null,
       page: 1,
       items: 10,
-      filter: {},
+      filter: { status: '' },
+      status: [
+        { id: '', name: 'Filtrar' },
+        { id: '0', name: 'pendiente' },
+        { id: '1', name: 'rechazado' },
+        { id: '2', name: 'oculto' },
+        { id: '3', name: 'cambios para aprobar' },
+        { id: '10', name: 'aprobado' },
+        { id: '19', name: 'disponible' },
+        { id: '20', name: 'agotado' },
+        { id: '29', name: 'en vacaciones' },
+        { id: '30', name: 'vendido' },
+        { id: '31', name: 'pagando' },
+        { id: '32', name: 'devuelto' }
+      ],
       order: '-id',
       query: '',
       editActive: false,

@@ -7,6 +7,9 @@
   @include align-items(center);
   min-width: 700px;
   padding: 0 0 40px 0;
+  .form__select {
+    margin-right: 10px;
+  }
 }
 
 .nav__btn {

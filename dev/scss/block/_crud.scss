@@ -39,7 +39,6 @@
   font-weight: $fw-medium;
   @include font-rem(14px);
   text-align: left;
-  word-break: break-all;
   &:first-child {
     padding-left: 10px;
   }
@@ -61,8 +60,17 @@
   }
 }
 
+.crud__cell_wbreak {
+  word-break: break-all;  
+}
+
+
 .crud__cell_center {
   text-align: center;
+}
+
+.crud__cell_120 {
+  min-width: 120px;
 }
 
 .crud__cell-small {
@@ -194,6 +202,9 @@
   }
   .crud__cell {
     @include font-rem(12px);
+    &.small-txt {
+      @include font-rem(11px);
+    }
   }
   .crud__row {
     .crud__cell {
@@ -244,6 +255,11 @@
     }
   }
 }
+
+.crud__cell_130 {
+  max-width: 130px;
+}
+
 .crud__cell_legible {
   padding: 8px 12px;
   font-family: $f-default;

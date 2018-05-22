@@ -82,7 +82,7 @@
                 v-else
               ) {{ user.first_name.charAt(0).toUpperCase() }}
               figcaption.avatar__txt {{ user.first_name + ' ' + user.last_name }}
-          td.crud__cell {{ user.email }}
+          td.crud__cell.crud__cell_wbreak.crud__cell_130.small-txt {{ user.email }}
           td.crud__cell {{ user.phone }}
           td.crud__cell
             ul(v-if='user.groups_ids')

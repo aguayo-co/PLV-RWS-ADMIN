@@ -5245,6 +5245,8 @@ body {
   align-items: center;
   min-width: 700px;
   padding: 0 0 40px 0; }
+  .nav .form__select {
+    margin-right: 10px; }
 
 .nav__btn {
   position: relative;
@@ -5350,8 +5352,7 @@ body {
   font-weight: 500;
   font-size: 14px;
   font-size: 0.875rem;
-  text-align: left;
-  word-break: break-all; }
+  text-align: left; }
   .crud__cell:first-child {
     padding-left: 10px; }
   .crud__cell ul {
@@ -5376,8 +5377,14 @@ body {
         margin-right: 6px;
         background-color: #000; }
 
+.crud__cell_wbreak {
+  word-break: break-all; }
+
 .crud__cell_center {
   text-align: center; }
+
+.crud__cell_120 {
+  min-width: 120px; }
 
 .crud__cell-small {
   display: block; }
@@ -5492,6 +5499,9 @@ body {
   .content-data_wide .crud__cell {
     font-size: 12px;
     font-size: 0.75rem; }
+    .content-data_wide .crud__cell.small-txt {
+      font-size: 11px;
+      font-size: 0.6875rem; }
   .content-data_wide .crud__row .crud__cell:last-child {
     padding-right: 8px; }
   .content-data_wide .crud__avatar .avatar__txt {
@@ -5525,6 +5535,9 @@ body {
   .crud__cell .crud__list li:before {
     display: none;
     opacity: 0; }
+
+.crud__cell_130 {
+  max-width: 130px; }
 
 .crud__cell_legible {
   padding: 8px 12px;
