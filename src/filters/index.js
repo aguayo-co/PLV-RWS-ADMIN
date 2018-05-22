@@ -10,6 +10,8 @@ export default {
           return 'Pendiente'
         case 1:
           return 'Rechazado'
+        case 3:
+          return 'Con cambios'
         case 10:
           return 'Aprobado'
         case 19:

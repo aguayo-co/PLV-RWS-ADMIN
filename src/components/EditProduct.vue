@@ -74,7 +74,7 @@
                 :value='state.id'
               ) {{ state.name }}
         .form__row(v-if="enabledStateChange")
-          .form__label Añadir una nota para el cambio
+          .form__label Este producto se rechazó porque:
           input.form__control(
             v-model="selectedProduct.admin_notes",
             id="admin_notes",
@@ -115,6 +115,14 @@ export default {
       if (this.status === 0) {
         const states = [
           { id: 0, name: 'No publicado' },
+          { id: 1, name: 'Rechazado' },
+          { id: 10, name: 'Aprobado' }
+        ]
+        return states
+      }
+      if (this.status === 3) {
+        const states = [
+          { id: 3, name: 'Con cambios' },
           { id: 1, name: 'Rechazado' },
           { id: 10, name: 'Aprobado' }
         ]
