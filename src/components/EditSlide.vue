@@ -14,7 +14,7 @@
         .form__row
           .form__label Imagen para Desktop (1280x472)
           .upfile.slide__desktop
-            .upfile__item
+            .upfile__item.type-1
               a.delete(
                 v-show="toggleImageDelete.image",
                 @click="removeImage('image')") Eliminar
