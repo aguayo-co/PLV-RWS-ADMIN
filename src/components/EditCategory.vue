@@ -54,7 +54,7 @@
             v-model="selectedCategory.slug",
             type="text")
         .form__row.form__row_away
-          button.btn.btn_solid.btn_block(@click.prevent="save") Guardar
+          button.btn.btn_solid.btn_block(@click.prevent="save($event)") Guardar
 </template>
 
 <script>
@@ -77,23 +77,26 @@ export default {
     }
   },
   methods: {
-    save: function () {
-      // If banner has id we are updating else creating
-      this.selectedCategory.id ? this.update() : this.create()
+    save: function (event) {
+      event.target.disabled = true
+      // If category has id we are updating else creating
+      this.selectedCategory.id ? this.update(event) : this.create(event)
     },
-    update: function () {
+    update: function (event) {
       categoriesAPI.update(this.selectedCategory)
         .then(response => {
           console.log('Ok')
           this.$emit('closeEdit')
+          event.target.disabled = false
         })
     },
-    create: function () {
+    create: function (event) {
       const newCategory = this.selectedCategory
       categoriesAPI.create(newCategory)
         .then(response => {
           console.log('Categoria creada')
           this.$emit('closeEdit')
+          event.target.disabled = false
         })
     }
   },

@@ -16,14 +16,14 @@
           .form__approved
             p.form__txt-approved
               input#approved.form__input-check(
-                  type="checkbox",
-                  value="algo",
-                  v-model="checked")
+                type="checkbox",
+                value="algo",
+                v-model="checked")
               label.form__label_check.i-ok(for="approved")
               | ¿Es un comprobante por ${{ selectedTransfer.request_data.amount | currency }} realizado en {{ selectedTransfer.created_at | moment("MMMM, DD YYYY") }} por {{ selectedTransfer.order.user.first_name + selectedTransfer.order.user.last_name }} ?
             button.btn(
               :class="{'btn_enabled': checked, 'btn_disabled': checked == false || null}",
-              @click.prevent="approved") Aprobar
+              @click.prevent="approved($event)") Aprobar
             .break
               span.break__txt O
             .form__rejected
@@ -58,7 +58,7 @@ export default {
     }
   },
   methods: {
-    save: function () {
+    save: function (event) {
       transfersAPI.update(this.selectedTransfer)
         .then(response => {
           console.log('Ok')
@@ -68,8 +68,8 @@ export default {
     toggleBox: function () {
       this.rejectedCheck = !this.rejectedCheck
     },
-    approved: function () {
-      // console.log(this.selectedTransfer.request_data.reference)
+    approved: function (event) {
+      event.target.disabled = true
       const data = {
         reference: this.selectedTransfer.request_data.reference,
         status: 'approved'
@@ -78,6 +78,8 @@ export default {
         .then(response => {
           console.log('Ok')
           this.$emit('closeEdit')
+          event.target.disabled = false
+          this.checked = false
         })
     },
     rejected: function () {

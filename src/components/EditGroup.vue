@@ -27,7 +27,7 @@
             v-model="selectedGroup.slug",
             type="text")
         .form__row.form__row_away
-          button.btn.btn_solid.btn_block(@click.prevent="save") Guardar
+          button.btn.btn_solid.btn_block(@click.prevent="save($event)") Guardar
 </template>
 
 <script>
@@ -41,25 +41,28 @@ export default {
   props: ['group', 'active'],
   name: 'EditGroup',
   methods: {
-    save: function () {
-      // If banner has id we are updating else creating
-      this.selectedGroup.id ? this.update() : this.create()
+    save: function (event) {
+      event.target.disabled = true
+      // If group has id we are updating else creating
+      this.selectedGroup.id ? this.update(event) : this.create(event)
     },
-    create: function () {
+    create: function (event) {
       let newGroup = this.selectedGroup
       groupsAPI.create(newGroup)
         .then(response => {
           console.log('Grupo creado')
           this.$emit('closeEdit')
           this.$emit('updateItems')
+          event.target.disabled = false
           console.log('Tabla actualizada')
         })
     },
-    update: function () {
+    update: function (event) {
       groupsAPI.update(this.selectedGroup)
         .then(response => {
           console.log('Ok')
           this.$emit('closeEdit')
+          event.target.disabled = false
         })
     }
   },

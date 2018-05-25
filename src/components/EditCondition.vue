@@ -27,7 +27,7 @@
             v-model="selectedCondition.slug",
             type="text")
         .form__row.form__row_away
-          button.btn.btn_solid.btn_block(@click.prevent="save") Guardar
+          button.btn.btn_solid.btn_block(@click.prevent="save($event)") Guardar
 </template>
 
 <script>
@@ -41,25 +41,28 @@ export default {
   props: ['condition', 'active'],
   name: 'EditCondition',
   methods: {
-    save: function () {
-      // If banner has id we are updating else creating
-      this.selectedCondition.id ? this.update() : this.create()
+    save: function (event) {
+      event.target.disabled = true
+      // If condition has id we are updating else creating
+      this.selectedCondition.id ? this.update(event) : this.create(event)
     },
-    create: function () {
+    create: function (event) {
       let newCondition = this.selectedCondition
       conditionsAPI.create(newCondition)
         .then(response => {
           console.log('Condicion creada')
           this.$emit('closeEdit')
           this.$emit('updateItems')
+          event.target.disabled = false
           console.log('Tabla actualizada')
         })
     },
-    update: function () {
+    update: function (event) {
       conditionsAPI.update(this.selectedCondition)
         .then(response => {
           console.log('Ok')
           this.$emit('closeEdit')
+          event.target.disabled = false
         })
     }
   },

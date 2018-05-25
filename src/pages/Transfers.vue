@@ -39,17 +39,17 @@
           th.crud__th.crud__title Fecha de creación
           th.crud__th.crud__title Estado
       tbody.crud__tbody
-        tr.crud__row(v-for="(payment, index) in payments")
+        tr.crud__row(v-for="(payment, index) in payments",
+          @click="loadTransfer(index)")
           td.crud__cell
             input.form__input-check(:id="'item' + index", type="checkbox", name="all", value="selectAll")
             label.form__label_check.i-ok(:for="'item' + index")
           td.crud__cell
-            a(@click="loadTransfer(index)")
-              img.crud__cell-img(
-                v-if="payment.transfer_receipt",
-                :src="payment.transfer_receipt",
-                :alt="'Recibo-' + payment.id")
-              span(v-else) -
+            img.crud__cell-img(
+              v-if="payment.transfer_receipt",
+              :src="payment.transfer_receipt",
+              :alt="'Recibo-' + payment.id")
+            span(v-else) -
           td.crud__cell ${{ payment.request_data.amount | currency }}
           td.crud__cell {{ payment.order_id }}
           td.crud__cell {{ payment.order.user.first_name + ' ' + payment.order.user.last_name }}

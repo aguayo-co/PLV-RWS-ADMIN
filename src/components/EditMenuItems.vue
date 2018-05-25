@@ -69,7 +69,7 @@
             v-model="selectedMenu.slug",
             type="text")
         .form__row.form__row_away
-          button.btn.btn_solid.btn_block(@click.prevent="save") Guardar
+          button.btn.btn_solid.btn_block(@click.prevent="save($event)") Guardar
 </template>
 
 <script>
@@ -93,24 +93,27 @@ export default {
     }
   },
   methods: {
-    save: function () {
-      // If banner has id we are updating else creating
-      this.selectedMenu.id ? this.update() : this.create()
+    save: function (event) {
+      event.target.disabled = true
+      // If menuItem has id we are updating else creating
+      this.selectedMenu.id ? this.update(event) : this.create(event)
     },
-    update: function () {
+    update: function (event) {
       menuItemsAPI.update(this.selectedMenu)
         .then(response => {
           this.$emit('updateItems')
           this.$emit('closeEdit')
+          event.target.disabled = true
         })
     },
-    create: function () {
+    create: function (event) {
       const newItem = this.selectedMenu
       menuItemsAPI.create(newItem)
         .then(response => {
           console.log('Item de menú creado')
           this.$emit('updateItems')
           this.$emit('closeEdit')
+          event.target.disabled = false
         })
     },
     getMenuId: function (item) {
