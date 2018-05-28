@@ -109,7 +109,7 @@ export default {
   },
   methods: {
     updateList: function () {
-      sizesAPI.getSizes(this.page, this.items, this.filter, this.order)
+      sizesAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
           this.sizes = response.data.data
         })
@@ -136,7 +136,7 @@ export default {
     }
   },
   created: function () {
-    sizesAPI.getSizes(this.page, this.items, this.filter)
+    sizesAPI.get(this.page, this.items, this.filter)
       .then(response => {
         this.totalItems = response.data.total
         this.totalPages = response.data.last_page
