@@ -27,7 +27,7 @@
         .form__row()
           label.form__label(
             for="size-category") Id
-          p(v-model="selectedCategory.name") {{ selectedCategory.id }}
+          p(v-model="selectedCategory.id") {{ selectedCategory.id }}
         .form__row()
           label.form__label(
             for="categoria") Categoria principal
@@ -37,7 +37,7 @@
             id='categoria')
             optgroup(label='Categoria principal')
               option(
-                v-for='type in theCategories',
+                v-for='type in categories',
                 :value='type.id') {{ type.name }}
         .form__row
           label.form__label(
@@ -61,20 +61,23 @@
 
 // import Vue from 'vue'
 import categoriesAPI from '@/api/category'
+import { mapState } from 'vuex'
 
 export default {
   props: ['category', 'active'],
   name: 'EditCategory',
   data () {
     return {
-      type: 0,
-      theCategories: []
+      type: 0
     }
   },
   computed: {
     selectedCategory: function () {
-      return this.category
-    }
+      return {...this.category}
+    },
+    ...mapState('ui', [
+      'categories'
+    ])
   },
   methods: {
     save: function (event) {
@@ -85,8 +88,8 @@ export default {
     update: function (event) {
       categoriesAPI.update(this.selectedCategory)
         .then(response => {
-          console.log('Ok')
           this.$emit('closeEdit')
+          this.$store.dispatch('ui/refreshCategories')
           event.target.disabled = false
         })
     },
@@ -96,6 +99,7 @@ export default {
         .then(response => {
           console.log('Categoria creada')
           this.$emit('closeEdit')
+          this.$emit('updateItems')
           event.target.disabled = false
         })
     }
