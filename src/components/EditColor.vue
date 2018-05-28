@@ -42,7 +42,7 @@ export default {
   name: 'EditColor',
   computed: {
     selectedColor: function () {
-      return this.color
+      return {...this.color}
     }
   },
   methods: {
@@ -50,7 +50,7 @@ export default {
       event.target.disabled = true
       colorsAPI.update(this.selectedColor)
         .then(response => {
-          console.log('Ok')
+          this.$store.dispatch('ui/refreshColors')
           this.$emit('closeEdit')
           event.target.disabled = false
         })

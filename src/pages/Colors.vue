@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import colorsAPI from '@/api/color'
 import Pager from '@/components/Pager'
 import EditColor from '@/components/EditColor'
@@ -90,9 +91,13 @@ export default {
     EditColor,
     UserAvatar
   },
+  computed: {
+    ...mapState('ui', [
+      'colors'
+    ])
+  },
   data () {
     return {
-      colors: [],
       selectedColor: {},
       totalPages: null,
       totalItems: null,
@@ -129,14 +134,6 @@ export default {
       this.selectedColor = this.colors[index]
       this.slideEdit()
     }
-  },
-  created: function () {
-    colorsAPI.get(this.page, this.items, this.filter)
-      .then(response => {
-        this.totalItems = response.data.total
-        this.totalPages = response.data.last_page
-        this.colors = response.data.data
-      })
   }
 
 }

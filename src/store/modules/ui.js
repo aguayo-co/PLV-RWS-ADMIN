@@ -117,6 +117,19 @@ const actions = {
         commit('setProperty', { property })
       })
   },
+  refreshColors ({ commit }) {
+    colorsAPI.get()
+      .then(response => {
+        let colors = response.data.data.sort(function (a, b) {
+          return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+        })
+        const property = {
+          name: 'colors',
+          data: colors
+        }
+        commit('setProperty', { property })
+      })
+  },
   clearBody (context) {
     context.commit('noModal')
   },
