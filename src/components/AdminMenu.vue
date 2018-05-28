@@ -42,7 +42,7 @@ export default {
             },
             {
               name: 'Transferencias',
-              url: '#',
+              url: '/transfers',
               ico: 'i-credits'
             },
             {
@@ -133,11 +133,6 @@ export default {
             {
               name: 'Métodos de envío',
               url: '/metodos-envio',
-              ico: 'i-shipping'
-            },
-            {
-              name: 'Transferencias',
-              url: '/transfers',
               ico: 'i-shipping'
             },
             {
