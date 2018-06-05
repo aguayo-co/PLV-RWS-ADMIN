@@ -21,7 +21,7 @@
       p.nav__text Se han encontrado 56 productos
       // Pager
       Pager(
-        :currentPage="page",
+        :currentPage="parameters.page",
         :totalPages="totalPages",
         @pageChanged="onPageChanged",
         @itemsChanged="onItemsChanged")
@@ -93,28 +93,27 @@ export default {
       payments: [],
       selectedTransfer: {},
       totalPages: null,
-      page: 1,
-      items: 2,
-      filter: {
-        gateway: 'Transfer'
+      parameters: {
+        'filter[gateway]': 'Transfer',
+        'orderby': '-id',
+        page: 1,
+        items: 20
       },
-      // order: null,
-      order: '-id',
       editActive: false
     }
   },
   methods: {
     updatePaymentList: function () {
-      transfersAPI.get(this.page, this.items, this.filter, this.order)
+      transfersAPI.get(this.parameters)
         .then(response => {
           this.payments = response.data.data
         })
     },
     onPageChanged: function (direction) {
-      if (direction === 'next' && this.page < this.totalPages) {
-        this.page += 1
-      } else if (direction === 'prev' && this.page > 1) {
-        this.page -= 1
+      if (direction === 'next' && this.parameters.page < this.totalPages) {
+        this.parameters.page += 1
+      } else if (direction === 'prev' && this.parameters.page > 1) {
+        this.parameters.page -= 1
       }
       this.updateList()
     },
@@ -137,7 +136,7 @@ export default {
     }
   },
   created: function () {
-    transfersAPI.get(this.page, this.items, this.filter, this.order)
+    transfersAPI.get(this.parameters)
       .then(response => {
         this.payments = response.data.data
         // console.log(this.payments)
