@@ -23,6 +23,7 @@ export default {
   update: function (data) {
     const updateData = {...data}
     delete updateData.images
+    if (!updateData.admin_notes) delete updateData.admin_notes
     return Vue.axiosAuth.patch('/api/products/' + data.id, updateData)
   }
 }
