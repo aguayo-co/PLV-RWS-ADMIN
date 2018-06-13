@@ -24,6 +24,21 @@ export default {
     const updateData = {...data}
     delete updateData.images
     if (!updateData.admin_notes) delete updateData.admin_notes
-    return Vue.axiosAuth.patch('/api/products/' + data.id, updateData)
+
+    if (data.image_instagram instanceof Blob) {
+      var formData = new FormData()
+      Object.keys(updateData).forEach((key) => {
+        if (key !== 'color_ids' && key !== 'campaign_ids') {
+          formData.append(key, data[key])
+        } else {
+          data[key].forEach(value => {
+            formData.append(key + '[]', value)
+          })
+        }
+      })
+      return Vue.axiosAuth.patch('/api/products/' + data.id, formData)
+    } else {
+      return Vue.axiosAuth.patch('/api/products/' + data.id, updateData)
+    }
   }
 }

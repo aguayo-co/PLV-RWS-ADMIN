@@ -19,7 +19,6 @@ export default {
         queryFilter += '&filter[' + key + ']=' + filter[key]
       })
     }
-    console.log('/api/menus?items=' + items + '&page=' + page + queryFilter)
     return Vue.axiosAuth.get('/api/menus?items=' + items + '&page=' + page + queryFilter)
   }
 
