@@ -80,7 +80,7 @@
             id="admin_notes",
             type="text")
         .form__row.form__row_away
-          button.btn.btn_solid.btn_block(@click.prevent="save") Guardar
+          button.btn.btn_solid.btn_block(@click.prevent='save($event)') Guardar
 </template>
 
 <script>
@@ -156,11 +156,13 @@ export default {
     }
   },
   methods: {
-    save: function () {
+    save: function (event) {
+      event.target.disabled = true
       productsAPI.update(this.selectedProduct)
         .then(response => {
           console.log('Ok')
           this.$emit('closeEdit')
+          event.target.disabled = false
         })
     }
   }

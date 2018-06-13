@@ -82,7 +82,7 @@
             label.form__label-checkbox.i-ok(
               :for="'group-' + group.id") {{ group.name }}
         .form__row.form__row_away
-          button.btn.btn_solid.btn_block(@click.prevent="save") Guardar
+          button.btn.btn_solid.btn_block(@click.prevent="save($event)") Guardar
 </template>
 
 <script>
@@ -124,7 +124,8 @@ export default {
     }
   },
   methods: {
-    save: function () {
+    save: function (event) {
+      event.target.disabled = true
       let user = {}
       Object.keys(userFields).forEach((key) => {
         if (this.selectedUser[key]) user[key] = this.selectedUser[key]
@@ -138,6 +139,7 @@ export default {
               .then(response => {
                 console.log('Ok with image')
                 this.$emit('closeEdit')
+                event.target.disabled = false
               })
           })
         }
@@ -147,6 +149,7 @@ export default {
           .then(response => {
             console.log('Ok')
             this.$emit('closeEdit')
+            event.target.disabled = false
           })
       }
     },

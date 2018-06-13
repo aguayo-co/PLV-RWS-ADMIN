@@ -519,6 +519,10 @@ a {
     font-size: 20px;
     font-size: 1.25rem;
     padding-right: 12px; }
+  .btn:disabled {
+    background-color: #D2D2D2;
+    color: #fff;
+    border: 2px solid #D2D2D2; }
 
 .btn_small {
   width: auto;
@@ -5439,7 +5443,7 @@ body {
   padding: 5px 10px 4px;
   border-radius: 13px; }
 
-.crud__state_detail.state-0, .crud__state_detail.state-91, .crud__state_detail.state-92 {
+.crud__state_detail.state-0, .crud__state_detail.state-3, .crud__state_detail.state-91, .crud__state_detail.state-92 {
   color: #fff;
   background-color: #f65a66;
   border: none; }

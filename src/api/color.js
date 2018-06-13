@@ -18,7 +18,12 @@ export default {
     return Vue.axiosAuth.get('/api/colors?items=' + items + '&page=' + page + queryFilter)
   },
   update: function (data) {
-    const updateData = {...data}
+    // const updateData = {...data}
+    const updateData = {
+      id: data.id,
+      name: data.name,
+      hex_code: data.hex_code
+    }
     return Vue.axiosAuth.patch('/api/colors/' + data.slug, updateData)
   }
 }

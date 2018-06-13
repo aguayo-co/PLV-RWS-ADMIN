@@ -1,4 +1,12 @@
 // UI store will be used to handle data regarding general elements of UI.
+// import productsAPI from '@/api/product'
+import menusAPI from '@/api/menu'
+import categoriesAPI from '@/api/category'
+import conditionsAPI from '@/api/condition'
+import colorsAPI from '@/api/color'
+import brandsAPI from '@/api/brand'
+import sizesAPI from '@/api/size'
+
 // initial state
 const state = {
   // Modal property is used to define if the application is showing a modal
@@ -8,7 +16,14 @@ const state = {
     name: null,
     parameters: {}
   },
-  loginAttempts: 0
+  loginAttempts: 0,
+  menus: {},
+  conditions: [],
+  colors: [],
+  brands: [],
+  sizes: [],
+  categories: [],
+  regions: []
 }
 
 // getters
@@ -20,6 +35,101 @@ const getters = {
 
 // actions
 const actions = {
+  loadProperties ({ commit }) {
+    conditionsAPI.get()
+      .then(response => {
+        const property = {
+          name: 'conditions',
+          data: response.data.data
+        }
+        commit('setProperty', { property })
+      })
+    colorsAPI.get()
+      .then(response => {
+        let colors = response.data.data.sort(function (a, b) {
+          return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+        })
+        const property = {
+          name: 'colors',
+          data: colors
+        }
+        commit('setProperty', { property })
+      })
+    brandsAPI.get()
+      .then(response => {
+        let brands = response.data.data.sort(function (a, b) {
+          return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+        })
+        const property = {
+          name: 'brands',
+          data: brands
+        }
+        commit('setProperty', { property })
+      })
+    sizesAPI.get()
+      .then(response => {
+        const property = {
+          name: 'sizes',
+          data: response.data.data
+        }
+        commit('setProperty', { property })
+      })
+    categoriesAPI.getAll()
+      .then(response => {
+        response.data.data.forEach((category) => {
+          category.children.sort(function (a, b) {
+            return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+          })
+        })
+        const property = {
+          name: 'categories',
+          data: response.data.data
+        }
+        console.log(property.data)
+        commit('setProperty', { property })
+      })
+    menusAPI.getMenus()
+      .then(response => {
+        let menus = {}
+        response.data.data.forEach((menu) => {
+          menus[menu.slug] = menu
+        })
+        const property = {
+          name: 'menus',
+          data: menus
+        }
+        commit('setProperty', { property })
+      })
+  },
+  refreshCategories ({ commit }) {
+    categoriesAPI.getAll()
+      .then(response => {
+        response.data.data.forEach((category) => {
+          category.children.sort(function (a, b) {
+            return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+          })
+        })
+        const property = {
+          name: 'categories',
+          data: response.data.data
+        }
+        console.log(property.data)
+        commit('setProperty', { property })
+      })
+  },
+  refreshColors ({ commit }) {
+    colorsAPI.get()
+      .then(response => {
+        let colors = response.data.data.sort(function (a, b) {
+          return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+        })
+        const property = {
+          name: 'colors',
+          data: colors
+        }
+        commit('setProperty', { property })
+      })
+  },
   clearBody (context) {
     context.commit('noModal')
   },
@@ -39,6 +149,9 @@ const actions = {
 
 // mutations
 const mutations = {
+  setProperty (state, { property }) {
+    state[property.name] = property.data
+  },
   switchModal (state) {
     state.modal = !state.modal
   },

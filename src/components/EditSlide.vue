@@ -14,7 +14,7 @@
         .form__row
           .form__label Imagen para Desktop (1280x472)
           .upfile.slide__desktop
-            .upfile__item
+            .upfile__item.type-1
               a.delete(
                 v-show="toggleImageDelete.image",
                 @click="removeImage('image')") Eliminar
@@ -118,7 +118,7 @@
             id="url",
             type="text")
         .form__row.form__row_away
-          button.btn.btn_solid.btn_block(@click.prevent="save") Guardar
+          button.btn.btn_solid.btn_block(@click.prevent="save($event)") Guardar
 </template>
 
 <script>
@@ -157,11 +157,12 @@ export default {
     }
   },
   methods: {
-    save: function () {
-      // If banner has id we are updating else creating
-      this.selectedSlide.id ? this.update() : this.create()
+    save: function (event) {
+      event.target.disabled = true
+      // If slide has id we are updating else creating
+      this.selectedSlide.id ? this.update(event) : this.create(event)
     },
-    create: function () {
+    create: function (event) {
       let newSlide = this.selectedSlide
       const modal = {
         name: 'ModalMessage',
@@ -179,11 +180,12 @@ export default {
             .then(response => {
               this.$store.dispatch('ui/closeModal')
               this.$emit('closeEdit')
+              event.target.disabled = false
             })
         })
       })
     },
-    update: function () {
+    update: function (event) {
       let imagesToLoad = []
       Object.keys(this.imageChanged).forEach((key) => {
         // If image changed add to imagesToLoad
@@ -195,6 +197,7 @@ export default {
           .then(response => {
             console.log('Ok')
             this.$emit('closeEdit')
+            event.target.disabled = false
           })
       } else {
         const modal = {

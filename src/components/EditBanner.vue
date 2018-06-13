@@ -81,7 +81,7 @@
             id="url",
             type="text")
         .form__row.form__row_away
-          button.btn.btn_solid.btn_block(@click.prevent="save") Guardar
+          button.btn.btn_solid.btn_block(@click.prevent="save($event)") Guardar
 </template>
 
 <script>
@@ -125,11 +125,12 @@ export default {
     }
   },
   methods: {
-    save: function () {
+    save: function (event) {
+      event.target.disabled = true
       // If banner has id we are updating else creating
-      this.selectedBanner.id ? this.update() : this.create()
+      this.selectedBanner.id ? this.update(event) : this.create(event)
     },
-    create: function () {
+    create: function (event) {
       const newBanner = this.selectedBanner
       const modal = {
         name: 'ModalMessage',
@@ -147,6 +148,7 @@ export default {
               console.log('New with image')
               this.$store.dispatch('ui/closeModal')
               this.$emit('closeEdit')
+              event.target.disabled = false
             })
         })
       } else {
@@ -154,10 +156,11 @@ export default {
           .then(response => {
             console.log('New plain banner')
             this.$emit('closeEdit')
+            event.target.disabled = false
           })
       }
     },
-    update: function () {
+    update: function (event) {
       const modal = {
         name: 'ModalMessage',
         parameters: {
@@ -175,6 +178,7 @@ export default {
                 console.log('Ok with image')
                 this.$store.dispatch('ui/closeModal')
                 this.$emit('closeEdit')
+                event.target.disabled = false
               })
           })
         }
@@ -183,6 +187,7 @@ export default {
           .then(response => {
             console.log('Ok')
             this.$emit('closeEdit')
+            event.target.disabled = false
           })
       }
     },

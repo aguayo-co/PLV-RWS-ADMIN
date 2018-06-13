@@ -44,7 +44,7 @@
         tr.crud__row
           td(colspan="5")
             table.crud(
-              v-for="(parent, index) in theCategories",)
+              v-for="(parent, index) in categories")
               tr.crud__row
                 th.crud__cell.crud__cell_check
                   input.form__input-check(
@@ -61,14 +61,14 @@
               tbody.crud__tbody
                 tr.crud__row.crud__row_open(
                   v-for="(children, subIndex) in parent.children",
-                  @click="loadCategory(subIndex)")
+                  @click="loadCategory(subIndex, index)")
                   td.crud__cell
                     input.form__input-check(
                       type="checkbox",
                       name="all",
                       value="selectAll")
                     label.form__label_check.i-ok
-                  td.crud__cell {{ '&#8735; ' + children.name }}
+                  td.crud__cell {{ ' &#8735; ' + children.name }}
                   td.crud__cell {{ '/' + children.slug }}
                   td.crud__cell {{ children.created_at | moment("D [de] MMM YY") }}
                   td.crud__cell {{ children.updated_at | moment("D [de] MMM YY") }}
@@ -90,7 +90,8 @@
 </template>
 
 <script>
-import categoriesAPI from '@/api/category'
+// import categoriesAPI from '@/api/category'
+import { mapState } from 'vuex'
 import Pager from '@/components/Pager'
 import EditCategory from '@/components/EditCategory'
 import UserAvatar from '@/components/UserAvatar'
@@ -103,25 +104,27 @@ export default {
     UserAvatar,
     EditCategory
   },
+  computed: {
+    ...mapState('ui', [
+      'categories',
+      'colors'
+    ])
+  },
   data () {
     return {
-      categories: [],
       selectedCategory: {},
       totalPages: null,
       page: 1,
       items: 10,
       filter: {},
       order: '-id',
-      editActive: false,
-      theCategories: {}
+      editActive: false
     }
   },
   methods: {
-    updateCategoryList: function () {
-      categoriesAPI.getCategories(this.page, this.items, this.filter, this.order)
-        .then(response => {
-          this.categories = response.data.data
-        })
+    create: function () {
+      this.selectedCategory = {}
+      this.slideEdit()
     },
     onPageChanged: function (direction) {
       if (direction === 'next' && this.page < this.totalPages) {
@@ -133,33 +136,15 @@ export default {
     },
     onItemsChanged: function (items) {
       this.items = items
-      this.updateCategoryList()
+      this.updateList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
-      console.log('ok')
     },
-    loadCategory: function (index) {
-      this.selectedCategory = this.categories.children[index]
-      this.slideEdit()
-    },
-    create: function () {
-      this.selectedCategory = {}
+    loadCategory: function (subIndex, index) {
+      this.selectedCategory = this.categories[index].children[subIndex]
       this.slideEdit()
     }
-  },
-  created: function () {
-    categoriesAPI.getAll()
-      .then(response => {
-        this.theCategories = response.data.data
-        this.categories = response.data.data[0]
-        this.categories.children.forEach((category, index) => {
-          categoriesAPI.getBySlug(category.slug)
-            .then(response => {
-              this.categories.children[index].children = response.data.children
-            })
-        })
-      })
   }
 }
 
