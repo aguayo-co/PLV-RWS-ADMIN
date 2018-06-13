@@ -6,6 +6,7 @@ import conditionsAPI from '@/api/condition'
 import colorsAPI from '@/api/color'
 import brandsAPI from '@/api/brand'
 import sizesAPI from '@/api/size'
+import campaignsAPI from '@/api/campaign'
 
 // initial state
 const state = {
@@ -85,7 +86,6 @@ const actions = {
           name: 'categories',
           data: response.data.data
         }
-        console.log(property.data)
         commit('setProperty', { property })
       })
     menusAPI.getMenus()
@@ -97,6 +97,14 @@ const actions = {
         const property = {
           name: 'menus',
           data: menus
+        }
+        commit('setProperty', { property })
+      })
+    campaignsAPI.get()
+      .then(response => {
+        const property = {
+          name: 'campaigns',
+          data: response.data.data
         }
         commit('setProperty', { property })
       })
