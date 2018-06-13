@@ -29,6 +29,34 @@
                   slot="initial",
                   :src="image")
         .form__row
+          .form__label Imagen para Instashop
+          .upfile__small
+            .upfile__item
+              .upfile__label
+                .upfile__text.i-upload Arrastra una foto o
+                .upfile__btn Sube una imagen
+              croppa(
+                v-model="image_instagram",
+                :width="300",
+                :height="300",
+                :quality="2",
+                placeholder="",
+                :prevent-white-space="true")
+                img(
+                  slot="initial",
+                  :src="image_instagram")
+        .form__row
+          .form__label Campañas
+          .row(v-for="campaign in ui.campaigns")
+            input.form__input-check(
+              v-model="selectedProduct.campaign_ids"
+              :id="'campaign-' + campaign.id",
+              type="checkbox",
+              name="campaigns",
+              :value="campaign.id")
+            label.form__label-checkbox.i-ok(
+              :for="'campaign-' + campaign.id") {{ campaign.name }}
+        .form__row
           label.form__label(
             for="product-name") Nombre
           input.form__control(
@@ -88,6 +116,7 @@
 import Vue from 'vue'
 import Croppa from 'vue-croppa'
 import productsAPI from '@/api/product'
+import { mapState } from 'vuex'
 Vue.component('croppa', Croppa.component)
 
 export default {
@@ -96,6 +125,7 @@ export default {
   data () {
     return {
       pictures: [null, null, null, null],
+      image_instagram: null,
       status: 0
     }
   },
@@ -108,6 +138,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(['ui']),
     selectedProduct () {
       return this.product
     },
@@ -158,12 +189,25 @@ export default {
   methods: {
     save: function (event) {
       event.target.disabled = true
-      productsAPI.update(this.selectedProduct)
-        .then(response => {
-          console.log('Ok')
-          this.$emit('closeEdit')
-          event.target.disabled = false
+      if (this.image_instagram.hasImage()) {
+        this.image_instagram.generateBlob((blob) => {
+          const product = { ...this.selectedProduct }
+          product.image_instagram = blob
+          productsAPI.update(product)
+            .then(response => {
+              console.log('Ok')
+              this.$emit('closeEdit')
+              event.target.disabled = false
+            })
         })
+      } else {
+        productsAPI.update(this.selectedProduct)
+          .then(response => {
+            console.log('Ok')
+            this.$emit('closeEdit')
+            event.target.disabled = false
+          })
+      }
     }
   }
 
