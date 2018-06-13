@@ -44,7 +44,7 @@
                 :prevent-white-space="true")
                 img(
                   slot="initial",
-                  :src="image_instagram")
+                  :src="selectedProduct.image_instagram")
         .form__row
           .form__label Campañas
           .row(v-for="campaign in ui.campaigns")
