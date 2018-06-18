@@ -6,8 +6,8 @@
   "private": true,
   "scripts": {
     "dev": "dotenv webpack-dev-server -- --inline --progress --config build/webpack.dev.conf.js",
-    "dev-s": "dotenv webpack-dev-server -- --inline --progress --config build/webpack.dev.conf.js --https --key .dev/ssl/privkey.pem --cert .dev/ssl/cert.pem",
-    "debug-s": "dotenv node -- --inspect-brk ./node_modules/.bin/webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --https --key .dev/ssl/privkey.pem --cert .dev/ssl/cert.pem",
+    "dev-s": "dotenv webpack-dev-server -- --inline --progress --config build/webpack.dev.conf.js --https --key .dev/ssl/*-key.pem --cert .dev/ssl/*-crt.pem",
+    "debug-s": "dotenv node -- --inspect-brk ./node_modules/.bin/webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --https --key .dev/ssl/*-key.pem --cert .dev/ssl/*-crt.pem",
     "start": "npm run dev",
     "unit": "cross-env BABEL_ENV=test dotenv karma -- start test/unit/karma.conf.js --single-run",
     "e2e": "dotenv node test/e2e/runner.js",
