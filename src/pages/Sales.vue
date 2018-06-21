@@ -111,7 +111,7 @@
           //- Credito amount #11
           td.crud__cell
             span(
-              v-if="sale.order.credits_transactions.length > 0") {{ sale.order.credits_transactions[0].amount | currency}}
+              v-if="sale.order.credits_transactions && sale.order.credits_transactions.length > 0") {{ sale.order.credits_transactions[0].amount | currency}}
             span(v-else) -
           //- Cupon #12
           td.crud__cell
