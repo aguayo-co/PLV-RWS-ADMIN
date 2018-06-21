@@ -96,5 +96,9 @@ export default {
 
   getUserGroups: function () {
     return Vue.axios.get('/api/groups')
+  },
+
+  search (user) {
+    return Vue.axiosAuth.get('/api/users/?q=' + user)
   }
 }
