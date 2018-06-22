@@ -63,11 +63,6 @@
             id="menu-name",
             v-model="selectedMenu.url",
             type="text")
-          input.form__control(
-            v-else,
-            id="menu-name",
-            v-model="selectedMenu.slug",
-            type="text")
         .form__row.form__row_away
           button.btn.btn_solid.btn_block(@click.prevent="save($event)") Guardar
 </template>

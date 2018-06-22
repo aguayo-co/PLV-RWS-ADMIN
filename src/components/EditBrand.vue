@@ -19,13 +19,6 @@
             id="color-name",
             v-model="selectedBrand.name",
             type="text")
-        .form__row
-          label.form__label(
-            for="color-id") Url
-          input.form__control(
-            id="color-id",
-            v-model="selectedBrand.slug",
-            type="text")
         .form__row.form__row_away
           button.btn.btn_solid.btn_block(@click.prevent="save($event)") Guardar
 </template>

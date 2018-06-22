@@ -19,13 +19,6 @@
             id="condition-name",
             v-model="selectedCondition.name",
             type="text")
-        .form__row(v-if="!selectedCondition.id")
-          label.form__label(
-            for="condition-slug") Ruta
-          input.form__control(
-            id="condition-slug",
-            v-model="selectedCondition.slug",
-            type="text")
         .form__row.form__row_away
           button.btn.btn_solid.btn_block(@click.prevent="save($event)") Guardar
 </template>
