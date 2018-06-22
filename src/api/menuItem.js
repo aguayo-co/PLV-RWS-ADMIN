@@ -14,15 +14,12 @@ export default {
         queryFilter += '&filter[' + key + ']=' + filter[key]
       })
     }
-    console.log('/api/menus?items=' + items + '&page=' + page + queryFilter)
     return Vue.axiosAuth.get('/api/menus?items=' + items + '&page=' + page + queryFilter)
   },
   get: function (item) {
-    console.log('/api/menu_items/' + item)
     return Vue.axios.get('/api/menu_items/' + item)
   },
   getItems: function () {
-    console.log('/api/menu_items/')
     return Vue.axios.get('/api/menu_items/')
   },
   update: function (data) {

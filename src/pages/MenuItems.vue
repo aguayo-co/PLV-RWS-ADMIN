@@ -170,10 +170,8 @@ export default {
     },
     slideEdit: function () {
       this.editActive = !this.editActive
-      console.log('ok')
     },
     loadMenu: function (index) {
-      console.log('index: ' + index)
       this.selectedMenu = this.menus[index]
       this.slideEdit()
     },
@@ -182,7 +180,6 @@ export default {
         .then(response => {
           this.selectedMenu = response.data
         })
-      console.log(this.selectedMenu)
       this.slideEdit()
     },
     create: function () {

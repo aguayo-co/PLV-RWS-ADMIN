@@ -53,17 +53,14 @@ export default {
       let newGroup = this.selectedGroup
       groupsAPI.create(newGroup)
         .then(response => {
-          console.log('Grupo creado')
           this.$emit('closeEdit')
           this.$emit('updateItems')
           event.target.disabled = false
-          console.log('Tabla actualizada')
         })
     },
     update: function (event) {
       groupsAPI.update(this.selectedGroup)
         .then(response => {
-          console.log('Ok')
           this.$emit('closeEdit')
           event.target.disabled = false
         })

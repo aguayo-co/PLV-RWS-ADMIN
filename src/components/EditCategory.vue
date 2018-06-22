@@ -90,7 +90,6 @@ export default {
       const newCategory = this.selectedCategory
       categoriesAPI.create(newCategory)
         .then(response => {
-          console.log('Categoria creada')
           this.$emit('closeEdit')
           this.$emit('updateItems')
           event.target.disabled = false

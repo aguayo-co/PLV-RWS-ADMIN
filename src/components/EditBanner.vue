@@ -145,7 +145,6 @@ export default {
           newBanner.image = blob
           bannersAPI.create(newBanner)
             .then(response => {
-              console.log('New with image')
               this.$store.dispatch('ui/closeModal')
               this.$emit('closeEdit')
               event.target.disabled = false
@@ -154,7 +153,6 @@ export default {
       } else {
         bannersAPI.create(newBanner)
           .then(response => {
-            console.log('New plain banner')
             this.$emit('closeEdit')
             event.target.disabled = false
           })
@@ -175,7 +173,6 @@ export default {
             this.banner.image = blob
             bannersAPI.updateWithImage(this.selectedBanner)
               .then(response => {
-                console.log('Ok with image')
                 this.$store.dispatch('ui/closeModal')
                 this.$emit('closeEdit')
                 event.target.disabled = false
@@ -185,7 +182,6 @@ export default {
       } else {
         bannersAPI.update(this.selectedBanner)
           .then(response => {
-            console.log('Ok')
             this.$emit('closeEdit')
             event.target.disabled = false
           })

@@ -43,17 +43,14 @@ export default {
       let newCondition = this.selectedCondition
       conditionsAPI.create(newCondition)
         .then(response => {
-          console.log('Condicion creada')
           this.$emit('closeEdit')
           this.$emit('updateItems')
           event.target.disabled = false
-          console.log('Tabla actualizada')
         })
     },
     update: function (event) {
       conditionsAPI.update(this.selectedCondition)
         .then(response => {
-          console.log('Ok')
           this.$emit('closeEdit')
           event.target.disabled = false
         })

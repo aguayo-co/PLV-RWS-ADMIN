@@ -195,7 +195,6 @@ export default {
           product.image_instagram = blob
           productsAPI.update(product)
             .then(response => {
-              console.log('Ok')
               this.$emit('closeEdit')
               event.target.disabled = false
             })
@@ -203,7 +202,6 @@ export default {
       } else {
         productsAPI.update(this.selectedProduct)
           .then(response => {
-            console.log('Ok')
             this.$emit('closeEdit')
             event.target.disabled = false
           })

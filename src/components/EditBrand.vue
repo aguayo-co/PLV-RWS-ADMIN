@@ -43,7 +43,6 @@ export default {
       event.target.disabled = true
       brandsAPI.update(this.selectedBrand)
         .then(response => {
-          console.log('Ok')
           this.$emit('closeEdit')
           event.target.disabled = false
         })

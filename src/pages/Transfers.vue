@@ -139,7 +139,6 @@ export default {
     transfersAPI.get(this.parameters)
       .then(response => {
         this.payments = response.data.data
-        // console.log(this.payments)
       })
   }
 }

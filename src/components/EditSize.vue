@@ -64,7 +64,6 @@ export default {
       event.target.disabled = true
       sizesAPI.update(this.selectedSize)
         .then(response => {
-          console.log('Ok')
           this.$emit('closeEdit')
           event.target.disabled = false
         })
