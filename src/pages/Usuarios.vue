@@ -5,8 +5,8 @@
       .data-header__item
         form.search(action='', method='GET')
           .search__row
-            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en usuarias')
-            input.search__btn(type='submit', value='')
+            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en usuarias', v-model='inputSearchUser', v-on:keyup.enter="searchUser()", @change="()=>{ if (this.inputSearchUser == '') { this.searchUser() } }")
+            input.search__btn(type='button', value='', @click="searchUser")
         UserAvatar
 
     EditUser(
@@ -145,7 +145,8 @@ export default {
       editActive: false,
       picture: null,
       cover: null,
-      groups: []
+      groups: [],
+      inputSearchUser: ''
     }
   },
   methods: {
@@ -173,6 +174,19 @@ export default {
     loadUser: function (index) {
       this.selectedUser = this.users[index]
       this.slideEdit()
+    },
+    sortByDate (data) {
+      return data.sort((a, b) => { return new Date(b.created_at) - new Date(a.created_at) })
+    },
+    searchUser () {
+      if (this.inputSearchUser.length > 0) {
+        usersAPI.search(this.inputSearchUser)
+          .then(resp => {
+            this.users = this.sortByDate(resp.data.data)
+          })
+      } else {
+        this.updateList()
+      }
     }
   },
   created: function () {
@@ -180,13 +194,12 @@ export default {
       .then(response => {
         this.totalPages = response.data.last_page
         this.totalItems = response.data.total
-        this.users = response.data.data
+        this.users = this.sortByDate(response.data.data)
       })
     groupsAPI.get()
       .then(response => {
         this.groups = response.data.data
       })
   }
-
 }
 </script>
