@@ -1,30 +1,42 @@
+import 'moment/locale/es'
+
+import moment from 'moment'
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import App from './App'
-import router from './router'
-import axiosPlugin from './axios'
-import store from './store'
-import prilovHelpers from './helpers'
-import prilovFilters from './filters'
+import VueMoment from 'vue-moment'
 import VueTextareaAutosize from 'vue-textarea-autosize'
 
-// Load global Axios instances.
-Vue.use(axiosPlugin, store)
-Vue.use(prilovFilters)
-Vue.use(VueTextareaAutosize)
-Vue.use(require('vue-moment'))
+import App from './App'
+import axiosPlugin from './axios'
+import prilovFilters from './filters'
+import prilovHelpers from './helpers'
+import router from './router'
+import store from './store'
 
-// Load our helpers!
-Vue.use(prilovHelpers)
+(() => {
+  if (window.location.protocol === 'http:') {
+    window.location.protocol = 'https:'
+    return
+  }
 
-Vue.config.productionTip = false
+  // Load global Axios instances.
+  Vue.use(axiosPlugin, store)
+  Vue.use(prilovFilters)
+  Vue.use(VueTextareaAutosize)
+  Vue.use(VueMoment, {moment})
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  store,
-  components: { App },
-  template: '<App/>'
-})
+  // Load our helpers!
+  Vue.use(prilovHelpers)
+
+  Vue.config.productionTip = false
+
+  /* eslint-disable no-new */
+  new Vue({
+    el: '#app',
+    router,
+    store,
+    components: { App },
+    template: '<App/>'
+  })
+})()
