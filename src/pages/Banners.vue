@@ -64,7 +64,7 @@
             span(v-else) -
           td.crud__cell {{ banner.name }}
           td.crud__cell {{ banner.title }}
-          td.crud__cell {{ banner.created_at | moment("D [de] MMM YY") }}
+          td.crud__cell {{ banner.created_at | date }}
         tr
           td(colspan="12")
             form.crud__form(action="")

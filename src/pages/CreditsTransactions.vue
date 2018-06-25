@@ -35,10 +35,13 @@
                 value="selectAll")
               label.form__label_check.i-ok(
                 for="all")
-          th.crud__title.crud__cell_22 Monto
-          th.crud__title.crud__cell_22 Estado de tranferencia
-          th.crud__title.crud__cell_22 Fecha de creación
-          th.crud__title.crud__cell_22 Fecha de modificación
+          th.crud__title Fecha de solicitud
+          th.crud__title Destinatario
+          th.crud__title Banco
+          th.crud__title Número de Cuenta
+          th.crud__title Tipo de cuenta
+          th.crud__title Monto
+          th.crud__title Rut
       tbody.crud__tbody
         tr.crud__row(
           v-for="(credit, index) in credits")
@@ -49,13 +52,13 @@
               :name="'item' + index",
               :value="index")
             label.form__label_check.i-ok(:for="'item' + index")
-          td.crud__cell.crud__cell_22 {{ credit.amount | currency }}
-          td.crud__cell.crud__cell_22(v-if="credit.transfer_status == null") --
-          td.crud__cell.crud__cell_22(v-else) {{ credit.transfer_status }}
-          td.crud__cell.crud__cell_22(v-if="credit.created_at == null") --
-          td.crud__cell.crud__cell_22(v-else) {{ credit.created_at | moment("D [de] MMM YY, h:mm:ss a") }}
-          td.crud__cell.crud__cell_22(v-if="credit.updated_at== null") --
-          td.crud__cell.crud__cell_22(v-else) {{ credit.updated_at | moment("D [de] MMM YY, h:mm:ss a") }}
+          td.crud__cell {{ credit.created_at | date-time | unempty }}
+          td.crud__cell {{ bankInfo(credit, 'fullName') | unempty }}
+          td.crud__cell {{ bankInfo(credit, 'bankName') | unempty }}
+          td.crud__cell {{ bankInfo(credit, 'accountNumber') | unempty }}
+          td.crud__cell {{ bankInfo(credit, 'accountType') | unempty }}
+          td.crud__cell {{ credit.amount | currency | unempty }}
+          td.crud__cell {{ bankInfo(credit, 'rut') | unempty }}
         tr.crud__row
           td(colspan="5")
             form.crud__form(action="")
@@ -92,13 +95,18 @@ export default {
       totalItems: null,
       page: 1,
       items: 10,
-      filter: {},
+      filter: {
+        transfer_status: '0,99'
+      },
       order: '-id',
       editActive: false
     }
   },
 
   methods: {
+    bankInfo: function (transfer, key) {
+      return this.$getNestedObject(transfer, ['extra', 'bank_account', key])
+    },
     updateList: function () {
       creditsAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
@@ -126,6 +134,5 @@ export default {
         this.credits = response.data.data
       })
   }
-
 }
 </script>

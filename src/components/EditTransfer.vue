@@ -20,7 +20,7 @@
                 value="algo",
                 v-model="checked")
               label.form__label_check.i-ok(for="approved")
-              | ¿Es un comprobante por ${{ selectedTransfer.request_data.amount | currency }} realizado en {{ selectedTransfer.created_at | moment("MMMM, DD YYYY") }} por {{ selectedTransfer.order.user.first_name + selectedTransfer.order.user.last_name }} ?
+              | ¿Es un comprobante por ${{ selectedTransfer.request_data.amount | currency }} realizado en {{ selectedTransfer.created_at | date }} por {{ selectedTransfer.order.user.first_name + selectedTransfer.order.user.last_name }} ?
             button.btn(
               :class="{'btn_enabled': checked, 'btn_disabled': checked == false || null}",
               @click.prevent="approved($event)") Aprobar

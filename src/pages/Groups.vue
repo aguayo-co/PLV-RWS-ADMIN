@@ -60,8 +60,8 @@
             label.form__label_check.i-ok(:for="'item' + index")
           td.crud__cell.crud__cell_22 {{ group.name}}
           td.crud__cell.crud__cell_22 {{ group.discount_value }}
-          td.crud__cell.crud__cell_22 {{ group.created_at | moment("D [de] MMM YY") }}
-          td.crud__cell.crud__cell_22 {{ group.updated_at | moment("D [de] MMM YY") }}
+          td.crud__cell.crud__cell_22 {{ group.created_at | date }}
+          td.crud__cell.crud__cell_22 {{ group.updated_at | date }}
         tr.crud__row
           td(colspan="5")
             form.crud__form(action="")

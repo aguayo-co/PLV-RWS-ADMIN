@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import axiosPlugin from './axios'
 import store from './store'
+import prilovHelpers from './helpers'
 import prilovFilters from './filters'
 import VueTextareaAutosize from 'vue-textarea-autosize'
 
@@ -13,6 +14,9 @@ Vue.use(axiosPlugin, store)
 Vue.use(prilovFilters)
 Vue.use(VueTextareaAutosize)
 Vue.use(require('vue-moment'))
+
+// Load our helpers!
+Vue.use(prilovHelpers)
 
 Vue.config.productionTip = false
 
