@@ -1,26 +1,29 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Productos from '@/pages/Productos'
-import Usuarios from '@/pages/Usuarios'
+
 import Banners from '@/pages/Banners'
-import Sliders from '@/pages/Sliders'
-import Sizes from '@/pages/Sizes'
-import MenuItems from '@/pages/MenuItems'
-import Home from '@/pages/Home'
-import Colors from '@/pages/Colors'
 import Brands from '@/pages/Brands'
-import Categories from '@/pages/Categories'
-import Transfers from '@/pages/Transfers'
-import ShippingMethods from '@/pages/ShippingMethods'
 import Campaigns from '@/pages/Campaigns'
-import Sales from '@/pages/Sales'
-import Groups from '@/pages/Groups'
+import Categories from '@/pages/Categories'
+import Colors from '@/pages/Colors'
 import Conditions from '@/pages/Conditions'
 import CreditsTransactions from '@/pages/CreditsTransactions'
+import Groups from '@/pages/Groups'
+import Home from '@/pages/Home'
+import MenuItems from '@/pages/MenuItems'
+import Productos from '@/pages/Productos'
+import Sales from '@/pages/Sales'
+import ShippingMethods from '@/pages/ShippingMethods'
+import Sizes from '@/pages/Sizes'
+import Sliders from '@/pages/Sliders'
+import Transfers from '@/pages/Transfers'
+import Usuarios from '@/pages/Usuarios'
+
+import beforeEach from './beforeEach'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -108,3 +111,7 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach(beforeEach)
+
+export default router
