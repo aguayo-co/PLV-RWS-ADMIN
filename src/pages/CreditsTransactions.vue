@@ -1,7 +1,7 @@
 <template lang="pug">
   .content-data
     header.data-header
-      h2.data-header__title.title Créditos transaccionales
+      h2.data-header__title.title Transacciones de créditos
       .data-header__item
         form.search(action='', method='GET')
           .search__row
@@ -24,17 +24,26 @@
         @pageChanged="onPageChanged",
         @itemsChanged="onItemsChanged")
     //Tabla de contenido
+
+    div
+      p(v-if="!checked.length") Selecciona una o más transacciones para generar una nómina de pago.
+      div(v-else)
+        span ¿Generar nómina de {{ checked.length }} transaccione spor un total de ${{ sumChecked | currency }} CLP?
+        button.crud__btn(@click="createPayroll") Generar nómina
+
     table.crud.crud_wide
       thead.crud__head
         tr
           th.crud__title.crud__cell_10
-              input.form__input-check(
-                type="checkbox",
-                id="all"
-                name="all",
-                value="selectAll")
-              label.form__label_check.i-ok(
-                for="all")
+            div Nómina
+            input.form__input-check(
+              type="checkbox"
+              id="all"
+              name="all"
+              :disabled="!payableTransactions.length"
+              v-model="checkAll")
+            label.form__label_check.i-ok(
+              for="all")
           th.crud__title Fecha de solicitud
           th.crud__title Destinatario
           th.crud__title Banco
@@ -44,40 +53,31 @@
           th.crud__title Rut
       tbody.crud__tbody
         tr.crud__row(
-          v-for="(credit, index) in credits")
+          v-for="transaction in transactions")
           td.crud__cell.crud__cell_10
-            input.form__input-check(
-              type="checkbox",
-              :id="'item' + index",
-              :name="'item' + index",
-              :value="index")
-            label.form__label_check.i-ok(:for="'item' + index")
-          td.crud__cell {{ credit.created_at | date-time | unempty }}
-          td.crud__cell {{ bankInfo(credit, 'fullName') | unempty }}
-          td.crud__cell {{ bankInfo(credit, 'bankName') | unempty }}
-          td.crud__cell {{ bankInfo(credit, 'accountNumber') | unempty }}
-          td.crud__cell {{ bankInfo(credit, 'accountType') | unempty }}
-          td.crud__cell {{ credit.amount | currency | unempty }}
-          td.crud__cell {{ bankInfo(credit, 'rut') | unempty }}
-        tr.crud__row
-          td(colspan="5")
-            form.crud__form(action="")
-              p.crud__legend Cambiar estado
-              select.form__select
-                option(value="Pendiente") Pendiente
-                option(value="Rechazado") Rechazado
-                option(value="Aprobado") Aprobado
-                option(value="Disponible") Disponible
-                option(value="No disponible") No disponible
-                option(value="Vendido") Vendido
-              input.crud__btn(type="submit", value="Guardar")
-        //Tercera fila
-        //class para row gris en tabla: .crud__toggle-open
+            template(
+              v-if="!transaction.payroll_id")
+              input.form__input-check(
+                type="checkbox"
+                :id="'transaction-' + transaction.id"
+                :name="'transaction-' + transaction.id"
+                :value="transaction"
+                v-model="checked")
+              label.form__label_check.i-ok(:for="'transaction-' + transaction.id")
+            template(v-else) {{ transaction.payroll_id }}
+          td.crud__cell {{ transaction.created_at | date-time | unempty }}
+          td.crud__cell {{ bankInfo(transaction, 'fullName') | unempty }}
+          td.crud__cell {{ bankInfo(transaction, 'bankName') | unempty }}
+          td.crud__cell {{ bankInfo(transaction, 'accountNumber') | unempty }}
+          td.crud__cell {{ bankInfo(transaction, 'accountType') | unempty }}
+          td.crud__cell {{ transaction.amount | currency | unempty }}
+          td.crud__cell {{ bankInfo(transaction, 'rut') | unempty }}
 
 </template>
 
 <script>
 import creditsAPI from '@/api/creditTransaction'
+import payrollsAPI from '@/api/payrolls'
 import Pager from '@/components/Pager'
 import UserAvatar from '@/components/UserAvatar'
 
@@ -89,8 +89,8 @@ export default {
   },
   data () {
     return {
-      credits: [],
-      selectedCredit: {},
+      transactions: [],
+      checked: [],
       totalPages: null,
       totalItems: null,
       page: 1,
@@ -98,22 +98,47 @@ export default {
       filter: {
         transfer_status: '0,99'
       },
-      order: '-id',
-      editActive: false
+      order: '-id'
     }
   },
+  computed: {
+    checkAll: {
+      set (value) {
+        if (!value) {
+          this.checked = []
+          return
+        }
 
+        this.payableTransactions.forEach(transaction => {
+          this.$set(this.checked, this.checked.length, transaction)
+        })
+      },
+      get () {
+        return this.checked.length && this.payableTransactions.every(transaction => {
+          return this.checked.some(checkedTransaction => checkedTransaction.id === transaction.id)
+        })
+      }
+    },
+    sumChecked () {
+      return this.checked.reduce((total, transaction) => total + transaction.amount, 0)
+    },
+    payableTransactions () {
+      return this.transactions.filter(transaction => transaction.payroll_id === null)
+    }
+  },
   methods: {
-    bankInfo: function (transfer, key) {
+    bankInfo (transfer, key) {
       return this.$getNestedObject(transfer, ['extra', 'bank_account', key])
     },
-    updateList: function () {
-      creditsAPI.get(this.page, this.items, this.filter, this.order)
+    updateList () {
+      creditsAPI.get(this.page, this.items, this.filter)
         .then(response => {
-          this.credits = response.data.data
+          this.totalItems = response.data.total
+          this.totalPages = response.data.last_page
+          this.transactions = response.data.data
         })
     },
-    onPageChanged: function (direction) {
+    onPageChanged (direction) {
       if (direction === 'next' && this.page < this.totalPages) {
         this.page += 1
       } else if (direction === 'prev' && this.page > 1) {
@@ -121,18 +146,27 @@ export default {
       }
       this.updateList()
     },
-    onItemsChanged: function (items) {
+    onItemsChanged (items) {
       this.items = items
       this.updateList()
+    },
+    createPayroll () {
+      const transactionsIds = this.checked.map(transaction => transaction.id)
+      payrollsAPI.create(transactionsIds).then(response => {
+        this.$router.push({ name: 'Payrolls' })
+        const modal = {
+          name: 'ModalMessage',
+          parameters: {
+            type: 'positive',
+            title: 'Tu nómina ' + response.data.id + ' fue creada exitósamente.'
+          }
+        }
+        this.$store.dispatch('ui/showModal', modal)
+      })
     }
   },
-  created: function () {
-    creditsAPI.get(this.page, this.items, this.filter)
-      .then(response => {
-        this.totalItems = response.data.total
-        this.totalPages = response.data.last_page
-        this.credits = response.data.data
-      })
+  created () {
+    this.updateList()
   }
 }
 </script>

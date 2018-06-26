@@ -1,13 +1,14 @@
 /**
- * API Calls related to products and their properties
+ * API Calls related to CreditsTransactions
  */
 import Vue from 'vue'
 
 export default {
-  get: function (page = 1, items = 8, filter) {
+  get: function (page = 1, items = 8, filter, orderby) {
     const params = {
       page,
-      items
+      items,
+      orderby
     }
 
     if (filter) {

@@ -11,6 +11,7 @@ import CreditsTransactions from '@/pages/CreditsTransactions'
 import Groups from '@/pages/Groups'
 import Home from '@/pages/Home'
 import MenuItems from '@/pages/MenuItems'
+import Payrolls from '@/pages/Payrolls'
 import Productos from '@/pages/Productos'
 import Sales from '@/pages/Sales'
 import ShippingMethods from '@/pages/ShippingMethods'
@@ -104,10 +105,16 @@ const router = new Router({
       path: '/conditions',
       name: 'Conditions',
       component: Conditions
-    }, {
-      path: '/credit-transactions',
+    },
+    {
+      path: '/credits-transactions',
       name: 'CreditsTransactions',
       component: CreditsTransactions
+    },
+    {
+      path: '/payrolls',
+      name: 'Payrolls',
+      component: Payrolls
     }
   ]
 })
