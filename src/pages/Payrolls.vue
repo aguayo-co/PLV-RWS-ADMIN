@@ -42,7 +42,7 @@
             td.crud__cell {{ payrollTotal(payroll) | currency | unempty }}
             td.crud__cell {{ payroll.credits_transactions.length | unempty }}
             td.crud__cell
-              button Descargar
+              a(:href="payroll.download_url") Descargar
               router-link(
                 :to="{name: 'Payroll', params: {payrollId: payroll.id}}") Reportar pago
         tr.crud__row(v-else)
