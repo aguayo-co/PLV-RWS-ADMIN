@@ -112,6 +112,12 @@ const router = new Router({
       component: CreditsTransactions
     },
     {
+      path: '/payrolls/:payrollId',
+      name: 'Payroll',
+      component: CreditsTransactions,
+      props: true
+    },
+    {
       path: '/payrolls',
       name: 'Payrolls',
       component: Payrolls

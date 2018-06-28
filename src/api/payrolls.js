@@ -11,8 +11,6 @@ export default {
       orderby
     }
 
-    console.log(params)
-
     if (filter) {
       Object.keys(filter).forEach((key) => {
         params['filter[' + key + ']'] = filter[key]
@@ -25,5 +23,17 @@ export default {
       credits_transactions_ids: transactionsIds
     }
     return Vue.axiosAuth.post('/api/payrolls/', data)
+  },
+  complete: function (payrollId, transactionsIds) {
+    const data = {
+      completed_credits_transactions_ids: transactionsIds
+    }
+    return Vue.axiosAuth.patch('/api/payrolls/' + payrollId, data)
+  },
+  reject: function (payrollId, transactionsIds) {
+    const data = {
+      rejected_credits_transactions_ids: transactionsIds
+    }
+    return Vue.axiosAuth.patch('/api/payrolls/' + payrollId, data)
   }
 }

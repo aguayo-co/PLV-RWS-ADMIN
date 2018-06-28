@@ -9,6 +9,7 @@ import VueTextareaAutosize from 'vue-textarea-autosize'
 
 import App from './App'
 import axiosPlugin from './axios'
+import LoadingRow from './components/LoadingRow'
 import prilovFilters from './filters'
 import prilovHelpers from './helpers'
 import router from './router'
@@ -19,6 +20,8 @@ import store from './store'
     window.location.protocol = 'https:'
     return
   }
+
+  Vue.component('LoadingRow', LoadingRow)
 
   // Load global Axios instances.
   Vue.use(axiosPlugin, store)
