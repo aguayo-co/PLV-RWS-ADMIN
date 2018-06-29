@@ -35,7 +35,21 @@ const actions = {
     }
     return userAPI.load(userId)
       .then(response => {
-        commit('set', response.data)
+        const user = response.data
+        const isAdmin = user.roles.some(role => role.id === 1)
+        if (!isAdmin) {
+          dispatch('logOut')
+          const modal = {
+            name: 'ModalMessage',
+            parameters: {
+              title: 'No tienes los permisos necesarios.',
+              type: 'alert'
+            }
+          }
+          dispatch('ui/showModal', modal, { root: true })
+          return response
+        }
+        commit('set', user)
         dispatch('loadAddresses')
         return response
       })

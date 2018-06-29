@@ -27,7 +27,7 @@ export default {
     ModalMessage
   },
   computed: {
-    ...mapState('user', ['id']),
+    ...mapState('user', ['id', 'roles']),
     modal () {
       return this.$store.getters['ui/modal']
     },

@@ -19,10 +19,7 @@
           h1.title Panel de administración de Prilov
           p.form__info.i-alert-info(v-if="loginError") No podemos reconocer tu usuario y contraseña.
           form.form(
-            v-on:submit='',
-            action='#',
-            submit.prevent='validateBeforeSubmit',
-            method='post'
+            @submit.prevent='validateBeforeSubmit'
           )
             .form__row(
               v-bind:class='{ "is-danger": errorTexts.email }'
@@ -50,8 +47,7 @@
                 id='password',
                 type='password')
             .form__row.form__row_away
-              button.btn.btn_solid.btn_block(
-                @click.prevent='validateBeforeSubmit') Iniciar sesión
+              button.btn.btn_solid.btn_block Iniciar sesión
 </template>
 
 <script>
@@ -97,7 +93,6 @@ export default {
       userAPI.login(payload)
         .then(response => {
           this.$store.dispatch('user/setUser', response.data)
-          this.$router.push({ name: 'productos' })
         })
         .catch((e) => {
           if (this.$store.getters['ui/loginAttempts'] < 3) {
