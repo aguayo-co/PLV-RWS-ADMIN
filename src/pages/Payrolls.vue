@@ -42,7 +42,9 @@
             td.crud__cell {{ payrollTotal(payroll) | currency | unempty }}
             td.crud__cell {{ payroll.credits_transactions.length | unempty }}
             td.crud__cell
-              a.btn(:href="payroll.download_url") Descargar
+              a.btn(
+                v-if="hasPending(payroll)"
+                :href="payroll.download_url") Descargar
               router-link.btn(
                 :to="{name: 'Payroll', params: {payrollId: payroll.id}}") Reportar pago
         tr.crud__row(v-else)
@@ -75,13 +77,19 @@ export default {
   },
 
   methods: {
-    status (payroll) {
+    transactionsPerStatus (payroll) {
       // Cuenta transacciones por su estado.
-      const count = payroll.credits_transactions.reduce((count, transaction) => {
-        count[transaction.transfer_status] = count[transaction.transfer_status] || 0
+      return payroll.credits_transactions.reduce((count, transaction) => {
         count[transaction.transfer_status]++
         return count
-      }, {})
+      }, {0: 0, 1: 0, 99: 0})
+    },
+    hasPending (payroll) {
+      const count = this.transactionsPerStatus(payroll)
+      return count[0] > 0
+    },
+    status (payroll) {
+      const count = this.transactionsPerStatus(payroll)
 
       // La orden puede estar completada, pendiente o parcialmente completada.
       switch (payroll.credits_transactions.length) {

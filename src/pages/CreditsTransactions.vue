@@ -41,7 +41,7 @@
         span ¿Reportar como pagadas {{ checked.length }} de {{ totalItems }} transacciones?
         button.crud__btn(@click="payTransactions") Reportar pagada
         button(@click="rejectTransactions") Reportar rechazada
-      p(v-if="payroll")
+      p(v-if="payroll && hasPending")
         a.btn(:href="payroll.download_url") Descargar nómina
 
     table.crud.crud_wide
@@ -124,6 +124,16 @@ export default {
     }
   },
   computed: {
+    transactionsPerStatus () {
+      // Cuenta transacciones por su estado.
+      return this.transactions.reduce((count, transaction) => {
+        count[transaction.transfer_status]++
+        return count
+      }, {0: 0, 1: 0, 99: 0})
+    },
+    hasPending () {
+      return this.transactionsPerStatus[0] > 0
+    },
     checkAll: {
       set (value) {
         if (!value) {
