@@ -35,7 +35,7 @@
     table.crud.crud_wide
       thead.crud__head
         tr
-          th.crud__title.crud__cell_10
+          th.crud__title.crud__cell_12
               input.form__input-check(
                 type="checkbox",
                 id="all"
@@ -43,23 +43,25 @@
                 value="selectAll")
               label.form__label_check.i-ok(
                 for="all")
-          th.crud__title.crud__cell_30 Nombre
-          th.crud__title.crud__cell_30 Fecha de creación
-          th.crud__title.crud__cell_30 Fecha de modificación
+          th.crud__title.crud__cell_22 Nombre
+          th.crud__title.crud__cell_22 Descuento
+          th.crud__title.crud__cell_22 Fecha de creación
+          th.crud__title.crud__cell_22 Fecha de modificación
       tbody.crud__tbody
         tr.crud__row.crud__row_open(
           @click="loadGroup(index)",
           v-for="(group, index) in groups")
-          td.crud__cell.crud__cell_10
+          td.crud__cell.crud__cell_12
             input.form__input-check(
               type="checkbox",
               :id="'item' + index",
               :name="'item' + index",
               :value="index")
             label.form__label_check.i-ok(:for="'item' + index")
-          td.crud__cell.crud__cell_30 {{ group.name}}
-          td.crud__cell.crud__cell_30 {{ group.created_at | moment("D [de] MMM YY") }}
-          td.crud__cell.crud__cell_30 {{ group.updated_at | moment("D [de] MMM YY") }}
+          td.crud__cell.crud__cell_22 {{ group.name}}
+          td.crud__cell.crud__cell_22 {{ group.discount_value }}
+          td.crud__cell.crud__cell_22 {{ group.created_at | date }}
+          td.crud__cell.crud__cell_22 {{ group.updated_at | date }}
         tr.crud__row
           td(colspan="5")
             form.crud__form(action="")

@@ -1,5 +1,17 @@
 export default {
   install (Vue) {
+    Vue.filter('unempty', function (value) {
+      return value || '--'
+    })
+
+    Vue.filter('date', function (value) {
+      return value ? Vue.moment(value).format('LL') : ''
+    })
+
+    Vue.filter('date-time', function (value) {
+      return value ? Vue.moment(value).format('LLL') : ''
+    })
+
     Vue.filter('currency', function (value) {
       if (value) return value.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1.')
     })

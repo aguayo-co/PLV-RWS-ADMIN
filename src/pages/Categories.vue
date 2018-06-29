@@ -56,8 +56,8 @@
                     for="all")
                 th.crud__cell.crud__cell_30 {{ parent.name }}
                 th.crud__cell.crud__cell_22 {{ '/' + parent.slug }}
-                th.crud__cell.crud__cell_22 {{ parent.created_at | moment("D [de] MMM YY") }}
-                th.crud__cell.crud__cell_22 {{ parent.updated_at | moment("D [de] MMM YY") }}
+                th.crud__cell.crud__cell_22 {{ parent.created_at | date }}
+                th.crud__cell.crud__cell_22 {{ parent.updated_at | date }}
               tbody.crud__tbody
                 tr.crud__row.crud__row_open(
                   v-for="(children, subIndex) in parent.children",
@@ -70,8 +70,8 @@
                     label.form__label_check.i-ok
                   td.crud__cell {{ ' &#8735; ' + children.name }}
                   td.crud__cell {{ '/' + children.slug }}
-                  td.crud__cell {{ children.created_at | moment("D [de] MMM YY") }}
-                  td.crud__cell {{ children.updated_at | moment("D [de] MMM YY") }}
+                  td.crud__cell {{ children.created_at | date }}
+                  td.crud__cell {{ children.updated_at | date }}
         tr.crud__row
           td(colspan="5")
             form.crud__form(action="")

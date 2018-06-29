@@ -39,7 +39,6 @@ const actions = {
         return response
       })
       .catch(e => {
-        console.log('No autenticado')
       })
   },
   loadAddresses ({ commit, state }) {

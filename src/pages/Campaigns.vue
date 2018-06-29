@@ -53,8 +53,8 @@
             label.form__label_check.i-ok(
               :for="'campaign' + index")
           td.crud__cell {{ campaign.name }}
-          td.crud__cell {{ campaign.created_at | moment("D [de] MMM YY") }}
-          td.crud__cell {{ campaign.updated_at | moment("D [de] MMM YY") }}
+          td.crud__cell {{ campaign.created_at | date }}
+          td.crud__cell {{ campaign.updated_at | date }}
         tr.crud__row
           td(colspan="5")
             form.crud__form(action="")

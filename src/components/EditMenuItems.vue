@@ -63,11 +63,6 @@
             id="menu-name",
             v-model="selectedMenu.url",
             type="text")
-          input.form__control(
-            v-else,
-            id="menu-name",
-            v-model="selectedMenu.slug",
-            type="text")
         .form__row.form__row_away
           button.btn.btn_solid.btn_block(@click.prevent="save($event)") Guardar
 </template>
@@ -110,7 +105,6 @@ export default {
       const newItem = this.selectedMenu
       menuItemsAPI.create(newItem)
         .then(response => {
-          console.log('Item de menú creado')
           this.$emit('updateItems')
           this.$emit('closeEdit')
           event.target.disabled = false
@@ -118,16 +112,12 @@ export default {
     },
     getMenuId: function (item) {
       this.result = this.parents.filter(x => x.id === item)
-      console.log('menu 1')
-      console.log(this.result)
     },
     getParentId: function (itemChildren) {
       this.resultChildren = this.result[0].items.filter(i => i.id === itemChildren)
-      console.log(this.resultChildren)
     },
     getMenuItem: function (itemChildren) {
       this.menuChildren = true
-      console.log(this.resultChildren)
     }
   },
   created: function () {

@@ -61,8 +61,13 @@ export default {
               ico: 'i-report'
             },
             {
-              name: 'Créditos transaccionales',
-              url: '/credit-transactions',
+              name: 'Créditos',
+              url: '/credits-transactions',
+              ico: 'i-credits'
+            },
+            {
+              name: 'Nóminas',
+              url: '/payrolls',
               ico: 'i-credits'
             }
           ]

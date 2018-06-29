@@ -195,7 +195,6 @@ export default {
       if (imagesToLoad.length === 0) {
         slidersAPI.update(this.selectedSlide)
           .then(response => {
-            console.log('Ok')
             this.$emit('closeEdit')
             event.target.disabled = false
           })
@@ -213,7 +212,6 @@ export default {
         delete updatedSlide.image_mobile
         // For each imageToLoad
         imagesToLoad.forEach((key, index) => {
-          console.log(key)
           if (this.pictures[key].hasImage()) {
             this.pictures[key].generateBlob((blob) => {
               updatedSlide[key] = blob

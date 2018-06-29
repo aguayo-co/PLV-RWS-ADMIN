@@ -20,7 +20,7 @@
                 value="algo",
                 v-model="checked")
               label.form__label_check.i-ok(for="approved")
-              | ¿Es un comprobante por ${{ selectedTransfer.request_data.amount | currency }} realizado en {{ selectedTransfer.created_at | moment("MMMM, DD YYYY") }} por {{ selectedTransfer.order.user.first_name + selectedTransfer.order.user.last_name }} ?
+              | ¿Es un comprobante por ${{ selectedTransfer.request_data.amount | currency }} realizado en {{ selectedTransfer.created_at | date }} por {{ selectedTransfer.order.user.first_name + selectedTransfer.order.user.last_name }} ?
             button.btn(
               :class="{'btn_enabled': checked, 'btn_disabled': checked == false || null}",
               @click.prevent="approved($event)") Aprobar
@@ -61,7 +61,6 @@ export default {
     save: function (event) {
       transfersAPI.update(this.selectedTransfer)
         .then(response => {
-          console.log('Ok')
           this.$emit('closeEdit')
         })
     },
@@ -76,21 +75,18 @@ export default {
       }
       transfersAPI.approved(data)
         .then(response => {
-          console.log('Ok')
           this.$emit('closeEdit')
           event.target.disabled = false
           this.checked = false
         })
     },
     rejected: function () {
-      // console.log(this.selectedTransfer.request_data.reference)
       const data = {
         reference: this.selectedTransfer.request_data.reference,
         status: 'rejected'
       }
       transfersAPI.rejected(data)
         .then(response => {
-          console.log('Ok')
           this.$emit('closeEdit')
         })
     }
@@ -98,7 +94,6 @@ export default {
   watch: {
     transfer: function () {
       this.selectedTransfer = this.transfer
-      // console.log(this.selectedTransfer.request_data.reference)
     }
   }
 }

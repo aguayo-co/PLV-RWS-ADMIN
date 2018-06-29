@@ -58,8 +58,8 @@
                 th.crud__cell.crud__cell_30.crud__row_open(@click="loadMenu(index)") {{ parent.name }}
                 th.crud__cell.crud__cell_22(v-if="parent.slug") {{ parent.slug }}
                 th.crud__cell.crud__cell_22(v-else) &nbsp;
-                th.crud__cell.crud__cell_22 {{ parent.created_at | moment("D [de] MMM YY") }}
-                th.crud__cell.crud__cell_22 {{ parent.updated_at | moment("D [de] MMM YY") }}
+                th.crud__cell.crud__cell_22 {{ parent.created_at | date }}
+                th.crud__cell.crud__cell_22 {{ parent.updated_at | date }}
               tbody.crud__tbody
                 tr.crud__row(
                   v-for="(children, subIndex) in parent.items")
@@ -75,8 +75,8 @@
                         th.crud__cell.crud__cell_30.crud__row_open(@click="loadMenuItem(children.id)") &nbsp;&nbsp;&nbsp; {{ '&#8735; ' + children.name }}
                         th.crud__cell.crud__cell_22(v-if="children.url") {{ children.url }}
                         th.crud__cell.crud__cell_22(v-else) &nbsp;
-                        th.crud__cell.crud__cell_22 {{ children.created_at | moment("D [de] MMM YY") }}
-                        th.crud__cell.crud__cell_22 {{ children.updated_at | moment("D [de] MMM YY") }}
+                        th.crud__cell.crud__cell_22 {{ children.created_at | date }}
+                        th.crud__cell.crud__cell_22 {{ children.updated_at | date }}
                       tbody
                         tr(v-for="(item, index) in children.children")
                           td(colspan="5")
@@ -90,8 +90,8 @@
                                   label.form__label_check.i-ok
                                 th.crud__cell.crud__cell_30.crud__row_open(@click="loadMenuItem(item.id)") &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ '&#8735; ' + item.name }}
                                 th.crud__cell.crud__cell_22 {{ item.url }}
-                                th.crud__cell.crud__cell_22 {{ item.created_at | moment("D [de] MMM YY") }}
-                                th.crud__cell.crud__cell_22 {{ item.updated_at | moment("D [de] MMM YY") }}
+                                th.crud__cell.crud__cell_22 {{ item.created_at | date }}
+                                th.crud__cell.crud__cell_22 {{ item.updated_at | date }}
                               tbody
                                 tr(v-for="(itemChildren, index) in item.children")
                                   td.crud__cell
@@ -102,8 +102,8 @@
                                     label.form__label_check.i-ok
                                   td.crud__cell.crud__cell_30.crud__row_open(@click="loadMenuItem(itemChildren.id)") &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ '&#8735; ' + itemChildren.name }}
                                   td.crud__cell.crud__cell_22 {{ itemChildren.url }}
-                                  td.crud__cell.crud__cell_22 {{ itemChildren.created_at | moment("D [de] MMM YY") }}
-                                  td.crud__cell.crud__cell_22 {{ itemChildren.updated_at | moment("D [de] MMM YY") }}
+                                  td.crud__cell.crud__cell_22 {{ itemChildren.created_at | date }}
+                                  td.crud__cell.crud__cell_22 {{ itemChildren.updated_at | date }}
         tr.crud__row
           td(colspan="5")
             form.crud__form(action="")
@@ -170,10 +170,8 @@ export default {
     },
     slideEdit: function () {
       this.editActive = !this.editActive
-      console.log('ok')
     },
     loadMenu: function (index) {
-      console.log('index: ' + index)
       this.selectedMenu = this.menus[index]
       this.slideEdit()
     },
@@ -182,7 +180,6 @@ export default {
         .then(response => {
           this.selectedMenu = response.data
         })
-      console.log(this.selectedMenu)
       this.slideEdit()
     },
     create: function () {

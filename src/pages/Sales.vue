@@ -67,7 +67,7 @@
           //- Id Ventas #3
           td.crud__cell {{ sale.id }}
           //- Fecha #4
-          td.crud__cell {{ sale.created_at | moment("D [de] MMM YY") }}
+          td.crud__cell {{ sale.created_at | date }}
           //- Productos #5
           td.crud__cell.crud__cell_14
             ul.crud__list

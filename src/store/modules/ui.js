@@ -121,7 +121,6 @@ const actions = {
           name: 'categories',
           data: response.data.data
         }
-        console.log(property.data)
         commit('setProperty', { property })
       })
   },

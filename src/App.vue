@@ -36,7 +36,6 @@ export default {
     }
   },
   created: function () {
-    this.$moment.locale('es')
     this.$store.dispatch('user/loadUser')
     this.$store.dispatch('ui/loadProperties')
   }

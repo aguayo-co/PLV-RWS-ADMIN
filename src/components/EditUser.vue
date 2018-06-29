@@ -137,7 +137,6 @@ export default {
             user.picture = blob
             usersAPI.updateWithFile(user)
               .then(response => {
-                console.log('Ok with image')
                 this.$emit('closeEdit')
                 event.target.disabled = false
               })
@@ -147,7 +146,6 @@ export default {
         delete user.picture
         usersAPI.update(user)
           .then(response => {
-            console.log('Ok')
             this.$emit('closeEdit')
             event.target.disabled = false
           })

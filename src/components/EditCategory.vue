@@ -46,13 +46,6 @@
             id="color-name",
             v-model="selectedCategory.name",
             type="text")
-        .form__row
-          label.form__label(
-            for="color-id") Url
-          input.form__control(
-            id="color-id",
-            v-model="selectedCategory.slug",
-            type="text")
         .form__row.form__row_away
           button.btn.btn_solid.btn_block(@click.prevent="save($event)") Guardar
 </template>
@@ -97,7 +90,6 @@ export default {
       const newCategory = this.selectedCategory
       categoriesAPI.create(newCategory)
         .then(response => {
-          console.log('Categoria creada')
           this.$emit('closeEdit')
           this.$emit('updateItems')
           event.target.disabled = false

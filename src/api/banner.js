@@ -14,7 +14,6 @@ export default {
         queryFilter += '&filter[' + key + ']=' + filter[key]
       })
     }
-    console.log('/api/banners?items=' + items + '&page=' + page + queryFilter)
     return Vue.axiosAuth.get('/api/banners?items=' + items + '&page=' + page + queryFilter)
   },
   update: function (data) {

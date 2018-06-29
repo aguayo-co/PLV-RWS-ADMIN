@@ -19,13 +19,16 @@
             id="group-name",
             v-model="selectedGroup.name",
             type="text")
-        .form__row(v-if="!selectedGroup.id")
+        .form__row
           label.form__label(
-            for="group-name") Ruta
+            for="group-name") Descuento
           input.form__control(
             id="group-name",
-            v-model="selectedGroup.slug",
-            type="text")
+            v-model="selectedGroup.discount_value",
+            type="number"
+            min=0
+            max=100
+            step=1)
         .form__row.form__row_away
           button.btn.btn_solid.btn_block(@click.prevent="save($event)") Guardar
 </template>
@@ -50,17 +53,14 @@ export default {
       let newGroup = this.selectedGroup
       groupsAPI.create(newGroup)
         .then(response => {
-          console.log('Grupo creado')
           this.$emit('closeEdit')
           this.$emit('updateItems')
           event.target.disabled = false
-          console.log('Tabla actualizada')
         })
     },
     update: function (event) {
       groupsAPI.update(this.selectedGroup)
         .then(response => {
-          console.log('Ok')
           this.$emit('closeEdit')
           event.target.disabled = false
         })

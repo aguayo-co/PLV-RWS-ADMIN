@@ -1,21 +1,22 @@
 /**
- * API Calls related to products and their properties
+ * API Calls related to CreditsTransactions
  */
 import Vue from 'vue'
 
 export default {
-  get: function (page, items, filter) {
-    let queryFilter = ''
-    page = page || 1
-    items = items || 8
+  get: function (page = 1, items = 8, filter, orderby) {
+    const params = {
+      page,
+      items,
+      orderby
+    }
 
     if (filter) {
       Object.keys(filter).forEach((key) => {
-        queryFilter += '&filter[' + key + ']=' + filter[key]
+        params['filter[' + key + ']'] = filter[key]
       })
     }
-    console.log('/api/credits_transactions?items=' + items + '&page=' + page + queryFilter)
-    return Vue.axiosAuth.get('/api/credits_transactions?items=' + items + '&page=' + page + queryFilter)
+    return Vue.axiosAuth.get('/api/credits_transactions', { params })
   },
   update: function (data) {
     const updateData = {...data}

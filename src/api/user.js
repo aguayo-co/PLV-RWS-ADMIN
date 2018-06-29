@@ -19,7 +19,6 @@ export default {
 
     if (orderBy) queryOrder = '&orderBy=' + orderBy
 
-    console.log('/api/users?items=' + items + '&page=' + page + queryFilter + queryOrder)
     return Vue.axiosAuth.get('/api/users?items=' + items + '&page=' + page + queryFilter + queryOrder)
   },
   update: function (data) {
