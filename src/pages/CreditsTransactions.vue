@@ -21,6 +21,7 @@
       p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'crédito' : 'créditos' }}
       // Paginador
       Pager(
+        v-if="!payrollId",
         :currentPage="page",
         :totalPages="totalPages",
         @pageChanged="onPageChanged",
@@ -40,6 +41,8 @@
         span ¿Reportar como pagadas {{ checked.length }} de {{ totalItems }} transacciones?
         button.crud__btn(@click="payTransactions") Reportar pagada
         button(@click="rejectTransactions") Reportar rechazada
+      p(v-if="payroll")
+        a.btn(:href="payroll.download_url") Descargar nómina
 
     table.crud.crud_wide
       thead.crud__head
@@ -107,6 +110,7 @@ export default {
   data () {
     return {
       loading: true,
+      payroll: null,
       transactions: [],
       checked: [],
       totalPages: null,
@@ -144,9 +148,7 @@ export default {
       console.log(this.payrollId)
       if (this.payrollId) {
         return this.transactions.filter(transaction => {
-          console.log(this.payrollId, transaction.payroll_id)
-          console.log(transaction.payroll_id === this.payrollId)
-          return transaction.payroll_id === this.payrollId
+          return transaction.payroll_id === parseInt(this.payrollId)
         })
       }
       return this.transactions.filter(transaction => transaction.payroll_id === null)
@@ -168,15 +170,27 @@ export default {
     },
     updateList () {
       this.loading = true
-      creditsAPI.get(this.page, this.items, this.filter)
+      const promise = this.payrollId ? this.loadPayroll() : this.loadTransactions()
+      promise.finally(() => {
+        this.loading = false
+      })
+    },
+    loadPayroll () {
+      return payrollsAPI.load(this.payrollId).then(response => {
+        this.payroll = response.data
+        this.transactions = response.data.credits_transactions
+        this.totalItems = this.transactions.length
+        this.totalPages = null
+        this.checked = []
+      })
+    },
+    loadTransactions () {
+      return creditsAPI.get(this.page, this.items, this.filter)
         .then(response => {
           this.totalItems = response.data.total
           this.totalPages = response.data.last_page
           this.transactions = response.data.data
           this.checked = []
-        })
-        .finally(() => {
-          this.loading = false
         })
     },
     onPageChanged (direction) {
@@ -245,6 +259,7 @@ export default {
       this.checked = []
 
       this.$delete(this.filter, 'payroll_id')
+      this.payroll = null
 
       if (payrollId) {
         this.$set(this.filter, 'payroll_id', payrollId)

@@ -42,8 +42,8 @@
             td.crud__cell {{ payrollTotal(payroll) | currency | unempty }}
             td.crud__cell {{ payroll.credits_transactions.length | unempty }}
             td.crud__cell
-              a(:href="payroll.download_url") Descargar
-              router-link(
+              a.btn(:href="payroll.download_url") Descargar
+              router-link.btn(
                 :to="{name: 'Payroll', params: {payrollId: payroll.id}}") Reportar pago
         tr.crud__row(v-else)
           td.crud__cell(colspan=5) No hay nóminas a mostrar.

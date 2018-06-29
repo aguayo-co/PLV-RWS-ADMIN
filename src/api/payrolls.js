@@ -18,6 +18,9 @@ export default {
     }
     return Vue.axiosAuth.get('/api/payrolls', { params })
   },
+  load: function (payrollId) {
+    return Vue.axiosAuth.get('/api/payrolls/' + payrollId)
+  },
   create: function (transactionsIds) {
     const data = {
       credits_transactions_ids: transactionsIds
