@@ -1,5 +1,6 @@
 // User store will be used to handle public data regarding users.
 import Vue from 'vue'
+import router from '@/router'
 import userAPI from '@/api/user'
 import userAddressesAPI from '@/api/userAddresses'
 
@@ -92,6 +93,7 @@ const actions = {
   },
   logOut ({ commit }) {
     commit('clear')
+    router.push({name: 'Home'})
   },
   setUser ({ dispatch }, user) {
     window.localStorage.setItem('token', user.api_token)
