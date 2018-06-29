@@ -81,7 +81,7 @@
                   v-model="checked")
                 label.form__label_check.i-ok(:for="'transaction-' + transaction.id")
               template(v-else) {{ transaction.payroll_id }}
-            td.crud__cell(:class="'state-' . transaction.transfer_status") {{ status(transaction) | unempty }}
+            td.crud__cell(:class="'state-' + transaction.transfer_status") {{ status(transaction) | unempty }}
             td.crud__cell {{ transaction.created_at | date-time | unempty }}
             td.crud__cell {{ bankInfo(transaction, 'fullName') | unempty }}
             td.crud__cell {{ bankInfo(transaction, 'bankName') | unempty }}
