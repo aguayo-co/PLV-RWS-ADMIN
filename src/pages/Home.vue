@@ -10,7 +10,12 @@
   .modal.modal_scroll
     .modal__slot.content-slot
       .content-slot__inner
-        .form-slot
+        .form-slot(
+          v-if="user.id")
+          h1.title Panel de administración de Prilov
+          p.form__info.i-alert-info(v-if="loginError") Bienvenida
+        .form-slot(
+          v-else)
           h1.title Panel de administración de Prilov
           p.form__info.i-alert-info(v-if="loginError") No podemos reconocer tu usuario y contraseña.
           form.form(
@@ -44,21 +49,15 @@
                 v-model='password',
                 id='password',
                 type='password')
-              p.form__note.form__note_right
-                |¿Olvidaste tu contraseña?
-                | <a class='link_underline'  href='#' title='Ir a recuperar contraseña'>Recuperar contraseña.</a>
             .form__row.form__row_away
               button.btn.btn_solid.btn_block(
                 @click.prevent='validateBeforeSubmit') Iniciar sesión
-          .break
-            span.break__txt O
-          router-link.btn.btn_block(
-            to='signup',
-            title='Ir a Registro') Regístrate
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import userAPI from '@/api/user'
+
 export default {
   name: 'FormLogin',
   data () {
@@ -68,6 +67,9 @@ export default {
       errorTexts: {},
       loginError: false
     }
+  },
+  computed: {
+    ...mapState(['user'])
   },
   methods: {
     validateBeforeSubmit: function () {
@@ -115,9 +117,6 @@ export default {
           this.$store.dispatch('ui/loginAttempt')
         })
     }
-  },
-  created: function () {
-    this.$store.dispatch('user/loadUser')
   }
 }
 </script>

@@ -39,6 +39,14 @@ const actions = {
         return response
       })
       .catch(e => {
+        const code = Vue.getNestedObject(e, ['response', 'status'])
+        // Not all errors should log the user out.
+        // Some errors are handled by our axios instance axios.
+        // Others, deal here if necessary.
+        switch (code) {
+          case 404:
+            dispatch('logOut')
+        }
       })
   },
   loadAddresses ({ commit, state }) {
@@ -85,7 +93,7 @@ const actions = {
   logOut ({ commit }) {
     commit('clear')
   },
-  setUser ({ commit, dispatch }, user) {
+  setUser ({ dispatch }, user) {
     window.localStorage.setItem('token', user.api_token)
     window.localStorage.setItem('userId', user.id)
     dispatch('loadUser')
