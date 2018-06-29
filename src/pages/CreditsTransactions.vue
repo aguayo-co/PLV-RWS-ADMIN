@@ -81,7 +81,7 @@
                   v-model="checked")
                 label.form__label_check.i-ok(:for="'transaction-' + transaction.id")
               template(v-else) {{ transaction.payroll_id }}
-            td.crud__cell {{ status(transaction) | unempty }}
+            td.crud__cell(:class="statusClass(transaction)") {{ status(transaction) | unempty }}
             td.crud__cell {{ transaction.created_at | date-time | unempty }}
             td.crud__cell {{ bankInfo(transaction, 'fullName') | unempty }}
             td.crud__cell {{ bankInfo(transaction, 'bankName') | unempty }}
@@ -165,6 +165,16 @@ export default {
     }
   },
   methods: {
+    statusClass (transaction) {
+      switch (transaction.transfer_status) {
+        case 0:
+          return 'payed'
+        case 1:
+          return 'completed'
+        case 99:
+          return 'rejected'
+      }
+    },
     status (transaction) {
       switch (transaction.transfer_status) {
         case 0:

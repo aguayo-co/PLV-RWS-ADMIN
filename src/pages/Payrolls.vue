@@ -37,7 +37,7 @@
         template(v-else-if="payrolls.length")
           tr.crud__row(
             v-for="payroll in payrolls")
-            td.crud__cell {{ status(payroll) | unempty }}
+            td.crud__cell(:class="statusClass(payroll)") {{ status(payroll) | unempty }}
             td.crud__cell {{ payroll.created_at | date | unempty }}
             td.crud__cell {{ payrollTotal(payroll) | currency | unempty }}
             td.crud__cell {{ payroll.credits_transactions.length | unempty }}
@@ -87,6 +87,21 @@ export default {
     hasPending (payroll) {
       const count = this.transactionsPerStatus(payroll)
       return count[0] > 0
+    },
+    statusClass (payroll) {
+      const count = this.transactionsPerStatus(payroll)
+
+      // La orden puede estar completada, pendiente o parcialmente completada.
+      switch (payroll.credits_transactions.length) {
+        case count[1]:
+          return 'payed'
+        case count[99]:
+          return 'rejected'
+        case count[1] + count[99]:
+          return 'payed-rejected'
+        default:
+          return 'pending'
+      }
     },
     status (payroll) {
       const count = this.transactionsPerStatus(payroll)
