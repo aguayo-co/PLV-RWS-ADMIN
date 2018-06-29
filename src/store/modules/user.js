@@ -1,5 +1,6 @@
 // User store will be used to handle public data regarding users.
 import Vue from 'vue'
+import router from '@/router'
 import userAPI from '@/api/user'
 import userAddressesAPI from '@/api/userAddresses'
 
@@ -34,11 +35,33 @@ const actions = {
     }
     return userAPI.load(userId)
       .then(response => {
-        commit('set', response.data)
+        const user = response.data
+        const isAdmin = user.roles.some(role => role.id === 1)
+        if (!isAdmin) {
+          dispatch('logOut')
+          const modal = {
+            name: 'ModalMessage',
+            parameters: {
+              title: 'No tienes los permisos necesarios.',
+              type: 'alert'
+            }
+          }
+          dispatch('ui/showModal', modal, { root: true })
+          return response
+        }
+        commit('set', user)
         dispatch('loadAddresses')
         return response
       })
       .catch(e => {
+        const code = Vue.getNestedObject(e, ['response', 'status'])
+        // Not all errors should log the user out.
+        // Some errors are handled by our axios instance axios.
+        // Others, deal here if necessary.
+        switch (code) {
+          case 404:
+            dispatch('logOut')
+        }
       })
   },
   loadAddresses ({ commit, state }) {
@@ -84,8 +107,9 @@ const actions = {
   },
   logOut ({ commit }) {
     commit('clear')
+    router.push({name: 'Home'})
   },
-  setUser ({ commit, dispatch }, user) {
+  setUser ({ dispatch }, user) {
     window.localStorage.setItem('token', user.api_token)
     window.localStorage.setItem('userId', user.id)
     dispatch('loadUser')

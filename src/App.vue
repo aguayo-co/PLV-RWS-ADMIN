@@ -1,12 +1,12 @@
 <template lang="pug">
-.page(:class='{ "is-modal": modal, "page-user" : user.id }')
+.page(:class='{ "is-modal": modal, "page-user" : id }')
   //- main content
   main.content-main
     .layout
       .layout-inner
-        .content(:class="{'content-grid' : user.id}")
+        .content(:class="{'content-grid' : id}")
           AdminMenu(
-            v-if="user.id")
+            v-if="id")
           //- Router Page
           router-view
   ModalMessage(
@@ -27,7 +27,7 @@ export default {
     ModalMessage
   },
   computed: {
-    ...mapState(['user']),
+    ...mapState('user', ['id', 'roles']),
     modal () {
       return this.$store.getters['ui/modal']
     },
@@ -35,9 +35,15 @@ export default {
       return this.$store.getters['ui/modalWindow']
     }
   },
-  created: function () {
+  created () {
     this.$store.dispatch('user/loadUser')
-    this.$store.dispatch('ui/loadProperties')
+  },
+  watch: {
+    id (id) {
+      if (id) {
+        this.$store.dispatch('ui/loadProperties')
+      }
+    }
   }
 }
 </script>

@@ -4,7 +4,6 @@
 import Vue from 'vue'
 
 export default {
-
   get: function (page, items, filter, orderBy) {
     let queryFilter = ''
     let queryOrder = ''
