@@ -94,13 +94,13 @@ export default {
       // La orden puede estar completada, pendiente o parcialmente completada.
       switch (payroll.credits_transactions.length) {
         case count[1]:
-          return 'payed'
+          return 'state-1'
         case count[99]:
-          return 'rejected'
+          return 'state-99'
         case count[1] + count[99]:
-          return 'payed-rejected'
+          return 'state-x'
         default:
-          return 'pending'
+          return 'state-0'
       }
     },
     status (payroll) {
