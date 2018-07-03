@@ -4,16 +4,18 @@
 import Vue from 'vue'
 
 export default {
-  get: function (page, items, filter) {
-    let queryFilter = ''
-    page = page || 1
-    items = items || 8
+  get: function (page = 1, items = 8, filter) {
+    const params = {
+      buyer: true,
+      page,
+      items
+    }
 
     if (filter) {
       Object.keys(filter).forEach((key) => {
-        queryFilter += '&filter[' + key + ']=' + filter[key]
+        params['filter[' + key + ']'] = filter[key]
       })
     }
-    return Vue.axiosAuth.get('/api/sales?items=' + items + '&page=' + page + queryFilter)
+    return Vue.axiosAuth.get('/api/sales', { params })
   }
 }

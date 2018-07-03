@@ -79,7 +79,7 @@
                   p.crud__text_small {{ product.title }}
                   p.crud__text_small ${{ product.price | currency}}
           //- Comisión #6
-          td.crud__cell ${{ sale.commission | currency }}
+          td.crud__cell {{ sale.commission }}% / ${{ sale.total_commission | currency }}
           //- Compradora / Vendedora #7
           td.crud__cell
             .crud__user
@@ -103,21 +103,18 @@
           //- Subtotal #8
           td.crud__cell ${{ sale.total - sale.shipping_cost | currency}}
           //- Envío #9
-          td.crud__cell {{ sale.shipping_cost }}
+          td.crud__cell
+            template(v-if="sale.is_chilexpress") ${{ sale.shipping_cost | currency }}
+            template(v-else) {{ | unempty }}
           //- Metodo #10
-          td.crud__cell
-            span(v-if="sale.shipping_method") {{ sale.shipping_method.name.split(' ')[0] }}
-            span(v-else) -
+          td.crud__cell {{ sale.shipping_method.name }}
           //- Credito amount #11
-          td.crud__cell
-            span(
-              v-if="sale.order.credits_transactions.length > 0") {{ sale.order.credits_transactions[0].amount | currency}}
-            span(v-else) -
+          td.crud__cell {{ sale.used_credits }}
           //- Cupon #12
           td.crud__cell
-            span(
+            template(
               v-if="sale.coupon") {{ sale.coupon.code }}
-            span(v-else) -
+            template(v-else) {{ | unempty }}
           //- Estado #13
           td.crud__cell
             p.crud__state.crud__state_detail(:class='"state-" + sale.status') {{ sale.status | sale_status }}
@@ -169,19 +166,45 @@ export default {
   },
   data () {
     return {
-      sales: [],
+      rawSales: [],
       selectedSale: {},
       totalPages: null,
       totalItems: null,
       page: 1,
       items: 20,
-      filter: {},
+      filter: {
+        status: '11,99'
+      },
       order: '-id',
       editActive: false,
       picture: null
     }
   },
+  computed: {
+    sales: {
+      set (sales) {
+        this.rawSales = sales
+      },
+      get () {
+        return this.rawSales.map(sale => {
+          [sale.total_commission, sale.commission] = this.getCommission(sale.products)
+          return sale
+        })
+      }
+    }
+  },
   methods: {
+    getCommission (products) {
+      const sum = products.reduce((sum, product) => {
+        return product.commission * product.sale_price / 100
+      }, 0)
+
+      const percentege = sum * 100 / products.reduce((sum, product) => {
+        return product.price
+      }, 0)
+
+      return [sum, parseInt(percentege)]
+    },
     updateList: function () {
       salesAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
