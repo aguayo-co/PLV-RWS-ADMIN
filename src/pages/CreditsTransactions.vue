@@ -195,7 +195,7 @@ export default {
       })
     },
     loadTransactions () {
-      return creditsAPI.get(this.page, this.items, this.filter)
+      return creditsAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
           this.totalItems = response.data.total
           this.totalPages = response.data.last_page
