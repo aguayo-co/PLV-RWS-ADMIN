@@ -18,7 +18,7 @@
         option(value="Publicado") Publicado
         option(value="No disponible") No disponible
       a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text.nav__text_wide Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'slide de carousel' : 'slides de carousel' }}
+      p.nav__text.nav__text_wide Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems | unempty }}</strong>  {{ (totalItems === 1) ? 'slide de carousel' : 'slides de carousel' }}
     ul.content-actions
       li
         button.btn.btn_solid.btn_auto.i-plus(@click="create") Crear Slide

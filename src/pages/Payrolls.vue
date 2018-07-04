@@ -16,7 +16,7 @@
       a.nav__btn.i-filter_after(
         href="#",
         title="Filtrar") Filtrar
-      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'crédito' : 'créditos' }}
+      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems | unempty }}</strong>  {{ (totalItems === 1) ? 'crédito' : 'créditos' }}
       // Paginador
       Pager(
         :currentItems="items",
