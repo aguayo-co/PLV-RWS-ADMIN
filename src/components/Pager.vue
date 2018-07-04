@@ -15,14 +15,12 @@ ul.pagination
       option(value="50") 50
   li.pagination__item
     a.pagination__arrow.pagination__arrow_prev.i-back(
-      @click.prevent="$emit('pageChanged', 'prev')",
-      href="#")
+      @click.prevent="prev()")
   li.pagination__item {{ page }}
   li.pagination__item.pagination__item_txt de {{ pages }}
   li.pagination__item
     a.pagination__arrow.pagination__arrow_next.i-next(
-      @click.prevent="$emit('pageChanged', 'next')",
-      href="#")
+      @click.prevent="next()")
 </template>
 
 <script>
@@ -32,6 +30,20 @@ export default {
   data () {
     return {
       items: 10
+    }
+  },
+  methods: {
+    next () {
+      if (this.currentPage === this.totalPages) {
+        return
+      }
+      this.$emit('pageChanged', this.currentPage + 1)
+    },
+    prev () {
+      if (this.currentPage === 1) {
+        return
+      }
+      this.$emit('pageChanged', this.currentPage - 1)
     }
   },
   computed: {

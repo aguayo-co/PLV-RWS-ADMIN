@@ -109,12 +109,8 @@ export default {
           this.payments = response.data.data
         })
     },
-    onPageChanged: function (direction) {
-      if (direction === 'next' && this.parameters.page < this.totalPages) {
-        this.parameters.page += 1
-      } else if (direction === 'prev' && this.parameters.page > 1) {
-        this.parameters.page -= 1
-      }
+    onPageChanged: function (page) {
+      this.page = page
       this.updateList()
     },
     onItemsChanged: function (items) {

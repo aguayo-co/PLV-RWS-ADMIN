@@ -65,32 +65,28 @@
           th.crud__title Tipo de cuenta
           th.crud__title Monto
           th.crud__title Rut
-      tbody.crud__tbody
-        LoadingRow(v-if="loading")
-        template(v-else-if="transactions.length")
-          tr.crud__row(
-            v-for="transaction in transactions")
-            td.crud__cell.crud__cell_10
-              template(
-                v-if="payrollId || !transaction.payroll_id")
-                input.form__input-check(
-                  type="checkbox"
-                  :id="'transaction-' + transaction.id"
-                  :name="'transaction-' + transaction.id"
-                  :value="transaction"
-                  v-model="checked")
-                label.form__label_check.i-ok(:for="'transaction-' + transaction.id")
-              template(v-else) {{ transaction.payroll_id }}
-            td.crud__cell(:class="'state-' + transaction.transfer_status") {{ status(transaction) | unempty }}
-            td.crud__cell {{ transaction.created_at | date-time | unempty }}
-            td.crud__cell {{ bankInfo(transaction, 'fullName') | unempty }}
-            td.crud__cell {{ bankInfo(transaction, 'bankName') | unempty }}
-            td.crud__cell {{ bankInfo(transaction, 'accountNumber') | unempty }}
-            td.crud__cell {{ bankInfo(transaction, 'accountType') | unempty }}
-            td.crud__cell {{ transaction.amount | currency | unempty }}
-            td.crud__cell {{ bankInfo(transaction, 'rut') | unempty }}
-        tr.crud__row(v-else)
-          td.crud__cell(colspan=9) No hay transacciones a mostrar.
+      TBody(:loading="loading" :content="transactions")
+        tr.crud__row(
+          v-for="transaction in transactions")
+          td.crud__cell.crud__cell_10
+            template(
+              v-if="payrollId || !transaction.payroll_id")
+              input.form__input-check(
+                type="checkbox"
+                :id="'transaction-' + transaction.id"
+                :name="'transaction-' + transaction.id"
+                :value="transaction"
+                v-model="checked")
+              label.form__label_check.i-ok(:for="'transaction-' + transaction.id")
+            template(v-else) {{ transaction.payroll_id }}
+          td.crud__cell(:class="'state-' + transaction.transfer_status") {{ status(transaction) | unempty }}
+          td.crud__cell {{ transaction.created_at | date-time | unempty }}
+          td.crud__cell {{ bankInfo(transaction, 'fullName') | unempty }}
+          td.crud__cell {{ bankInfo(transaction, 'bankName') | unempty }}
+          td.crud__cell {{ bankInfo(transaction, 'accountNumber') | unempty }}
+          td.crud__cell {{ bankInfo(transaction, 'accountType') | unempty }}
+          td.crud__cell {{ transaction.amount | currency | unempty }}
+          td.crud__cell {{ bankInfo(transaction, 'rut') | unempty }}
 
 </template>
 
@@ -99,13 +95,15 @@ import creditsAPI from '@/api/creditTransaction'
 import payrollsAPI from '@/api/payrolls'
 import Pager from '@/components/Pager'
 import UserAvatar from '@/components/UserAvatar'
+import TBody from '@/components/TBody'
 
 export default {
   name: 'CreditsTransactions',
   props: ['payrollId'],
   components: {
     Pager,
-    UserAvatar
+    UserAvatar,
+    TBody
   },
   data () {
     return {
@@ -118,7 +116,7 @@ export default {
       page: 1,
       items: 10,
       filter: {
-        transfer_status: '0,99'
+        transfer_status: '100,199'
       },
       order: '-id'
     }
@@ -203,12 +201,8 @@ export default {
           this.checked = []
         })
     },
-    onPageChanged (direction) {
-      if (direction === 'next' && this.page < this.totalPages) {
-        this.page += 1
-      } else if (direction === 'prev' && this.page > 1) {
-        this.page -= 1
-      }
+    onPageChanged: function (page) {
+      this.page = page
       this.updateList()
     },
     onItemsChanged (items) {

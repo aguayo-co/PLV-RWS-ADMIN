@@ -116,12 +116,8 @@ export default {
           this.totalPages = response.data.last_page
         })
     },
-    onPageChanged: function (direction) {
-      if (direction === 'next' && this.page < this.totalPages) {
-        this.page += 1
-      } else if (direction === 'prev' && this.page > 1) {
-        this.page -= 1
-      }
+    onPageChanged: function (page) {
+      this.page = page
       this.updateList()
     },
     onItemsChanged: function (items) {

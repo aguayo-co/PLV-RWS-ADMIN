@@ -49,7 +49,7 @@
           th.crud__th.crud__title Créditos
           th.crud__th.crud__title Cupón
           th.crud__th.crud__title Estado
-      tbody.crud__tbody
+      TBody(:loading="loading" :content="sales")
         tr.crud__row.crud__row_open(
           @click="loadSale(index)",
           v-for="(sale, index) in sales")
@@ -109,7 +109,7 @@
           //- Metodo #10
           td.crud__cell {{ sale.shipping_method.name }}
           //- Credito amount #11
-          td.crud__cell {{ sale.used_credits }}
+          td.crud__cell ${{ sale.used_credits | currency }}
           //- Cupon #12
           td.crud__cell
             template(
@@ -156,16 +156,19 @@ import salesAPI from '@/api/sale'
 import Pager from '@/components/Pager'
 import EditSale from '@/components/EditSale'
 import UserAvatar from '@/components/UserAvatar'
+import TBody from '@/components/TBody'
 
 export default {
   name: 'Sales',
   components: {
     Pager,
     EditSale,
-    UserAvatar
+    UserAvatar,
+    TBody
   },
   data () {
     return {
+      loading: true,
       rawSales: [],
       selectedSale: {},
       totalPages: null,
@@ -206,17 +209,24 @@ export default {
       return [sum, parseInt(percentege)]
     },
     updateList: function () {
-      salesAPI.get(this.page, this.items, this.filter, this.order)
+      const localLoading = this.loading = salesAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
+          if (localLoading !== this.loading) {
+            return
+          }
+          this.totalItems = response.data.total
+          this.totalPages = response.data.last_page
           this.sales = response.data.data
         })
+        .finally(() => {
+          if (localLoading !== this.loading) {
+            return
+          }
+          this.loading = false
+        })
     },
-    onPageChanged: function (direction) {
-      if (direction === 'next' && this.page < this.totalPages) {
-        this.page += 1
-      } else if (direction === 'prev' && this.page > 1) {
-        this.page -= 1
-      }
+    onPageChanged: function (page) {
+      this.page = page
       this.updateList()
     },
     onItemsChanged: function (items) {
@@ -232,12 +242,7 @@ export default {
     }
   },
   created: function () {
-    salesAPI.get(this.page, this.items, this.filter, this.order)
-      .then(response => {
-        this.totalItems = response.data.total
-        this.totalPages = response.data.last_page
-        this.sales = response.data.data
-      })
+    this.updateList()
   }
 
 }

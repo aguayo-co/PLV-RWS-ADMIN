@@ -32,23 +32,19 @@
           th.crud__title Monto de transferencia
           th.crud__title Nº de transacciones
           th.crud__title Acciones
-      tbody.crud__tbody
-        LoadingRow(v-if="loading")
-        template(v-else-if="payrolls.length")
-          tr.crud__row(
-            v-for="payroll in payrolls")
-            td.crud__cell(:class="statusClass(payroll)") {{ status(payroll) | unempty }}
-            td.crud__cell {{ payroll.created_at | date | unempty }}
-            td.crud__cell {{ payrollTotal(payroll) | currency | unempty }}
-            td.crud__cell {{ payroll.credits_transactions.length | unempty }}
-            td.crud__cell
-              a.btn(
-                v-if="hasPending(payroll)"
-                :href="payroll.download_url") Descargar
-              router-link.btn(
-                :to="{name: 'Payroll', params: {payrollId: payroll.id}}") Reportar pago
-        tr.crud__row(v-else)
-          td.crud__cell(colspan=5) No hay nóminas a mostrar.
+      TBody(:loading="loading" :content="payrolls")
+        tr.crud__row(
+          v-for="payroll in payrolls")
+          td.crud__cell(:class="statusClass(payroll)") {{ status(payroll) | unempty }}
+          td.crud__cell {{ payroll.created_at | date | unempty }}
+          td.crud__cell {{ payrollTotal(payroll) | currency | unempty }}
+          td.crud__cell {{ payroll.credits_transactions.length | unempty }}
+          td.crud__cell
+            a.btn(
+              v-if="hasPending(payroll)"
+              :href="payroll.download_url") Descargar
+            router-link.btn(
+              :to="{name: 'Payroll', params: {payrollId: payroll.id}}") Reportar pago
 </template>
 
 <script>
@@ -56,12 +52,14 @@
 import payrollsAPI from '@/api/payrolls'
 import Pager from '@/components/Pager'
 import UserAvatar from '@/components/UserAvatar'
+import TBody from '@/components/TBody'
 
 export default {
   name: 'Payrolls',
   components: {
     Pager,
-    UserAvatar
+    UserAvatar,
+    TBody
   },
   data () {
     return {
@@ -133,12 +131,8 @@ export default {
           this.loading = false
         })
     },
-    onPageChanged: function (direction) {
-      if (direction === 'next' && this.page < this.totalPages) {
-        this.page += 1
-      } else if (direction === 'prev' && this.page > 1) {
-        this.page -= 1
-      }
+    onPageChanged: function (page) {
+      this.page = page
       this.updateList()
     },
     onItemsChanged: function (items) {
