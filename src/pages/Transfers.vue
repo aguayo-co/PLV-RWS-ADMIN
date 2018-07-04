@@ -21,7 +21,8 @@
       p.nav__text Se han encontrado 56 productos
       // Pager
       Pager(
-        :currentPage="parameters.page",
+        :currentItems="items",
+        :currentPage="page",
         :totalPages="totalPages",
         @pageChanged="onPageChanged",
         @itemsChanged="onItemsChanged")
@@ -76,15 +77,15 @@
 <script>
 
 import UserAvatar from '@/components/UserAvatar'
-import Pager from '@/components/Pager'
+import PagerMixin from '@/mixins/PagerMixin'
 import EditTransfer from '@/components/EditTransfer'
 import transfersAPI from '@/api/transfer'
 import ordersAPI from '@/api/order'
 
 export default {
   name: 'Transfers',
+  mixins: [PagerMixin],
   components: {
-    Pager,
     UserAvatar,
     EditTransfer
   },
@@ -92,30 +93,21 @@ export default {
     return {
       payments: [],
       selectedTransfer: {},
-      totalPages: null,
       parameters: {
         'filter[gateway]': 'Transfer',
-        'orderby': '-id',
-        page: 1,
-        items: 20
+        'orderby': '-id'
       },
       editActive: false
     }
   },
   methods: {
-    updatePaymentList: function () {
-      transfersAPI.get(this.parameters)
+    updateList: function () {
+      transfersAPI.get({...this.parameters, items: this.items, page: this.page})
         .then(response => {
+          this.totalItems = response.data.total
+          this.totalPages = response.data.last_page
           this.payments = response.data.data
         })
-    },
-    onPageChanged: function (page) {
-      this.page = page
-      this.updateList()
-    },
-    onItemsChanged: function (items) {
-      this.items = items
-      this.updatePaymentList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -130,12 +122,6 @@ export default {
           return response.data
         })
     }
-  },
-  created: function () {
-    transfersAPI.get(this.parameters)
-      .then(response => {
-        this.payments = response.data.data
-      })
   }
 }
 </script>

@@ -21,6 +21,7 @@
       p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'banner' : 'banners' }}
       // Pager
       Pager(
+        :currentItems="items",
         :currentPage="page",
         :totalPages="totalPages",
         @pageChanged="onPageChanged",
@@ -84,24 +85,20 @@
 
 import bannersAPI from '@/api/banner'
 import EditBanner from '@/components/EditBanner'
-import Pager from '@/components/Pager'
+import PagerMixin from '@/mixins/PagerMixin'
 import UserAvatar from '@/components/UserAvatar'
 
 export default {
   name: 'Banners',
+  mixins: [PagerMixin],
   components: {
     EditBanner,
-    Pager,
     UserAvatar
   },
   data () {
     return {
       banners: [],
       selectedBanner: {},
-      totalPages: null,
-      totalItems: null,
-      page: 1,
-      items: 10,
       filter: {},
       order: '-id',
       editActive: false,
@@ -112,17 +109,10 @@ export default {
     updateList: function () {
       bannersAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
-          this.banners = response.data.data
+          this.totalItems = response.data.total
           this.totalPages = response.data.last_page
+          this.banners = response.data.data
         })
-    },
-    onPageChanged: function (page) {
-      this.page = page
-      this.updateList()
-    },
-    onItemsChanged: function (items) {
-      this.items = items
-      this.updateList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -135,14 +125,6 @@ export default {
       this.selectedBanner = {}
       this.slideEdit()
     }
-  },
-  created: function () {
-    bannersAPI.get(this.page, this.items, this.filter, this.order)
-      .then(response => {
-        this.totalItems = response.data.total
-        this.totalPages = response.data.last_page
-        this.banners = response.data.data
-      })
   }
 }
 </script>

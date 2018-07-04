@@ -21,6 +21,7 @@
       p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'venta' : 'ventas' }}
       // Paginador
       Pager(
+        :currentItems="items",
         :currentPage="page",
         :totalPages="totalPages",
         @pageChanged="onPageChanged",

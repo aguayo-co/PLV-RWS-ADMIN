@@ -22,6 +22,7 @@
       // Paginador
       Pager(
         v-if="!payrollId",
+        :currentItems="items",
         :currentPage="page",
         :totalPages="totalPages",
         @pageChanged="onPageChanged",

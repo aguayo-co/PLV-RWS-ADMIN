@@ -1,8 +1,6 @@
 <template lang="pug">
 // Pager: allows user to change number of items and pages on a table
-    emit @pageChaged(direction) when users change the page
-      direction = next : if next page
-      direction = prev : if prev page
+    emit @pageChaged(page) when users change the page
 ul.pagination
   li.pagination__select
     select.form__select.form__select_small(
@@ -15,49 +13,44 @@ ul.pagination
       option(value="50") 50
   li.pagination__item
     a.pagination__arrow.pagination__arrow_prev.i-back(
-      @click.prevent="prev()")
-  li.pagination__item {{ page }}
-  li.pagination__item.pagination__item_txt de {{ pages }}
+      @click.prevent="changePage(-1)")
+  li.pagination__item {{ this.newPage }}
+  li.pagination__item.pagination__item_txt de {{ totalPages | unempty }}
   li.pagination__item
     a.pagination__arrow.pagination__arrow_next.i-next(
-      @click.prevent="next()")
+      @click.prevent="changePage(1)")
 </template>
 
 <script>
 export default {
   name: 'Pager',
-  props: ['totalPages', 'currentPage'],
+  props: ['totalPages', 'currentPage', 'currentItems'],
   data () {
     return {
-      items: 10
+      timeoutId: null,
+      newPage: this.currentPage,
+      items: this.currentItems
+    }
+  },
+  watch: {
+    currentPage (newPage) {
+      this.newPage = newPage
+    },
+    currentItems (items) {
+      this.items = items
     }
   },
   methods: {
-    next () {
-      if (this.currentPage === this.totalPages) {
+    changePage (pages) {
+      const newPage = this.newPage + pages
+
+      // Do not go out of range.
+      if (newPage > this.totalPages || newPage < 1) {
         return
       }
-      this.$emit('pageChanged', this.currentPage + 1)
-    },
-    prev () {
-      if (this.currentPage === 1) {
-        return
-      }
-      this.$emit('pageChanged', this.currentPage - 1)
-    }
-  },
-  computed: {
-    pages () {
-      if (this.totalPages) {
-        return this.totalPages
-      }
-      return 0
-    },
-    page () {
-      if (this.currentPage) {
-        return this.currentPage
-      }
-      return 1
+      clearTimeout(this.timoeoutId)
+      this.newPage = newPage
+      this.timoeoutId = setTimeout(() => { this.$emit('pageChanged', newPage) }, 500)
     }
   }
 }

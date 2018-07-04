@@ -10,7 +10,7 @@ export default {
       totalPages: null,
       totalItems: null,
       page: 1,
-      items: 5
+      items: 10
     }
   },
   methods: {

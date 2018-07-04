@@ -24,6 +24,7 @@
       p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'grupo' : 'grupos' }}
       // Paginador
       Pager(
+        :currentItems="items",
         :currentPage="page",
         :totalPages="totalPages",
         @pageChanged="onPageChanged",
@@ -81,15 +82,15 @@
 
 <script>
 import groupsAPI from '@/api/group'
-import Pager from '@/components/Pager'
+import PagerMixin from '@/mixins/PagerMixin'
 import EditGroup from '@/components/EditGroup'
 import UserAvatar from '@/components/UserAvatar'
 
 export default {
   // props: ['group', 'active'],
   name: 'Groups',
+  mixins: [PagerMixin],
   components: {
-    Pager,
     EditGroup,
     UserAvatar
   },
@@ -97,10 +98,6 @@ export default {
     return {
       groups: [],
       selectedGroup: {},
-      totalPages: null,
-      totalItems: null,
-      page: 1,
-      items: 10,
       filter: {},
       order: '-id',
       editActive: false
@@ -115,16 +112,10 @@ export default {
     updateList: function () {
       groupsAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
+          this.totalItems = response.data.total
+          this.totalPages = response.data.last_page
           this.groups = response.data.data
         })
-    },
-    onPageChanged: function (page) {
-      this.page = page
-      this.updateList()
-    },
-    onItemsChanged: function (items) {
-      this.items = items
-      this.updateList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -133,15 +124,6 @@ export default {
       this.selectedGroup = this.groups[index]
       this.slideEdit()
     }
-  },
-  created: function () {
-    groupsAPI.get(this.page, this.items, this.filter)
-      .then(response => {
-        this.totalItems = response.data.total
-        this.totalPages = response.data.last_page
-        this.groups = response.data.data
-      })
   }
-
 }
 </script>

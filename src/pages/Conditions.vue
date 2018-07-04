@@ -24,6 +24,7 @@
       p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'condición' : 'condiciones' }}
       // Paginador
       Pager(
+        :currentItems="items",
         :currentPage="page",
         :totalPages="totalPages",
         @pageChanged="onPageChanged",
@@ -79,14 +80,14 @@
 
 <script>
 import conditionsAPI from '@/api/condition'
-import Pager from '@/components/Pager'
+import PagerMixin from '@/mixins/PagerMixin'
 import EditCondition from '@/components/EditCondition'
 import UserAvatar from '@/components/UserAvatar'
 
 export default {
   name: 'Conditions',
+  mixins: [PagerMixin],
   components: {
-    Pager,
     EditCondition,
     UserAvatar
   },
@@ -94,10 +95,6 @@ export default {
     return {
       conditions: [],
       selectedCondition: {},
-      totalPages: null,
-      totalItems: null,
-      page: 1,
-      items: 10,
       filter: {},
       order: '-id',
       editActive: false
@@ -111,16 +108,10 @@ export default {
     updateList: function () {
       conditionsAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
+          this.totalItems = response.data.total
+          this.totalPages = response.data.last_page
           this.conditions = response.data.data
         })
-    },
-    onPageChanged: function (page) {
-      this.page = page
-      this.updateList()
-    },
-    onItemsChanged: function (items) {
-      this.items = items
-      this.updateList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -129,15 +120,6 @@ export default {
       this.selectedCondition = this.conditions[index]
       this.slideEdit()
     }
-  },
-  created: function () {
-    conditionsAPI.get(this.page, this.items, this.filter)
-      .then(response => {
-        this.totalItems = response.data.total
-        this.totalPages = response.data.last_page
-        this.conditions = response.data.data
-      })
   }
-
 }
 </script>
