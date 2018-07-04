@@ -93,15 +93,15 @@
 <script>
 import creditsAPI from '@/api/creditTransaction'
 import payrollsAPI from '@/api/payrolls'
-import Pager from '@/components/Pager'
 import UserAvatar from '@/components/UserAvatar'
 import TBody from '@/components/TBody'
+import PagerMixin from '@/mixins/PagerMixin'
 
 export default {
   name: 'CreditsTransactions',
   props: ['payrollId'],
+  mixins: [PagerMixin],
   components: {
-    Pager,
     UserAvatar,
     TBody
   },
@@ -111,12 +111,8 @@ export default {
       payroll: null,
       transactions: [],
       checked: [],
-      totalPages: null,
-      totalItems: null,
-      page: 1,
-      items: 10,
       filter: {
-        transfer_status: '100,199'
+        transfer_status: '0,99'
       },
       order: '-id'
     }
@@ -153,7 +149,6 @@ export default {
       return this.checked.reduce((total, transaction) => total + transaction.amount, 0)
     },
     checkableTransactions () {
-      console.log(this.payrollId)
       if (this.payrollId) {
         return this.transactions.filter(transaction => {
           return transaction.payroll_id === parseInt(this.payrollId)
@@ -201,14 +196,6 @@ export default {
           this.checked = []
         })
     },
-    onPageChanged: function (page) {
-      this.page = page
-      this.updateList()
-    },
-    onItemsChanged (items) {
-      this.items = items
-      this.updateList()
-    },
     createPayroll () {
       const transactionsIds = this.checked.map(transaction => transaction.id)
       payrollsAPI.create(transactionsIds).then(response => {
@@ -252,23 +239,8 @@ export default {
       })
     }
   },
-  created () {
-    if (this.payrollId) {
-      this.$set(this.filter, 'payroll_id', this.payrollId)
-    }
-    this.updateList()
-  },
   watch: {
-    payrollId (payrollId) {
-      this.checked = []
-
-      this.$delete(this.filter, 'payroll_id')
-      this.payroll = null
-
-      if (payrollId) {
-        this.$set(this.filter, 'payroll_id', payrollId)
-      }
-
+    payrollId () {
       this.updateList()
     }
   }

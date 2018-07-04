@@ -153,15 +153,15 @@
 <script>
 
 import salesAPI from '@/api/sale'
-import Pager from '@/components/Pager'
 import EditSale from '@/components/EditSale'
 import UserAvatar from '@/components/UserAvatar'
 import TBody from '@/components/TBody'
+import PagerMixin from '@/mixins/PagerMixin'
 
 export default {
   name: 'Sales',
+  mixins: [PagerMixin],
   components: {
-    Pager,
     EditSale,
     UserAvatar,
     TBody
@@ -171,10 +171,6 @@ export default {
       loading: true,
       rawSales: [],
       selectedSale: {},
-      totalPages: null,
-      totalItems: null,
-      page: 1,
-      items: 20,
       filter: {
         status: '11,99'
       },
@@ -225,14 +221,6 @@ export default {
           this.loading = false
         })
     },
-    onPageChanged: function (page) {
-      this.page = page
-      this.updateList()
-    },
-    onItemsChanged: function (items) {
-      this.items = items
-      this.updateList()
-    },
     slideEdit: function () {
       this.editActive = !this.editActive
     },
@@ -240,10 +228,6 @@ export default {
       this.selectedSale = this.sales[index]
       this.slideEdit()
     }
-  },
-  created: function () {
-    this.updateList()
   }
-
 }
 </script>

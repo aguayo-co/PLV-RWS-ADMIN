@@ -50,14 +50,14 @@
 <script>
 // import creditsAPI from '@/api/creditTransaction'
 import payrollsAPI from '@/api/payrolls'
-import Pager from '@/components/Pager'
 import UserAvatar from '@/components/UserAvatar'
 import TBody from '@/components/TBody'
+import PagerMixin from '@/mixins/PagerMixin'
 
 export default {
   name: 'Payrolls',
+  mixins: [PagerMixin],
   components: {
-    Pager,
     UserAvatar,
     TBody
   },
@@ -65,10 +65,6 @@ export default {
     return {
       loading: true,
       payrolls: [],
-      totalPages: null,
-      totalItems: null,
-      page: 1,
-      items: 10,
       filter: {},
       order: '-id'
     }
@@ -130,18 +126,7 @@ export default {
         .finally(() => {
           this.loading = false
         })
-    },
-    onPageChanged: function (page) {
-      this.page = page
-      this.updateList()
-    },
-    onItemsChanged: function (items) {
-      this.items = items
-      this.updateList()
     }
-  },
-  created: function () {
-    this.updateList()
   }
 }
 </script>
