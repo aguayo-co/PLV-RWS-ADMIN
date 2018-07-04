@@ -14,12 +14,6 @@
       @closeEdit="slideEdit",
       @updateItems="updateList")
     nav.nav
-      select.form__select(name="acciones en lote")
-        option(value="Acciones en lote") Acciones en lote
-        option(value="Publicado") Publicado
-        option(value="No disponible") No disponible
-      a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text Se han encontrado 56 productos
       // Pager
       Pager(
         :currentItems="items",

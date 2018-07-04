@@ -13,13 +13,6 @@
       :active="editActive",
       @closeEdit="slideEdit")
     nav.nav
-      select.form__select(name="acciones en lote")
-        option(value="Acciones en lote") Acciones en lote
-        option(value="Publicado") Publicado
-        option(value="No disponible") No disponible
-      a.nav__btn.i-filter_after(
-        href="#",
-        title="Filtrar") Filtrar
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head

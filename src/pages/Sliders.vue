@@ -13,11 +13,6 @@
       :active="editActive",
       @closeEdit="slideEdit")
     nav.nav
-      select.form__select(name="acciones en lote")
-        option(value="Acciones en lote") Acciones en lote
-        option(value="Publicado") Publicado
-        option(value="No disponible") No disponible
-      a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
       p.nav__text.nav__text_wide Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems | unempty }}</strong>  {{ (totalItems === 1) ? 'slide de carousel' : 'slides de carousel' }}
     ul.content-actions
       li

@@ -13,11 +13,6 @@
       :active="editActive",
       @closeEdit="slideEdit")
     nav.nav
-      select.form__select(name="acciones en lote")
-        option(value="Acciones en lote") Acciones en lote
-        option(value="Publicado") Publicado
-        option(value="No disponible") No disponible
-      a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
       p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems | unempty }}</strong>  {{ (totalItems === 1) ? 'venta' : 'ventas' }}
       // Paginador
       Pager(
@@ -105,12 +100,14 @@
           td.crud__cell ${{ sale.total - sale.shipping_cost | currency}}
           //- Envío #9
           td.crud__cell
-            template(v-if="sale.is_chilexpress") ${{ sale.shipping_cost | currency }}
+            template(v-if="sale.shipping_cost") ${{ sale.shipping_cost | currency }}
             template(v-else) {{ | unempty }}
           //- Metodo #10
           td.crud__cell {{ sale.shipping_method.name }}
           //- Credito amount #11
-          td.crud__cell ${{ sale.used_credits | currency }}
+          td.crud__cell
+            template(v-if="sale.used_credits") ${{ sale.used_credits | currency }}
+            template(v-else) {{ | unempty }}
           //- Cupon #12
           td.crud__cell
             template(

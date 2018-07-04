@@ -16,18 +16,6 @@
 
     //- nav.nav(v-if="products[0]")
     nav.nav
-      select.form__select(name="acciones en lote")
-        option(value="Acciones en lote") Acciones en lote
-        option(value="Publicado") Publicado
-        option(value="No disponible") No disponible
-      select.form__select.i-filter_after(
-        name="acciones en lote",
-        v-model="filter.status",
-        @change="updateList")
-        option(v-for="(state, index) in status",
-          :value="state.id"
-          ) {{ state.name }}
-      //- a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
       p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems | unempty }}</strong>  {{ (totalItems === 1) ? 'producto' : 'productos' }}
       // Paginador
       Pager(
@@ -126,21 +114,7 @@ export default {
     return {
       products: [],
       selectedProduct: {},
-      filter: { status: '' },
-      status: [
-        { id: '', name: 'Filtrar' },
-        { id: '0', name: 'pendiente' },
-        { id: '1', name: 'rechazado' },
-        { id: '2', name: 'oculto' },
-        { id: '3', name: 'cambios para aprobar' },
-        { id: '10', name: 'aprobado' },
-        { id: '19', name: 'disponible' },
-        { id: '20', name: 'agotado' },
-        { id: '29', name: 'en vacaciones' },
-        { id: '30', name: 'vendido' },
-        { id: '31', name: 'pagando' },
-        { id: '32', name: 'devuelto' }
-      ],
+      filter: {},
       order: '-id',
       query: '',
       editActive: false,
