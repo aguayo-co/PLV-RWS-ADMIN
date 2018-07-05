@@ -13,12 +13,7 @@
       :active="editActive",
       @closeEdit="slideEdit")
     nav.nav
-      select.form__select(name="acciones en lote")
-        option(value="Acciones en lote") Acciones en lote
-        option(value="Publicado") Publicado
-        option(value="No disponible") No disponible
-      a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text.nav__text_wide Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'slide de carousel' : 'slides de carousel' }}
+      p.nav__text.nav__text_wide Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems | unempty }}</strong>  {{ (totalItems === 1) ? 'slide de carousel' : 'slides de carousel' }}
     ul.content-actions
       li
         button.btn.btn_solid.btn_auto.i-plus(@click="create") Crear Slide
@@ -117,12 +112,8 @@ export default {
           this.slides = response.data.data
         })
     },
-    onPageChanged: function (direction) {
-      if (direction === 'next' && this.page < this.totalPages) {
-        this.page += 1
-      } else if (direction === 'prev' && this.page > 1) {
-        this.page -= 1
-      }
+    onPageChanged: function (page) {
+      this.page = page
       this.updateList()
     },
     onItemsChanged: function (items) {

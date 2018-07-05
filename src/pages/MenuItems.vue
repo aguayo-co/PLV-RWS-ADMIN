@@ -14,14 +14,9 @@
       @closeEdit="slideEdit",
       @updateItems="updateList")
     nav.nav
-      select.form__select(name="acciones en lote")
-        option(value="Acciones en lote") Acciones en lote
-        option(value="Publicado") Publicado
-        option(value="No disponible") No disponible
-      a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text Se han encontrado 56 productos
       // Pager
       Pager(
+        :currentItems="items",
         :currentPage="page",
         :totalPages="totalPages",
         @pageChanged="onPageChanged",
@@ -123,14 +118,14 @@
 
 <script>
 import menuItemsAPI from '@/api/menuItem'
-import Pager from '@/components/Pager'
+import PagerMixin from '@/mixins/PagerMixin'
 import EditMenuItems from '@/components/EditMenuItems'
 import UserAvatar from '@/components/UserAvatar'
 
 export default {
   name: 'MenuItems',
+  mixins: [PagerMixin],
   components: {
-    Pager,
     UserAvatar,
     EditMenuItems
   },
@@ -141,9 +136,6 @@ export default {
       selectedMenu: {},
       index: 0,
       subIndex: 0,
-      totalPages: null,
-      page: 1,
-      items: 10,
       filter: {},
       order: '-id',
       editActive: false
@@ -153,20 +145,10 @@ export default {
     updateList: function () {
       menuItemsAPI.getAll(this.page, this.items, this.filter, this.order)
         .then(response => {
-          this.categories = response.data.data
+          this.totalItems = response.data.total
+          this.totalPages = response.data.last_page
+          this.menus = response.data.data
         })
-    },
-    onPageChanged: function (direction) {
-      if (direction === 'next' && this.page < this.totalPages) {
-        this.page += 1
-      } else if (direction === 'prev' && this.page > 1) {
-        this.page -= 1
-      }
-      this.updateList()
-    },
-    onItemsChanged: function (items) {
-      this.items = items
-      this.updateList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -186,13 +168,6 @@ export default {
       this.selectedMenu = {}
       this.slideEdit()
     }
-  },
-  created: function () {
-    menuItemsAPI.getAll()
-      .then(response => {
-        this.menus = response.data.data
-      })
   }
 }
-
 </script>

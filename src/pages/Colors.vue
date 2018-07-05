@@ -13,20 +13,6 @@
       :active="editActive",
       @closeEdit="slideEdit")
     nav.nav
-      select.form__select(name="acciones en lote")
-        option(value="Acciones en lote") Acciones en lote
-        option(value="Publicado") Publicado
-        option(value="No disponible") No disponible
-      a.nav__btn.i-filter_after(
-        href="#",
-        title="Filtrar") Filtrar
-      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'color' : 'colores' }}
-      // Paginador
-      Pager(
-        :currentPage="page",
-        :totalPages="totalPages",
-        @pageChanged="onPageChanged",
-        @itemsChanged="onItemsChanged")
     //Tabla de contenido
     table.crud.crud_wide
       thead.crud__head
@@ -78,8 +64,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import colorsAPI from '@/api/color'
-import Pager from '@/components/Pager'
 import EditColor from '@/components/EditColor'
 import UserAvatar from '@/components/UserAvatar'
 
@@ -87,7 +71,6 @@ export default {
   props: ['color', 'active'],
   name: 'Colors',
   components: {
-    Pager,
     EditColor,
     UserAvatar
   },
@@ -99,34 +82,12 @@ export default {
   data () {
     return {
       selectedColor: {},
-      totalPages: null,
-      totalItems: null,
-      page: 1,
-      items: 10,
       filter: {},
       order: '-id',
       editActive: false
     }
   },
   methods: {
-    updateList: function () {
-      colorsAPI.get(this.page, this.items, this.filter, this.order)
-        .then(response => {
-          this.colors = response.data.data
-        })
-    },
-    onPageChanged: function (direction) {
-      if (direction === 'next' && this.page < this.totalPages) {
-        this.page += 1
-      } else if (direction === 'prev' && this.page > 1) {
-        this.page -= 1
-      }
-      this.updateList()
-    },
-    onItemsChanged: function (items) {
-      this.items = items
-      this.updateList()
-    },
     slideEdit: function () {
       this.editActive = !this.editActive
     },
@@ -135,6 +96,5 @@ export default {
       this.slideEdit()
     }
   }
-
 }
 </script>

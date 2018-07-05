@@ -16,21 +16,10 @@
 
     //- nav.nav(v-if="products[0]")
     nav.nav
-      select.form__select(name="acciones en lote")
-        option(value="Acciones en lote") Acciones en lote
-        option(value="Publicado") Publicado
-        option(value="No disponible") No disponible
-      select.form__select.i-filter_after(
-        name="acciones en lote",
-        v-model="filter.status",
-        @change="updateList")
-        option(v-for="(state, index) in status",
-          :value="state.id"
-          ) {{ state.name }}
-      //- a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'producto' : 'productos' }}
+      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems | unempty }}</strong>  {{ (totalItems === 1) ? 'producto' : 'productos' }}
       // Paginador
       Pager(
+        :currentItems="items",
         :currentPage="page",
         :totalPages="totalPages",
         @pageChanged="onPageChanged",
@@ -109,15 +98,15 @@
 import productAPI from '@/api/product'
 import Vue from 'vue'
 import Croppa from 'vue-croppa'
-import Pager from '@/components/Pager'
+import PagerMixin from '@/mixins/PagerMixin'
 import EditProduct from '@/components/EditProduct'
 import UserAvatar from '@/components/UserAvatar'
 Vue.component('croppa', Croppa.component)
 
 export default {
   name: 'Productos',
+  mixins: [PagerMixin],
   components: {
-    Pager,
     EditProduct,
     UserAvatar
   },
@@ -125,25 +114,7 @@ export default {
     return {
       products: [],
       selectedProduct: {},
-      totalPages: null,
-      totalItems: null,
-      page: 1,
-      items: 10,
-      filter: { status: '' },
-      status: [
-        { id: '', name: 'Filtrar' },
-        { id: '0', name: 'pendiente' },
-        { id: '1', name: 'rechazado' },
-        { id: '2', name: 'oculto' },
-        { id: '3', name: 'cambios para aprobar' },
-        { id: '10', name: 'aprobado' },
-        { id: '19', name: 'disponible' },
-        { id: '20', name: 'agotado' },
-        { id: '29', name: 'en vacaciones' },
-        { id: '30', name: 'vendido' },
-        { id: '31', name: 'pagando' },
-        { id: '32', name: 'devuelto' }
-      ],
+      filter: {},
       order: '-id',
       query: '',
       editActive: false,
@@ -158,20 +129,10 @@ export default {
     updateList: function () {
       productAPI.get(this.page, this.items, this.filter, this.order, this.query)
         .then(response => {
+          this.totalItems = response.data.total
+          this.totalPages = response.data.last_page
           this.products = response.data.data
         })
-    },
-    onPageChanged: function (direction) {
-      if (direction === 'next' && this.page < this.totalPages) {
-        this.page += 1
-      } else if (direction === 'prev' && this.page > 1) {
-        this.page -= 1
-      }
-      this.updateList()
-    },
-    onItemsChanged: function (items) {
-      this.items = items
-      this.updateList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -180,14 +141,6 @@ export default {
       this.selectedProduct = this.products[index]
       this.slideEdit()
     }
-  },
-  created: function () {
-    productAPI.get(this.page, this.items, this.filter, this.order)
-      .then(response => {
-        this.totalItems = response.data.total
-        this.totalPages = response.data.last_page
-        this.products = response.data.data
-      })
   }
 }
 </script>

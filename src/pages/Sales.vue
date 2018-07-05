@@ -13,14 +13,10 @@
       :active="editActive",
       @closeEdit="slideEdit")
     nav.nav
-      select.form__select(name="acciones en lote")
-        option(value="Acciones en lote") Acciones en lote
-        option(value="Publicado") Publicado
-        option(value="No disponible") No disponible
-      a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'venta' : 'ventas' }}
+      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems | unempty }}</strong>  {{ (totalItems === 1) ? 'venta' : 'ventas' }}
       // Paginador
       Pager(
+        :currentItems="items",
         :currentPage="page",
         :totalPages="totalPages",
         @pageChanged="onPageChanged",
@@ -49,7 +45,7 @@
           th.crud__th.crud__title Créditos
           th.crud__th.crud__title Cupón
           th.crud__th.crud__title Estado
-      tbody.crud__tbody
+      TBody(:loading="loading" :content="sales")
         tr.crud__row.crud__row_open(
           @click="loadSale(index)",
           v-for="(sale, index) in sales")
@@ -79,7 +75,7 @@
                   p.crud__text_small {{ product.title }}
                   p.crud__text_small ${{ product.price | currency}}
           //- Comisión #6
-          td.crud__cell ${{ sale.commission | currency }}
+          td.crud__cell {{ sale.commission }}% / ${{ sale.total_commission | currency }}
           //- Compradora / Vendedora #7
           td.crud__cell
             .crud__user
@@ -103,21 +99,20 @@
           //- Subtotal #8
           td.crud__cell ${{ sale.total - sale.shipping_cost | currency}}
           //- Envío #9
-          td.crud__cell {{ sale.shipping_cost }}
-          //- Metodo #10
           td.crud__cell
-            span(v-if="sale.shipping_method") {{ sale.shipping_method.name.split(' ')[0] }}
-            span(v-else) -
+            template(v-if="sale.shipping_cost") ${{ sale.shipping_cost | currency }}
+            template(v-else) {{ | unempty }}
+          //- Metodo #10
+          td.crud__cell {{ sale.shipping_method.name }}
           //- Credito amount #11
           td.crud__cell
-            span(
-              v-if="sale.order.credits_transactions && sale.order.credits_transactions.length > 0") {{ sale.order.credits_transactions[0].amount | currency}}
-            span(v-else) -
+            template(v-if="sale.used_credits") ${{ sale.used_credits | currency }}
+            template(v-else) {{ | unempty }}
           //- Cupon #12
           td.crud__cell
-            span(
+            template(
               v-if="sale.coupon") {{ sale.coupon.code }}
-            span(v-else) -
+            template(v-else) {{ | unempty }}
           //- Estado #13
           td.crud__cell
             p.crud__state.crud__state_detail(:class='"state-" + sale.status') {{ sale.status | sale_status }}
@@ -156,49 +151,73 @@
 <script>
 
 import salesAPI from '@/api/sale'
-import Pager from '@/components/Pager'
 import EditSale from '@/components/EditSale'
 import UserAvatar from '@/components/UserAvatar'
+import TBody from '@/components/TBody'
+import PagerMixin from '@/mixins/PagerMixin'
 
 export default {
   name: 'Sales',
+  mixins: [PagerMixin],
   components: {
-    Pager,
     EditSale,
-    UserAvatar
+    UserAvatar,
+    TBody
   },
   data () {
     return {
-      sales: [],
+      loading: true,
+      rawSales: [],
       selectedSale: {},
-      totalPages: null,
-      totalItems: null,
-      page: 1,
-      items: 20,
-      filter: {},
+      filter: {
+        status: '11,99'
+      },
       order: '-id',
       editActive: false,
       picture: null
     }
   },
+  computed: {
+    sales: {
+      set (sales) {
+        this.rawSales = sales
+      },
+      get () {
+        return this.rawSales.map(sale => {
+          [sale.total_commission, sale.commission] = this.getCommission(sale.products)
+          return sale
+        })
+      }
+    }
+  },
   methods: {
+    getCommission (products) {
+      const sum = products.reduce((sum, product) => {
+        return product.commission * product.sale_price / 100
+      }, 0)
+
+      const percentege = sum * 100 / products.reduce((sum, product) => {
+        return product.price
+      }, 0)
+
+      return [sum, parseInt(percentege)]
+    },
     updateList: function () {
-      salesAPI.get(this.page, this.items, this.filter, this.order)
+      const localLoading = this.loading = salesAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
+          if (localLoading !== this.loading) {
+            return
+          }
+          this.totalItems = response.data.total
+          this.totalPages = response.data.last_page
           this.sales = response.data.data
         })
-    },
-    onPageChanged: function (direction) {
-      if (direction === 'next' && this.page < this.totalPages) {
-        this.page += 1
-      } else if (direction === 'prev' && this.page > 1) {
-        this.page -= 1
-      }
-      this.updateList()
-    },
-    onItemsChanged: function (items) {
-      this.items = items
-      this.updateList()
+        .finally(() => {
+          if (localLoading !== this.loading) {
+            return
+          }
+          this.loading = false
+        })
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -207,15 +226,6 @@ export default {
       this.selectedSale = this.sales[index]
       this.slideEdit()
     }
-  },
-  created: function () {
-    salesAPI.get(this.page, this.items, this.filter, this.order)
-      .then(response => {
-        this.totalItems = response.data.total
-        this.totalPages = response.data.last_page
-        this.sales = response.data.data
-      })
   }
-
 }
 </script>

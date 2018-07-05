@@ -9,16 +9,10 @@
             input.search__btn(type='submit', value='')
         UserAvatar
     nav.nav
-      select.form__select(name="acciones en lote")
-        option(value="Acciones en lote") Acciones en lote
-        option(value="Publicado") Publicado
-        option(value="No disponible") No disponible
-      a.nav__btn.i-filter_after(
-        href="#",
-        title="Filtrar") Filtrar
-      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'crédito' : 'créditos' }}
+      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems | unempty }}</strong>  {{ (totalItems === 1) ? 'crédito' : 'créditos' }}
       // Paginador
       Pager(
+        :currentItems="items",
         :currentPage="page",
         :totalPages="totalPages",
         @pageChanged="onPageChanged",
@@ -32,45 +26,39 @@
           th.crud__title Monto de transferencia
           th.crud__title Nº de transacciones
           th.crud__title Acciones
-      tbody.crud__tbody
-        LoadingRow(v-if="loading")
-        template(v-else-if="payrolls.length")
-          tr.crud__row(
-            v-for="payroll in payrolls")
-            td.crud__cell(:class="statusClass(payroll)") {{ status(payroll) | unempty }}
-            td.crud__cell {{ payroll.created_at | date | unempty }}
-            td.crud__cell {{ payrollTotal(payroll) | currency | unempty }}
-            td.crud__cell {{ payroll.credits_transactions.length | unempty }}
-            td.crud__cell
-              a.btn(
-                v-if="hasPending(payroll)"
-                :href="payroll.download_url") Descargar
-              router-link.btn(
-                :to="{name: 'Payroll', params: {payrollId: payroll.id}}") Reportar pago
-        tr.crud__row(v-else)
-          td.crud__cell(colspan=5) No hay nóminas a mostrar.
+      TBody(:loading="loading" :content="payrolls")
+        tr.crud__row(
+          v-for="payroll in payrolls")
+          td.crud__cell(:class="statusClass(payroll)") {{ status(payroll) | unempty }}
+          td.crud__cell {{ payroll.created_at | date | unempty }}
+          td.crud__cell {{ payrollTotal(payroll) | currency | unempty }}
+          td.crud__cell {{ payroll.credits_transactions.length | unempty }}
+          td.crud__cell
+            a.btn(
+              v-if="hasPending(payroll)"
+              :href="payroll.download_url") Descargar
+            router-link.btn(
+              :to="{name: 'Payroll', params: {payrollId: payroll.id}}") Reportar pago
 </template>
 
 <script>
 // import creditsAPI from '@/api/creditTransaction'
 import payrollsAPI from '@/api/payrolls'
-import Pager from '@/components/Pager'
 import UserAvatar from '@/components/UserAvatar'
+import TBody from '@/components/TBody'
+import PagerMixin from '@/mixins/PagerMixin'
 
 export default {
   name: 'Payrolls',
+  mixins: [PagerMixin],
   components: {
-    Pager,
-    UserAvatar
+    UserAvatar,
+    TBody
   },
   data () {
     return {
       loading: true,
       payrolls: [],
-      totalPages: null,
-      totalItems: null,
-      page: 1,
-      items: 10,
       filter: {},
       order: '-id'
     }
@@ -132,22 +120,7 @@ export default {
         .finally(() => {
           this.loading = false
         })
-    },
-    onPageChanged: function (direction) {
-      if (direction === 'next' && this.page < this.totalPages) {
-        this.page += 1
-      } else if (direction === 'prev' && this.page > 1) {
-        this.page -= 1
-      }
-      this.updateList()
-    },
-    onItemsChanged: function (items) {
-      this.items = items
-      this.updateList()
     }
-  },
-  created: function () {
-    this.updateList()
   }
 }
 </script>

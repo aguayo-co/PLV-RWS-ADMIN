@@ -14,14 +14,10 @@
       :active="editActive",
       @closeEdit="slideEdit")
     nav.nav
-      select.form__select(name="acciones en lote")
-        option(value="Acciones en lote") Acciones en lote
-        option(value="Publicado") Publicado
-        option(value="No disponible") No disponible
-      a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'talla' : 'tallas' }}
+      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems | unempty }}</strong>  {{ (totalItems === 1) ? 'talla' : 'tallas' }}
       // Paginador
       Pager(
+        :currentItems="items",
         :currentPage="page",
         :totalPages="totalPages",
         @pageChanged="onPageChanged",
@@ -80,15 +76,15 @@
 
 <script>
 import sizesAPI from '@/api/size'
-import Pager from '@/components/Pager'
+import PagerMixin from '@/mixins/PagerMixin'
 import EditSize from '@/components/EditSize'
 import UserAvatar from '@/components/UserAvatar'
 
 export default {
   props: ['size', 'sizeParent', 'active'],
   name: 'Sizes',
+  mixins: [PagerMixin],
   components: {
-    Pager,
     EditSize,
     UserAvatar
   },
@@ -98,10 +94,6 @@ export default {
       sizesChildren: [],
       selectedSize: {},
       selectedSizes: {},
-      totalPages: null,
-      totalItems: null,
-      page: 1,
-      items: 10,
       filter: {},
       order: '-id',
       editActive: false
@@ -111,20 +103,10 @@ export default {
     updateList: function () {
       sizesAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
+          this.totalItems = response.data.total
+          this.totalPages = response.data.last_page
           this.sizes = response.data.data
         })
-    },
-    onPageChanged: function (direction) {
-      if (direction === 'next' && this.page < this.totalPages) {
-        this.page += 1
-      } else if (direction === 'prev' && this.page > 1) {
-        this.page -= 1
-      }
-      this.updateList()
-    },
-    onItemsChanged: function (items) {
-      this.items = items
-      this.updateList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -134,15 +116,6 @@ export default {
       this.selectedSize = this.sizes[index].children[indexChildren]
       this.slideEdit()
     }
-  },
-  created: function () {
-    sizesAPI.get(this.page, this.items, this.filter)
-      .then(response => {
-        this.totalItems = response.data.total
-        this.totalPages = response.data.last_page
-        this.sizes = response.data.data
-      })
   }
-
 }
 </script>

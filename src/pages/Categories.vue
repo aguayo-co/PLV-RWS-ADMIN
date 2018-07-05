@@ -13,18 +13,6 @@
       :active="editActive",
       @closeEdit="slideEdit")
     nav.nav
-      select.form__select(name="acciones en lote")
-        option(value="Acciones en lote") Acciones en lote
-        option(value="Publicado") Publicado
-        option(value="No disponible") No disponible
-      a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text Se han encontrado 56 productos
-      // Pager
-      Pager(
-        :currentPage="page",
-        :totalPages="totalPages",
-        @pageChanged="onPageChanged",
-        @itemsChanged="onItemsChanged")
     //Crear item de categoria
     ul.content-actions
       li
@@ -92,7 +80,6 @@
 <script>
 // import categoriesAPI from '@/api/category'
 import { mapState } from 'vuex'
-import Pager from '@/components/Pager'
 import EditCategory from '@/components/EditCategory'
 import UserAvatar from '@/components/UserAvatar'
 
@@ -100,7 +87,6 @@ export default {
   props: ['category', 'active'],
   name: 'Categories',
   components: {
-    Pager,
     UserAvatar,
     EditCategory
   },
@@ -113,9 +99,6 @@ export default {
   data () {
     return {
       selectedCategory: {},
-      totalPages: null,
-      page: 1,
-      items: 10,
       filter: {},
       order: '-id',
       editActive: false
@@ -126,18 +109,6 @@ export default {
       this.selectedCategory = {}
       this.slideEdit()
     },
-    onPageChanged: function (direction) {
-      if (direction === 'next' && this.page < this.totalPages) {
-        this.page += 1
-      } else if (direction === 'prev' && this.page > 1) {
-        this.page -= 1
-      }
-      this.updateList()
-    },
-    onItemsChanged: function (items) {
-      this.items = items
-      this.updateList()
-    },
     slideEdit: function () {
       this.editActive = !this.editActive
     },
@@ -147,5 +118,4 @@ export default {
     }
   }
 }
-
 </script>

@@ -16,14 +16,10 @@
       @closeEdit="slideEdit")
 
     nav.nav
-      select.form__select(name="acciones en lote")
-        option(value="Acciones en lote") Acciones en lote
-        option(value="Publicado") Publicado
-        option(value="No disponible") No disponible
-      a.nav__btn.i-filter_after(href="#", title="Filtrar") Filtrar
-      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems }}</strong>  {{ (totalItems === 1) ? 'usuaria' : 'usuarias' }}
+      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems | unempty }}</strong>  {{ (totalItems === 1) ? 'usuaria' : 'usuarias' }}
       // Paginador
       Pager(
+        :currentItems="items",
         :currentPage="page",
         :totalPages="totalPages",
         @pageChanged="onPageChanged",
@@ -119,7 +115,7 @@ import usersAPI from '@/api/user'
 import groupsAPI from '@/api/group'
 import Vue from 'vue'
 import Croppa from 'vue-croppa'
-import Pager from '@/components/Pager'
+import PagerMixin from '@/mixins/PagerMixin'
 import EditUser from '@/components/EditUser'
 import UserAvatar from '@/components/UserAvatar'
 
@@ -127,8 +123,8 @@ Vue.component('croppa', Croppa.component)
 
 export default {
   name: 'Usuaria',
+  mixins: [PagerMixin],
   components: {
-    Pager,
     EditUser,
     UserAvatar
   },
@@ -136,10 +132,6 @@ export default {
     return {
       users: [],
       selectedUser: {},
-      totalPages: null,
-      totalItems: null,
-      page: 1,
-      items: 20,
       filter: {},
       order: '-id',
       editActive: false,
@@ -153,20 +145,10 @@ export default {
     updateList: function () {
       usersAPI.get(this.page, this.items, this.filter, this.order)
         .then(response => {
+          this.totalPages = response.data.last_page
+          this.totalItems = response.data.total
           this.users = response.data.data
         })
-    },
-    onPageChanged: function (direction) {
-      if (direction === 'next' && this.page < this.totalPages) {
-        this.page += 1
-      } else if (direction === 'prev' && this.page > 1) {
-        this.page -= 1
-      }
-      this.updateList()
-    },
-    onItemsChanged: function (items) {
-      this.items = items
-      this.updateList()
     },
     slideEdit: function () {
       this.editActive = !this.editActive
@@ -175,14 +157,11 @@ export default {
       this.selectedUser = this.users[index]
       this.slideEdit()
     },
-    sortByDate (data) {
-      return data.sort((a, b) => { return new Date(b.created_at) - new Date(a.created_at) })
-    },
     searchUser () {
       if (this.inputSearchUser.length > 0) {
         usersAPI.search(this.inputSearchUser)
-          .then(resp => {
-            this.users = this.sortByDate(resp.data.data)
+          .then(response => {
+            this.users = response.data.data
           })
       } else {
         this.updateList()
@@ -190,12 +169,6 @@ export default {
     }
   },
   created: function () {
-    usersAPI.get(this.page, this.items, this.filter, this.order)
-      .then(response => {
-        this.totalPages = response.data.last_page
-        this.totalItems = response.data.total
-        this.users = this.sortByDate(response.data.data)
-      })
     groupsAPI.get()
       .then(response => {
         this.groups = response.data.data
