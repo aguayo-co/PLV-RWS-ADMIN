@@ -35,8 +35,9 @@
         span ¿Reportar como pagadas {{ checked.length }} de {{ totalItems }} transacciones?
         button.crud__btn(@click="payTransactions") Reportar pagada
         button(@click="rejectTransactions") Reportar rechazada
-      p(v-if="payroll && hasPending")
-        a.btn(:href="payroll.download_url") Descargar nómina
+      p
+        a.btn(v-if="payroll && hasPending" :href="payroll.download_urls[0]") Descargar pendientes
+        a.btn(:href="payroll.download_urls[1]") Descargar todas
 
     table.crud.crud_wide
       thead.crud__head
@@ -58,6 +59,7 @@
           th.crud__title Número de Cuenta
           th.crud__title Tipo de cuenta
           th.crud__title Monto
+          th.crud__title Monto boleta
           th.crud__title Rut
       TBody(:loading="loading" :content="transactions")
         tr.crud__row(
@@ -79,7 +81,8 @@
           td.crud__cell {{ bankInfo(transaction, 'bankName') | unempty }}
           td.crud__cell {{ bankInfo(transaction, 'accountNumber') | unempty }}
           td.crud__cell {{ bankInfo(transaction, 'accountType') | unempty }}
-          td.crud__cell {{ transaction.amount | currency | unempty }}
+          td.crud__cell {{ -transaction.amount | currency | unempty }}
+          td.crud__cell {{ -transaction.commission | currency | unempty }}
           td.crud__cell {{ bankInfo(transaction, 'rut') | unempty }}
 
 </template>

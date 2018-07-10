@@ -24,6 +24,7 @@
           th.crud__title Estado
           th.crud__title Fecha de solicitud
           th.crud__title Monto de transferencia
+          th.crud__title Monto boleta
           th.crud__title Nº de transacciones
           th.crud__title Acciones
       TBody(:loading="loading" :content="payrolls")
@@ -32,11 +33,12 @@
           td.crud__cell(:class="statusClass(payroll)") {{ status(payroll) | unempty }}
           td.crud__cell {{ payroll.created_at | date | unempty }}
           td.crud__cell {{ payrollTotal(payroll) | currency | unempty }}
+          td.crud__cell {{ payrollCommission(payroll) | currency | unempty }}
           td.crud__cell {{ payroll.credits_transactions.length | unempty }}
           td.crud__cell
             a.btn(
               v-if="hasPending(payroll)"
-              :href="payroll.download_url") Descargar
+              :href="payroll.download_urls[0]") Descargar pendientes
             router-link.btn(
               :to="{name: 'Payroll', params: {payrollId: payroll.id}}") Reportar pago
 </template>
@@ -107,7 +109,10 @@ export default {
       }
     },
     payrollTotal (payroll) {
-      return payroll.credits_transactions.reduce((total, transaction) => total + transaction.amount, 0)
+      return -payroll.credits_transactions.reduce((total, transaction) => total + transaction.amount, 0)
+    },
+    payrollCommission (payroll) {
+      return -payroll.credits_transactions.reduce((total, transaction) => total + transaction.commission, 0)
     },
     updateList: function () {
       this.loading = true
