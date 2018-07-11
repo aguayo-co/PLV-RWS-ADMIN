@@ -4,10 +4,11 @@
 import Vue from 'vue'
 
 export default {
-  get: function (page = 1, items = 8, filter) {
+  get: function (page = 1, items = 8, filter, orderby) {
     const params = {
       buyer: true,
       page,
+      orderby,
       items
     }
 
