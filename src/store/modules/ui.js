@@ -17,7 +17,6 @@ const state = {
     name: null,
     parameters: {}
   },
-  loginAttempts: 0,
   menus: {},
   conditions: [],
   colors: [],
@@ -30,8 +29,7 @@ const state = {
 // getters
 const getters = {
   modal: state => state.modal,
-  modalWindow: state => state.modalWindow,
-  loginAttempts: state => state.loginAttempts
+  modalWindow: state => state.modalWindow
 }
 
 // actions
@@ -148,9 +146,6 @@ const actions = {
   },
   closeModal (context) {
     context.commit('closeModal')
-  },
-  loginAttempt (context) {
-    context.commit('loginAttempt')
   }
 }
 
@@ -175,9 +170,6 @@ const mutations = {
     state.modalWindow.enabled = false
     state.modalWindow.name = null
     state.modal = false
-  },
-  loginAttempt (state) {
-    state.loginAttempts += 1
   }
 }
 

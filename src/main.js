@@ -10,6 +10,7 @@ import VueTextareaAutosize from 'vue-textarea-autosize'
 import App from './App'
 import axiosPlugin from './axios'
 import LoadingRow from './components/LoadingRow'
+import Dots from './components/global/Dots'
 import prilovFilters from './filters'
 import prilovHelpers from './helpers'
 import router from './router'
@@ -32,7 +33,7 @@ import store from './store'
   // Load our helpers!
   Vue.use(prilovHelpers)
 
-  Vue.config.productionTip = false
+  Vue.component('Dots', Dots)
 
   /* eslint-disable no-new */
   new Vue({
