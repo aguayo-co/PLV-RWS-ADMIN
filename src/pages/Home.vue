@@ -10,44 +10,43 @@
   .modal.modal_scroll
     .modal__slot.content-slot
       .content-slot__inner
-        .form-slot(
-          v-if="user.id")
+        .form-slot
           h1.title Panel de administración de Prilov
-          p.form__info.i-alert-info(v-if="loginError") Bienvenida
-        .form-slot(
-          v-else)
-          h1.title Panel de administración de Prilov
-          p.form__info.i-alert-info(v-if="loginError") No podemos reconocer tu usuario y contraseña.
-          form.form(
-            @submit.prevent='validateBeforeSubmit'
-          )
-            .form__row(
-              v-bind:class='{ "is-danger": errorTexts.email }'
+          p.form__info.i-alert-info(v-if="user.id") Bienvenida
+          template(v-else)
+            p.form__info.i-alert-info(v-if="loginError") No podemos reconocer tu usuario y contraseña.
+            form.form(
+              @submit.prevent='login'
             )
-              label.form__label(
-                for='email') Correo
-              span.help(
-                v-if="errorTexts.email"
-              ) {{ errorTexts.email }}
-              input.form__control(
-                v-model='email',
-                id='email',
-                type='email')
-            .form__row(
-              v-bind:class='{ "is-danger": errorTexts.password }'
-            )
-              label.form__label(
-                for='password'
-              ) Contraseña
-              span.help(
-                v-if="errorTexts.password"
-              ) {{ errorTexts.password }}
-              input.form__control(
-                v-model='password',
-                id='password',
-                type='password')
-            .form__row.form__row_away
-              button.btn.btn_solid.btn_block Iniciar sesión
+              .form__row(
+                v-bind:class='{ "is-danger": errorLog.email }'
+              )
+                label.form__label(
+                  for='email') Correo
+                span.help(
+                  v-if="errorLog.email"
+                ) {{ errorLog.email }}
+                input.form__control(
+                  v-model='email',
+                  id='email',
+                  type='email')
+              .form__row(
+                v-bind:class='{ "is-danger": errorLog.password }'
+              )
+                label.form__label(
+                  for='password'
+                ) Contraseña
+                span.help(
+                  v-if="errorLog.password"
+                ) {{ errorLog.password }}
+                input.form__control(
+                  v-model='password',
+                  id='password',
+                  type='password')
+              .form__row.form__row_away
+                button.btn.btn_solid.btn_block(v-if="!loading") Iniciar sesión
+                button.btn.btn_solid.btn_block(v-else disabled)
+                  Dots
 </template>
 
 <script>
@@ -55,37 +54,45 @@ import { mapState } from 'vuex'
 import userAPI from '@/api/user'
 
 export default {
-  name: 'FormLogin',
+  name: 'Home',
   data () {
     return {
       email: '',
       password: '',
-      errorTexts: {},
-      loginError: false
+      errorLog: {},
+      loginError: false,
+      loading: false
     }
   },
   computed: {
     ...mapState(['user'])
   },
   methods: {
-    validateBeforeSubmit: function () {
-      this.errorTexts = {}
-
+    validateEmail () {
       if (!this.email) {
-        this.errorTexts.email = 'Debes ingresar tu email'
-      } else {
-        if (!/^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!\.)){0,61}[a-zA-Z0-9]?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!$)){0,61}[a-zA-Z0-9]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/.test(this.email)) {
-          this.errorTexts.email = 'El email que ingresaste no parece válido.'
-        }
+        this.$set(this.errorLog, 'email', 'Debes ingresar tu email')
+        return
       }
 
-      if (!this.password) this.errorTexts.password = 'Debes ingresar una contraseña'
-
-      if (Object.keys(this.errorTexts).length === 0) {
-        this.login()
+      if (!/^(?:[\w!#$%&'*+\-/=?^`{|}~]+\.)*[\w!#$%&'*+\-/=?^`{|}~]+@(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-](?!\.)){0,61}[a-zA-Z0-9]?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-](?!$)){0,61}[a-zA-Z0-9]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/.test(this.email)) {
+        this.$set(this.errorLog, 'email', 'El email que ingresaste no parece válido.')
       }
     },
+    validate () {
+      this.errorLog = {}
+      this.validateEmail()
+      if (!this.password) this.$set(this.errorLog, 'password', 'Debes ingresar una contraseña')
+
+      return Object.keys(this.errorLog).length === 0
+    },
     login: function () {
+      this.loginError = false
+      this.loading = true
+      if (!this.validate()) {
+        this.loading = false
+        return
+      }
+
       const payload = {
         email: this.email,
         password: this.password
@@ -95,21 +102,8 @@ export default {
           this.$store.dispatch('user/setUser', response.data)
         })
         .catch((e) => {
-          if (this.$store.getters['ui/loginAttempts'] < 3) {
-            this.loginError = true
-          } else {
-            var modal = {
-              name: 'ModalMessage',
-              parameters: {
-                type: 'alert',
-                title: '¡Ups! Ya has intentado autenticarte varias veces',
-                primaryButtonTitle: '¿Olvidaste tu contraseña?',
-                primaryButtonURL: 'password'
-              }
-            }
-            this.$store.dispatch('ui/showModal', modal)
-          }
-          this.$store.dispatch('ui/loginAttempt')
+          this.loading = false
+          this.loginError = true
         })
     }
   }
