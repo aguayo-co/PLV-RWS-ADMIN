@@ -10,46 +10,43 @@
   .modal.modal_scroll
     .modal__slot.content-slot
       .content-slot__inner
-        .form-slot(
-          v-if="user.id")
+        .form-slot
           h1.title Panel de administración de Prilov
-          p.form__info.i-alert-info(v-if="loginError") Bienvenida
-        .form-slot(
-          v-else)
-          h1.title Panel de administración de Prilov
-          p.form__info.i-alert-info(v-if="loginError") No podemos reconocer tu usuario y contraseña.
-          form.form(
-            @submit.prevent='login'
-          )
-            .form__row(
-              v-bind:class='{ "is-danger": errorLog.email }'
+          p.form__info.i-alert-info(v-if="user.id") Bienvenida
+          template(v-else)
+            p.form__info.i-alert-info(v-if="loginError") No podemos reconocer tu usuario y contraseña.
+            form.form(
+              @submit.prevent='login'
             )
-              label.form__label(
-                for='email') Correo
-              span.help(
-                v-if="errorLog.email"
-              ) {{ errorLog.email }}
-              input.form__control(
-                v-model='email',
-                id='email',
-                type='email')
-            .form__row(
-              v-bind:class='{ "is-danger": errorLog.password }'
-            )
-              label.form__label(
-                for='password'
-              ) Contraseña
-              span.help(
-                v-if="errorLog.password"
-              ) {{ errorLog.password }}
-              input.form__control(
-                v-model='password',
-                id='password',
-                type='password')
-            .form__row.form__row_away
-              button.btn.btn_solid.btn_block(v-if="!loading") Iniciar sesión
-              button.btn.btn_solid.btn_block(v-else disabled)
-                Dots
+              .form__row(
+                v-bind:class='{ "is-danger": errorLog.email }'
+              )
+                label.form__label(
+                  for='email') Correo
+                span.help(
+                  v-if="errorLog.email"
+                ) {{ errorLog.email }}
+                input.form__control(
+                  v-model='email',
+                  id='email',
+                  type='email')
+              .form__row(
+                v-bind:class='{ "is-danger": errorLog.password }'
+              )
+                label.form__label(
+                  for='password'
+                ) Contraseña
+                span.help(
+                  v-if="errorLog.password"
+                ) {{ errorLog.password }}
+                input.form__control(
+                  v-model='password',
+                  id='password',
+                  type='password')
+              .form__row.form__row_away
+                button.btn.btn_solid.btn_block(v-if="!loading") Iniciar sesión
+                button.btn.btn_solid.btn_block(v-else disabled)
+                  Dots
 </template>
 
 <script>
@@ -105,10 +102,8 @@ export default {
           this.$store.dispatch('user/setUser', response.data)
         })
         .catch((e) => {
-          this.loginError = true
-        })
-        .finally(() => {
           this.loading = false
+          this.loginError = true
         })
     }
   }
