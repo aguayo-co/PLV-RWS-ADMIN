@@ -1,10 +1,5 @@
-import Pager from '@/components/Pager'
-
 export default {
   name: 'PagerMixin',
-  components: {
-    Pager
-  },
   data () {
     return {
       totalPages: null,
@@ -23,8 +18,5 @@ export default {
       this.items = items
       this.updateList()
     }
-  },
-  created () {
-    this.updateList()
   }
 }

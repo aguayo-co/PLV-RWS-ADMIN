@@ -50,7 +50,7 @@ export default {
       }
       clearTimeout(this.timoeoutId)
       this.newPage = newPage
-      this.timoeoutId = setTimeout(() => { this.$emit('pageChanged', newPage) }, 500)
+      this.timoeoutId = setTimeout(() => { this.$emit('pageChanged', newPage) }, 1000)
     }
   }
 }
