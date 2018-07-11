@@ -193,7 +193,7 @@ export default {
   methods: {
     getCommission (products) {
       const sum = products.reduce((sum, product) => {
-        return product.commission * product.sale_price / 100
+        return product.commission * product.price / 100
       }, 0)
 
       const percentege = sum * 100 / products.reduce((sum, product) => {
