@@ -4,21 +4,20 @@
 import Vue from 'vue'
 
 export default {
-  get: function (page, items, filter, order, search) {
-    let querySearch = ''
-    let queryFilter = ''
-    let queryOrder = ''
-    page = page || 1
-    items = items || 8
+  get: function (page = 1, items, filter, orderby, q) {
+    const params = {
+      page,
+      items,
+      orderby,
+      q
+    }
 
     if (filter) {
       Object.keys(filter).forEach((key) => {
-        if (filter[key]) queryFilter += '&filter[' + key + ']=' + filter[key]
+        params['filter[' + key + ']'] = filter[key]
       })
     }
-    if (order) queryOrder = '&orderby=' + order
-    if (search) querySearch = '&q=' + search
-    return Vue.axiosAuth.get('/api/products?items=' + items + '&page=' + page + queryFilter + queryOrder + querySearch)
+    return Vue.axiosAuth.get('/api/products', { params })
   },
   update: function (data) {
     const updateData = {...data}

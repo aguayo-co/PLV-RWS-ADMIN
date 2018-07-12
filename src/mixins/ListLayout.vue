@@ -1,12 +1,15 @@
 <template lang="pug">
   div
     //- Slide de edición.
-    transition(name='slide-right')
-      component(
-        v-if="$parent.slide && $parent.showSlide"
-        v-bind:is="$parent.slide"
-        :data="$parent.slideData"
-        @close="$parent.closeSlide")
+    .admin__edit(
+      v-if="$parent.slide"
+      :class="{admin__edit_open: $parent.showSlide}")
+      transition(name='slide-right')
+        component.edit__slide(
+          v-if="$parent.showSlide"
+          v-bind:is="$parent.slide"
+          :data="$parent.slideData"
+          @close="$parent.closeSlide")
 
     .content-data.content-data_wide
       //- Header de la página.
@@ -14,9 +17,14 @@
         h2.data-header__title.title
           slot(name="title")
         .data-header__item
-          form.search(action='', method='GET')
+          form.search(
+            @submit.prevent="$parent.updateList")
             .search__row
-              input#searchMain.search__input(type='text', name='search', placeholder='Buscar')
+              input#searchMain.search__input(
+                type='text'
+                name='search'
+                placeholder='Buscar'
+                v-model="$parent.query")
               input.search__btn(type='submit', value='')
           UserAvatar
 
@@ -62,6 +70,7 @@
           //- Filas
           tr.crud__row(
             v-else
+            @click="$parent.openSlide(object)"
             v-for="object in $parent.objects")
             td.crud__cell(v-if="$parent.isCheckable")
               template(v-if="$parent.checkable(object)")

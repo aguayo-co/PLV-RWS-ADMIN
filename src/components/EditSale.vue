@@ -1,6 +1,5 @@
 <template lang="pug">
-.admin__edit.admin__edit_open
-  .edit__slide
+  div
     h3.slide__header.i-close(
       @click.stop="$emit('close')") Editar ventas
     form.slide__form

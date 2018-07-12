@@ -4,7 +4,7 @@
 import Vue from 'vue'
 
 export default {
-  get: function (page = 1, items = 8, filter, orderby) {
+  get: function (page = 1, items, filter, orderby) {
     const params = {
       page,
       items,

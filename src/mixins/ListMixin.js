@@ -12,6 +12,7 @@ export default {
       loading: true,
       order: '-id',
       filter: null,
+      query: null,
 
       showSlide: null,
       slide: null,
@@ -72,7 +73,7 @@ export default {
         return
       }
 
-      const localLoading = this.loading = this.loader(this.page, this.items, this.filter, this.order)
+      const localLoading = this.loading = this.loader(this.page, this.items, this.filter, this.order, this.query)
         .then(response => {
           // Keep track of last request.
           if (localLoading !== this.loading) {
