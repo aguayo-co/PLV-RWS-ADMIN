@@ -25,26 +25,31 @@
         p.nav__text Se {{ ($parent.totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ $parent.totalItems | unempty }}</strong>  {{ ($parent.totalItems === 1) ? 'resultado' : 'resultados' }}
         // Paginador
         Pager(
+          v-if="$parent.totalPages",
           :currentItems="$parent.items",
           :currentPage="$parent.page",
           :totalPages="$parent.totalPages",
-          @pageChanged="$parent.onPageChanged",
-          @itemsChanged="$parent.onItemsChanged")
+          @pageChanged="$parent.pageChanged",
+          @itemsChanged="$parent.itemsChanged")
 
       //- Cualquier otra cosa que nos encontremos.
       slot
+
+      slot(name="selection" v-if="$parent.isCheckable")
+        div
+          p Has seleccionado {{ $parent.checkedIds.length }} filas.
 
       //- Contenido.
       table.crud.crud_wide
 
         thead.crud__head
           tr
-            th.crud__th.crud__title
+            th.crud__th.crud__title(v-if="$parent.isCheckable")
               input.form__input-check(
-                type="checkbox",
-                id="all",
-                name="all",
-                value="selectAll")
+                type="checkbox"
+                id="all"
+                name="all"
+                v-model="$parent.checkAll")
               label.form__label_check.i-ok(
                 for="all")
             //- Columnas
@@ -55,17 +60,30 @@
           tr.crud__row(v-else-if="!$parent.objects || !$parent.objects.length")
             td.crud__cell(colspan=100) No hay resultados a mostrar.
           //- Filas
-          slot(v-else name="rows")
+          tr.crud__row(
+            v-else
+            v-for="object in $parent.objects")
+            td.crud__cell(v-if="$parent.isCheckable")
+              template(v-if="$parent.checkable(object)")
+                input.form__input-check(
+                  type="checkbox"
+                  :id="'object-' + object.id"
+                  :name="'object-' + object.id"
+                  :value="object.id"
+                  v-model="$parent.checkedIds")
+                label.form__label_check.i-ok(:for="'object-' + object.id")
+            slot(:name="'row-' + object.id")
 
         tfoot
           slot(name="tfoot")
 </template>
 
 <script>
-import Pager from '@/components/Pager'
-import UserAvatar from '@/components/UserAvatar'
+import Pager from '@/components/shared/Pager'
+import LoadingRow from '@/components/shared/LoadingRow'
+import UserAvatar from '@/components/shared/UserAvatar'
 
 export default {
-  components: {Pager, UserAvatar}
+  components: {LoadingRow, Pager, UserAvatar}
 }
 </script>

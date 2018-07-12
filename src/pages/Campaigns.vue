@@ -72,7 +72,7 @@
 import campaignAPI from '@/api/campaign'
 import PagerMixin from '@/mixins/PagerMixin'
 import EditCampaigns from '@/components/EditCampaigns'
-import UserAvatar from '@/components/UserAvatar'
+import UserAvatar from '@/components/shared/UserAvatar'
 
 export default {
   props: ['campaign', 'active'],

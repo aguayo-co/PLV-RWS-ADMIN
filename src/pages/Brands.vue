@@ -72,7 +72,7 @@
 import brandsAPI from '@/api/brand'
 import PagerMixin from '@/mixins/PagerMixin'
 import EditBrand from '@/components/EditBrand'
-import UserAvatar from '@/components/UserAvatar'
+import UserAvatar from '@/components/shared/UserAvatar'
 
 export default {
   props: ['brand', 'active'],

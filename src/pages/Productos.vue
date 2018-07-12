@@ -100,7 +100,7 @@ import Vue from 'vue'
 import Croppa from 'vue-croppa'
 import PagerMixin from '@/mixins/PagerMixin'
 import EditProduct from '@/components/EditProduct'
-import UserAvatar from '@/components/UserAvatar'
+import UserAvatar from '@/components/shared/UserAvatar'
 Vue.component('croppa', Croppa.component)
 
 export default {

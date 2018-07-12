@@ -70,7 +70,7 @@
 
 <script>
 
-import UserAvatar from '@/components/UserAvatar'
+import UserAvatar from '@/components/shared/UserAvatar'
 import PagerMixin from '@/mixins/PagerMixin'
 import EditTransfer from '@/components/EditTransfer'
 import transfersAPI from '@/api/transfer'

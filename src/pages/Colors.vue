@@ -65,7 +65,7 @@
 <script>
 import { mapState } from 'vuex'
 import EditColor from '@/components/EditColor'
-import UserAvatar from '@/components/UserAvatar'
+import UserAvatar from '@/components/shared/UserAvatar'
 
 export default {
   props: ['color', 'active'],

@@ -77,7 +77,7 @@
 import groupsAPI from '@/api/group'
 import PagerMixin from '@/mixins/PagerMixin'
 import EditGroup from '@/components/EditGroup'
-import UserAvatar from '@/components/UserAvatar'
+import UserAvatar from '@/components/shared/UserAvatar'
 
 export default {
   // props: ['group', 'active'],

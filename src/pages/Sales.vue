@@ -16,77 +16,67 @@
       th.crud__th.crud__title Cupón
       th.crud__th.crud__title Estado
 
-    template(slot="rows")
-      tr.crud__row.crud__row_open(
-        @click="openSlide(sale)",
-        v-for="(sale, index) in sales")
-        //- Checkbox #1
-        td.crud__cell
-          input.form__input-check(
-            type="checkbox",
-            :id="'item' + index",
-            :name="'item' + index",
-            :value="index")
-          label.form__label_check.i-ok(
-            :for="'item' + index")
-        //- Id Orden #2
-        td.crud__cell {{ sale.order_id }}
-        //- Id Ventas #3
-        td.crud__cell {{ sale.id }}
-        //- Fecha #4
-        td.crud__cell {{ sale.created_at | date }}
-        //- Productos #5
-        td.crud__cell.crud__cell_14
-          ul.crud__list
-            li(v-for="product in sale.products")
-              img.crud__cell-img(
-                :src="product.images[0]",
-                :alt="product.title")
-              .crud__text
-                p.crud__text_small {{ product.title }}
-                p.crud__text_small ${{ product.price | currency}}
-        //- Comisión #6
-        td.crud__cell {{ sale.commission }}% / ${{ sale.total_commission | currency }}
-        //- Compradora / Vendedora #7
-        td.crud__cell
-          .crud__user
-            figure.crud__avatar.avatar
-              img.avatar__img(
-                v-if="sale.user.picture",
-                :src="sale.user.picture",
-                :alt="sale.user.first_name")
-              span.tool-user__letter.avatar__img(
-                v-else) {{ sale.user.first_name.charAt(0) }}
-              figcaption.avatar__txt Compradora <br> {{ sale.user.first_name + ' ' + sale.user.last_name }}
-          .crud__user
-            figure.crud__avatar.avatar
-              img.avatar__img(
-                v-if="sale.order.user.picture",
-                :src="sale.order.user.picture",
-                :alt="sale.order.user.first_name")
-              span.tool-user__letter.avatar__img(
-                v-else) {{ sale.order.user.first_name.charAt(0) }}
-              figcaption.avatar__txt Vendedora <br> {{ sale.order.user.first_name + ' ' + sale.order.user.last_name }}
-        //- Subtotal #8
-        td.crud__cell ${{ sale.total - sale.shipping_cost | currency}}
-        //- Envío #9
-        td.crud__cell
-          template(v-if="sale.shipping_cost") ${{ sale.shipping_cost | currency }}
-          template(v-else) {{ | unempty }}
-        //- Metodo #10
-        td.crud__cell {{ sale.shipping_method.name }}
-        //- Credito amount #11
-        td.crud__cell
-          template(v-if="sale.used_credits") ${{ sale.used_credits | currency }}
-          template(v-else) {{ | unempty }}
-        //- Cupon #12
-        td.crud__cell
-          template(
-            v-if="sale.coupon") {{ sale.coupon.code }}
-          template(v-else) {{ | unempty }}
-        //- Estado #13
-        td.crud__cell
-          p.crud__state.crud__state_detail(:class='"state-" + sale.status') {{ sale.status | sale_status }}
+    template(
+      v-for="sale in sales"
+      :slot="'row-' + sale.id")
+      //- Id Orden #2
+      td.crud__cell {{ sale.order_id }}
+      //- Id Ventas #3
+      td.crud__cell {{ sale.id }}
+      //- Fecha #4
+      td.crud__cell {{ sale.created_at | date }}
+      //- Productos #5
+      td.crud__cell.crud__cell_14
+        ul.crud__list
+          li(v-for="product in sale.products")
+            img.crud__cell-img(
+              :src="product.images[0]",
+              :alt="product.title")
+            .crud__text
+              p.crud__text_small {{ product.title }}
+              p.crud__text_small ${{ product.price | currency}}
+      //- Comisión #6
+      td.crud__cell {{ sale.commission }}% / ${{ sale.total_commission | currency }}
+      //- Compradora / Vendedora #7
+      td.crud__cell
+        .crud__user
+          figure.crud__avatar.avatar
+            img.avatar__img(
+              v-if="sale.user.picture",
+              :src="sale.user.picture",
+              :alt="sale.user.first_name")
+            span.tool-user__letter.avatar__img(
+              v-else) {{ sale.user.first_name.charAt(0) }}
+            figcaption.avatar__txt Compradora <br> {{ sale.user.first_name + ' ' + sale.user.last_name }}
+        .crud__user
+          figure.crud__avatar.avatar
+            img.avatar__img(
+              v-if="sale.order.user.picture",
+              :src="sale.order.user.picture",
+              :alt="sale.order.user.first_name")
+            span.tool-user__letter.avatar__img(
+              v-else) {{ sale.order.user.first_name.charAt(0) }}
+            figcaption.avatar__txt Vendedora <br> {{ sale.order.user.first_name + ' ' + sale.order.user.last_name }}
+      //- Subtotal #8
+      td.crud__cell ${{ sale.total - sale.shipping_cost | currency}}
+      //- Envío #9
+      td.crud__cell
+        template(v-if="sale.shipping_cost") ${{ sale.shipping_cost | currency }}
+        template(v-else) {{ | unempty }}
+      //- Metodo #10
+      td.crud__cell {{ sale.shipping_method.name }}
+      //- Credito amount #11
+      td.crud__cell
+        template(v-if="sale.used_credits") ${{ sale.used_credits | currency }}
+        template(v-else) {{ | unempty }}
+      //- Cupon #12
+      td.crud__cell
+        template(
+          v-if="sale.coupon") {{ sale.coupon.code }}
+        template(v-else) {{ | unempty }}
+      //- Estado #13
+      td.crud__cell
+        p.crud__state.crud__state_detail(:class='"state-" + sale.status') {{ sale.status | sale_status }}
 
     template(slot="tfoot")
       tr
@@ -125,7 +115,7 @@ export default {
       },
       slide: EditSale,
 
-      loader: salesAPI.get,
+      loaderMethod: salesAPI.get,
       objectsKey: 'sales',
 
       rawSales: [],

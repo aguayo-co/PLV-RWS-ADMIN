@@ -14,7 +14,7 @@ ul.pagination
   li.pagination__item
     a.pagination__arrow.pagination__arrow_prev.i-back(
       @click.prevent="changePage(-1)")
-  li.pagination__item {{ this.newPage }}
+  li.pagination__item {{ this.currentPage }}
   li.pagination__item.pagination__item_txt de {{ totalPages | unempty }}
   li.pagination__item
     a.pagination__arrow.pagination__arrow_next.i-next(
@@ -27,30 +27,24 @@ export default {
   props: ['totalPages', 'currentPage', 'currentItems'],
   data () {
     return {
-      timeoutId: null,
-      newPage: this.currentPage,
       items: this.currentItems
     }
   },
   watch: {
-    currentPage (newPage) {
-      this.newPage = newPage
-    },
     currentItems (items) {
       this.items = items
     }
   },
   methods: {
     changePage (pages) {
-      const newPage = this.newPage + pages
+      const newPage = this.currentPage + pages
 
       // Do not go out of range.
       if (newPage > this.totalPages || newPage < 1) {
         return
       }
-      clearTimeout(this.timoeoutId)
-      this.newPage = newPage
-      this.timoeoutId = setTimeout(() => { this.$emit('pageChanged', newPage) }, 1000)
+
+      this.$emit('pageChanged', newPage)
     }
   }
 }

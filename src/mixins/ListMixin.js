@@ -1,8 +1,9 @@
 import PagerMixin from './PagerMixin'
+import CheckableMixin from './CheckableMixin'
 import ListLayout from './ListLayout'
 
 export default {
-  mixins: [PagerMixin],
+  mixins: [PagerMixin, CheckableMixin],
   components: {
     ListLayout
   },
@@ -16,12 +17,22 @@ export default {
       slide: null,
       slideData: null,
 
-      // Required:
-      loader: null,
+      loaderMethod: null,
       objectsKey: null
     }
   },
   computed: {
+    // Get the method to be called to retrieve the objects from the api.
+    loader () {
+      if (!this.loaderMethod) {
+        console.error('loaderMethod not defined.')
+        return
+      }
+
+      return this.loaderMethod
+    },
+    // Generic computed property to access the retrieved objects.
+    // Each component can have its own name by setting "objectsKey".
     objects: {
       get () {
         if (!this.objectsKey) {
