@@ -61,6 +61,7 @@ export default {
   props: ['payrollId'],
   data () {
     return {
+      query: false,
       payroll: null,
       transactions: [],
       filter: {

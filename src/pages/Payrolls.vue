@@ -35,6 +35,7 @@ export default {
   mixins: [ListMixin],
   data () {
     return {
+      query: false,
       loaderMethod: payrollsAPI.get,
       payrolls: [],
       objectsKey: 'payrolls'

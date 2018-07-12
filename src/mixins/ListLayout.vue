@@ -16,7 +16,7 @@
       header.data-header
         h2.data-header__title.title
           slot(name="title")
-        .data-header__item
+        .data-header__item(v-if="$parent.query !== false")
           form.search(
             @submit.prevent="$parent.updateList")
             .search__row
