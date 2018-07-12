@@ -47,7 +47,7 @@
               :alt="sale.user.first_name")
             span.tool-user__letter.avatar__img(
               v-else) {{ sale.user.first_name.charAt(0) }}
-            figcaption.avatar__txt Compradora <br> {{ sale.user.first_name + ' ' + sale.user.last_name }}
+            figcaption.avatar__txt Compradora <br> {{ sale.user | full_name }}
         .crud__user
           figure.crud__avatar.avatar
             img.avatar__img(
@@ -56,7 +56,7 @@
               :alt="sale.order.user.first_name")
             span.tool-user__letter.avatar__img(
               v-else) {{ sale.order.user.first_name.charAt(0) }}
-            figcaption.avatar__txt Vendedora <br> {{ sale.order.user.first_name + ' ' + sale.order.user.last_name }}
+            figcaption.avatar__txt Vendedora <br> {{ sale.order.user | full_name }}
       //- Subtotal #8
       td.crud__cell ${{ sale.total - sale.shipping_cost | currency}}
       //- Envío #9
@@ -76,32 +76,12 @@
         template(v-else) {{ | unempty }}
       //- Estado #13
       td.crud__cell
-        p.crud__state.crud__state_detail(:class='"state-" + sale.status') {{ sale.status | sale_status }}
-
-    template(slot="tfoot")
-      tr
-        td(colspan="13")
-          form.crud__form(action="")
-            p.crud__legend Cambiar estado
-            select.form__select
-              option(value="Carro de compras") Carro de compras
-              option(value="En pago") En pago
-              option(value="Pagada") Pagada
-              option(value="Enviada") Enviada
-              option(value="Entregada") Entregada
-              option(value="Recibida") Recibida
-              option(value="Completada") Completada
-              option(value="Completada con devolución") Devolución
-              option(value="Completada con devolución parcial") Devolución parcial
-              option(value="Enviada") Enviada
-              option(value="Entregada") Entregada
-              option(value="Cancelada") Cancelada
-            input.crud__btn(type="submit", value="Guardar")
+        p.crud__state.crud__state_detail(:class='"state-" + sale.status') {{ statuses[sale.status] }}
 </template>
 
 <script>
 
-import salesAPI from '@/api/sale'
+import saleAPI from '@/api/sale'
 import EditSale from '@/components/EditSale'
 import ListMixin from '@/mixins/ListMixin'
 
@@ -110,29 +90,25 @@ export default {
   mixins: [ListMixin],
   data () {
     return {
+      statuses: saleAPI.statuses,
       filter: {
         status: '11,99'
       },
       slide: EditSale,
 
-      loaderMethod: salesAPI.get,
-      objectsKey: 'sales',
+      loaderMethod: saleAPI.get,
+      objectsKey: 'rawSales',
 
       rawSales: [],
       picture: null
     }
   },
   computed: {
-    sales: {
-      set (sales) {
-        this.rawSales = sales
-      },
-      get () {
-        return this.rawSales.map(sale => {
-          [sale.total_commission, sale.commission] = this.getCommission(sale.products)
-          return sale
-        })
-      }
+    sales () {
+      return this.rawSales.map(sale => {
+        [sale.total_commission, sale.commission] = this.getCommission(sale.products)
+        return sale
+      })
     }
   },
   methods: {

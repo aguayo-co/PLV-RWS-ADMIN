@@ -31,22 +31,7 @@
           ) {{ product.user.first_name.charAt(0) }}
           figcaption.avatar__txt {{ product.user.first_name + ' ' + product.user.last_name }}
       td.crud__cell
-        p.crud__state.crud__state_detail(:class='"state-" + product.status') {{ product.status | status_code }}
-
-    template(slot="tfoot")
-      tr
-        td(colspan="9")
-          form.crud__form(action="")
-            p.crud__legend Cambiar estado
-            select.form__select
-              option(value="Pendiente") Pendiente
-              option(value="Rechazado") Rechazado
-              option(value="Aprobado") Aprobado
-              option(value="Disponible") Disponible
-              option(value="No disponible") No disponible
-              option(value="Vendido") Vendido
-            input.crud__btn(type="submit", value="Guardar")
-
+        p.crud__state.crud__state_detail(:class='"state-" + product.status') {{ statuses[product.status] }}
 </template>
 
 <script>
@@ -55,15 +40,12 @@ import productAPI from '@/api/product'
 import EditProduct from '@/components/EditProduct'
 import ListMixin from '@/mixins/ListMixin'
 
-import Vue from 'vue'
-import Croppa from 'vue-croppa'
-Vue.component('croppa', Croppa.component)
-
 export default {
   name: 'Productos',
   mixins: [ListMixin],
   data () {
     return {
+      statuses: productAPI.statuses,
       slide: EditProduct,
 
       objectsKey: 'products',

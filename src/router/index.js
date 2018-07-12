@@ -39,7 +39,7 @@ const router = new Router({
     },
     {
       path: '/usuarias',
-      name: 'Usuarios',
+      name: 'Usuarias',
       component: Usuarios
     },
     {

@@ -8,7 +8,8 @@
         component.edit__slide(
           v-if="$parent.showSlide"
           v-bind:is="$parent.slide"
-          :data="$parent.slideData"
+          :object="$parent.slideObject"
+          @updated="$parent.updateObject($event)"
           @close="$parent.closeSlide")
 
     .content-data.content-data_wide

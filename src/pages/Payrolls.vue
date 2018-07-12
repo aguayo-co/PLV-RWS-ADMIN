@@ -19,11 +19,11 @@
         td.crud__cell {{ payrollCommission(payroll) | currency | unempty }}
         td.crud__cell {{ payroll.credits_transactions.length | unempty }}
         td.crud__cell
+          router-link.btn(
+            :to="{name: 'Payroll', params: {payrollId: payroll.id}}") Reportar pago
           a.btn(
             v-if="hasPending(payroll)"
             :href="payroll.download_urls[0]") Descargar pendientes
-          router-link.btn(
-            :to="{name: 'Payroll', params: {payrollId: payroll.id}}") Reportar pago
 </template>
 
 <script>

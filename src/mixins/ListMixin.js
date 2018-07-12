@@ -16,7 +16,7 @@ export default {
 
       showSlide: null,
       slide: null,
-      slideData: null,
+      slideObject: null,
 
       loaderMethod: null,
       objectsKey: null
@@ -54,12 +54,21 @@ export default {
     }
   },
   methods: {
+    // Reemplaza el objeto pasado en el arreglo de objetos.
+    updateObject (newObject) {
+      this.objects.some((object, index) => {
+        if (object.id === newObject.id) {
+          this.$set(this.objects, index, newObject)
+          return true
+        }
+      })
+    },
     closeSlide () {
-      this.slideData = null
+      this.slideObject = null
       this.showSlide = false
     },
-    openSlide (data) {
-      this.slideData = data
+    openSlide (object) {
+      this.slideObject = object
       this.showSlide = true
     },
     updateList () {
