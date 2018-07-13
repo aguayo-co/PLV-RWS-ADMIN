@@ -48,12 +48,18 @@
       td.crud__cell {{ -transaction.commission | currency | unempty }}
       td.crud__cell {{ bankInfo(transaction, 'rut') | unempty }}
 
+    template(slot="tfoot")
+      tr
+        td(colspan=100)
+          button(@click.prevent="openSlide({})") Crear transacción de créditos
+
 </template>
 
 <script>
-import creditsAPI from '@/api/creditTransaction'
+import creditsAPI from '@/api/creditsTransaction'
 import ListMixin from '@/mixins/ListMixin'
 import payrollsAPI from '@/api/payrolls'
+import EditCreditsTransaction from '@/components/EditCreditsTransaction'
 
 export default {
   name: 'CreditsTransactions',
@@ -64,11 +70,9 @@ export default {
       query: false,
       payroll: null,
       transactions: [],
-      filter: {
-        transfer_status: '0,99'
-      },
 
-      objectsKey: 'transactions'
+      objectsKey: 'transactions',
+      slide: EditCreditsTransaction
     }
   },
   computed: {
@@ -94,10 +98,19 @@ export default {
           return transaction.payroll_id === parseInt(this.payrollId)
         })
       }
-      return this.transactions.filter(transaction => transaction.payroll_id === null)
+      return this.transactions.filter(transaction => {
+        return transaction.payroll_id === null && transaction.transfer_status !== null
+      })
     }
   },
   methods: {
+    // Verifica si podemos editar este objeto.
+    isEditable (object) {
+      return object &&
+        object.order_id === null &&
+        object.sale_id === null &&
+        object.transfer_status === null
+    },
     status (transaction) {
       switch (transaction.transfer_status) {
         case 0:

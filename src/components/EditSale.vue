@@ -2,7 +2,7 @@
   div
     h3.slide__header.i-close(
       @click.stop="$emit('close')") Editar ventas
-    form.slide__form(@submit.prevent="update")
+    form.slide__form(@submit.prevent="submit")
       .form__row
         label.form__label Id
         p {{ sale.id }}
@@ -24,7 +24,7 @@
       .form__row
         label.form__label(
           for="sale-status") Nuevo estado
-        select.form__control(v-model="new_status" id="sale-status")
+        select.form__control(v-model="field_status" id="sale-status")
           option(v-for="(status, index) in availableStatuses" :value="index") {{ status }}
       .form__row.form__row_away
         button.btn.btn_solid.btn_block Guardar
@@ -47,7 +47,7 @@ export default {
   name: 'EditSale',
   data () {
     return {
-      api: saleAPI,
+      apiMethod: saleAPI.update,
       statuses: saleAPI.statuses
     }
   },

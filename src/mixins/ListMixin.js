@@ -1,3 +1,6 @@
+// Mixin para generación de listado de objetos.
+// Se configura por medio de propiedades en "data".
+// Cada propiedad está documentada en el objeto.
 import PagerMixin from './PagerMixin'
 import CheckableMixin from './CheckableMixin'
 import ListLayout from './ListLayout'
@@ -9,17 +12,32 @@ export default {
   },
   data () {
     return {
-      loading: true,
+      // Los objetos a cargar en el listado se controlan con las
+      // siguientes propiedades:
+
+      // El método a llamar para cargar los objetos a mostrar en el listado.
+      // Se puede modificar usando la propiedad computable `loader`.
+      loaderMethod: null,
+      // Configurable: Parámetros pasados a `loaderMethod`.
+      // page: Este parámetro viene del PagerMixin.
       order: '-id',
       filter: null,
       query: null,
+      objectsKey: null,
 
-      showSlide: null,
+      // Propiedades para controlar el manejo de formulario.
+      // El formulario se puede mostrar de forma automática para editar
+      // los objetos cargados.
+      // O se puede disparar manualmente.
+
+      // Configurable: Este es el componente de Vue a usar como slide.
       slide: null,
-      slideObject: null,
+      // Configurable: Controla si se se está mostrando o no el componente.
+      showSlide: null,
 
-      loaderMethod: null,
-      objectsKey: null
+      // Variables interna. No se debe configurar.
+      slideObject: null,
+      loading: true
     }
   },
   computed: {
@@ -54,14 +72,23 @@ export default {
     }
   },
   methods: {
-    // Reemplaza el objeto pasado en el arreglo de objetos.
+    // Verifica si podemos editar este objeto.
+    isEditable (object) {
+      return object !== null
+    },
+
     updateObject (newObject) {
-      this.objects.some((object, index) => {
+      // Reemplaza el objeto pasado en el arreglo de objetos.
+      const replaced = this.objects.some((object, index) => {
         if (object.id === newObject.id) {
           this.$set(this.objects, index, newObject)
           return true
         }
       })
+      // O refresca la lista si el objeto pasado no se encuentra listado.
+      if (!replaced) {
+        this.updateList()
+      }
     },
     closeSlide () {
       this.slideObject = null

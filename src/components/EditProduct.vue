@@ -2,7 +2,7 @@
   .edit__slide_large
     h3.slide__header.i-close(
       @click.stop="$emit('close')") Editar producto
-    form.slide__form(@submit.prevent="update")
+    form.slide__form(@submit.prevent="submit")
       // .form__row
       //   .form__label Imagen para Instashop
       //   .upfile__small
@@ -20,10 +20,10 @@
       //         img(
       //           slot="initial",
       //           :src="product.image_instagram")
-      .form__row(v-if="new_status < 10")
+      .form__row(v-if="field_status < 10")
         label.form__label(for="product-admin_notes") Este producto se rechazó porque:
         input.form__control(
-          v-model="new_admin_notes",
+          v-model="field_admin_notes",
           id="product-admin_notes",
           type="text")
       .form__row
@@ -32,7 +32,7 @@
       .form__row
         label.form__label(
           for="product-status") Nuevo estado
-        select.form__control(v-model="new_status" id="product-status")
+        select.form__control(v-model="field_status" id="product-status")
           option(v-for="(status, index) in availableStatuses" :value="index") {{ status }}
       .form__row.form__row_away
         button.btn.btn_solid.btn_block Guardar
@@ -61,7 +61,7 @@ export default {
   },
   data () {
     return {
-      api: productAPI,
+      apiMethod: productAPI.update,
       statuses: productAPI.statuses
     }
   },

@@ -9,17 +9,18 @@
  * originales del objeto, de los modificados.
  *
  * Los valores modificados se guardan en el objeto "newData",
- * las propiedades computables tienen en nombre `new_PROPIEDAD`,
+ * las propiedades computables tienen en nombre `field_PROPIEDAD`,
  * donde PROPIEDAD es el nombre de la propiedad modificable.
  */
 function createComputedProps (editableProps) {
   const computed = {}
   Object.keys(editableProps).forEach(function (key) {
-    computed['new_' + key] = {
+    computed['field_' + key] = {
       get: function () {
         return this.newData[key] !== undefined ? this.newData[key] : this.object[key]
       },
       set: function (value) {
+        this.$delete(this.errorLog, key)
         if (value === this.object[key]) {
           this.$delete(this.newData, key)
           return
@@ -38,7 +39,8 @@ export default (editableProps) => {
   return {
     data () {
       return {
-        newData: {}
+        newData: {},
+        errorLog: {}
       }
     },
     computed: {
@@ -49,12 +51,23 @@ export default (editableProps) => {
       }
     },
     methods: {
-      update () {
+      validate () {
+        return true
+      },
+      submit () {
+        if (!this.validate()) {
+          return
+        }
+
         const payload = this.payload
-        payload.id = this.object.id
-        this.api.update(payload).then(response => {
+        if (this.object.id) {
+          payload.id = this.object.id
+        }
+        this.apiMethod(payload).then(response => {
           this.$emit('updated', response.data)
           this.$emit('close')
+        }).catch(e => {
+          this.$handleApiErrors(e, Object.keys(editableProps), this.errorLog)
         })
       }
     }

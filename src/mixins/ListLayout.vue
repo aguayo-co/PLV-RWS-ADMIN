@@ -71,7 +71,6 @@
           //- Filas
           tr.crud__row(
             v-else
-            @click="$parent.openSlide(object)"
             v-for="object in $parent.objects")
             td.crud__cell(v-if="$parent.isCheckable")
               template(v-if="$parent.checkable(object)")
@@ -83,7 +82,9 @@
                   v-model="$parent.checkedIds")
                 label.form__label_check.i-ok(:for="'object-' + object.id")
             slot(:name="'row-' + object.id")
-
+            td.crud__cell(
+              v-if="$parent.slide && $parent.isEditable(object)")
+              button(@click="$parent.openSlide(object)") Editar
         tfoot
           slot(name="tfoot")
 </template>
