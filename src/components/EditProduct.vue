@@ -20,8 +20,8 @@
       //         img(
       //           slot="initial",
       //           :src="product.image_instagram")
-      .form__row
-        label.form__label(for="product-admin_notes") Notas de administrador:
+      .form__row(v-if="new_status < 10")
+        label.form__label(for="product-admin_notes") Este producto se rechazó porque:
         input.form__control(
           v-model="new_admin_notes",
           id="product-admin_notes",
