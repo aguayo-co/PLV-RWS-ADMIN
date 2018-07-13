@@ -44,8 +44,8 @@
       td.crud__cell {{ bankInfo(transaction, 'bankName') | unempty }}
       td.crud__cell {{ bankInfo(transaction, 'accountNumber') | unempty }}
       td.crud__cell {{ bankInfo(transaction, 'accountType') | unempty }}
-      td.crud__cell {{ -transaction.amount | currency | unempty }}
-      td.crud__cell {{ -transaction.commission | currency | unempty }}
+      td.crud__cell {{ transaction.amount | currency | unempty }}
+      td.crud__cell {{ transaction.commission | currency | unempty }}
       td.crud__cell {{ bankInfo(transaction, 'rut') | unempty }}
 
     template(slot="tfoot")
@@ -61,6 +61,17 @@ import ListMixin from '@/mixins/ListMixin'
 import payrollsAPI from '@/api/payrolls'
 import EditCreditsTransaction from '@/components/EditCreditsTransaction'
 
+const filters = [
+  { label: 'Todos', filter: null },
+  { label: 'Manuales', filter: {related_to: 'none'} },
+  { label: 'De Compras', filter: {related_to: 'orders'} },
+  { label: 'De Ventas', filter: {related_to: 'sales'} },
+  { label: 'Transferencias', filter: {transfer_status: '0,99'} },
+  { label: 'Transferencias pendientes', filter: {transfer_status: '0'} },
+  { label: 'Transferencias aprobadas', filter: {transfer_status: '1'} },
+  { label: 'Transferencias rechazadas', filter: {transfer_status: '99'} }
+]
+
 export default {
   name: 'CreditsTransactions',
   mixins: [ListMixin],
@@ -70,6 +81,10 @@ export default {
       query: false,
       payroll: null,
       transactions: [],
+      filter: {
+        transfer_status: '0,99'
+      },
+      filters: this.getFilters(),
 
       objectsKey: 'transactions',
       slide: EditCreditsTransaction
@@ -90,7 +105,7 @@ export default {
       return this.transactionsPerStatus[0] > 0
     },
     sumChecked () {
-      return -this.checked.reduce((total, transaction) => total + transaction.amount, 0)
+      return this.checked.reduce((total, transaction) => total + transaction.amount, 0)
     },
     checkableObjects () {
       if (this.payrollId) {
@@ -104,6 +119,9 @@ export default {
     }
   },
   methods: {
+    getFilters () {
+      return this.payrollId ? null : filters
+    },
     // Verifica si podemos editar este objeto.
     isEditable (object) {
       return object &&
@@ -182,6 +200,7 @@ export default {
   },
   watch: {
     payrollId () {
+      this.filters = this.getFilters()
       this.updateList()
     }
   }

@@ -31,6 +31,11 @@
 
       //- Navegación
       nav.nav
+        template(v-if="$parent.filters")
+          select.form__select(v-model="$parent.filter")
+            option(v-for="filter in $parent.filters" :value="filter.filter") {{ filter.label }}
+          a.nav__btn.i-filter_after(@click.prevent="$parent.updateList()" title="Filtrar") Filtrar
+
         p.nav__text Se {{ ($parent.totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ $parent.totalItems | unempty }}</strong>  {{ ($parent.totalItems === 1) ? 'resultado' : 'resultados' }}
         // Paginador
         Pager(

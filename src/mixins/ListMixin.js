@@ -24,6 +24,23 @@ export default {
       filter: null,
       query: null,
       objectsKey: null,
+      // Configurable: Opciones de filtros para limitar reusltados
+      // Debe ser un arreglo de objetos:
+      // [{
+      //   label: 'Valor a mostrar al usuario',
+      //   filter: {
+      //     filterKeyA: 'filter value',
+      //     filterKeyB: 'filter value'
+      //   }
+      // },
+      // {
+      //   label: 'Valor a mostrar al usuario',
+      //   filter: {
+      //     filterKeyA: 'filter value',
+      //     filterKeyB: 'filter value'
+      //   }
+      // }]
+      filters: null,
 
       // Propiedades para controlar el manejo de formulario.
       // El formulario se puede mostrar de forma automática para editar
