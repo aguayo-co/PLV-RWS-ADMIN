@@ -42,7 +42,7 @@ export default {
             },
             {
               name: 'Transferencias',
-              url: {name: 'Transfers'},
+              url: {name: 'Payments'},
               ico: 'i-credits'
             },
             // {

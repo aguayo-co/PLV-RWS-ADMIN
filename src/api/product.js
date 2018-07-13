@@ -17,6 +17,7 @@ export default {
     31: 'Vendido',
     32: 'Devuelto'
   },
+
   get (page = 1, items, filter, orderby, q) {
     const params = {
       page,

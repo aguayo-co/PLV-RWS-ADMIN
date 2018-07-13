@@ -51,9 +51,7 @@ export default {
       objectsKey: 'products',
       loaderMethod: productAPI.get,
 
-      products: [],
-      picture: null,
-      cover: null
+      products: []
     }
   }
 }

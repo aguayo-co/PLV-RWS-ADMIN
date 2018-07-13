@@ -19,7 +19,7 @@
       //         :prevent-white-space="true")
       //         img(
       //           slot="initial",
-      //           :src="selectedProduct.image_instagram")
+      //           :src="product.image_instagram")
       .form__row
         label.form__label(for="product-admin_notes") Notas de administrador:
         input.form__control(
@@ -43,7 +43,6 @@
 import EditFormMixin from '@/mixins/EditFormMixin'
 import Croppa from 'vue-croppa'
 import productAPI from '@/api/product'
-import { mapState } from 'vuex'
 
 // Cada campo editable debe estar acá.
 // Con esto se crean las propiedades computables
@@ -66,21 +65,9 @@ export default {
       statuses: productAPI.statuses
     }
   },
-  watch: {
-    data () {
-      this.pictures.forEach((image) => {
-        if (image) image.refresh()
-      })
-      this.status = this.product.status
-    }
-  },
   computed: {
     product () {
       return this.object
-    },
-    ...mapState(['ui']),
-    selectedProduct () {
-      return this.product
     },
     getSTatuses (ids) {
       const statuses = {}
