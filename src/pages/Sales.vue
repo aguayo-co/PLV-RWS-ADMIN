@@ -34,9 +34,9 @@
               :alt="product.title")
             .crud__text
               p.crud__text_small {{ product.title }}
-              p.crud__text_small ${{ product.price | currency}}
+              p.crud__text_small {{ product.price | currency}}
       //- Comisión #6
-      td.crud__cell {{ sale.commission }}% / ${{ sale.total_commission | currency }}
+      td.crud__cell {{ sale.commission }}% / {{ sale.total_commission | currency }}
       //- Compradora / Vendedora #7
       td.crud__cell
         .crud__user
@@ -58,16 +58,16 @@
               v-else) {{ sale.order.user.first_name.charAt(0) }}
             figcaption.avatar__txt Vendedora <br> {{ sale.order.user | full_name }}
       //- Subtotal #8
-      td.crud__cell ${{ sale.total - sale.shipping_cost | currency}}
+      td.crud__cell {{ sale.total - sale.shipping_cost | currency}}
       //- Envío #9
       td.crud__cell
-        template(v-if="sale.shipping_cost") ${{ sale.shipping_cost | currency }}
+        template(v-if="sale.shipping_cost") {{ sale.shipping_cost | currency }}
         template(v-else) {{ | unempty }}
       //- Metodo #10
       td.crud__cell {{ sale.shipping_method.name }}
       //- Credito amount #11
       td.crud__cell
-        template(v-if="sale.used_credits") ${{ sale.used_credits | currency }}
+        template(v-if="sale.used_credits") {{ sale.used_credits | currency }}
         template(v-else) {{ | unempty }}
       //- Cupon #12
       td.crud__cell

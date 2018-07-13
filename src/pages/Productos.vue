@@ -19,10 +19,10 @@
         img.crud__cell-img(:src="product.images[0]", :alt="product.title")
       td.crud__cell {{ product.title }}
       td.crud__cell {{ product.brand.name }}
-      td.crud__cell ${{ product.original_price | currency }}
-      td.crud__cell(:class='{ "danger": product.price > product.original_price - ( product.original_price * 0.1 ) }') ${{ product.price | currency }}
+      td.crud__cell {{ product.original_price | currency }}
+      td.crud__cell(:class='{ "danger": product.price > product.original_price - ( product.original_price * 0.1 ) }') {{ product.price | currency }}
       td.crud__cell {{ product.commission }} %
-        small.crud__cell-small (${{ product.price * product.commission/100 | currency }})
+        small.crud__cell-small ({{ product.price * product.commission/100 | currency }})
       td.crud__cell
         figure.crud__avatar.avatar
           img.avatar__img(v-if="product.user.picture", :src="product.user.picture", :alt="product.user.first_name")

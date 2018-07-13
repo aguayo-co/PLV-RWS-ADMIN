@@ -9,7 +9,7 @@
       div(v-if="!payrollId")
         p(v-if="!checked.length") Selecciona una o más transacciones para generar una nómina de pago.
         p(v-else)
-          span ¿Generar nómina de {{ checked.length }} transacciones por un total de ${{ sumChecked | currency }} CLP?
+          span ¿Generar nómina de {{ checked.length }} transacciones por un total de {{ sumChecked | currency }} CLP?
           button.crud__btn(@click="createPayroll") Generar nómina
       //- Para pago de nómina:
       div(v-else)
@@ -24,8 +24,10 @@
 
     template(slot="columns")
       th.crud__title Nómina
+      th.crud__title # de órden
+      th.crud__title # de venta
       th.crud__title Estado
-      th.crud__title Fecha de solicitud
+      th.crud__title Fecha de creación
       th.crud__title Destinatario
       th.crud__title Banco
       th.crud__title Número de Cuenta
@@ -38,7 +40,9 @@
       v-for="transaction in transactions"
       :slot="'row-' + transaction.id")
       td.crud__cell {{ transaction.payroll_id }}
-      td.crud__cell(:class="'state-' + transaction.transfer_status") {{ status(transaction) | unempty }}
+      td.crud__cell {{ transaction.order_id }}
+      td.crud__cell {{ transaction.sale_id }}
+      td.crud__cell {{ status(transaction) | unempty }}
       td.crud__cell {{ transaction.created_at | date-time | unempty }}
       td.crud__cell {{ bankInfo(transaction, 'fullName') | unempty }}
       td.crud__cell {{ bankInfo(transaction, 'bankName') | unempty }}

@@ -17,7 +17,7 @@ export default {
     })
 
     Vue.filter('currency', function (value) {
-      if (value) return value.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1.')
+      if (value) return '$' + value.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1.')
     })
 
     Vue.filter('groups', function (value) {

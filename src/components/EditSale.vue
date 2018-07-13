@@ -17,7 +17,7 @@
         p {{ sale.order.user | full_name }}
       .form__row
         label.form__label Total
-        p ${{ sale.total | currency }}
+        p {{ sale.total | currency }}
       .form__row
         label.form__label Estado
         p {{ statuses[sale.status] }}

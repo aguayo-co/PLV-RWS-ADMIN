@@ -18,7 +18,7 @@
           :src="payment.transfer_receipt",
           :alt="'Recibo-' + payment.id")
         span(v-else) -
-      td.crud__cell ${{ payment.request_data.amount | currency }}
+      td.crud__cell {{ payment.request_data.amount | currency }}
       td.crud__cell {{ payment.order_id }}
       td.crud__cell {{ payment.order.user.first_name + ' ' + payment.order.user.last_name }}
       td.crud__cell {{ payment.created_at | date-time }}
