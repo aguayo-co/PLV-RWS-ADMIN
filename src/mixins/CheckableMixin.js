@@ -6,7 +6,7 @@ export default {
     }
   },
   computed: {
-    isCheckable () {
+    areCheckable () {
       return this.checkableObjects && this.checkableObjects.length
     },
     // Get a list of the objects that can be checked.

@@ -2,8 +2,7 @@
   .edit__slide
     h3.slide__header.i-close(
       @click.stop="$emit('close')") Aprobar transferencia
-    div(v-if="payment.status === 99") Este pago ha sido cancelado, ya no se puede modificar.
-    form.slide__form(v-else)
+    form.slide__form
       .form__row
         label.form__label Comprobante
         img.form__img(
@@ -65,6 +64,8 @@ export default {
         .then(response => {
           this.$emit('updated', response.data)
           this.$emit('close')
+        }).catch(e => {
+          this.$handleApiErrors(e)
         })
     },
     approve () {

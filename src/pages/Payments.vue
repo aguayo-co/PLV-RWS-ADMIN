@@ -38,7 +38,6 @@ export default {
   mixins: [ListMixin],
   data () {
     return {
-      query: false,
       statuses: paymentAPI.statuses,
       slide: EditPayment,
 
@@ -49,6 +48,18 @@ export default {
       filter: {
         'gateway': 'Transfer'
       }
+    }
+  },
+  computed: {
+    areCheckable () {
+      return false
+    }
+  },
+  methods: {
+    isEditable (payment) {
+      // Un pago una vez aprobado, no se puede cambiar.
+      // Una vez cancelado tampoco.
+      return payment.status !== 99 && payment.status !== 10
     }
   }
 }

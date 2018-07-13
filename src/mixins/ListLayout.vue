@@ -44,7 +44,7 @@
       //- Cualquier otra cosa que nos encontremos.
       slot
 
-      slot(name="selection" v-if="$parent.isCheckable")
+      slot(name="selection" v-if="$parent.areCheckable")
         div
           p Has seleccionado {{ $parent.checkedIds.length }} filas.
 
@@ -53,7 +53,7 @@
 
         thead.crud__head
           tr
-            th.crud__th.crud__title(v-if="$parent.isCheckable")
+            th.crud__th.crud__title(v-if="$parent.areCheckable")
               input.form__input-check(
                 type="checkbox"
                 id="all"
@@ -72,7 +72,7 @@
           tr.crud__row(
             v-else
             v-for="object in $parent.objects")
-            td.crud__cell(v-if="$parent.isCheckable")
+            td.crud__cell(v-if="$parent.areCheckable")
               template(v-if="$parent.checkable(object)")
                 input.form__input-check(
                   type="checkbox"
@@ -83,8 +83,8 @@
                 label.form__label_check.i-ok(:for="'object-' + object.id")
             slot(:name="'row-' + object.id")
             td.crud__cell(
-              v-if="$parent.slide && $parent.isEditable(object)")
-              button(@click="$parent.openSlide(object)") Editar
+              v-if="$parent.slide")
+              button(v-if="$parent.isEditable(object)" @click="$parent.openSlide(object)") Editar
         tfoot
           slot(name="tfoot")
 </template>
