@@ -68,7 +68,7 @@
 <script>
 import shippingAPI from '@/api/shippingMethod'
 import EditShippingMethods from '@/components/EditShippingMethods'
-import UserAvatar from '@/components/UserAvatar'
+import UserAvatar from '@/components/shared/UserAvatar'
 
 export default {
   props: ['shipping', 'active'],

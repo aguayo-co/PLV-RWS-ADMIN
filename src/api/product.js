@@ -4,41 +4,37 @@
 import Vue from 'vue'
 
 export default {
-  get: function (page, items, filter, order, search) {
-    let querySearch = ''
-    let queryFilter = ''
-    let queryOrder = ''
-    page = page || 1
-    items = items || 8
+  statuses: {
+    0: 'Despublicado',
+    1: 'Rechazado',
+    2: 'Oculto',
+    3: 'Esperando cambios',
+    10: 'Aprobado',
+    19: 'Disponible',
+    20: 'No disponible',
+    29: 'En vacaciones',
+    30: 'En pago',
+    31: 'Vendido',
+    32: 'Devuelto'
+  },
+
+  get (page = 1, items, filter, orderby, q) {
+    const params = {
+      page,
+      items,
+      orderby,
+      q
+    }
 
     if (filter) {
       Object.keys(filter).forEach((key) => {
-        if (filter[key]) queryFilter += '&filter[' + key + ']=' + filter[key]
+        params['filter[' + key + ']'] = filter[key]
       })
     }
-    if (order) queryOrder = '&orderby=' + order
-    if (search) querySearch = '&q=' + search
-    return Vue.axiosAuth.get('/api/products?items=' + items + '&page=' + page + queryFilter + queryOrder + querySearch)
+    return Vue.axiosAuth.get('/api/products', { params })
   },
-  update: function (data) {
-    const updateData = {...data}
-    delete updateData.images
-    if (!updateData.admin_notes) delete updateData.admin_notes
 
-    if (data.image_instagram instanceof Blob) {
-      var formData = new FormData()
-      Object.keys(updateData).forEach((key) => {
-        if (key !== 'color_ids' && key !== 'campaign_ids') {
-          formData.append(key, data[key])
-        } else {
-          data[key].forEach(value => {
-            formData.append(key + '[]', value)
-          })
-        }
-      })
-      return Vue.axiosAuth.patch('/api/products/' + data.id, formData)
-    } else {
-      return Vue.axiosAuth.patch('/api/products/' + data.id, updateData)
-    }
+  update (product) {
+    return Vue.axiosAuth.patch('/api/products/' + product.id, product)
   }
 }

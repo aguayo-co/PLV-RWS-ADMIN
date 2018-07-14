@@ -81,7 +81,7 @@
 // import categoriesAPI from '@/api/category'
 import { mapState } from 'vuex'
 import EditCategory from '@/components/EditCategory'
-import UserAvatar from '@/components/UserAvatar'
+import UserAvatar from '@/components/shared/UserAvatar'
 
 export default {
   props: ['category', 'active'],

@@ -78,7 +78,7 @@
 import sizesAPI from '@/api/size'
 import PagerMixin from '@/mixins/PagerMixin'
 import EditSize from '@/components/EditSize'
-import UserAvatar from '@/components/UserAvatar'
+import UserAvatar from '@/components/shared/UserAvatar'
 
 export default {
   props: ['size', 'sizeParent', 'active'],

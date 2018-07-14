@@ -32,42 +32,42 @@ export default {
           items: [
             {
               name: 'Productos',
-              url: '/productos',
+              url: {name: 'productos'},
               ico: 'i-closet'
             },
             {
               name: 'Ventas',
-              url: '/sales',
+              url: {name: 'Sales'},
               ico: 'i-sale'
             },
             {
               name: 'Transferencias',
-              url: '/transfers',
+              url: {name: 'Payments'},
               ico: 'i-credits'
             },
-            {
-              name: 'Devoluciones',
-              url: '#',
-              ico: 'i-reload'
-            },
-            {
-              name: 'Cupones',
-              url: '/user/data',
-              ico: 'i-bank-data'
-            },
-            {
-              name: 'Reportes',
-              url: '/user/data',
-              ico: 'i-report'
-            },
+            // {
+            //   name: 'Devoluciones',
+            //   url: '#',
+            //   ico: 'i-reload'
+            // },
+            // {
+            //   name: 'Cupones',
+            //   url: '/user/data',
+            //   ico: 'i-bank-data'
+            // },
+            // {
+            //   name: 'Reportes',
+            //   url: '/user/data',
+            //   ico: 'i-report'
+            // },
             {
               name: 'Créditos',
-              url: '/credits-transactions',
+              url: {name: 'CreditsTransactions'},
               ico: 'i-credits'
             },
             {
               name: 'Nóminas',
-              url: '/payrolls',
+              url: {name: 'Payrolls'},
               ico: 'i-credits'
             }
           ]
@@ -77,90 +77,90 @@ export default {
           items: [
             {
               name: 'Usuarias',
-              url: '/usuarias',
+              url: {name: 'Usuarias'},
               ico: 'i-data'
-            },
-            {
-              name: 'Solitudes de créditos',
-              url: '#',
-              ico: 'i-sell'
-            },
-            {
-              name: 'Grupos',
-              url: '/groups',
-              ico: 'i-start'
+            // },
+            // {
+            //   name: 'Solitudes de créditos',
+            //   url: '#',
+            //   ico: 'i-sell'
+            // },
+            // {
+            //   name: 'Grupos',
+            //   url: '/groups',
+            //   ico: 'i-start'
             }
           ]
-        },
-        {
-          title: 'Tienda',
-          items: [
-            {
-              name: 'Slides',
-              url: '/sliders',
-              ico: 'i-upload'
-            },
-            {
-              name: 'Banners',
-              url: '/banners',
-              ico: 'i-upload'
-            },
-            {
-              name: 'Tallas',
-              url: '/tallas',
-              ico: 'i-closet'
-            },
-            {
-              name: 'Marcas',
-              url: '/marcas',
-              ico: 'i-edit-line'
-            },
-            {
-              name: 'Condiciones',
-              url: '/conditions',
-              ico: 'i-tag'
-            },
-            {
-              name: 'Carousel Principal',
-              url: '/sliders',
-              ico: 'i-insta'
-            },
-            {
-              name: 'Colores',
-              url: '/colores',
-              ico: 'i-tag'
-            },
-            {
-              name: 'Categorias',
-              url: '/categorias',
-              ico: 'i-tag'
-            },
-            {
-              name: 'Métodos de envío',
-              url: '/metodos-envio',
-              ico: 'i-shipping'
-            },
-            {
-              name: 'Campañas',
-              url: '/campaigns',
-              ico: 'i-rocket'
-            },
-            {
-              name: 'Menús',
-              url: '/menu-items',
-              ico: 'i-filter'
-            },
-            {
-              name: 'Blog',
-              url: '#',
-              ico: 'i-blog-admin'
-            },
-            {
-              name: 'Configuraciones',
-              url: '#',
-              ico: 'i-config'
-            }
-          ]
+        // },
+        // {
+        //   title: 'Tienda',
+        //   items: [
+        //     {
+        //       name: 'Slides',
+        //       url: '/sliders',
+        //       ico: 'i-upload'
+        //     },
+        //     {
+        //       name: 'Banners',
+        //       url: '/banners',
+        //       ico: 'i-upload'
+        //     },
+        //     {
+        //       name: 'Tallas',
+        //       url: '/tallas',
+        //       ico: 'i-closet'
+        //     },
+        //     {
+        //       name: 'Marcas',
+        //       url: '/marcas',
+        //       ico: 'i-edit-line'
+        //     },
+        //     {
+        //       name: 'Condiciones',
+        //       url: '/conditions',
+        //       ico: 'i-tag'
+        //     },
+        //     {
+        //       name: 'Carousel Principal',
+        //       url: '/sliders',
+        //       ico: 'i-insta'
+        //     },
+        //     {
+        //       name: 'Colores',
+        //       url: '/colores',
+        //       ico: 'i-tag'
+        //     },
+        //     {
+        //       name: 'Categorias',
+        //       url: '/categorias',
+        //       ico: 'i-tag'
+        //     },
+        //     {
+        //       name: 'Métodos de envío',
+        //       url: '/metodos-envio',
+        //       ico: 'i-shipping'
+        //     },
+        //     {
+        //       name: 'Campañas',
+        //       url: '/campaigns',
+        //       ico: 'i-rocket'
+        //     },
+        //     {
+        //       name: 'Menús',
+        //       url: '/menu-items',
+        //       ico: 'i-filter'
+        //     },
+        //     {
+        //       name: 'Blog',
+        //       url: '#',
+        //       ico: 'i-blog-admin'
+        //     },
+        //     {
+        //       name: 'Configuraciones',
+        //       url: '#',
+        //       ico: 'i-config'
+        //     }
+        //   ]
         }
       ]
     }

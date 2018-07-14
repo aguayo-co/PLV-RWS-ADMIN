@@ -1,48 +1,71 @@
 <template lang="pug">
-.admin__edit(
-  v-if="selectedSale",
-  :class="{ 'admin__edit_open': active == true }")
-  transition(name='slide-right')
-    .edit__slide(
-      v-show="active == true")
-      h3.slide__header.i-close(
-        @click.stop="$emit('closeEdit')") Editar ventas
-      form.slide__form
-        .form__row
-          label.form__label(
-            for="size-category") Id
-          p(v-model="selectedSale.name") {{ selectedSale.id }}
-        //- .form__row
-        //-   label.form__label(
-        //-     for="sale-name") Nombre
-        //-   input.form__control(
-        //-     id="sale-name",
-        //-     v-model="selectedSale.name",
-        //-     type="text")
-        .form__row.form__row_away
-          button.btn.btn_solid.btn_block(@click.prevent="save") Guardar
+  div
+    h3.slide__header.i-close(
+      @click.stop="$emit('close')") Editar ventas
+    form.slide__form(@submit.prevent="submit")
+      .form__row
+        label.form__label Id
+        p {{ sale.id }}
+      .form__row
+        label.form__label Productos
+        p(v-for="product in sale.products") {{ product.title }}
+      .form__row
+        label.form__label Vendedora
+        p {{ sale.user | full_name }}
+      .form__row
+        label.form__label Compradora
+        p {{ sale.order.user | full_name }}
+      .form__row
+        label.form__label Total
+        p {{ sale.total | currency }}
+      .form__row
+        label.form__label Estado
+        p {{ statuses[sale.status] }}
+      .form__row
+        label.form__label(
+          for="sale-status") Nuevo estado
+        select.form__control(v-model="field_status" id="sale-status")
+          option(v-for="(status, index) in availableStatuses" :value="index") {{ status }}
+      .form__row.form__row_away
+        button.btn.btn_solid.btn_block Guardar
 </template>
 
 <script>
+import saleAPI from '@/api/sale'
+import EditFormMixin from '@/mixins/EditFormMixin'
 
-import salesAPI from '@/api/sale'
+// Cada campo editable debe estar acá.
+// Con esto se crean las propiedades computables
+// de cada uno.
+const editableProps = {
+  status: null
+}
 
 export default {
-  props: ['sale', 'active'],
+  mixins: [EditFormMixin(editableProps)],
+  props: ['object'],
   name: 'EditSale',
-  computed: {
-    selectedSale: function () {
-      return this.sale
+  data () {
+    return {
+      apiMethod: saleAPI.update,
+      statuses: saleAPI.statuses
     }
   },
-  methods: {
-    save: function () {
-      salesAPI.update(this.selectedSale)
-        .then(response => {
-          this.$emit('closeEdit')
-        })
+  computed: {
+    availableStatuses () {
+      const statuses = {}
+      const minimumStatus = this.sale.status === 41 ? 40 : this.sale.status
+      const allowed = [40, 41, 99]
+      allowed.forEach(status => {
+        if (status >= minimumStatus) {
+          statuses[status] = this.statuses[status]
+        }
+      })
+      return statuses
+    },
+    sale () {
+      return this.object
     }
   }
-
 }
 </script>

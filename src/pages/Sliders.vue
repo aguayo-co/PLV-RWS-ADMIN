@@ -80,7 +80,7 @@
 
 import slidersAPI from '@/api/slider'
 import EditSlide from '@/components/EditSlide'
-import UserAvatar from '@/components/UserAvatar'
+import UserAvatar from '@/components/shared/UserAvatar'
 
 export default {
   name: 'Sliders',

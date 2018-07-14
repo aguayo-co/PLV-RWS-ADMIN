@@ -120,7 +120,7 @@
 import menuItemsAPI from '@/api/menuItem'
 import PagerMixin from '@/mixins/PagerMixin'
 import EditMenuItems from '@/components/EditMenuItems'
-import UserAvatar from '@/components/UserAvatar'
+import UserAvatar from '@/components/shared/UserAvatar'
 
 export default {
   name: 'MenuItems',

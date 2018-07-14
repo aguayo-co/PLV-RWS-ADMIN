@@ -75,7 +75,7 @@
 import conditionsAPI from '@/api/condition'
 import PagerMixin from '@/mixins/PagerMixin'
 import EditCondition from '@/components/EditCondition'
-import UserAvatar from '@/components/UserAvatar'
+import UserAvatar from '@/components/shared/UserAvatar'
 
 export default {
   name: 'Conditions',

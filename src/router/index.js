@@ -17,7 +17,7 @@ import Sales from '@/pages/Sales'
 import ShippingMethods from '@/pages/ShippingMethods'
 import Sizes from '@/pages/Sizes'
 import Sliders from '@/pages/Sliders'
-import Transfers from '@/pages/Transfers'
+import Payments from '@/pages/Payments'
 import Usuarios from '@/pages/Usuarios'
 
 import beforeEach from './beforeEach'
@@ -39,7 +39,7 @@ const router = new Router({
     },
     {
       path: '/usuarias',
-      name: 'Usuarios',
+      name: 'Usuarias',
       component: Usuarios
     },
     {
@@ -78,9 +78,9 @@ const router = new Router({
       component: Categories
     },
     {
-      path: '/transfers',
-      name: 'Transfers',
-      component: Transfers
+      path: '/payments',
+      name: 'Payments',
+      component: Payments
     },
     {
       path: '/metodos-envio',

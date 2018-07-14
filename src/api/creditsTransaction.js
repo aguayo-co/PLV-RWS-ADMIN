@@ -4,7 +4,7 @@
 import Vue from 'vue'
 
 export default {
-  get: function (page = 1, items = 8, filter, orderby) {
+  get: function (page = 1, items, filter, orderby) {
     const params = {
       page,
       items,
@@ -19,14 +19,9 @@ export default {
     return Vue.axiosAuth.get('/api/credits_transactions', { params })
   },
   update: function (data) {
-    const updateData = {...data}
-    return Vue.axiosAuth.patch('/api/credits_transactions/' + data.slug, updateData)
+    return Vue.axiosAuth.patch('/api/credits_transactions/' + data.id, data)
   },
   create: function (data) {
-    var formData = new FormData()
-    Object.keys(data).forEach((key) => {
-      formData.append(key, data[key])
-    })
-    return Vue.axiosAuth.post('/api/credits_transactions/', formData)
+    return Vue.axiosAuth.post('/api/credits_transactions/', data)
   }
 }

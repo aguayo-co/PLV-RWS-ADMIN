@@ -81,7 +81,7 @@
 import bannersAPI from '@/api/banner'
 import EditBanner from '@/components/EditBanner'
 import PagerMixin from '@/mixins/PagerMixin'
-import UserAvatar from '@/components/UserAvatar'
+import UserAvatar from '@/components/shared/UserAvatar'
 
 export default {
   name: 'Banners',
