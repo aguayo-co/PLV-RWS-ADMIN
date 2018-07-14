@@ -47,7 +47,7 @@
               :alt="sale.user.first_name")
             span.tool-user__letter.avatar__img(
               v-else) {{ sale.user.first_name.charAt(0) }}
-            figcaption.avatar__txt Compradora <br> {{ sale.user | full_name }}
+            figcaption.avatar__txt Vendedora <br> {{ sale.user | full_name }}
         .crud__user
           figure.crud__avatar.avatar
             img.avatar__img(
@@ -56,7 +56,7 @@
               :alt="sale.order.user.first_name")
             span.tool-user__letter.avatar__img(
               v-else) {{ sale.order.user.first_name.charAt(0) }}
-            figcaption.avatar__txt Vendedora <br> {{ sale.order.user | full_name }}
+            figcaption.avatar__txt Compradora <br> {{ sale.order.user | full_name }}
       //- Subtotal #8
       td.crud__cell {{ sale.total - sale.shipping_cost | currency}}
       //- Envío #9
