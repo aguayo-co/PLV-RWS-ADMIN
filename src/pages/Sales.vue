@@ -95,6 +95,7 @@ export default {
         status: '11,99'
       },
       slide: EditSale,
+      query: false,
 
       loaderMethod: saleAPI.get,
       objectsKey: 'rawSales',

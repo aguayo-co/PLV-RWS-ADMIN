@@ -54,7 +54,8 @@ export default {
 
       // Variables interna. No se debe configurar.
       slideObject: null,
-      loading: true
+      loading: true,
+      errorLog: {}
     }
   },
   computed: {
@@ -115,6 +116,10 @@ export default {
       this.slideObject = object
       this.showSlide = true
     },
+    updateSearch () {
+      this.page = 1
+      this.updateList()
+    },
     updateList () {
       if (!this.objectsKey) {
         console.error('objectsKey not defined.')
@@ -143,6 +148,16 @@ export default {
           }
           this.loading = false
         })
+    }
+  },
+  watch: {
+    query () {
+      if (this.query.search('@') !== -1) {
+        this.$set(this.errorLog, 'query', 'Recuerda encerrar las @ en comillas dobles. Ej: "usuario@correo.com"')
+        return
+      }
+
+      this.$delete(this.errorLog, 'query')
     }
   },
   created () {

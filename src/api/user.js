@@ -4,27 +4,26 @@
 import Vue from 'vue'
 
 export default {
-  get: function (page, items, filter, orderBy) {
-    let queryFilter = ''
-    let queryOrder = ''
-    page = page || 1
-    items = items || 8
+  get (page = 1, items, filter, orderby, q) {
+    const params = {
+      page,
+      items,
+      orderby,
+      q
+    }
 
     if (filter) {
       Object.keys(filter).forEach((key) => {
-        queryFilter += '&filter[' + key + ']=' + filter[key]
+        params['filter[' + key + ']'] = filter[key]
       })
     }
-
-    if (orderBy) queryOrder = '&orderby=' + orderBy
-
-    return Vue.axiosAuth.get('/api/users?items=' + items + '&page=' + page + queryFilter + queryOrder)
+    return Vue.axiosAuth.get('/api/users', { params })
   },
-  update: function (data) {
+  update (data) {
     return Vue.axiosAuth.patch('/api/users/' + data.id, data)
   },
 
-  updateWithFile: function (data) {
+  updateWithFile (data) {
     var formData = new FormData()
     Object.keys(data).forEach((key) => {
       if (key === 'group_ids') {
@@ -37,7 +36,7 @@ export default {
     return Vue.axiosAuth.patch('/api/users/' + data.id, formData)
   },
 
-  create: function (data) {
+  create (data) {
     var formData = new FormData()
     Object.keys(data).forEach((key, index) => {
       if (key !== 'picture') {
@@ -67,7 +66,7 @@ export default {
     return Vue.axios.post('/api/users', formData)
   },
 
-  login: function (user) {
+  login (user) {
     const payload = {
       email: user.email,
       password: user.password
@@ -75,24 +74,24 @@ export default {
     return Vue.axios.post('/api/users/login', payload)
   },
 
-  checkEmail: function (email) {
+  checkEmail (email) {
     // return Vue.axios.post('/api/users/email', payload)
     setTimeout(function () { return true }, 1000)
   },
 
-  load: function (userId) {
+  load (userId) {
     return Vue.axiosAuth.get('/api/users/' + userId)
   },
 
-  getUsersByGroup: function (groupId) {
+  getUsersByGroup (groupId) {
     return Vue.axios.get('/api/users/?filter[group_ids]=' + groupId)
   },
 
-  getUserById: function (userId) {
+  getUserById (userId) {
     return Vue.axios.get('/api/users/' + userId)
   },
 
-  getUserGroups: function () {
+  getUserGroups () {
     return Vue.axios.get('/api/groups')
   },
 
