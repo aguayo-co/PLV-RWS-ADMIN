@@ -50,6 +50,16 @@ import ListMixin from '@/mixins/ListMixin'
 export default {
   name: 'Usuaria',
   mixins: [ListMixin],
+  methods: {
+    isEditable () {
+      return false
+    }
+  },
+  computed: {
+    checkableObjects () {
+      return false
+    }
+  },
   data () {
     return {
       slide: EditUser,
