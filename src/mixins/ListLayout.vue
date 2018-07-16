@@ -18,8 +18,11 @@
         h2.data-header__title.title
           slot(name="title")
         .data-header__item(v-if="$parent.query !== false")
+          span.help(
+            v-show='$parent.errorLog.query'
+          ) {{ $parent.errorLog.query }}
           form.search(
-            @submit.prevent="$parent.updateList")
+            @submit.prevent="$parent.updateSearch")
             .search__row
               input#searchMain.search__input(
                 type='text'

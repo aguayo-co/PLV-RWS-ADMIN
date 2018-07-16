@@ -29,26 +29,21 @@
       td.crud__cell.crud__cell_14
         ul.crud__list
           li(v-for="product in sale.products")
-            img.crud__cell-img(
-              :src="product.images[0]",
-              :alt="product.title")
-            .crud__text
-              p.crud__text_small {{ product.title }}
-              p.crud__text_small {{ product.price | currency}}
+            a.crud__user(
+              :href="$store.state.frontUrl + '/producto/' + product.slug + '__' + product.id")
+              img.crud__cell-img(
+                :src="product.images[0]",
+                :alt="product.title")
+              .crud__text
+                p.crud__text_small {{ product.title }}
+                p.crud__text_small {{ product.price | currency}}
       //- Comisión #6
       td.crud__cell {{ sale.commission }}% / {{ sale.total_commission | currency }}
       //- Compradora / Vendedora #7
       td.crud__cell
-        .crud__user
-          figure.crud__avatar.avatar
-            img.avatar__img(
-              v-if="sale.user.picture",
-              :src="sale.user.picture",
-              :alt="sale.user.first_name")
-            span.tool-user__letter.avatar__img(
-              v-else) {{ sale.user.first_name.charAt(0) }}
-            figcaption.avatar__txt Vendedora <br> {{ sale.user | full_name }} <br> {{ sale.user.email }}
-        .crud__user
+
+        a.crud__user(
+          :href="$store.state.frontUrl + '/closet/' + sale.order.user.id")
           figure.crud__avatar.avatar
             img.avatar__img(
               v-if="sale.order.user.picture",
@@ -56,7 +51,17 @@
               :alt="sale.order.user.first_name")
             span.tool-user__letter.avatar__img(
               v-else) {{ sale.order.user.first_name.charAt(0) }}
-            figcaption.avatar__txt Compradora <br> {{ sale.order.user | full_name }} <br> {{ sale.order.user.email }}
+            figcaption.avatar__txt Compradora: {{ sale.order.user.id }}: <br> {{ sale.order.user | full_name }} <br> {{ sale.order.user.email }}
+        a.crud__user(
+          :href="$store.state.frontUrl + '/closet/' + sale.user.id")
+          figure.crud__avatar.avatar
+            img.avatar__img(
+              v-if="sale.user.picture",
+              :src="sale.user.picture",
+              :alt="sale.user.first_name")
+            span.tool-user__letter.avatar__img(
+              v-else) {{ sale.user.first_name.charAt(0) }}
+            figcaption.avatar__txt Vendedora {{ sale.user.id }}: <br> {{ sale.user | full_name }} <br> {{ sale.user.email }}
       //- Subtotal #8
       td.crud__cell {{ sale.total - sale.shipping_cost | currency}}
       //- Envío #9
@@ -95,6 +100,7 @@ export default {
         status: '11,99'
       },
       slide: EditSale,
+      query: false,
 
       loaderMethod: saleAPI.get,
       objectsKey: 'rawSales',
