@@ -16,7 +16,8 @@
       v-for="product in products"
       :slot="'row-' + product.id")
       td.crud__cell
-        img.crud__cell-img(:src="product.images[0]", :alt="product.title")
+        a(:href="$store.state.frontUrl + '/producto/' + product.slug + '__' + product.id")
+          img.crud__cell-img(:src="product.images[0]", :alt="product.title")
       td.crud__cell {{ product.title }}
       td.crud__cell {{ product.brand.name }}
       td.crud__cell {{ product.original_price | currency }}
