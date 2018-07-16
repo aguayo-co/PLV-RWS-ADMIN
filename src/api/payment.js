@@ -6,7 +6,7 @@ import Vue from 'vue'
 export default {
   statuses: {
     0: 'Pendiente',
-    1: 'Procesando',
+    1: 'Por aprobar',
     10: 'Exitosa',
     98: 'Rechazada',
     99: 'Cancelada'

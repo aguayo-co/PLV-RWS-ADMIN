@@ -23,7 +23,9 @@
       td.crud__cell {{ payment.order.user.first_name + ' ' + payment.order.user.last_name }}
       td.crud__cell {{ payment.created_at | date-time }}
       td.crud__cell
-        p.crud__state.crud__state_detail(:class='"state-" + payment.status') {{ statuses[payment.status] }}
+        //-- ToDo: integrar reglas de .crud__state_detail en crud__state y crear reglas para crud__state_alert
+        p.crud__state(
+          :class='{ "crud__state_alert": payment.status === 1 }') {{ statuses[payment.status] }}
 
 </template>
 
