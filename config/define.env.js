@@ -7,6 +7,7 @@ const vueUrl = vueHost && vuePort ? vueHost + ':' + vuePort : null
 module.exports = {
   NODE_ENV: JSON.stringify(process.env.NODE_ENV),
   API_URL: JSON.stringify(process.env.API_URL.replace(/\/$/g, '')),
+  FRONT_URL: JSON.stringify(process.env.FRONT_URL.replace(/\/$/g, '')),
   VUE_HOST: JSON.stringify(vueHost),
   VUE_PORT: JSON.stringify(vuePort),
   VUE_URL: JSON.stringify(vueUrl)
