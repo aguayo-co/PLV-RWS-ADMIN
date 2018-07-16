@@ -5,10 +5,10 @@ import Vue from 'vue'
 
 export default {
   statuses: {
-    0: 'Despublicado',
+    0: 'Por aprobar',
     1: 'Rechazado',
     2: 'Oculto',
-    3: 'Esperando cambios',
+    3: 'Con cambios',
     10: 'Aprobado',
     19: 'Disponible',
     20: 'No disponible',

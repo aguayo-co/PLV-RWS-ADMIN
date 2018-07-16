@@ -31,7 +31,8 @@
           ) {{ product.user.first_name.charAt(0) }}
           figcaption.avatar__txt {{ product.user.first_name + ' ' + product.user.last_name }}
       td.crud__cell
-        p.crud__state.crud__state_detail(:class='"state-" + product.status') {{ statuses[product.status] }}
+        p.crud__state(
+          :class='[{ "crud__state_alert": product.status === 0 }, { "crud__state_alert": product.status === 3 }]') {{ statuses[product.status] }}
 </template>
 
 <script>
