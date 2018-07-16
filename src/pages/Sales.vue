@@ -8,7 +8,8 @@
       th.crud__th.crud__title Fecha
       th.crud__th.crud__title Productos
       th.crud__th.crud__title Comisión
-      th.crud__th.crud__title Compradora/Vendedora
+      th.crud__th.crud__title Compradora
+      th.crud__th.crud__title Vendedora
       th.crud__th.crud__title Subtotal
       th.crud__th.crud__title Envío
       th.crud__th.crud__title Método
@@ -51,7 +52,8 @@
               :alt="sale.order.user.first_name")
             span.tool-user__letter.avatar__img(
               v-else) {{ sale.order.user.first_name.charAt(0) }}
-            figcaption.avatar__txt Compradora: {{ sale.order.user.id }}: <br> {{ sale.order.user | full_name }} <br> {{ sale.order.user.email }}
+            figcaption.avatar__txt Id: {{ sale.order.user.id }} <br> {{ sale.order.user | full_name }} <br> {{ sale.order.user.email }}
+      td.crud__cell
         a.crud__user(
           :href="$store.state.frontUrl + '/closet/' + sale.user.id")
           figure.crud__avatar.avatar
@@ -61,7 +63,7 @@
               :alt="sale.user.first_name")
             span.tool-user__letter.avatar__img(
               v-else) {{ sale.user.first_name.charAt(0) }}
-            figcaption.avatar__txt Vendedora {{ sale.user.id }}: <br> {{ sale.user | full_name }} <br> {{ sale.user.email }}
+            figcaption.avatar__txt Id: {{ sale.user.id }} <br> {{ sale.user | full_name }} <br> {{ sale.user.email }}
       //- Subtotal #8
       td.crud__cell {{ sale.total - sale.shipping_cost | currency}}
       //- Envío #9
