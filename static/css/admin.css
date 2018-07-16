@@ -5441,9 +5441,12 @@ body {
   font-size: 11px;
   font-size: 0.6875rem;
   padding: 5px 10px 4px;
-  border-radius: 13px; }
+  border-radius: 13px;
+  color: #9b9b9b;
+  border: 1px solid #9b9b9b;
+}
 
-.crud__state_detail.state-0, .crud__state_detail.state-3, .crud__state_detail.state-91, .crud__state_detail.state-92 {
+.crud__state_alert {
   color: #fff;
   background-color: #f65a66;
   border: none; }
