@@ -3,6 +3,7 @@
     template(slot="title") Usuarias
 
     template(slot="columns")
+      th.crud__th.crud__title Id
       th.crud__th.crud__title Usuaria
       th.crud__th.crud__title Email
       th.crud__th.crud__title Teléfono
@@ -18,6 +19,7 @@
     template(
       v-for="user in users"
       :slot="'row-' + user.id")
+      td.crud__cell {{ user.id }}
       td.crud__cell
         figure.crud__avatar.avatar
           img.avatar__img(v-if="user.picture", :src="user.picture", :alt="user.first_name")
