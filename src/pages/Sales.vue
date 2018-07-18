@@ -99,6 +99,7 @@ export default {
     return {
       statuses: saleAPI.statuses,
       filter: {
+        all: 1,
         status: '11,99'
       },
       slide: EditSale,

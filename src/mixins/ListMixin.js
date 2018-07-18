@@ -24,7 +24,7 @@ export default {
       filter: null,
       query: null,
       objectsKey: null,
-      // Configurable: Opciones de filtros para limitar reusltados
+      // Configurable: Opciones de filtros para mostrar al usuario.
       // Debe ser un arreglo de objetos:
       // [{
       //   label: 'Valor a mostrar al usuario',
