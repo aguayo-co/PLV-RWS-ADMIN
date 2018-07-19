@@ -39,6 +39,7 @@ export default (editableProps) => {
   return {
     data () {
       return {
+        saving: false,
         newData: {},
         errorLog: {}
       }
@@ -55,7 +56,9 @@ export default (editableProps) => {
         return true
       },
       submit () {
+        this.saving = true
         if (!this.validate()) {
+          this.saving = false
           return
         }
 
@@ -68,6 +71,8 @@ export default (editableProps) => {
           this.$emit('close')
         }).catch(e => {
           this.$handleApiErrors(e, Object.keys(editableProps), this.errorLog)
+        }).finally(() => {
+          this.saving = false
         })
       }
     }

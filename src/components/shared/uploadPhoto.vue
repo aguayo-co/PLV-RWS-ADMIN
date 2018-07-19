@@ -28,7 +28,6 @@
       img.form__img(
         :src="initialImage"
         v-else-if="initialImage")
-
     .upfile__controls
       template(v-if='showCroppa')
         button.upfile__zoom-out.i-search-less.btn-tag(
