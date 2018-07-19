@@ -24,22 +24,28 @@ export default {
       filter: null,
       query: null,
       objectsKey: null,
-      // Configurable: Opciones de filtros para mostrar al usuario.
-      // Debe ser un arreglo de objetos:
-      // [{
-      //   label: 'Valor a mostrar al usuario',
-      //   filter: {
-      //     filterKeyA: 'filter value',
-      //     filterKeyB: 'filter value'
-      //   }
-      // },
-      // {
-      //   label: 'Valor a mostrar al usuario',
-      //   filter: {
-      //     filterKeyA: 'filter value',
-      //     filterKeyB: 'filter value'
-      //   }
-      // }]
+      // Configurable: Arreglo de filtros para mostrar al usuario.
+      // Este se une con los valores de filter para la consulta.
+      // Cada filtro es un objeto con debe especificar:
+      // - label
+      // - type (select, text)
+      // - options, sólo en caso select, un arreglo con las opciones:
+      //     [{
+      //       label: 'Valor a mostrar al usuario',
+      //       filter: {
+      //         filterKeyA: 'filter value',
+      //         filterKeyB: 'filter value'
+      //       }
+      //     },
+      //     {
+      //       label: 'Valor a mostrar al usuario',
+      //       filter: {
+      //         filterKeyA: 'filter value',
+      //         filterKeyB: 'filter value'
+      //       }
+      //     }]
+      // - filter, sólo en caso de input, el nombre del filtro.
+      //   los valores serán los que lleguen del input.
       filters: null,
 
       // Propiedades para controlar el manejo de formulario.
@@ -67,6 +73,22 @@ export default {
       }
 
       return this.loaderMethod
+    },
+    mergedFilters () {
+      let merged = {}
+      if (!this.filters) {
+        return merged
+      }
+      this.filters.forEach(filter => {
+        if (filter.active) {
+          merged = {...merged, ...filter.active}
+        }
+      })
+      // Incluye filtros globales.
+      if (this.filter) {
+        merged = {...merged, ...this.filter}
+      }
+      return merged
     },
     // Generic computed property to access the retrieved objects.
     // Each component can have its own name by setting "objectsKey".
@@ -131,7 +153,17 @@ export default {
         return
       }
 
-      const localLoading = this.loading = this.loader(this.page, this.items, this.filter, this.order, this.query)
+      let query = this.query
+      let filters = {...this.mergedFilters}
+      // Si búsqueda sólo son números,
+      // filtra por ID.
+      if (this.query && /^[0-9]+( [0-9]+)*$/.test(this.query)) {
+        query = null
+        // Reemplaza espacios por comas en query para filtrar.
+        filters = {...filters, id: this.query.replace(' ', ',')}
+      }
+
+      const localLoading = this.loading = this.loader(this.page, this.items, filters, this.order, query)
         .then(response => {
           // Keep track of last request.
           if (localLoading !== this.loading) {

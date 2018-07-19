@@ -65,16 +65,21 @@ import ListMixin from '@/mixins/ListMixin'
 import payrollsAPI from '@/api/payrolls'
 import EditCreditsTransaction from '@/components/EditCreditsTransaction'
 
-const filters = [
-  { label: 'Todos', filter: null },
-  { label: 'Manuales', filter: {related_to: 'none'} },
-  { label: 'De Compras', filter: {related_to: 'orders'} },
-  { label: 'De Ventas', filter: {related_to: 'sales'} },
-  { label: 'Transferencias', filter: {transfer_status: '0,99'} },
-  { label: 'Transferencias pendientes', filter: {transfer_status: '0'} },
-  { label: 'Transferencias aprobadas', filter: {transfer_status: '1'} },
-  { label: 'Transferencias rechazadas', filter: {transfer_status: '99'} }
-]
+const filters = [{
+  label: 'Tipo de transacción',
+  type: 'select',
+  active: {transfer_status: '0,99'},
+  options: [
+    { label: 'Todos', filter: null },
+    { label: 'Manuales', filter: {related_to: 'none'} },
+    { label: 'De Compras', filter: {related_to: 'orders'} },
+    { label: 'De Ventas', filter: {related_to: 'sales'} },
+    { label: 'Transferencias', filter: {transfer_status: '0,99'} },
+    { label: 'Transferencias pendientes', filter: {transfer_status: '0'} },
+    { label: 'Transferencias aprobadas', filter: {transfer_status: '1'} },
+    { label: 'Transferencias rechazadas', filter: {transfer_status: '99'} }
+  ]
+}]
 
 export default {
   name: 'CreditsTransactions',
@@ -85,9 +90,6 @@ export default {
       query: false,
       payroll: null,
       transactions: [],
-      filter: {
-        transfer_status: '0,99'
-      },
       filters: this.getFilters(),
 
       objectsKey: 'transactions',

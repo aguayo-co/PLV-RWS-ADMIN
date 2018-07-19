@@ -53,7 +53,19 @@ export default {
       objectsKey: 'products',
       loaderMethod: productAPI.get,
 
-      products: []
+      products: [],
+
+      filters: [{
+        type: 'select',
+        active: null,
+        options: [
+          { label: 'Todos', filter: null },
+          ...Object.keys(productAPI.statuses).map(status => {
+            return { label: productAPI.statuses[status], filter: {status: status} }
+          })
+        ]
+      }]
+
     }
   }
 }
