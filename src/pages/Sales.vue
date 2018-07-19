@@ -10,6 +10,7 @@
       th.crud__th.crud__title Comisión
       th.crud__th.crud__title Compradora
       th.crud__th.crud__title Vendedora
+      th.crud__th.crud__title Método de pago
       th.crud__th.crud__title Subtotal
       th.crud__th.crud__title Envío
       th.crud__th.crud__title Método
@@ -65,23 +66,25 @@
               v-else) {{ sale.user.first_name.charAt(0) }}
             figcaption.avatar__txt Id: {{ sale.user.id }} <br> {{ sale.user | full_name }} <br> {{ sale.user.email }}
       //- Subtotal #8
-      td.crud__cell {{ sale.total - sale.shipping_cost | currency}}
-      //- Envío #9
+      td.crud__cell {{ sale.order.payments[0] ? sale.order.payments[0].gateway : '' | unempty }}
+      //- Subtotal #9
+      td.crud__cell {{ sale.total - sale.shipping_cost | currency }}
+      //- Envío #10
       td.crud__cell
         template(v-if="sale.shipping_cost") {{ sale.shipping_cost | currency }}
         template(v-else) {{ | unempty }}
-      //- Metodo #10
+      //- Metodo #11
       td.crud__cell {{ sale.shipping_method.name }}
-      //- Credito amount #11
+      //- Credito amount #12
       td.crud__cell
         template(v-if="sale.used_credits") {{ sale.used_credits | currency }}
         template(v-else) {{ | unempty }}
-      //- Cupon #12
+      //- Cupon #13
       td.crud__cell
         template(
           v-if="sale.coupon") {{ sale.coupon.code }}
         template(v-else) {{ | unempty }}
-      //- Estado #13
+      //- Estado #14
       td.crud__cell
         p.crud__state.crud__state_detail(:class='"state-" + sale.status') {{ statuses[sale.status] }}
 </template>
@@ -92,6 +95,12 @@ import saleAPI from '@/api/sale'
 import EditSale from '@/components/EditSale'
 import ListMixin from '@/mixins/ListMixin'
 
+const statusFilters = Object.keys(saleAPI.statuses)
+  .filter(status => status > 10)
+  .map(status => {
+    return { label: saleAPI.statuses[status], filter: {status: status} }
+  })
+
 export default {
   name: 'Sales',
   mixins: [ListMixin],
@@ -99,8 +108,16 @@ export default {
     return {
       statuses: saleAPI.statuses,
       filter: {
-        status: '11,99'
+        all: 1
       },
+      filters: [{
+        type: 'select',
+        active: {status: '11,99'},
+        options: [
+          { label: 'Todas', filter: {status: '11,99'} },
+          ...statusFilters
+        ]
+      }],
       slide: EditSale,
       query: false,
 

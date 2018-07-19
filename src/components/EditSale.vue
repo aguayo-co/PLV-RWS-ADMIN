@@ -27,7 +27,9 @@
         select.form__control(v-model="field_status" id="sale-status")
           option(v-for="(status, index) in availableStatuses" :value="index") {{ status }}
       .form__row.form__row_away
-        button.btn.btn_solid.btn_block Guardar
+        button.btn.btn_solid.btn_block(:disabled="saving")
+          Dots(v-if="saving")
+          template(v-else) Guardar
 </template>
 
 <script>

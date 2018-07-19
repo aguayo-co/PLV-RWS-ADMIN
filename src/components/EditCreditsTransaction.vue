@@ -25,7 +25,9 @@
         ) {{ errorLog.extra }}
         textarea.form__control(v-model="field_reason" id="transaction-reason")
       .form__row.form__row_away
-        button.btn.btn_solid.btn_block Guardar
+        button.btn.btn_solid.btn_block(:disabled="saving")
+          Dots(v-if="saving")
+          template(v-else) Guardar
 </template>
 
 <script>
