@@ -77,7 +77,7 @@ export default {
     mergedFilters () {
       let merged = {}
       if (!this.filters) {
-        return merged
+        return this.filter
       }
       this.filters.forEach(filter => {
         if (filter.active) {
