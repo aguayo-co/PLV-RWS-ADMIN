@@ -3,37 +3,44 @@
     h3.slide__header.i-close(
       @click.stop="$emit('close')") Editar producto
     form.slide__form(@submit.prevent="submit")
-      // .form__row
-      //   .form__label Imagen para Instashop
-      //   .upfile__small
-      //     .upfile__item
-      //       .upfile__label
-      //         .upfile__text.i-upload Arrastra una foto o
-      //         .upfile__btn Sube una imagen
-      //       croppa(
-      //         v-model="image_instagram",
-      //         :width="300",
-      //         :height="300",
-      //         :quality="2",
-      //         placeholder="",
-      //         :prevent-white-space="true")
-      //         img(
-      //           slot="initial",
-      //           :src="product.image_instagram")
+      .form__row
+        label.form__label Imagen para Instashop
+        span.help(
+          v-if="errorLog.image_instagram") {{ errorLog.image_instagram }}
+        .upfile__small
+          uploadPhoto(
+            v-model="new_image_instagram"
+            :initialImage='product.image_instagram'
+            :square="true")
+      .form__row
+        label.form__label Estado actual
+        p {{ statuses[product.status] }}
+      .form__row
+        label.form__label(for="product-status") Campañas
+        span.help(
+            v-if="errorLog.status") {{ errorLog.status }}
+        .row(v-for="campaign in campaigns")
+          input.form__input-check(
+            type="checkbox"
+            :id="'campaign-' + campaign.id"
+            :value="campaign.id"
+            v-model="field_campaign_ids")
+          label.form__label-checkbox.i-ok(
+            :for="'campaign-' + campaign.id") {{ campaign.name }}
+      .form__row
+        label.form__label(for="product-status") Nuevo estado
+        span.help(
+            v-if="errorLog.status") {{ errorLog.status }}
+        select.form__control(v-model="field_status" id="product-status")
+          option(v-for="(status, index) in availableStatuses" :value="index") {{ status }}
       .form__row(v-if="field_status < 10")
         label.form__label(for="product-admin_notes") Este producto se rechazó porque:
+        span.help(
+            v-if="errorLog.admin_notes") {{ errorLog.admin_notes }}
         input.form__control(
           v-model="field_admin_notes",
           id="product-admin_notes",
           type="text")
-      .form__row
-        label.form__label Estado
-        p {{ statuses[product.status] }}
-      .form__row
-        label.form__label(
-          for="product-status") Nuevo estado
-        select.form__control(v-model="field_status" id="product-status")
-          option(v-for="(status, index) in availableStatuses" :value="index") {{ status }}
       .form__row.form__row_away
         button.btn.btn_solid.btn_block Guardar
 </template>
@@ -41,15 +48,18 @@
 <script>
 
 import EditFormMixin from '@/mixins/EditFormMixin'
-import Croppa from 'vue-croppa'
 import productAPI from '@/api/product'
+import uploadPhoto from './shared/uploadPhoto'
+import { mapState } from 'vuex'
 
 // Cada campo editable debe estar acá.
 // Con esto se crean las propiedades computables
 // de cada uno.
 const editableProps = {
   admin_notes: null,
-  status: null
+  status: null,
+  image_instagram: null,
+  campaign_ids: []
 }
 
 export default {
@@ -57,7 +67,7 @@ export default {
   props: ['object'],
   name: 'EditProduct',
   components: {
-    croppa: Croppa.component
+    uploadPhoto
   },
   data () {
     return {
@@ -66,6 +76,34 @@ export default {
     }
   },
   computed: {
+    ...mapState('ui', [
+      'campaigns'
+    ]),
+    new_image_instagram: {
+      get () {
+        return this.newData.image_instagram
+      },
+      set (value) {
+        // Si es la misma imagen, no enviamos nada.
+        if (value === this.product.image_instagram) {
+          this.field_image_instagram = value
+          return
+        }
+
+        // ELiminamos imagen?
+        if (!value) {
+          this.field_image_instagram = ''
+          return
+        }
+
+        // Enviamos imagen, si hay una.
+        if (value.hasImage()) {
+          value.promisedBlob().then(blob => {
+            this.field_image_instagram = blob
+          })
+        }
+      }
+    },
     product () {
       return this.object
     },
