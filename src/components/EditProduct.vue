@@ -13,25 +13,38 @@
             :initialImage='product.image_instagram'
             :square="true")
       .form__row
-        label.form__label Estado actual
-        p {{ statuses[product.status] }}
-      .form__row
-        label.form__label(for="product-status") Campañas
+        label.form__label Campañas
         span.help(
-            v-if="errorLog.status") {{ errorLog.status }}
+            v-if="errorLog.campaign_ids") {{ errorLog.campaign_ids }}
         .row(v-for="campaign in campaigns")
           input.form__input-check(
             type="checkbox"
-            :id="'campaign-' + campaign.id"
+            :id="'product-campaign-' + campaign.id"
             :value="campaign.id"
             v-model="field_campaign_ids")
           label.form__label-checkbox.i-ok(
-            :for="'campaign-' + campaign.id") {{ campaign.name }}
+            :for="'product-campaign-' + campaign.id") {{ campaign.name }}
+      .form__row
+        label.form__label(for="product-commission") Comisión
+        span.help(
+            v-if="errorLog.commission") {{ errorLog.commission }}
+        input.form__control(
+          id="product-commission"
+          v-model="field_commission"
+          type="number"
+          step="1"
+          min="0"
+          max="100")
+      .form__row
+        label.form__label Estado actual
+        p {{ statuses[product.status] }}
       .form__row
         label.form__label(for="product-status") Nuevo estado
         span.help(
             v-if="errorLog.status") {{ errorLog.status }}
-        select.form__control(v-model="field_status" id="product-status")
+        select.form__control(
+          v-model="field_status"
+          id="product-status")
           option(v-for="(status, index) in availableStatuses" :value="index") {{ status }}
       .form__row(v-if="field_status < 10")
         label.form__label(for="product-admin_notes") Este producto se rechazó porque:
@@ -42,7 +55,9 @@
           id="product-admin_notes",
           type="text")
       .form__row.form__row_away
-        button.btn.btn_solid.btn_block Guardar
+        button.btn.btn_solid.btn_block(:disabled="saving")
+          Dots(v-if="saving")
+          template(v-else) Guardar
 </template>
 
 <script>
@@ -59,7 +74,8 @@ const editableProps = {
   admin_notes: null,
   status: null,
   image_instagram: null,
-  campaign_ids: []
+  campaign_ids: null,
+  commission: null
 }
 
 export default {
