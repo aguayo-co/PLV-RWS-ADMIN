@@ -142,6 +142,9 @@ export default {
       this.page = 1
       this.updateList()
     },
+    alterQuery (query, filters) {
+      return [query, filters]
+    },
     updateList () {
       if (!this.objectsKey) {
         console.error('objectsKey not defined.')
@@ -153,15 +156,22 @@ export default {
         return
       }
 
-      let query = this.query
+      let query = this.query ? this.query.trim() : null
       let filters = {...this.mergedFilters}
+
       // Si búsqueda sólo son números,
       // filtra por ID.
       if (this.query && /^[0-9]+( [0-9]+)*$/.test(this.query)) {
         query = null
         // Reemplaza espacios por comas en query para filtrar.
-        filters = {...filters, id: this.query.replace(' ', ',')}
+        filters = {...filters, id: this.query.replace(/ /g, ',')}
       }
+
+      // Permite a los componentes alterar query y filters antes de enviar la consulta.
+      [query, filters] = this.alterQuery(query, filters)
+
+      // Elimina @ en query, generan error en InnoDB.
+      query = query ? query.replace(/@/g, ' ') : null
 
       const localLoading = this.loading = this.loader(this.page, this.items, filters, this.order, query)
         .then(response => {
@@ -180,16 +190,6 @@ export default {
           }
           this.loading = false
         })
-    }
-  },
-  watch: {
-    query () {
-      if (this.query.search('@') !== -1) {
-        this.$set(this.errorLog, 'query', 'Recuerda encerrar las @ en comillas dobles. Ej: "usuario@correo.com"')
-        return
-      }
-
-      this.$delete(this.errorLog, 'query')
     }
   },
   created () {

@@ -55,6 +55,16 @@ export default {
   methods: {
     isEditable () {
       return false
+    },
+    alterQuery (query, filters) {
+      // Cualqueir cosa que parezca un email lo aceptamos como válido.
+      // Dividimos por espacios que reemplazamos por comas.
+      // lo@quesea.com    otra@cosa.com => lo@quesea.com,otra@cosa.com
+      if (query && /^([^ ,]+@[^ ,]+ *)+$/.test(query)) {
+        filters = {...filters, email: query.replace(/ +/g, ',')}
+        query = null
+      }
+      return [query, filters]
     }
   },
   computed: {
