@@ -10,6 +10,7 @@
       th.crud__th.crud__title Comisión
       th.crud__th.crud__title Compradora
       th.crud__th.crud__title Vendedora
+      th.crud__th.crud__title Método de pago
       th.crud__th.crud__title Subtotal
       th.crud__th.crud__title Envío
       th.crud__th.crud__title Método
@@ -94,6 +95,12 @@ import saleAPI from '@/api/sale'
 import EditSale from '@/components/EditSale'
 import ListMixin from '@/mixins/ListMixin'
 
+const statusFilters = Object.keys(saleAPI.statuses)
+  .filter(status => status > 10)
+  .map(status => {
+    return { label: saleAPI.statuses[status], filter: {status: status} }
+  })
+
 export default {
   name: 'Sales',
   mixins: [ListMixin],
@@ -101,9 +108,16 @@ export default {
     return {
       statuses: saleAPI.statuses,
       filter: {
-        all: 1,
-        status: '11,99'
+        all: 1
       },
+      filters: [{
+        type: 'select',
+        active: {status: '11,99'},
+        options: [
+          { label: 'Todas', filter: {status: '11,99'} },
+          ...statusFilters
+        ]
+      }],
       slide: EditSale,
       query: false,
 
