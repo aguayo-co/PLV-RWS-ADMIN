@@ -3,6 +3,7 @@
     template(slot="title") Productos
 
     template(slot="columns")
+      th.crud__th.crud__title ID
       th.crud__th.crud__title Foto
       th.crud__th.crud__title Nombre
       th.crud__th.crud__title Marca
@@ -18,6 +19,7 @@
       td.crud__cell
         a(:href="$store.state.frontUrl + '/producto/' + product.slug + '__' + product.id")
           img.crud__cell-img(:src="product.images[0]", :alt="product.title")
+      td.crud__cell {{ product.id }}
       td.crud__cell {{ product.title }}
       td.crud__cell {{ product.brand.name }}
       td.crud__cell {{ product.original_price | currency }}
