@@ -57,6 +57,9 @@ export default {
     Object.keys(product).forEach((key) => {
       // If it is array, make it PHP input compatible.
       if (Array.isArray(product[key])) {
+        if (!product[key].length) {
+          formData.append(key, '')
+        }
         product[key].forEach(value => {
           formData.append(key + '[]', value)
         })
