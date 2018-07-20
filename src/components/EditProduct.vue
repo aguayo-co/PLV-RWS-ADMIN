@@ -80,7 +80,6 @@ const editableProps = {
 
 export default {
   mixins: [EditFormMixin(editableProps)],
-  props: ['object'],
   name: 'EditProduct',
   components: {
     uploadPhoto

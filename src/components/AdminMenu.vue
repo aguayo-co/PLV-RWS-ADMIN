@@ -91,76 +91,76 @@ export default {
             //   ico: 'i-start'
             }
           ]
-        // },
-        // {
-        //   title: 'Tienda',
-        //   items: [
-        //     {
-        //       name: 'Slides',
-        //       url: '/sliders',
-        //       ico: 'i-upload'
-        //     },
-        //     {
-        //       name: 'Banners',
-        //       url: '/banners',
-        //       ico: 'i-upload'
-        //     },
-        //     {
-        //       name: 'Tallas',
-        //       url: '/tallas',
-        //       ico: 'i-closet'
-        //     },
-        //     {
-        //       name: 'Marcas',
-        //       url: '/marcas',
-        //       ico: 'i-edit-line'
-        //     },
-        //     {
-        //       name: 'Condiciones',
-        //       url: '/conditions',
-        //       ico: 'i-tag'
-        //     },
-        //     {
-        //       name: 'Carousel Principal',
-        //       url: '/sliders',
-        //       ico: 'i-insta'
-        //     },
-        //     {
-        //       name: 'Colores',
-        //       url: '/colores',
-        //       ico: 'i-tag'
-        //     },
-        //     {
-        //       name: 'Categorias',
-        //       url: '/categorias',
-        //       ico: 'i-tag'
-        //     },
-        //     {
-        //       name: 'Métodos de envío',
-        //       url: '/metodos-envio',
-        //       ico: 'i-shipping'
-        //     },
-        //     {
-        //       name: 'Campañas',
-        //       url: '/campaigns',
-        //       ico: 'i-rocket'
-        //     },
-        //     {
-        //       name: 'Menús',
-        //       url: '/menu-items',
-        //       ico: 'i-filter'
-        //     },
-        //     {
-        //       name: 'Blog',
-        //       url: '#',
-        //       ico: 'i-blog-admin'
-        //     },
-        //     {
-        //       name: 'Configuraciones',
-        //       url: '#',
-        //       ico: 'i-config'
-        //     }
-        //   ]
+        },
+        {
+          title: 'Tienda',
+          items: [
+            // {
+            //   name: 'Slides',
+            //   url: '/sliders',
+            //   ico: 'i-upload'
+            // },
+            // {
+            //   name: 'Banners',
+            //   url: '/banners',
+            //   ico: 'i-upload'
+            // },
+            // {
+            //   name: 'Tallas',
+            //   url: '/tallas',
+            //   ico: 'i-closet'
+            // },
+            // {
+            //   name: 'Marcas',
+            //   url: '/marcas',
+            //   ico: 'i-edit-line'
+            // },
+            // {
+            //   name: 'Condiciones',
+            //   url: '/conditions',
+            //   ico: 'i-tag'
+            // },
+            // {
+            //   name: 'Carousel Principal',
+            //   url: '/sliders',
+            //   ico: 'i-insta'
+            // },
+            // {
+            //   name: 'Colores',
+            //   url: '/colores',
+            //   ico: 'i-tag'
+            // },
+            // {
+            //   name: 'Categorias',
+            //   url: '/categorias',
+            //   ico: 'i-tag'
+            // },
+            // {
+            //   name: 'Métodos de envío',
+            //   url: '/metodos-envio',
+            //   ico: 'i-shipping'
+            // },
+            {
+              name: 'Campañas',
+              url: '/campaigns',
+              ico: 'i-rocket'
+            // },
+            // {
+            //   name: 'Menús',
+            //   url: '/menu-items',
+            //   ico: 'i-filter'
+            // },
+            // {
+            //   name: 'Blog',
+            //   url: '#',
+            //   ico: 'i-blog-admin'
+            // },
+            // {
+            //   name: 'Configuraciones',
+            //   url: '#',
+            //   ico: 'i-config'
+            }
+          ]
         }
       ]
     }

@@ -1,111 +1,46 @@
 <template lang="pug">
-  .content-data
-    header.data-header
-      h2.data-header__title.title Campañas
-      .data-header__item
-        form.search(action='', method='GET')
-          .search__row
-            input#searchMain.search__input(type='text', name='search', placeholder='Buscar campañas')
-            input.search__btn(type='submit', value='')
-        UserAvatar
-    EditCampaigns(
-      :campaign="selectedCampaign",
-      :active="editActive",
-      @closeEdit="slideEdit")
-    nav.nav
-      p.nav__text Se {{ (totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ totalItems | unempty }}</strong>  {{ (totalItems === 1) ? 'campaña' : 'campañas' }}
-      // Paginador
-      Pager(
-        :currentItems="items",
-        :currentPage="page",
-        :totalPages="totalPages",
-        @pageChanged="onPageChanged",
-        @itemsChanged="onItemsChanged")
-    //Tabla de contenido
-    table.crud.crud_wide
-      thead.crud__head
-        tr
-          th.crud__title.crud__cell_check
-              input.form__input-check(
-                type="checkbox",
-                id="all"
-                name="all",
-                value="selectAll")
-              label.form__label_check.i-ok(
-                for="all")
-          th.crud__title.crud__cell_30 Nombre
-          th.crud__title Fecha de creación
-          th.crud__title Fecha de actualización
-      tbody.crud__tbody
-        tr.crud__row.crud__row_open(
-          @click="loadCampaign(index)",
-          v-for="(campaign, index) in campaigns")
-          td.crud__cell
-            input.form__input-check(
-              type="checkbox",
-              :id="'item' + index",
-              :name="'item' + index",
-              :value="index")
-            label.form__label_check.i-ok(
-              :for="'campaign' + index")
-          td.crud__cell {{ campaign.name }}
-          td.crud__cell {{ campaign.created_at | date }}
-          td.crud__cell {{ campaign.updated_at | date }}
-        tr.crud__row
-          td(colspan="5")
-            form.crud__form(action="")
-              p.crud__legend Cambiar estado
-              select.form__select
-                option(value="Pendiente") Pendiente
-                option(value="Rechazado") Rechazado
-                option(value="Aprobado") Aprobado
-                option(value="Disponible") Disponible
-                option(value="No disponible") No disponible
-                option(value="Vendido") Vendido
-              input.crud__btn(type="submit", value="Guardar")
-        //Tercera fila
-        //class para row gris en tabla: .crud__toggle-open
+  ListLayout
+    template(slot="title") Campañas
 
+    template(slot="columns")
+      th.crud__title Nombre
+      th.crud__title Slug
+    template(
+      v-for="campaign in campaigns"
+      :slot="'row-' + campaign.id")
+      td.crud__cell
+        a(:href="campaign.link") {{ campaign.name }}
+      td.crud__cell
+        a(:href="campaign.link") {{ campaign.slug }}
 </template>
 
 <script>
 import campaignAPI from '@/api/campaign'
-import PagerMixin from '@/mixins/PagerMixin'
-import EditCampaigns from '@/components/EditCampaigns'
-import UserAvatar from '@/components/shared/UserAvatar'
+import ListMixin from '@/mixins/ListMixin'
+import EditCampaign from '@/components/EditCampaign'
 
 export default {
-  props: ['campaign', 'active'],
   name: 'Campaigns',
-  mixins: [PagerMixin],
-  components: {
-    EditCampaigns,
-    UserAvatar
-  },
+  mixins: [ListMixin],
   data () {
     return {
-      campaigns: [],
-      selectedCampaign: {},
-      filter: {},
-      order: '-id',
-      editActive: false
+      query: false,
+      slide: EditCampaign,
+
+      objectsKey: 'rawCampaigns',
+      loaderMethod: campaignAPI.get,
+
+      rawCampaigns: [],
+
+      canCreate: true
     }
   },
-  methods: {
-    updateList: function () {
-      campaignAPI.get(this.page, this.items, this.filter, this.order)
-        .then(response => {
-          this.totalPages = response.data.last_page
-          this.totalItems = response.data.total
-          this.campaigns = response.data.data
-        })
-    },
-    slideEdit: function () {
-      this.editActive = !this.editActive
-    },
-    loadCampaign: function (index) {
-      this.selectedCampaign = this.campaigns[index]
-      this.slideEdit()
+  computed: {
+    campaigns () {
+      return this.rawCampaigns.map(campaign => {
+        campaign.link = this.$store.state.frontUrl + '/shop/campanas/' + campaign.slug
+        return campaign
+      })
     }
   }
 }

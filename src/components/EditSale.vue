@@ -45,7 +45,6 @@ const editableProps = {
 
 export default {
   mixins: [EditFormMixin(editableProps)],
-  props: ['object'],
   name: 'EditSale',
   data () {
     return {

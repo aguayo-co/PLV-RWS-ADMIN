@@ -97,6 +97,9 @@
               button(v-if="$parent.isEditable(object)" @click="$parent.openSlide(object)") Editar
         tfoot
           slot(name="tfoot")
+          tr(v-if="$parent.canCreate")
+            td(colspan=100)
+              button(@click.prevent="$parent.openSlide({})") Crear nuevo
 </template>
 
 <script>

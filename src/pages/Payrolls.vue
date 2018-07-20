@@ -41,11 +41,6 @@ export default {
       objectsKey: 'payrolls'
     }
   },
-  computed: {
-    checkableObjects () {
-      return []
-    }
-  },
   methods: {
     transactionsPerStatus (payroll) {
       // Cuenta transacciones por su estado.

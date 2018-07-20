@@ -57,6 +57,8 @@ export default {
       slide: null,
       // Configurable: Controla si se se está mostrando o no el componente.
       showSlide: null,
+      // Configurable: Controla si se puede abrir el slide para crear elemento.
+      canCreate: null,
 
       // Variables interna. No se debe configurar.
       slideObject: null,

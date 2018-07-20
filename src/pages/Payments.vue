@@ -52,11 +52,6 @@ export default {
       }
     }
   },
-  computed: {
-    areCheckable () {
-      return false
-    }
-  },
   methods: {
     isEditable (payment) {
       // Un pago una vez aprobado, no se puede cambiar.

@@ -37,8 +37,10 @@ function createComputedProps (editableProps) {
 //    EditFormMixin(editableProps)
 export default (editableProps) => {
   return {
+    props: ['object'],
     data () {
       return {
+        idPropertyName: 'id',
         saving: false,
         newData: {},
         errorLog: {}
@@ -63,8 +65,8 @@ export default (editableProps) => {
         }
 
         const payload = this.payload
-        if (this.object.id) {
-          payload.id = this.object.id
+        if (this.object[this.idPropertyName]) {
+          payload[this.idPropertyName] = this.object[this.idPropertyName]
         }
         this.apiMethod(payload).then(response => {
           this.$emit('updated', response.data)

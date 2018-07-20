@@ -67,11 +67,6 @@ export default {
       return [query, filters]
     }
   },
-  computed: {
-    checkableObjects () {
-      return false
-    }
-  },
   data () {
     return {
       slide: EditUser,

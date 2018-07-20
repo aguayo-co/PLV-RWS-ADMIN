@@ -4,20 +4,27 @@
 import Vue from 'vue'
 
 export default {
-  get: function (page, items, filter) {
-    let queryFilter = ''
-    page = page || 1
-    items = items || 8
+
+  get (page = 1, items, filter, orderby) {
+    const params = {
+      page,
+      items,
+      orderby
+    }
 
     if (filter) {
       Object.keys(filter).forEach((key) => {
-        queryFilter += '&filter[' + key + ']=' + filter[key]
+        params['filter[' + key + ']'] = filter[key]
       })
     }
-    return Vue.axiosAuth.get('/api/campaigns?items=' + items + '&page=' + page + queryFilter)
+    return Vue.axiosAuth.get('/api/campaigns', { params })
   },
-  update: function (data) {
-    const updateData = {...data}
-    return Vue.axiosAuth.patch('/api/campaigns/' + data.slug, updateData)
+
+  update (data) {
+    return Vue.axiosAuth.patch('/api/campaigns/' + data.slug, data)
+  },
+
+  create (data) {
+    return Vue.axiosAuth.post('/api/campaigns', data)
   }
 }

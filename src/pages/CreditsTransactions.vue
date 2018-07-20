@@ -51,12 +51,6 @@
       td.crud__cell {{ transaction.amount | currency | unempty }}
       td.crud__cell {{ transaction.commission | currency | unempty }}
       td.crud__cell {{ bankInfo(transaction, 'rut') | unempty }}
-
-    template(slot="tfoot")
-      tr
-        td(colspan=100)
-          button(@click.prevent="openSlide({})") Crear transacción de créditos
-
 </template>
 
 <script>
@@ -93,7 +87,9 @@ export default {
       filters: this.getFilters(),
 
       objectsKey: 'transactions',
-      slide: EditCreditsTransaction
+      slide: EditCreditsTransaction,
+
+      canCreate: true
     }
   },
   computed: {
