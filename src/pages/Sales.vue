@@ -119,15 +119,15 @@ export default {
   },
   methods: {
     getCommission (products) {
-      const sum = products.reduce((sum, product) => {
-        return product.commission * product.price / 100
+      const totalCommission = products.reduce((sum, product) => {
+        return sum + product.commission * product.price / 100
       }, 0)
 
-      const percentege = sum * 100 / products.reduce((sum, product) => {
-        return product.price
+      const percentege = totalCommission * 100 / products.reduce((sum, product) => {
+        return sum + product.price
       }, 0)
 
-      return [sum, parseInt(percentege)]
+      return [totalCommission, parseInt(percentege)]
     }
   }
 }
