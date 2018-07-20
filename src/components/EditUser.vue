@@ -4,6 +4,16 @@
       @click.stop="$emit('close')") Editar producto
     form.slide__form(@submit.prevent="submit")
       .form__row
+        label.form__label Foto
+        span.help(
+          v-if="errorLog.image_picture") {{ errorLog.image_picture }}
+        .upfile__small
+          uploadPhoto(
+            v-model="field_picture"
+            :initialImage='field_picture'
+            :width="200"
+            :square="true")
+      .form__row
         label.form__label(
           for="user-first_name") Nombre
         span.help(
@@ -79,6 +89,7 @@
 
 import EditFormMixin from '@/mixins/EditFormMixin'
 import userAPI from '@/api/user'
+import uploadPhoto from './shared/uploadPhoto'
 import { mapState } from 'vuex'
 
 // Cada campo editable debe estar acá.
@@ -91,12 +102,16 @@ const editableProps = {
   about: null,
   email: null,
   phone: null,
-  group_ids: null
+  group_ids: null,
+  picture: null
 }
 
 export default {
   mixins: [EditFormMixin(editableProps)],
   name: 'EditUser',
+  components: {
+    uploadPhoto
+  },
   data () {
     return {
       apiMethod: userAPI.update

@@ -15,8 +15,8 @@
         croppa(
           crossOrigin='anonymous',
           v-model='image',
-          :width="300",
-          :height="square ? 300 : 450",
+          :width="calculatedWidth",
+          :height="calculatedHeight",
           :quality="2",
           placeholder="",
           :prevent-white-space="true",
@@ -55,10 +55,22 @@ export default {
       timeoutId: null
     }
   },
-  props: ['initialImage', 'errorLog', 'square'],
+  props: ['initialImage', 'errorLog', 'width', 'height', 'square'],
   computed: {
     showCroppa () {
       return !this.initialImage || this.editImage
+    },
+    calculatedWidth () {
+      return this.width ? this.width : 300
+    },
+    calculatedHeight () {
+      if (this.height) {
+        return this.height
+      }
+      if (this.square) {
+        return this.calculatedWidth
+      }
+      return 450
     }
   },
   methods: {
@@ -69,13 +81,15 @@ export default {
     updateImage (event) {
       clearTimeout(this.timeoutId)
       this.timeoutId = setTimeout(() => {
-        this.$emit('input', this.image)
+        this.image.promisedBlob().then(blob => {
+          this.$emit('input', blob)
+        })
       }, 500)
     },
     removeImage () {
       clearTimeout(this.timeoutId)
       this.image.remove()
-      this.$emit('input', null)
+      this.$emit('input', '')
     },
     resetOriginal () {
       clearTimeout(this.timeoutId)
