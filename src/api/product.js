@@ -37,14 +37,6 @@ export default {
   update (product) {
     var formData = new window.FormData()
 
-    // Check if there are images to remove.
-    if (Object.keys(product).includes('images_remove')) {
-      product.images_remove.forEach((name) => {
-        formData.append('images_remove[]', name)
-      })
-      delete product.images_remove
-    }
-
     // Checks if there are new images.
     if (Object.keys(product).includes('images')) {
       Object.keys(product.images).forEach((key) => {

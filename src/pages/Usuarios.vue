@@ -30,8 +30,8 @@
       td.crud__cell.crud__cell_wbreak.crud__cell_130.small-txt {{ user.email }}
       td.crud__cell {{ user.phone }}
       td.crud__cell
-        ul(v-if='user.groups_ids')
-          li(v-for='group_id in user.groups_ids') {{ group_id }}
+        ul(v-if='user.groups')
+          li(v-for='group in user.groups') {{ group.name }}
       td.crud__cell
         ul(v-if='user.roles')
           li(v-for='role in user.roles') {{ role.name }}
@@ -48,14 +48,23 @@
 import userAPI from '@/api/user'
 import EditUser from '@/components/EditUser'
 import ListMixin from '@/mixins/ListMixin'
+import { mapState } from 'vuex'
 
 export default {
-  name: 'Usuaria',
+  name: 'Usuarios',
   mixins: [ListMixin],
+  computed: {
+    ...mapState('ui', [
+      'groups'
+    ]),
+    users () {
+      return this.rawUsers.map(user => {
+        user.groups = this.groups.filter(group => user.group_ids.indexOf(group.id) >= 0)
+        return user
+      })
+    }
+  },
   methods: {
-    isEditable () {
-      return false
-    },
     alterQuery (query, filters) {
       // Cualqueir cosa que parezca un email lo aceptamos como válido.
       // Dividimos por espacios que reemplazamos por comas.
@@ -70,9 +79,9 @@ export default {
   data () {
     return {
       slide: EditUser,
-      users: [],
+      rawUsers: [],
 
-      objectsKey: 'users',
+      objectsKey: 'rawUsers',
       loaderMethod: userAPI.get
     }
   }

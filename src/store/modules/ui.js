@@ -7,6 +7,7 @@ import colorsAPI from '@/api/color'
 import brandsAPI from '@/api/brand'
 import sizesAPI from '@/api/size'
 import campaignsAPI from '@/api/campaign'
+import groupAPI from '@/api/group'
 
 // initial state
 const state = {
@@ -102,6 +103,14 @@ const actions = {
       .then(response => {
         const property = {
           name: 'campaigns',
+          data: response.data.data
+        }
+        commit('setProperty', { property })
+      })
+    groupAPI.get()
+      .then(response => {
+        const property = {
+          name: 'groups',
           data: response.data.data
         }
         commit('setProperty', { property })

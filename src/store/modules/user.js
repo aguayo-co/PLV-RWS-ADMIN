@@ -2,7 +2,6 @@
 import Vue from 'vue'
 import router from '@/router'
 import userAPI from '@/api/user'
-import userAddressesAPI from '@/api/userAddresses'
 
 const baseUserGenerator = () => {
   return {
@@ -50,7 +49,6 @@ const actions = {
           return response
         }
         commit('set', user)
-        dispatch('loadAddresses')
         return response
       })
       .catch(e => {
@@ -63,47 +61,6 @@ const actions = {
             dispatch('logOut')
         }
       })
-  },
-  loadAddresses ({ commit, state }) {
-    return userAddressesAPI.load(state.id).then(response => {
-      commit('setAddresses', response.data.data)
-      return response
-    })
-  },
-  update ({ commit, state }, data) {
-    data.id = state.id
-    return userAPI.update(data).then(response => {
-      commit('set', response.data)
-      return response
-    })
-  },
-  updateWithFile ({ commit, state }, data) {
-    data.id = state.id
-    return userAPI.updateWithFile(data).then(response => {
-      commit('set', response.data)
-      return response
-    })
-  },
-  createAddress ({ commit, state }, data) {
-    data.user_id = state.id
-    return userAddressesAPI.create(data).then(response => {
-      commit('setAddress', response.data)
-      return response
-    })
-  },
-  updateAddress ({ commit, state }, data) {
-    data.user_id = state.id
-    return userAddressesAPI.update(data).then(response => {
-      commit('setAddress', response.data)
-      return response
-    })
-  },
-  deleteAddress ({ commit, state }, data) {
-    data.user_id = state.id
-    return userAddressesAPI.delete(data).then(response => {
-      commit('removeAddress', data)
-      return response
-    })
   },
   logOut ({ commit }) {
     commit('clear')
@@ -122,21 +79,6 @@ const mutations = {
     Object.keys(baseUser).forEach((key) => {
       state[key] = user[key]
     })
-  },
-  setAddresses: function (state, addresses) {
-    Object.keys(addresses).forEach(function (key) {
-      const address = addresses[key]
-      Vue.set(state.addresses, address.id, address)
-    })
-  },
-  setAddress: function (state, address) {
-    Vue.set(state.addresses, address.id, address)
-  },
-  setNotifications: function (state, notifications) {
-    state.notifications = notifications.total
-  },
-  removeAddress: function (state, address) {
-    Vue.delete(state.addresses, address.id)
   },
   clear (state) {
     const baseState = baseStateGenerator()
