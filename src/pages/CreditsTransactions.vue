@@ -26,6 +26,7 @@
       th.crud__title Nómina
       th.crud__title # de órden
       th.crud__title # de venta
+      th.crud__title Usuaria
       th.crud__title Estado
       th.crud__title Fecha de creación
       th.crud__title Destinatario
@@ -42,6 +43,8 @@
       td.crud__cell {{ transaction.payroll_id }}
       td.crud__cell {{ transaction.order_id }}
       td.crud__cell {{ transaction.sale_id }}
+      td.crud__cell
+        UserCell(:user="transaction.user")
       td.crud__cell {{ status(transaction) | unempty }}
       td.crud__cell {{ transaction.created_at | date-time | unempty }}
       td.crud__cell {{ bankInfo(transaction, 'fullName') | unempty }}
