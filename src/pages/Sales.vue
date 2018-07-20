@@ -49,7 +49,7 @@
       //- Subtotal #8
       td.crud__cell {{ sale.order.payments[0] ? sale.order.payments[0].gateway : '' | unempty }}
       //- Subtotal #9
-      td.crud__cell {{ sale.total - sale.shipping_cost | currency }}
+      td.crud__cell {{ sale.total | currency }}
       //- Envío #10
       td.crud__cell
         template(v-if="sale.shipping_cost") {{ sale.shipping_cost | currency }}
