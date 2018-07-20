@@ -43,28 +43,9 @@
       td.crud__cell {{ sale.commission }}% / {{ sale.total_commission | currency }}
       //- Compradora / Vendedora #7
       td.crud__cell
-
-        a.crud__user(
-          :href="$store.state.frontUrl + '/closet/' + sale.order.user.id")
-          figure.crud__avatar.avatar
-            img.avatar__img(
-              v-if="sale.order.user.picture",
-              :src="sale.order.user.picture",
-              :alt="sale.order.user.first_name")
-            span.tool-user__letter.avatar__img(
-              v-else) {{ sale.order.user.first_name.charAt(0) }}
-            figcaption.avatar__txt Id: {{ sale.order.user.id }} <br> {{ sale.order.user | full_name }} <br> {{ sale.order.user.email }}
+        UserCell(:user="sale.order.user")
       td.crud__cell
-        a.crud__user(
-          :href="$store.state.frontUrl + '/closet/' + sale.user.id")
-          figure.crud__avatar.avatar
-            img.avatar__img(
-              v-if="sale.user.picture",
-              :src="sale.user.picture",
-              :alt="sale.user.first_name")
-            span.tool-user__letter.avatar__img(
-              v-else) {{ sale.user.first_name.charAt(0) }}
-            figcaption.avatar__txt Id: {{ sale.user.id }} <br> {{ sale.user | full_name }} <br> {{ sale.user.email }}
+        UserCell(:user="sale.user")
       //- Subtotal #8
       td.crud__cell {{ sale.order.payments[0] ? sale.order.payments[0].gateway : '' | unempty }}
       //- Subtotal #9

@@ -27,12 +27,7 @@
       td.crud__cell {{ product.commission }} %
         small.crud__cell-small ({{ product.price * product.commission/100 | currency }})
       td.crud__cell
-        figure.crud__avatar.avatar
-          img.avatar__img(v-if="product.user.picture", :src="product.user.picture", :alt="product.user.first_name")
-          span.tool-user__letter.avatar__img(
-            v-else
-          ) {{ product.user.first_name.charAt(0) }}
-          figcaption.avatar__txt {{ product.user.first_name + ' ' + product.user.last_name }}
+        UserCell(:user="product.user")
       td.crud__cell
         p.crud__state(
           :class='[{ "crud__state_alert": product.status === 0 }, { "crud__state_alert": product.status === 3 }]') {{ statuses[product.status] }}
