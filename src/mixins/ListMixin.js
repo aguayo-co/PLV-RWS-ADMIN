@@ -20,7 +20,7 @@ export default {
       loaderMethod: null,
       // Configurable: Parámetros pasados a `loaderMethod`.
       // page: Este parámetro viene del PagerMixin.
-      order: '-id',
+      orderby: '-id',
       filter: null,
       query: null,
       objectsKey: null,
@@ -158,6 +158,7 @@ export default {
 
       let query = this.query ? this.query.trim() : null
       let filters = {...this.mergedFilters}
+      let orderby = this.orderby
 
       // Si búsqueda sólo son números,
       // filtra por ID.
@@ -173,7 +174,12 @@ export default {
       // Elimina @ en query, generan error en InnoDB.
       query = query ? query.replace(/@/g, ' ') : null
 
-      const localLoading = this.loading = this.loader(this.page, this.items, filters, this.order, query)
+      // Sort by query result.
+      if (query) {
+        orderby = null
+      }
+
+      const localLoading = this.loading = this.loader(this.page, this.items, filters, orderby, query)
         .then(response => {
           // Keep track of last request.
           if (localLoading !== this.loading) {
