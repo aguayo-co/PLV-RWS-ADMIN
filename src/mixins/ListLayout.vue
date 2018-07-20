@@ -34,12 +34,13 @@
 
       //- Navegación
       nav.nav
-        template(v-for="(filter, index) in $parent.filters")
-          label(v-if="filter.label") {{ filter.label }}
-          input(v-if="filter.type === 'text'" v-model="filter.active")
-          select.form__select(v-if="filter.type === 'select'" v-model="filter.active")
-            option(v-for="option in filter.options" :value="option.filter") {{ option.label }}
-          a.nav__btn.i-filter_after(@click.prevent="$parent.updateList()" title="Filtrar") Filtrar
+        template(v-if="$parent.filters")
+          label(v-for="(filter, index) in $parent.filters") {{ filter.label }}
+            input.form__control(form="filter-form" v-if="filter.type === 'text'" v-model="filter.value")
+            select.form__select(form="filter-form" v-if="filter.type === 'select'" v-model="filter.active")
+              option(v-for="option in filter.options" :value="option.filter") {{ option.label }}
+          form(id="filter-form" @submit.prevent="$parent.updateList()")
+            button.nav__btn.i-filter_after(title="Filtrar") Filtrar
 
         p.nav__text Se {{ ($parent.totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ $parent.totalItems | unempty }}</strong>  {{ ($parent.totalItems === 1) ? 'resultado' : 'resultados' }}
         // Paginador

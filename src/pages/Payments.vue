@@ -40,6 +40,7 @@ export default {
   mixins: [ListMixin],
   data () {
     return {
+      query: false,
       statuses: paymentAPI.statuses,
       slide: EditPayment,
 
@@ -49,7 +50,13 @@ export default {
       payments: [],
       filter: {
         'gateway': 'Transfer'
-      }
+      },
+      filters: [{
+        label: 'ID de orden',
+        type: 'text',
+        filter: 'order_id',
+        value: null
+      }]
     }
   },
   methods: {

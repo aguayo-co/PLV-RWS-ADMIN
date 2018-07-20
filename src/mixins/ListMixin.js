@@ -29,6 +29,7 @@ export default {
       // Cada filtro es un objeto con debe especificar:
       // - label
       // - type (select, text)
+      // - active, sólo en caso select el valor del filtro inicial
       // - options, sólo en caso select, un arreglo con las opciones:
       //     [{
       //       label: 'Valor a mostrar al usuario',
@@ -46,6 +47,7 @@ export default {
       //     }]
       // - filter, sólo en caso de input, el nombre del filtro.
       //   los valores serán los que lleguen del input.
+      // - value, sólo en caso de input, el valor inicial del filtro.
       filters: null,
 
       // Propiedades para controlar el manejo de formulario.
@@ -84,6 +86,10 @@ export default {
       this.filters.forEach(filter => {
         if (filter.active) {
           merged = {...merged, ...filter.active}
+          return
+        }
+        if (filter.value) {
+          merged[filter.filter] = filter.value
         }
       })
       // Incluye filtros globales.
