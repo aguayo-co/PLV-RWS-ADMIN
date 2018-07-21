@@ -10,6 +10,7 @@ import VueTextareaAutosize from 'vue-textarea-autosize'
 import App from './App'
 import axiosPlugin from './axios'
 import Dots from './components/global/Dots'
+import UserCell from './components/global/UserCell'
 import prilovFilters from './filters'
 import prilovHelpers from './helpers'
 import router from './router'
@@ -31,6 +32,7 @@ import store from './store'
   Vue.use(prilovHelpers)
 
   Vue.component('Dots', Dots)
+  Vue.component('UserCell', UserCell)
 
   /* eslint-disable no-new */
   new Vue({

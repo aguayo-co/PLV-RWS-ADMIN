@@ -20,7 +20,7 @@ export default {
       loaderMethod: null,
       // Configurable: Parámetros pasados a `loaderMethod`.
       // page: Este parámetro viene del PagerMixin.
-      order: '-id',
+      orderby: '-id',
       filter: null,
       query: null,
       objectsKey: null,
@@ -29,6 +29,7 @@ export default {
       // Cada filtro es un objeto con debe especificar:
       // - label
       // - type (select, text)
+      // - active, sólo en caso select el valor del filtro inicial
       // - options, sólo en caso select, un arreglo con las opciones:
       //     [{
       //       label: 'Valor a mostrar al usuario',
@@ -46,6 +47,7 @@ export default {
       //     }]
       // - filter, sólo en caso de input, el nombre del filtro.
       //   los valores serán los que lleguen del input.
+      // - value, sólo en caso de input, el valor inicial del filtro.
       filters: null,
 
       // Propiedades para controlar el manejo de formulario.
@@ -57,6 +59,8 @@ export default {
       slide: null,
       // Configurable: Controla si se se está mostrando o no el componente.
       showSlide: null,
+      // Configurable: Controla si se puede abrir el slide para crear elemento.
+      canCreate: null,
 
       // Variables interna. No se debe configurar.
       slideObject: null,
@@ -82,6 +86,10 @@ export default {
       this.filters.forEach(filter => {
         if (filter.active) {
           merged = {...merged, ...filter.active}
+          return
+        }
+        if (filter.value) {
+          merged[filter.filter] = filter.value
         }
       })
       // Incluye filtros globales.
@@ -116,7 +124,10 @@ export default {
     isEditable (object) {
       return object !== null
     },
-
+    objectsChanged () {
+      // Allow implementing components to take action on
+      // objects changes.
+    },
     updateObject (newObject) {
       // Reemplaza el objeto pasado en el arreglo de objetos.
       const replaced = this.objects.some((object, index) => {
@@ -129,6 +140,8 @@ export default {
       if (!replaced) {
         this.updateList()
       }
+
+      this.objectsChanged()
     },
     closeSlide () {
       this.slideObject = null
@@ -158,6 +171,7 @@ export default {
 
       let query = this.query ? this.query.trim() : null
       let filters = {...this.mergedFilters}
+      let orderby = this.orderby
 
       // Si búsqueda sólo son números,
       // filtra por ID.
@@ -173,7 +187,12 @@ export default {
       // Elimina @ en query, generan error en InnoDB.
       query = query ? query.replace(/@/g, ' ') : null
 
-      const localLoading = this.loading = this.loader(this.page, this.items, filters, this.order, query)
+      // Sort by query result.
+      if (query) {
+        orderby = null
+      }
+
+      const localLoading = this.loading = this.loader(this.page, this.items, filters, orderby, query)
         .then(response => {
           // Keep track of last request.
           if (localLoading !== this.loading) {

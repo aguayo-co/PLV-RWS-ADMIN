@@ -12,7 +12,7 @@ export default {
     // Get a list of the objects that can be checked.
     // By default all, but each component can override.
     checkableObjects () {
-      return this.objects
+      return []
     },
     // Set to `true` to check all possible objects.
     // Set to `false` to un-check all possible objects.

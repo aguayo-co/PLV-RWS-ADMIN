@@ -7,6 +7,7 @@ import colorsAPI from '@/api/color'
 import brandsAPI from '@/api/brand'
 import sizesAPI from '@/api/size'
 import campaignsAPI from '@/api/campaign'
+import groupAPI from '@/api/group'
 
 // initial state
 const state = {
@@ -34,7 +35,7 @@ const getters = {
 
 // actions
 const actions = {
-  loadProperties ({ commit }) {
+  loadProperties ({ dispatch, commit }) {
     conditionsAPI.get()
       .then(response => {
         const property = {
@@ -102,6 +103,17 @@ const actions = {
       .then(response => {
         const property = {
           name: 'campaigns',
+          data: response.data.data
+        }
+        commit('setProperty', { property })
+      })
+    dispatch('loadGroups')
+  },
+  loadGroups ({ commit }) {
+    groupAPI.get()
+      .then(response => {
+        const property = {
+          name: 'groups',
           data: response.data.data
         }
         commit('setProperty', { property })

@@ -43,32 +43,13 @@
       td.crud__cell {{ sale.commission }}% / {{ sale.total_commission | currency }}
       //- Compradora / Vendedora #7
       td.crud__cell
-
-        a.crud__user(
-          :href="$store.state.frontUrl + '/closet/' + sale.order.user.id")
-          figure.crud__avatar.avatar
-            img.avatar__img(
-              v-if="sale.order.user.picture",
-              :src="sale.order.user.picture",
-              :alt="sale.order.user.first_name")
-            span.tool-user__letter.avatar__img(
-              v-else) {{ sale.order.user.first_name.charAt(0) }}
-            figcaption.avatar__txt Id: {{ sale.order.user.id }} <br> {{ sale.order.user | full_name }} <br> {{ sale.order.user.email }}
+        UserCell(:user="sale.order.user")
       td.crud__cell
-        a.crud__user(
-          :href="$store.state.frontUrl + '/closet/' + sale.user.id")
-          figure.crud__avatar.avatar
-            img.avatar__img(
-              v-if="sale.user.picture",
-              :src="sale.user.picture",
-              :alt="sale.user.first_name")
-            span.tool-user__letter.avatar__img(
-              v-else) {{ sale.user.first_name.charAt(0) }}
-            figcaption.avatar__txt Id: {{ sale.user.id }} <br> {{ sale.user | full_name }} <br> {{ sale.user.email }}
+        UserCell(:user="sale.user")
       //- Subtotal #8
       td.crud__cell {{ sale.order.payments[0] ? sale.order.payments[0].gateway : '' | unempty }}
       //- Subtotal #9
-      td.crud__cell {{ sale.total - sale.shipping_cost | currency }}
+      td.crud__cell {{ sale.total | currency }}
       //- Envío #10
       td.crud__cell
         template(v-if="sale.shipping_cost") {{ sale.shipping_cost | currency }}
@@ -110,14 +91,29 @@ export default {
       filter: {
         all: 1
       },
-      filters: [{
-        type: 'select',
-        active: {status: '11,99'},
-        options: [
-          { label: 'Todas', filter: {status: '11,99'} },
-          ...statusFilters
-        ]
-      }],
+      filters: [
+        {
+          label: 'ID de Vendedora',
+          type: 'text',
+          filter: 'user_id',
+          value: null
+        },
+        {
+          label: 'ID de Compradora',
+          type: 'text',
+          filter: 'buyer_id',
+          value: null
+        },
+        {
+          label: 'Estado',
+          type: 'select',
+          active: {status: '11,99'},
+          options: [
+            { label: 'Todas', filter: {status: '11,99'} },
+            ...statusFilters
+          ]
+        }
+      ],
       slide: EditSale,
       query: false,
 
@@ -138,15 +134,15 @@ export default {
   },
   methods: {
     getCommission (products) {
-      const sum = products.reduce((sum, product) => {
-        return product.commission * product.price / 100
+      const totalCommission = products.reduce((sum, product) => {
+        return sum + product.commission * product.price / 100
       }, 0)
 
-      const percentege = sum * 100 / products.reduce((sum, product) => {
-        return product.price
+      const percentege = totalCommission * 100 / products.reduce((sum, product) => {
+        return sum + product.price
       }, 0)
 
-      return [sum, parseInt(percentege)]
+      return [totalCommission, parseInt(percentege)]
     }
   }
 }

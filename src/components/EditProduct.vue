@@ -9,7 +9,7 @@
           v-if="errorLog.image_instagram") {{ errorLog.image_instagram }}
         .upfile__small
           uploadPhoto(
-            v-model="new_image_instagram"
+            v-model="field_image_instagram"
             :initialImage='product.image_instagram'
             :square="true")
       .form__row
@@ -80,7 +80,6 @@ const editableProps = {
 
 export default {
   mixins: [EditFormMixin(editableProps)],
-  props: ['object'],
   name: 'EditProduct',
   components: {
     uploadPhoto
@@ -95,31 +94,6 @@ export default {
     ...mapState('ui', [
       'campaigns'
     ]),
-    new_image_instagram: {
-      get () {
-        return this.newData.image_instagram
-      },
-      set (value) {
-        // Si es la misma imagen, no enviamos nada.
-        if (value === this.product.image_instagram) {
-          this.field_image_instagram = value
-          return
-        }
-
-        // ELiminamos imagen?
-        if (!value) {
-          this.field_image_instagram = ''
-          return
-        }
-
-        // Enviamos imagen, si hay una.
-        if (value.hasImage()) {
-          value.promisedBlob().then(blob => {
-            this.field_image_instagram = blob
-          })
-        }
-      }
-    },
     product () {
       return this.object
     },

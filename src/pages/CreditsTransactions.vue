@@ -26,6 +26,7 @@
       th.crud__title Nómina
       th.crud__title # de órden
       th.crud__title # de venta
+      th.crud__title Usuaria
       th.crud__title Estado
       th.crud__title Fecha de creación
       th.crud__title Destinatario
@@ -42,6 +43,8 @@
       td.crud__cell {{ transaction.payroll_id }}
       td.crud__cell {{ transaction.order_id }}
       td.crud__cell {{ transaction.sale_id }}
+      td.crud__cell
+        UserCell(:user="transaction.user")
       td.crud__cell {{ status(transaction) | unempty }}
       td.crud__cell {{ transaction.created_at | date-time | unempty }}
       td.crud__cell {{ bankInfo(transaction, 'fullName') | unempty }}
@@ -51,12 +54,6 @@
       td.crud__cell {{ transaction.amount | currency | unempty }}
       td.crud__cell {{ transaction.commission | currency | unempty }}
       td.crud__cell {{ bankInfo(transaction, 'rut') | unempty }}
-
-    template(slot="tfoot")
-      tr
-        td(colspan=100)
-          button(@click.prevent="openSlide({})") Crear transacción de créditos
-
 </template>
 
 <script>
@@ -65,21 +62,29 @@ import ListMixin from '@/mixins/ListMixin'
 import payrollsAPI from '@/api/payrolls'
 import EditCreditsTransaction from '@/components/EditCreditsTransaction'
 
-const filters = [{
-  label: 'Tipo de transacción',
-  type: 'select',
-  active: {transfer_status: '0,99'},
-  options: [
-    { label: 'Todos', filter: null },
-    { label: 'Manuales', filter: {related_to: 'none'} },
-    { label: 'De Compras', filter: {related_to: 'orders'} },
-    { label: 'De Ventas', filter: {related_to: 'sales'} },
-    { label: 'Transferencias', filter: {transfer_status: '0,99'} },
-    { label: 'Transferencias pendientes', filter: {transfer_status: '0'} },
-    { label: 'Transferencias aprobadas', filter: {transfer_status: '1'} },
-    { label: 'Transferencias rechazadas', filter: {transfer_status: '99'} }
-  ]
-}]
+const filters = [
+  {
+    label: 'ID de usuaria',
+    type: 'text',
+    filter: 'user_id',
+    value: null
+  },
+  {
+    label: 'Tipo de transacción',
+    type: 'select',
+    active: {transfer_status: '0,99'},
+    options: [
+      { label: 'Todos', filter: null },
+      { label: 'Manuales', filter: {related_to: 'none'} },
+      { label: 'De Compras', filter: {related_to: 'orders'} },
+      { label: 'De Ventas', filter: {related_to: 'sales'} },
+      { label: 'Transferencias', filter: {transfer_status: '0,99'} },
+      { label: 'Transferencias pendientes', filter: {transfer_status: '0'} },
+      { label: 'Transferencias aprobadas', filter: {transfer_status: '1'} },
+      { label: 'Transferencias rechazadas', filter: {transfer_status: '99'} }
+    ]
+  }
+]
 
 export default {
   name: 'CreditsTransactions',
@@ -93,7 +98,9 @@ export default {
       filters: this.getFilters(),
 
       objectsKey: 'transactions',
-      slide: EditCreditsTransaction
+      slide: EditCreditsTransaction,
+
+      canCreate: true
     }
   },
   computed: {

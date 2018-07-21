@@ -37,14 +37,6 @@ export default {
   update (product) {
     var formData = new window.FormData()
 
-    // Check if there are images to remove.
-    if (Object.keys(product).includes('images_remove')) {
-      product.images_remove.forEach((name) => {
-        formData.append('images_remove[]', name)
-      })
-      delete product.images_remove
-    }
-
     // Checks if there are new images.
     if (Object.keys(product).includes('images')) {
       Object.keys(product.images).forEach((key) => {
@@ -53,16 +45,26 @@ export default {
       delete product.images
     }
 
-    // Appends the remaining properties
+    // Las demás propiedades.
     Object.keys(product).forEach((key) => {
-      // If it is array, make it PHP input compatible.
+      // Si es arreglo, pasarlo compatible con PHP.
       if (Array.isArray(product[key])) {
+        // En FormData no hay como mandar un arreglo vacío.
+        // Mandamos un valor vacío, que al API también acepta.
+        if (!product[key].length) {
+          formData.append(key, '')
+          return
+        }
+
+        // Si sí hay valores en el arreglo,
+        // agregamos cada uno a FormData.
         product[key].forEach(value => {
           formData.append(key + '[]', value)
         })
         return
       }
-      // If not, just use value as it is.
+
+      // Si no es arreglo, lo agregamos como venga.
       formData.append(key, product[key])
     })
 

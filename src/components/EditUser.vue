@@ -1,163 +1,128 @@
 <template lang="pug">
-.admin__edit.users(
-  v-if="selectedUser"
-  :class="{ 'admin__edit_open': active == true }")
-  transition(name='slide-right')
-    .edit__slide(
-      v-show="active == true")
-      //- .btn_close.modal__btn_close.i-x(
-      //-   @click.stop="slideEdit")
-      //-   span Cerrar
-      //- h3.title Editar usuario
-      h3.slide__header.i-close(
-        @click.stop="$emit('closeEdit')") Editar usuario
-      form.slide__form
-        .form__row
-          .form__label Foto de perfil
-          .upfile__small
-            .upfile__item
-              a.delete(
-                v-show='toggleImageDelete',
-                @click='removeImage') Eliminar
-              .upfile__label
-                .upfile__text.i-upload Arrastra una foto o
-                .upfile__btn Sube una imagen
-              croppa(
-                v-model="picture",
-                :width="280",
-                :height="280",
-                :quality="2",
-                placeholder="",
-                :prevent-white-space="true",
-                :show-remove-button="false",
-                :new-image-drawn="addImage")
-                img(
-                  crossorigin
-                  slot="initial",
-                  :src="selectedUser.picture + '?d=123'")
-        .form__row
-          label.form__label(
-            for="user-name") Nombre
-          input.form__control(
-            v-model="selectedUser.first_name",
-            id="user-name",
-            type="text")
-        .form__row
-          label.form__label(
-            for="user-lastname") Apellido
-          input.form__control(
-            v-model="selectedUser.last_name",
-            id="user-lastname",
-            type="text")
-        .form__row
-          label.form__label(
-            for="user-lastname") Acerca de
-          textarea.form__textarea(
-            v-model="selectedUser.about",
-            name="about",
-            maxlength="340")
-        .form__row
-          label.form__label(
-            for="user-email") Correo
-          input.form__control(
-            id="user-email",
-            v-model="selectedUser.email",
-            type="email")
-        .form__row
-          label.form__label(
-            for="user-phone") Teléfono
-          input.form__control(
-            v-model="selectedUser.phone",
-            id="user-phone",
-            type="tel")
-        .form__row
-          .form__label Grupos
-          .row(v-for="group in groups")
-            input.form__input-check(
-              v-model="selectedUser.group_ids"
-              :id="'group-' + group.id",
-              type="checkbox",
-              name="roles",
-              :value="group.id")
-            label.form__label-checkbox.i-ok(
-              :for="'group-' + group.id") {{ group.name }}
-        .form__row.form__row_away
-          button.btn.btn_solid.btn_block(@click.prevent="save($event)") Guardar
+  .edit__slide
+    h3.slide__header.i-close(
+      @click.stop="$emit('close')") Editar producto
+    form.slide__form(@submit.prevent="submit")
+      .form__row
+        label.form__label Foto
+        span.help(
+          v-if="errorLog.image_picture") {{ errorLog.image_picture }}
+        .upfile__small
+          uploadPhoto(
+            v-model="field_picture"
+            :initialImage='field_picture'
+            :width="200"
+            :square="true")
+      .form__row
+        label.form__label(
+          for="user-first_name") Nombre
+        span.help(
+          v-if="errorLog.first_name") {{ errorLog.first_name }}
+        input.form__control(
+          v-model="field_first_name",
+          id="user-first_name",
+          type="text")
+      .form__row
+        label.form__label(
+          for="user-last_name") Apellido
+        span.help(
+          v-if="errorLog.last_name") {{ errorLog.last_name }}
+        input.form__control(
+          v-model="field_last_name",
+          id="user-last_name",
+          type="text")
+      .form__row
+        label.form__label(
+          for="user-password") Password
+        span.help(
+          v-if="errorLog.password") {{ errorLog.password }}
+        input.form__control(
+          v-model="field_password",
+          id="user-password",
+          type="text")
+      .form__row
+        label.form__label(
+          for="user-about") Acerca de
+        span.help(
+          v-if="errorLog.about") {{ errorLog.about }}
+        textarea.form__textarea(
+          v-model="field_about",
+          id="user-about",
+          name="about")
+      .form__row
+        label.form__label(
+          for="user-email") Correo
+        span.help(
+          v-if="errorLog.email") {{ errorLog.email }}
+        input.form__control(
+          id="user-email",
+          v-model="field_email",
+          type="email")
+      .form__row
+        label.form__label(
+          for="user-phone") Teléfono
+        span.help(
+          v-if="errorLog.phone") {{ errorLog.phone }}
+        input.form__control(
+          v-model="field_phone",
+          id="user-phone",
+          type="tel")
+      .form__row
+        label.form__label Grupos
+        span.help(
+            v-if="errorLog.group_ids") {{ errorLog.group_ids }}
+        .row(v-for="group in groups")
+          input.form__input-check(
+            type="checkbox"
+            :id="'user-group-' + group.id"
+            :value="group.id"
+            v-model="field_group_ids")
+          label.form__label-checkbox.i-ok(
+            :for="'user-group-' + group.id") {{ group.name }}
+      .form__row.form__row_away
+        button.btn.btn_solid.btn_block(:disabled="saving")
+          Dots(v-if="saving")
+          template(v-else) Guardar
 </template>
 
 <script>
 
-// import usersAPI from '@/api/user'
-import Vue from 'vue'
-import Croppa from 'vue-croppa'
-import usersAPI from '@/api/user'
-Vue.component('croppa', Croppa.component)
+import EditFormMixin from '@/mixins/EditFormMixin'
+import userAPI from '@/api/user'
+import uploadPhoto from './shared/uploadPhoto'
+import { mapState } from 'vuex'
 
-const userFields = {
-  id: null,
-  picture: null,
+// Cada campo editable debe estar acá.
+// Con esto se crean las propiedades computables
+// de cada uno.
+const editableProps = {
   first_name: null,
   last_name: null,
+  password: null,
   about: null,
   email: null,
   phone: null,
-  group_ids: null
+  group_ids: null,
+  picture: null
 }
 
 export default {
-  props: ['user', 'active', 'groups'],
+  mixins: [EditFormMixin(editableProps)],
   name: 'EditUser',
+  components: {
+    uploadPhoto
+  },
   data () {
     return {
-      picture: null,
-      cover: null,
-      toggleImageDelete: true,
-      imageChanged: false
+      apiMethod: userAPI.update
     }
   },
   computed: {
-    selectedUser: function () {
-      return this.user
-    },
-    rol: function () {
-      return this.user.roles
-    }
-  },
-  methods: {
-    save: function (event) {
-      event.target.disabled = true
-      let user = {}
-      Object.keys(userFields).forEach((key) => {
-        if (this.selectedUser[key]) user[key] = this.selectedUser[key]
-      })
-
-      if (this.imageChanged) {
-        if (this.picture.hasImage()) {
-          this.picture.generateBlob((blob) => {
-            user.picture = blob
-            usersAPI.updateWithFile(user)
-              .then(response => {
-                this.$emit('closeEdit')
-                event.target.disabled = false
-              })
-          })
-        }
-      } else {
-        delete user.picture
-        usersAPI.update(user)
-          .then(response => {
-            this.$emit('closeEdit')
-            event.target.disabled = false
-          })
-      }
-    },
-    removeImage: function () {
-      this.toggleImageDelete = false
-      this.picture.remove()
-      this.imageChanged = true
-    },
-    addImage: function () {
-      this.toggleImageDelete = true
+    ...mapState('ui', [
+      'groups'
+    ]),
+    user () {
+      return this.object
     }
   }
 }
