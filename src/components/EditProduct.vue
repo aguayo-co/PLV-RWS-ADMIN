@@ -141,7 +141,7 @@ export default {
       const imagesRemove = []
       const images = []
       const payload = {
-        ...this.newData,
+        ...this.newData
       }
       this.new_images.forEach((image, i) => {
         if (image === this.product.images[i]) {
