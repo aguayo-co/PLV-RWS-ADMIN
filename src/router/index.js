@@ -7,6 +7,7 @@ import Campaigns from '@/pages/Campaigns'
 import Categories from '@/pages/Categories'
 import Colors from '@/pages/Colors'
 import Conditions from '@/pages/Conditions'
+import Coupons from '@/pages/Coupons'
 import CreditsTransactions from '@/pages/CreditsTransactions'
 import Groups from '@/pages/Groups'
 import Home from '@/pages/Home'
@@ -106,6 +107,11 @@ const router = new Router({
       path: '/conditions',
       name: 'Conditions',
       component: Conditions
+    },
+    {
+      path: '/cupones',
+      name: 'Coupons',
+      component: Coupons
     },
     {
       path: '/credits-transactions',

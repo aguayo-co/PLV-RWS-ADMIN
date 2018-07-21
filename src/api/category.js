@@ -4,8 +4,19 @@
 import Vue from 'vue'
 
 export default {
-  getAll: function () {
-    return Vue.axios.get('/api/categories')
+  get (page = 1, items, filter, orderby) {
+    const params = {
+      page,
+      items,
+      orderby
+    }
+
+    if (filter) {
+      Object.keys(filter).forEach((key) => {
+        params['filter[' + key + ']'] = filter[key]
+      })
+    }
+    return Vue.axiosAuth.get('/api/categories', { params })
   },
   getBySlug: function (slug) {
     return Vue.axios.get('/api/categories/' + slug)

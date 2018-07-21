@@ -1,5 +1,5 @@
 /**
- * API Calls related to products and their properties
+ * API Calls related to coupons and their properties
  */
 import Vue from 'vue'
 
@@ -16,10 +16,14 @@ export default {
         params['filter[' + key + ']'] = filter[key]
       })
     }
-    return Vue.axiosAuth.get('/api/brands', { params })
+    return Vue.axiosAuth.get('/api/coupons', { params })
   },
-  update: function (data) {
-    const updateData = {...data}
-    return Vue.axiosAuth.patch('/api/brands/' + data.slug, updateData)
+
+  update (coupon) {
+    return Vue.axiosAuth.patch('/api/coupons/' + coupon.id, coupon)
+  },
+
+  create (coupon) {
+    return Vue.axiosAuth.post('/api/coupons', coupon)
   }
 }

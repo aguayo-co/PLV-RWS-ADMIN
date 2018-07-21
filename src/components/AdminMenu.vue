@@ -50,11 +50,11 @@ export default {
             //   url: '#',
             //   ico: 'i-reload'
             // },
-            // {
-            //   name: 'Cupones',
-            //   url: '/user/data',
-            //   ico: 'i-bank-data'
-            // },
+            {
+              name: 'Cupones',
+              url: {name: 'Coupons'},
+              ico: 'i-bank-data'
+            },
             // {
             //   name: 'Reportes',
             //   url: '/user/data',

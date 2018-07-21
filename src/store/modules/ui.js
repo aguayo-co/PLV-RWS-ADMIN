@@ -46,23 +46,12 @@ const actions = {
       })
     colorsAPI.get()
       .then(response => {
-        let colors = response.data.data.sort(function (a, b) {
+        const colors = response.data.data.sort(function (a, b) {
           return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
         })
         const property = {
           name: 'colors',
           data: colors
-        }
-        commit('setProperty', { property })
-      })
-    brandsAPI.get()
-      .then(response => {
-        let brands = response.data.data.sort(function (a, b) {
-          return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
-        })
-        const property = {
-          name: 'brands',
-          data: brands
         }
         commit('setProperty', { property })
       })
@@ -74,22 +63,9 @@ const actions = {
         }
         commit('setProperty', { property })
       })
-    categoriesAPI.getAll()
-      .then(response => {
-        response.data.data.forEach((category) => {
-          category.children.sort(function (a, b) {
-            return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
-          })
-        })
-        const property = {
-          name: 'categories',
-          data: response.data.data
-        }
-        commit('setProperty', { property })
-      })
     menusAPI.getMenus()
       .then(response => {
-        let menus = {}
+        const menus = {}
         response.data.data.forEach((menu) => {
           menus[menu.slug] = menu
         })
@@ -100,30 +76,12 @@ const actions = {
         commit('setProperty', { property })
       })
     dispatch('loadCampaigns')
+    dispatch('loadCategories')
+    dispatch('loadBrands')
     dispatch('loadGroups')
   },
-  loadCampaigns ({ commit }) {
-    campaignsAPI.get()
-      .then(response => {
-        const property = {
-          name: 'campaigns',
-          data: response.data.data
-        }
-        commit('setProperty', { property })
-      })
-  },
-  loadGroups ({ commit }) {
-    groupAPI.get()
-      .then(response => {
-        const property = {
-          name: 'groups',
-          data: response.data.data
-        }
-        commit('setProperty', { property })
-      })
-  },
-  refreshCategories ({ commit }) {
-    categoriesAPI.getAll()
+  loadCategories ({ commit }) {
+    categoriesAPI.get(1, 10000)
       .then(response => {
         response.data.data.forEach((category) => {
           category.children.sort(function (a, b) {
@@ -137,10 +95,43 @@ const actions = {
         commit('setProperty', { property })
       })
   },
+  loadBrands ({ commit }) {
+    brandsAPI.get(1, 10000)
+      .then(response => {
+        const brands = response.data.data.sort(function (a, b) {
+          return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+        })
+        const property = {
+          name: 'brands',
+          data: brands
+        }
+        commit('setProperty', { property })
+      })
+  },
+  loadCampaigns ({ commit }) {
+    campaignsAPI.get(1, 10000)
+      .then(response => {
+        const property = {
+          name: 'campaigns',
+          data: response.data.data
+        }
+        commit('setProperty', { property })
+      })
+  },
+  loadGroups ({ commit }) {
+    groupAPI.get(1, 10000)
+      .then(response => {
+        const property = {
+          name: 'groups',
+          data: response.data.data
+        }
+        commit('setProperty', { property })
+      })
+  },
   refreshColors ({ commit }) {
     colorsAPI.get()
       .then(response => {
-        let colors = response.data.data.sort(function (a, b) {
+        const colors = response.data.data.sort(function (a, b) {
           return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
         })
         const property = {
