@@ -1,7 +1,7 @@
 <template lang="pug">
   .edit__slide
     h3.slide__header.i-close(
-      @click.stop="$emit('closeEdit')") Editar campañas
+      @click.stop="$emit('close')") Editar campaña
     form.slide__form(@submit.prevent="submit")
       .form__row
         label.form__label(

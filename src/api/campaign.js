@@ -1,10 +1,9 @@
 /**
- * API Calls related to products and their properties
+ * API Calls related to campaigns and their properties
  */
 import Vue from 'vue'
 
 export default {
-
   get (page = 1, items, filter, orderby) {
     const params = {
       page,

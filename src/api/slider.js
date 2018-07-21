@@ -3,37 +3,37 @@
  */
 import Vue from 'vue'
 
+function formData (data) {
+  const formData = new window.FormData()
+
+  Object.keys(data).forEach((key) => {
+    formData.append(key, data[key])
+  })
+
+  return formData
+}
+
 export default {
-  get: function (page, items, filter) {
-    let queryFilter = ''
-    page = page || 1
-    items = items || 8
+  get (page = 1, items, filter, orderby) {
+    const params = {
+      page,
+      items,
+      orderby
+    }
 
     if (filter) {
       Object.keys(filter).forEach((key) => {
-        queryFilter += '&filter[' + key + ']=' + filter[key]
+        params['filter[' + key + ']'] = filter[key]
       })
     }
-    return Vue.axiosAuth.get('/api/sliders?items=' + items + '&page=' + page + queryFilter)
+    return Vue.axiosAuth.get('/api/sliders', { params })
   },
-  update: function (data) {
-    const updateData = {...data}
-    delete updateData.image
-    delete updateData.image_mobile
-    return Vue.axiosAuth.patch('/api/sliders/' + data.slug, updateData)
+
+  update (data) {
+    return Vue.axiosAuth.patch('/api/sliders/' + data.slug, formData(data))
   },
-  updateWithImage: function (data) {
-    var formData = new FormData()
-    Object.keys(data).forEach((key) => {
-      formData.append(key, data[key])
-    })
-    return Vue.axiosAuth.patch('/api/sliders/' + data.slug, formData)
-  },
-  create: function (data) {
-    var formData = new FormData()
-    Object.keys(data).forEach((key) => {
-      formData.append(key, data[key])
-    })
-    return Vue.axiosAuth.post('/api/sliders/', formData)
+
+  create (data) {
+    return Vue.axiosAuth.post('/api/sliders', formData(data))
   }
 }
