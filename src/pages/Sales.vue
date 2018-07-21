@@ -116,6 +116,7 @@ export default {
       ],
       slide: EditSale,
       query: false,
+      orderby: '-updated_at',
 
       loaderMethod: saleAPI.get,
       objectsKey: 'rawSales',
