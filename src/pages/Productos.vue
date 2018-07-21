@@ -19,8 +19,10 @@
       td.crud__cell
         a(:href="$store.state.frontUrl + '/producto/' + product.slug + '__' + product.id")
           img.crud__cell-img(:src="product.images[0]", :alt="product.title")
-      td.crud__cell {{ product.id }}
-      td.crud__cell {{ product.title }}
+      td.crud__cell
+        a(:href="$store.state.frontUrl + '/producto/' + product.slug + '__' + product.id") {{ product.id }}
+      td.crud__cell
+        a(:href="$store.state.frontUrl + '/producto/' + product.slug + '__' + product.id") {{ product.title }}
       td.crud__cell {{ product.brand.name }}
       td.crud__cell {{ product.original_price | currency }}
       td.crud__cell(:class='{ "danger": product.price > product.original_price - ( product.original_price * 0.1 ) }') {{ product.price | currency }}
@@ -51,17 +53,25 @@ export default {
       loaderMethod: productAPI.get,
 
       products: [],
-
-      filters: [{
-        type: 'select',
-        active: null,
-        options: [
-          { label: 'Todos', filter: null },
-          ...Object.keys(productAPI.statuses).map(status => {
-            return { label: productAPI.statuses[status], filter: {status: status} }
-          })
-        ]
-      }]
+      filters: [
+        {
+          label: 'ID de usuaria',
+          type: 'text',
+          filter: 'user_id',
+          value: null
+        },
+        {
+          label: 'Estado',
+          type: 'select',
+          active: null,
+          options: [
+            { label: 'Todos', filter: null },
+            ...Object.keys(productAPI.statuses).map(status => {
+              return { label: productAPI.statuses[status], filter: {status: status} }
+            })
+          ]
+        }
+      ]
     }
   }
 }

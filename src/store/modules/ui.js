@@ -35,7 +35,7 @@ const getters = {
 
 // actions
 const actions = {
-  loadProperties ({ commit }) {
+  loadProperties ({ dispatch, commit }) {
     conditionsAPI.get()
       .then(response => {
         const property = {
@@ -107,6 +107,9 @@ const actions = {
         }
         commit('setProperty', { property })
       })
+    dispatch('loadGroups')
+  },
+  loadGroups ({ commit }) {
     groupAPI.get()
       .then(response => {
         const property = {

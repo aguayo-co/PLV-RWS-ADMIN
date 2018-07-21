@@ -6,6 +6,8 @@
       .form__row
         label.form__label(
           for="campaign-name") Nombre
+        span.help(
+          v-if="errorLog.name") {{ errorLog.name }}
         input.form__control(
           id="campaign-name",
           v-model="field_name",

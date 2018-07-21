@@ -124,7 +124,10 @@ export default {
     isEditable (object) {
       return object !== null
     },
-
+    objectsChanged () {
+      // Allow implementing components to take action on
+      // objects changes.
+    },
     updateObject (newObject) {
       // Reemplaza el objeto pasado en el arreglo de objetos.
       const replaced = this.objects.some((object, index) => {
@@ -137,6 +140,8 @@ export default {
       if (!replaced) {
         this.updateList()
       }
+
+      this.objectsChanged()
     },
     closeSlide () {
       this.slideObject = null
