@@ -10,6 +10,7 @@ import VueTextareaAutosize from 'vue-textarea-autosize'
 import App from './App'
 import axiosPlugin from './axios'
 import Dots from './components/global/Dots'
+import Loader from './components/global/Loader'
 import UserCell from './components/global/UserCell'
 import prilovFilters from './filters'
 import prilovHelpers from './helpers'
@@ -31,6 +32,7 @@ import store from './store'
   // Load our helpers!
   Vue.use(prilovHelpers)
 
+  Vue.component('Loader', Loader)
   Vue.component('Dots', Dots)
   Vue.component('UserCell', UserCell)
 

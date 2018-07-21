@@ -32,6 +32,7 @@ const actions = {
     if (!userId) {
       return
     }
+    commit('loading', true)
     return userAPI.load(userId)
       .then(response => {
         const user = response.data
@@ -61,6 +62,9 @@ const actions = {
             dispatch('logOut')
         }
       })
+      .finally(() => {
+        commit('loading', false)
+      })
   },
   logOut ({ commit }) {
     commit('clear')
@@ -74,6 +78,9 @@ const actions = {
 }
 
 const mutations = {
+  loading (state, loading) {
+    state.loading = loading
+  },
   set (state, user) {
     const baseUser = baseUserGenerator()
     Object.keys(baseUser).forEach((key) => {
@@ -93,7 +100,8 @@ const mutations = {
 export default {
   namespaced: true,
   state: {
-    ...baseStateGenerator()
+    ...baseStateGenerator(),
+    loading: false
   },
   getters,
   actions,
