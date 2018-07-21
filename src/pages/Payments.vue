@@ -33,11 +33,19 @@
       v-for="payment in payments"
       :slot="payment.id + '-actions'")
       button(
-        v-if="isCancelable(payment)"
-        @click="cancel(payment)"
-        :disabled="canceling[payment.id]")
-        Dots(v-if="canceling[payment.id]")
-        template(v-else) Cancelar la compra
+        v-if="isCancelable(payment) && !canceling[payment.id]"
+        @click="$set(canceling, payment.id, 'confirm')") Cancelar la compra
+      template(v-if="canceling[payment.id]")
+        p Confirma:
+        button(
+          @click="cancel(payment)"
+          :disabled="canceling[payment.id] === true")
+          Dots(v-if="canceling[payment.id] === true")
+          template(v-else) Si, Cancelar la compra
+        button(
+          @click="$delete(canceling, payment.id)"
+          :disabled="canceling[payment.id] === true") No
+
 </template>
 
 <script>
