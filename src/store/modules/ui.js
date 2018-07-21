@@ -99,6 +99,10 @@ const actions = {
         }
         commit('setProperty', { property })
       })
+    dispatch('loadCampaigns')
+    dispatch('loadGroups')
+  },
+  loadCampaigns ({ commit }) {
     campaignsAPI.get()
       .then(response => {
         const property = {
@@ -107,7 +111,6 @@ const actions = {
         }
         commit('setProperty', { property })
       })
-    dispatch('loadGroups')
   },
   loadGroups ({ commit }) {
     groupAPI.get()
