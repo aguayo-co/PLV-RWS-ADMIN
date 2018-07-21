@@ -91,14 +91,29 @@ export default {
       filter: {
         all: 1
       },
-      filters: [{
-        type: 'select',
-        active: {status: '11,99'},
-        options: [
-          { label: 'Todas', filter: {status: '11,99'} },
-          ...statusFilters
-        ]
-      }],
+      filters: [
+        {
+          label: 'ID de Vendedora',
+          type: 'text',
+          filter: 'user_id',
+          value: null
+        },
+        {
+          label: 'ID de Compradora',
+          type: 'text',
+          filter: 'buyer_id',
+          value: null
+        },
+        {
+          label: 'Estado',
+          type: 'select',
+          active: {status: '11,99'},
+          options: [
+            { label: 'Todas', filter: {status: '11,99'} },
+            ...statusFilters
+          ]
+        }
+      ],
       slide: EditSale,
       query: false,
 
