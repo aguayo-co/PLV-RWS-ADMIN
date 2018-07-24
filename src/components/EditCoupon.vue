@@ -65,6 +65,29 @@
           pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}( [0-9]{2}:[0-9]{2})?"
           :placeholder="$moment().format('YYYY-MM-DD HH:MM')")
       .form__row
+        label.form__label(
+          for="coupon-minimum_price") Precio mínimo
+        span.help(
+          v-if="errorLog.minimum_price") {{ errorLog.minimum_price }}
+        input.form__control(
+          v-model="field_minimum_price"
+          id="coupon-minimum_price"
+          type="number"
+          step=1
+          min=1)
+      .form__row
+        label.form__label(
+          for="coupon-minimum_commission") Comisión mínima
+        span.help(
+          v-if="errorLog.minimum_commission") {{ errorLog.minimum_commission }}
+        input.form__control(
+          v-model="field_minimum_commission"
+          id="coupon-minimum_commission"
+          type="number"
+          step=1
+          min=1,
+          max=100)
+      .form__row
         span.help(
           v-if="errorLog.first_purchase_only") {{ errorLog.first_purchase_only }}
         input.form__input-check(
@@ -128,6 +151,8 @@ const editableProps = {
   discount_type: null,
   valid_from: null,
   valid_to: null,
+  minimum_price: null,
+  minimum_commission: null,
   status: null,
   first_purchase_only: null,
   brands_ids: null,
