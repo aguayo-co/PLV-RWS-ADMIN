@@ -60,8 +60,8 @@ export default {
   computed: {
     coupons () {
       return this.rawCoupons.map(coupon => {
-        coupon.valid_to = this.$moment(coupon.valid_to).format('YYYY-MM-DD HH:mm')
-        coupon.valid_from = this.$moment(coupon.valid_from).format('YYYY-MM-DD HH:mm')
+        coupon.valid_to = coupon.valid_to ? this.$moment(coupon.valid_to).format('YYYY-MM-DD HH:mm') : null
+        coupon.valid_from = coupon.valid_from ? this.$moment(coupon.valid_from).format('YYYY-MM-DD HH:mm') : null
         return coupon
       })
     }

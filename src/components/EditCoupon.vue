@@ -50,7 +50,7 @@
         input.form__control(
           id="coupon-valid_from",
           v-model="field_valid_from",
-          type="datetime-local"
+          type="text"
           pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}( [0-9]{2}:[0-9]{2})?"
           :placeholder="$moment().format('YYYY-MM-DD HH:MM')")
       .form__row
@@ -61,7 +61,7 @@
         input.form__control(
           id="coupon-valid_to",
           v-model="field_valid_to",
-          type="datetime-local"
+          type="text"
           pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}( [0-9]{2}:[0-9]{2})?"
           :placeholder="$moment().format('YYYY-MM-DD HH:MM')")
       .form__row
@@ -154,16 +154,16 @@ export default {
       }
       const format = 'YYYY-MM-DD HH:mm:00'
 
-      if (typeof this.newData.valid_from === 'string') {
+      if (this.newData.valid_from && typeof this.newData.valid_from === 'string') {
         payload.valid_from = this.$moment(this.newData.valid_from).utc().format(format)
-        if (typeof this.newData.valid_to === 'undefined') {
+        if (typeof this.newData.valid_to === 'undefined' && this.coupon.valid_to) {
           payload.valid_to = this.$moment(this.coupon.valid_to).utc().format(format)
         }
       }
 
-      if (typeof this.newData.valid_to === 'string') {
+      if (this.newData.valid_to && typeof this.newData.valid_to === 'string') {
         payload.valid_to = this.$moment(this.newData.valid_to).utc().format(format)
-        if (typeof this.newData.valid_from === 'undefined') {
+        if (typeof this.newData.valid_from === 'undefined' && this.coupon.valid_from) {
           payload.valid_from = this.$moment(this.coupon.valid_from).utc().format(format)
         }
       }

@@ -16,10 +16,10 @@ function createComputedProps (editableProps) {
   const computed = {}
   Object.keys(editableProps).forEach(function (key) {
     computed['field_' + key] = {
-      get: function () {
+      get () {
         return this.newData[key] !== undefined ? this.newData[key] : this.object[key]
       },
-      set: function (value) {
+      set (value) {
         this.$delete(this.errorLog, key)
         if (value === this.object[key]) {
           this.$delete(this.newData, key)
