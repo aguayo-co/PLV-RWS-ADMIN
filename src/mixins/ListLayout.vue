@@ -96,6 +96,7 @@
             td.crud__cell(
               v-if="$parent.slide")
               button(v-if="$parent.isEditable(object)" @click="$parent.openSlide(object)") Editar
+              slot(:name="object.id + '-actions'")
         tfoot
           slot(name="tfoot")
           tr(v-if="$parent.canCreate")

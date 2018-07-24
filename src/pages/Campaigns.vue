@@ -42,6 +42,11 @@ export default {
         return campaign
       })
     }
+  },
+  methods: {
+    objectsChanged () {
+      this.$store.dispatch('ui/loadCampaigns')
+    }
   }
 }
 </script>

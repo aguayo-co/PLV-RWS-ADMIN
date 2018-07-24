@@ -12,7 +12,8 @@
       .content-slot__inner
         .form-slot
           h1.title Panel de administración de Prilov
-          p.form__info.i-alert-info(v-if="user.id") Bienvenida
+          Loader(v-if="user.loading")
+          p.form__info.i-alert-info(v-else-if="user.id") Bienvenida
           template(v-else)
             p.form__info.i-alert-info(v-if="loginError") No podemos reconocer tu usuario y contraseña.
             form.form(
@@ -85,7 +86,7 @@ export default {
 
       return Object.keys(this.errorLog).length === 0
     },
-    login: function () {
+    login () {
       this.loginError = false
       this.loading = true
       if (!this.validate()) {

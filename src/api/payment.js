@@ -27,15 +27,15 @@ export default {
     return Vue.axiosAuth.get('/api/payments', { params })
   },
 
-  getById: function (id) {
+  getById (id) {
     return Vue.axiosAuth.get('/api/payments/' + id)
   },
 
-  update: function (payment) {
+  update (payment) {
     return Vue.axiosAuth.patch('/api/payments/' + payment.id, payment)
   },
 
-  approve: function (payment) {
+  approve (payment) {
     const data = {
       reference: payment.request_data.reference,
       status: 'approved'
@@ -43,7 +43,7 @@ export default {
     return Vue.axiosAuth.post('/callback/gateway/transfer', data)
   },
 
-  reject: function (payment) {
+  reject (payment) {
     const data = {
       reference: payment.request_data.reference,
       status: 'rejected'
