@@ -48,7 +48,7 @@
       td.crud__cell {{ status(transaction) | unempty }}
       td.crud__cell {{ transaction.created_at | date-time | unempty }}
       td.crud__cell {{ bankInfo(transaction, 'fullName') | unempty }}
-      td.crud__cell {{ bankInfo(transaction, 'bankName') | unempty }}
+      td.crud__cell {{ banks[bankInfo(transaction, 'bankId')] | unempty }}
       td.crud__cell {{ bankInfo(transaction, 'accountNumber') | unempty }}
       td.crud__cell {{ bankInfo(transaction, 'accountType') | unempty }}
       td.crud__cell {{ transaction.amount | currency | unempty }}
@@ -86,12 +86,42 @@ const filters = [
   }
 ]
 
+const banks = {
+  1: 'Banco de Chile / A. Edwards / Citibank N.A.',
+  12: 'Banco del Estado de Chile',
+  37: 'Banco Santander - Santiago',
+  51: 'Banco Falabella',
+  16: 'Banco Crédito e Inversiones',
+  27: 'Corpbanca',
+  28: 'Banco Bice',
+  14: 'Scotiabank',
+  39: 'Banco Itaú',
+  49: 'Banco Security',
+  55: 'Banco Consorcio',
+  504: 'BBVA Banco Bhif',
+  507: 'Banco del Desarrollo',
+  53: 'Banco Ripley',
+  9: 'Banco Internacional',
+  11: 'Dresdner Bank Leteinamerika',
+  17: 'Banco Do Brasil S.A.',
+  31: 'HSBC Bank Chile',
+  41: 'JP Morgan Chase Bank',
+  43: 'Banco de la Nación Argentina',
+  45: 'The Bank of Tokyo – Mitsubishi',
+  46: 'Abn Amro Bank (Chile)',
+  52: 'Deutsche Bank (Chile)',
+  54: 'HNS Banco',
+  734: 'Banco Conosur',
+  57: 'Banco Paris'
+}
+
 export default {
   name: 'CreditsTransactions',
   mixins: [ListMixin],
   props: ['payrollId'],
   data () {
     return {
+      banks,
       query: false,
       payroll: null,
       transactions: [],
