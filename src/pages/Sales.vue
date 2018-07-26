@@ -47,7 +47,7 @@
       td.crud__cell
         UserCell(:user="sale.user")
       //- Subtotal #8
-      td.crud__cell {{ sale.order.payments[0] ? sale.order.payments[0].gateway : '' | unempty }}
+      td.crud__cell {{ sale.order.active_payment ? sale.order.active_payment.gateway : '' | unempty }}
       //- Subtotal #9
       td.crud__cell {{ sale.total | currency }}
       //- Envío #10
