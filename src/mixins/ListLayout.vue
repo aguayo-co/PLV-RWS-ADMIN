@@ -17,19 +17,20 @@
       header.data-header
         h2.data-header__title.title
           slot(name="title")
-        .data-header__item(v-if="$parent.query !== false")
-          span.help(
-            v-show='$parent.errorLog.query'
-          ) {{ $parent.errorLog.query }}
-          form.search(
-            @submit.prevent="$parent.updateSearch")
-            .search__row
-              input#searchMain.search__input(
-                type='text'
-                name='search'
-                placeholder='Buscar'
-                v-model="$parent.query")
-              input.search__btn(type='submit', value='')
+        .data-header__item
+          template(v-if="$parent.query !== false")
+            span.help(
+              v-show='$parent.errorLog.query'
+            ) {{ $parent.errorLog.query }}
+            form.search(
+              @submit.prevent="$parent.updateSearch")
+              .search__row
+                input#searchMain.search__input(
+                  type='text'
+                  name='search'
+                  placeholder='Buscar'
+                  v-model="$parent.query")
+                input.search__btn(type='submit', value='')
           UserAvatar
 
       //- Navegación
