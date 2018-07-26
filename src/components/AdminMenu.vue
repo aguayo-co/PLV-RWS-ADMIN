@@ -36,6 +36,11 @@ export default {
               ico: 'i-closet'
             },
             {
+              name: 'Reporte',
+              url: {name: 'Reporte'},
+              ico: 'i-credits'
+            },
+            {
               name: 'Ventas',
               url: {name: 'Sales'},
               ico: 'i-sale'
