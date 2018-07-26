@@ -55,7 +55,9 @@
         template(v-if="sale.shipping_cost") {{ sale.shipping_cost | currency }}
         template(v-else) {{ | unempty }}
       //- Metodo #11
-      td.crud__cell {{ sale.shipping_method.name }}
+      td.crud__cell
+        template(v-if="sale.shipping_method") {{ sale.shipping_method.name }}
+        template(v-else) {{ | unempty }}
       //- Credito amount #12
       td.crud__cell
         template(v-if="sale.used_credits") {{ sale.used_credits | currency }}
