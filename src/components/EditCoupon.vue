@@ -180,6 +180,11 @@ export default {
         ...this.newData
       }
 
+      // COnvertimos cualquier valor a entero.
+      if (typeof payload.status !== 'undefined') {
+        payload.status = payload.status ? 1 : 0
+      }
+
       const format = 'YYYY-MM-DD HH:mm:00'
 
       if (this.newData.valid_from && typeof this.newData.valid_from === 'string') {
@@ -200,6 +205,10 @@ export default {
     }
   },
   created () {
+    if (typeof this.object.status === 'undefined') {
+      this.object.status = 1
+    }
+
     // Define valores por defecto para objetos nuevos.
     if (typeof this.object.brands_ids === 'undefined') {
       this.object.brands_ids = []
