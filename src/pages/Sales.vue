@@ -10,24 +10,21 @@
       th.crud__th.crud__title Gross Revenue
       th.crud__th.crud__title Compradora
       th.crud__th.crud__title Vendedora
+      th.crud__th.crud__title Método de envío
       th.crud__th.crud__title Método de pago
-      th.crud__th.crud__title Subtotal
+      th.crud__th.crud__title Subtotal (sin descuento)
       th.crud__th.crud__title Envío
-      th.crud__th.crud__title Método
-      th.crud__th.crud__title Créditos
       th.crud__th.crud__title Cupón
+      th.crud__th.crud__title Total
+      th.crud__th.crud__title Créditos usados
       th.crud__th.crud__title Estado
 
     template(
       v-for="sale in sales"
       :slot="'row-' + sale.id")
-      //- Id Orden #2
       td.crud__cell {{ sale.order_id }}
-      //- Id Ventas #3
       td.crud__cell {{ sale.id }}
-      //- Fecha #4
       td.crud__cell {{ sale.created_at | date }}
-      //- Productos #5
       td.crud__cell.crud__cell_14
         ul.crud__list
           li(v-for="product in sale.products")
@@ -39,35 +36,27 @@
               .crud__text
                 p.crud__text_small {{ product.title }}
                 p.crud__text_small {{ product.price | currency}}
-      //- Comisión #6
       td.crud__cell {{ sale.commission_percentage }}% / {{ sale.commission | currency }}
-      //- Compradora / Vendedora #7
       td.crud__cell
         UserCell(:user="sale.order.user")
       td.crud__cell
         UserCell(:user="sale.user")
-      //- Subtotal #8
-      td.crud__cell {{ sale.order.active_payment ? sale.order.active_payment.gateway : '' | unempty }}
-      //- Subtotal #9
-      td.crud__cell {{ sale.total | currency }}
-      //- Envío #10
-      td.crud__cell
-        template(v-if="sale.shipping_cost") {{ sale.shipping_cost | currency }}
-        template(v-else) {{ | unempty }}
-      //- Metodo #11
       td.crud__cell
         template(v-if="sale.shipping_method") {{ sale.shipping_method.name }}
         template(v-else) {{ | unempty }}
-      //- Credito amount #12
+      td.crud__cell {{ sale.order.active_payment ? sale.order.active_payment.gateway : '' | unempty }}
+      td.crud__cell {{ sale.total | currency }}
       td.crud__cell
-        template(v-if="sale.used_credits") {{ sale.used_credits | currency }}
+        template(v-if="sale.shipping_cost") {{ sale.shipping_cost | currency }}
         template(v-else) {{ | unempty }}
-      //- Cupon #13
       td.crud__cell
         template(
           v-if="sale.order.coupon") {{ sale.order.coupon.code }} / {{ sale.coupon_discount | currency }}
         template(v-else) {{ | unempty }}
-      //- Estado #14
+      td.crud__cell {{ sale.total + sale.shipping_cost - sale.coupon_discount | currency }}
+      td.crud__cell
+        template(v-if="sale.used_credits") {{ sale.used_credits | currency }}
+        template(v-else) {{ | unempty }}
       td.crud__cell
         p.crud__state.crud__state_detail(:class='"state-" + sale.status') {{ statuses[sale.status] }}
 </template>
