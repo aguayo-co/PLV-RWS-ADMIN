@@ -119,7 +119,7 @@ export default {
   computed: {
     sales () {
       return this.rawSales.map(sale => {
-        sale.commission_percentage = sale.commission / sale.total * 100
+        sale.commission_percentage = parseInt(sale.commission / sale.total * 100)
         return sale
       })
     }
