@@ -7,7 +7,7 @@
       th.crud__th.crud__title #Venta
       th.crud__th.crud__title Fecha
       th.crud__th.crud__title Productos
-      th.crud__th.crud__title Comisión
+      th.crud__th.crud__title Gross Revenue
       th.crud__th.crud__title Compradora
       th.crud__th.crud__title Vendedora
       th.crud__th.crud__title Método de pago
@@ -40,7 +40,7 @@
                 p.crud__text_small {{ product.title }}
                 p.crud__text_small {{ product.price | currency}}
       //- Comisión #6
-      td.crud__cell {{ sale.commission }}% / {{ sale.total_commission | currency }}
+      td.crud__cell {{ sale.commission_percentage }}% / {{ sale.commission | currency }}
       //- Compradora / Vendedora #7
       td.crud__cell
         UserCell(:user="sale.order.user")
@@ -65,7 +65,7 @@
       //- Cupon #13
       td.crud__cell
         template(
-          v-if="sale.coupon") {{ sale.coupon.code }}
+          v-if="sale.order.coupon") {{ sale.order.coupon.code }} / {{ sale.coupon_discount | currency }}
         template(v-else) {{ | unempty }}
       //- Estado #14
       td.crud__cell
@@ -130,22 +130,9 @@ export default {
   computed: {
     sales () {
       return this.rawSales.map(sale => {
-        [sale.total_commission, sale.commission] = this.getCommission(sale.products)
+        sale.commission_percentage = sale.commission / sale.total * 100
         return sale
       })
-    }
-  },
-  methods: {
-    getCommission (products) {
-      const totalCommission = products.reduce((sum, product) => {
-        return sum + product.commission * product.price / 100
-      }, 0)
-
-      const percentege = totalCommission * 100 / products.reduce((sum, product) => {
-        return sum + product.price
-      }, 0)
-
-      return [totalCommission, parseInt(percentege)]
     }
   }
 }

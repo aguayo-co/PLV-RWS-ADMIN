@@ -4,11 +4,12 @@
 import Vue from 'vue'
 
 export default {
-  get (groupby = 'month', since, until) {
+  get (groupBy, from, until, tz) {
     const params = {
-      groupby,
-      since,
-      until
+      groupBy,
+      from,
+      until,
+      tz
     }
     return Vue.axiosAuth.get('/api/report', { params })
   }
