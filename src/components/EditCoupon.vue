@@ -198,6 +198,16 @@ export default {
 
       return payload
     }
+  },
+  created () {
+    // Define valores por defecto para objetos nuevos.
+    if (typeof this.object.brands_ids === 'undefined') {
+      this.object.brands_ids = []
+    }
+
+    if (typeof this.object.campaigns_ids === 'undefined') {
+      this.object.campaigns_ids = []
+    }
   }
 }
 </script>
