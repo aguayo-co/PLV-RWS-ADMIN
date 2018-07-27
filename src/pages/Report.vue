@@ -159,17 +159,12 @@ export default {
       if (!this.validateRanges()) {
         return
       }
-      let from = null
-      let until = null
 
-      if (this.from) {
-        from = this.$moment(this.from).utc().format('YYYY-MM-DD 00:00:00')
-      }
-      if (this.until) {
-        until = this.$moment(this.until).utc().format('YYYY-MM-DD 59:59:00')
-      }
+      const from = this.$moment(this.from).utc().format('YYYY-MM-DD HH:mm:ss')
+      const until = this.$moment(this.until).add(1, 'day').utc().format('YYYY-MM-DD HH:mm:ss')
+      const tz = this.$moment().format('Z')
 
-      const localLoading = this.loading = reportAPI.get(this.groupBy, from, until)
+      const localLoading = this.loading = reportAPI.get(this.groupBy, from, until, tz)
         .then(response => {
           // Keep track of last request.
           if (localLoading !== this.loading) {
