@@ -70,22 +70,24 @@
         span.help(
           v-if="errorLog.minimum_price") {{ errorLog.minimum_price }}
         input.form__control(
+          required
           v-model="field_minimum_price"
           id="coupon-minimum_price"
           type="number"
           step=1
-          min=1)
+          min=0)
       .form__row
         label.form__label(
           for="coupon-minimum_commission") Comisión mínima
         span.help(
           v-if="errorLog.minimum_commission") {{ errorLog.minimum_commission }}
         input.form__control(
+          required
           v-model="field_minimum_commission"
           id="coupon-minimum_commission"
           type="number"
           step=1
-          min=1,
+          min=0,
           max=100)
       .form__row
         span.help(
@@ -177,6 +179,7 @@ export default {
       const payload = {
         ...this.newData
       }
+
       const format = 'YYYY-MM-DD HH:mm:00'
 
       if (this.newData.valid_from && typeof this.newData.valid_from === 'string') {
