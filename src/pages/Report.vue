@@ -17,7 +17,11 @@
             option(value="month") Mes
             option(value="year") Año
         label(for="report-since") Desde
+          span.help(
+            v-if="errorLog.since") {{ errorLog.since }}
           input.form__control(
+            @input="clearError('since')"
+            required
             id="report-since"
             form="filter-form"
             v-model="since"
@@ -25,7 +29,11 @@
             :placeholder="$moment().format('YYYY-MM-DD')"
             type="text")
         label(for="report-since") Hasta
+          span.help(
+            v-if="errorLog.until") {{ errorLog.until }}
           input.form__control(
+            @input="clearError('until')"
+            required
             id="report-until"
             form="filter-form"
             v-model="until"
@@ -71,6 +79,7 @@ export default {
   components: {LoadingRow, UserAvatar},
   data () {
     return {
+      errorLog: [],
       reports: null,
       loading: true,
       groupby: 'month',
@@ -84,7 +93,54 @@ export default {
     }
   },
   methods: {
+    clearError (field) {
+      this.$delete(this.errorLog, field)
+    },
+    validateRanges () {
+      this.$delete(this.errorLog, 'since')
+      this.$delete(this.errorLog, 'until')
+
+      const since = this.$moment(this.since).utc()
+      const until = this.$moment(this.until).utc()
+
+      if (!since) {
+        this.$set(this.errorLog, 'since', 'Ingresa una fecha válida.')
+        return false
+      }
+
+      if (!until) {
+        this.$set(this.errorLog, 'until', 'Ingresa una fecha válida.')
+        return false
+      }
+
+      if (until < since) {
+        this.$set(this.errorLog, 'until', 'Esta fecha debe ser posterior a "Desde"')
+        return false
+      }
+
+      const diff = until.diff(since, 'month')
+
+      if (this.groupby === 'day' && diff > 0) {
+        this.$set(this.errorLog, 'since', 'Agrupar por días permite ver máximo 1 mes de registros.')
+        return false
+      }
+
+      if (this.groupby === 'week' && diff > 12) {
+        this.$set(this.errorLog, 'since', 'Agrupar por semanas permite ver máximo 1 año de registros.')
+        return false
+      }
+
+      if (this.groupby === 'month' && diff > 36) {
+        this.$set(this.errorLog, 'since', 'Agrupar por semanas permite ver máximo 3 años de registros.')
+        return false
+      }
+
+      return true
+    },
     updateList () {
+      if (!this.validateRanges()) {
+        return
+      }
       let since = null
       let until = null
 
