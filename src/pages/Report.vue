@@ -103,12 +103,12 @@ export default {
       const since = this.$moment(this.since).utc()
       const until = this.$moment(this.until).utc()
 
-      if (!since) {
+      if (!since.isValid()) {
         this.$set(this.errorLog, 'since', 'Ingresa una fecha válida.')
         return false
       }
 
-      if (!until) {
+      if (!until.isValid()) {
         this.$set(this.errorLog, 'until', 'Ingresa una fecha válida.')
         return false
       }
