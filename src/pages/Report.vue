@@ -28,7 +28,7 @@
             pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
             :placeholder="$moment().format('YYYY-MM-DD')"
             type="text")
-        label(for="report-from") Hasta
+        label(for="report-until") Hasta
           span.help(
             v-if="errorLog.until") {{ errorLog.until }}
           input.form__control(
