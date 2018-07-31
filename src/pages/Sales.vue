@@ -5,7 +5,7 @@
     template(slot="columns")
       th.crud__th.crud__title #Orden
       th.crud__th.crud__title #Venta
-      th.crud__th.crud__title Fecha
+      th.crud__th.crud__title Fecha de pago
       th.crud__th.crud__title Productos
       th.crud__th.crud__title Gross Revenue
       th.crud__th.crud__title Compradora
@@ -24,7 +24,7 @@
       :slot="'row-' + sale.id")
       td.crud__cell {{ sale.order_id }}
       td.crud__cell {{ sale.id }}
-      td.crud__cell {{ sale.created_at | date }}
+      td.crud__cell {{ sale.payment_date | date-time }}
       td.crud__cell.crud__cell_14
         ul.crud__list
           li(v-for="product in sale.products")
@@ -35,7 +35,7 @@
                 :alt="product.title")
               .crud__text
                 p.crud__text_small {{ product.title }}
-                p.crud__text_small {{ product.price | currency}}
+                p.crud__text_small {{ product.price | currency }}
       td.crud__cell {{ sale.commission_percentage }}% / {{ sale.commission | currency }}
       td.crud__cell
         UserCell(:user="sale.order.user")
@@ -107,7 +107,7 @@ export default {
       ],
       slide: EditSale,
       query: false,
-      orderby: '-updated_at',
+      orderby: '-payment_date',
 
       loaderMethod: saleAPI.get,
       objectsKey: 'rawSales',
@@ -120,6 +120,7 @@ export default {
     sales () {
       return this.rawSales.map(sale => {
         sale.commission_percentage = parseInt(sale.commission / sale.total * 100)
+        sale.payment_date = this.$getNestedObject(sale.status_history, [20, 'date'])
         return sale
       })
     }
