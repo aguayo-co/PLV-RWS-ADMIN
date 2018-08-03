@@ -44,6 +44,18 @@ import ListMixin from '@/mixins/ListMixin'
 export default {
   name: 'Productos',
   mixins: [ListMixin],
+  methods: {
+    alterQuery (query, filters) {
+      // Cualqueir cosa que parezca un email lo aceptamos como válido.
+      // Dividimos por espacios que reemplazamos por comas.
+      // lo@quesea.com    otra@cosa.com => lo@quesea.com,otra@cosa.com
+      if (query && /^([^ ,]+@[^ ,]+ *)+$/.test(query)) {
+        filters = {...filters, users_emails: query.replace(/ +/g, ',')}
+        query = null
+      }
+      return [query, filters]
+    }
+  },
   data () {
     return {
       statuses: productAPI.statuses,
