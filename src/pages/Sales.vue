@@ -84,15 +84,21 @@ export default {
       },
       filters: [
         {
-          label: 'ID de Vendedora',
+          label: 'Vendedora',
           type: 'text',
-          filter: 'user_id',
+          filter: 'user',
           value: null
         },
         {
-          label: 'ID de Compradora',
+          label: 'Compradora',
           type: 'text',
-          filter: 'buyer_id',
+          filter: 'buyer',
+          value: null
+        },
+        {
+          label: 'Producto',
+          type: 'text',
+          filter: 'product',
           value: null
         },
         {
@@ -123,6 +129,67 @@ export default {
         sale.payment_date = this.$getNestedObject(sale.status_history, [20, 'date'])
         return sale
       })
+    }
+  },
+  methods: {
+    getBuyerFilters (text) {
+      // Cualqueir cosa que parezca un email lo aceptamos como válido.
+      // Dividimos por espacios que reemplazamos por comas.
+      // lo@quesea.com    otra@cosa.com => lo@quesea.com,otra@cosa.com
+      if (/^([^ ,]+@[^ ,]+ *)+$/.test(text)) {
+        return {buyer_email: text.replace(/ +/g, ',')}
+      }
+
+      // 123    456 => 123,456
+      if (/^([0-9]+ *)+$/.test(text)) {
+        return {buyer_id: text.replace(/ +/g, ',')}
+      }
+      // No sabemos que buscar, busca algo que asegura 0 resultados.
+      return {buyer_id: '-'}
+    },
+    getSellerFilters (text) {
+      // Cualqueir cosa que parezca un email lo aceptamos como válido.
+      // Dividimos por espacios que reemplazamos por comas.
+      // lo@quesea.com    otra@cosa.com => lo@quesea.com,otra@cosa.com
+      if (/^([^ ,]+@[^ ,]+ *)+$/.test(text)) {
+        return {user_email: text.replace(/ +/g, ',')}
+      }
+
+      // 123    456 => 123,456
+      if (/^([0-9]+ *)+$/.test(text)) {
+        return {user_id: text.replace(/ +/g, ',')}
+      }
+      // No sabemos que buscar, busca algo que asegura 0 resultados.
+      return {user_id: '-'}
+    },
+    getProductFilters (text) {
+      // 123    456 => 123,456
+      if (/^([0-9]+ *)+$/.test(text)) {
+        return {product_id: text.replace(/ +/g, ',')}
+      }
+      // No sabemos que buscar, busca algo que asegura 0 resultados.
+      return {product_title: text}
+    },
+    alterParams (query, filters) {
+      const buyerText = filters.buyer
+      delete filters.buyer
+      if (buyerText) {
+        filters = {...filters, ...this.getBuyerFilters(buyerText)}
+      }
+
+      const sellerText = filters.user
+      delete filters.user
+      if (sellerText) {
+        filters = {...filters, ...this.getSellerFilters(sellerText)}
+      }
+
+      const productText = filters.product
+      delete filters.product
+      if (productText) {
+        filters = {...filters, ...this.getProductFilters(productText)}
+      }
+
+      return [query, filters]
     }
   }
 }

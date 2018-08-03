@@ -78,16 +78,19 @@ export default {
 
       return this.loaderMethod
     },
+    // Une filtros obligados con filtros de usuario.
     mergedFilters () {
-      let merged = {}
       if (!this.filters) {
         return this.filter
       }
+      let merged = {}
       this.filters.forEach(filter => {
+        // Es un filtros tipo select.
         if (filter.active) {
           merged = {...merged, ...filter.active}
           return
         }
+        // Es un filtros tipo text, pero validar que tenemos valor.
         if (filter.value) {
           merged[filter.filter] = filter.value
         }
@@ -155,7 +158,7 @@ export default {
       this.page = 1
       this.updateList()
     },
-    alterQuery (query, filters) {
+    alterParams (query, filters) {
       return [query, filters]
     },
     updateList () {
@@ -182,7 +185,7 @@ export default {
       }
 
       // Permite a los componentes alterar query y filters antes de enviar la consulta.
-      [query, filters] = this.alterQuery(query, filters)
+      [query, filters] = this.alterParams(query, filters)
 
       // Elimina @ en query, generan error en InnoDB.
       query = query ? query.replace(/@/g, ' ') : null

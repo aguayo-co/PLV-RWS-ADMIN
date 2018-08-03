@@ -45,7 +45,7 @@ export default {
   name: 'Productos',
   mixins: [ListMixin],
   methods: {
-    alterQuery (query, filters) {
+    alterParams (query, filters) {
       // Cualqueir cosa que parezca un email lo aceptamos como válido.
       // Dividimos por espacios que reemplazamos por comas.
       // lo@quesea.com    otra@cosa.com => lo@quesea.com,otra@cosa.com
