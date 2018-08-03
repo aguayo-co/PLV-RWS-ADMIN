@@ -28,15 +28,17 @@
       td.crud__cell.crud__cell_14
         ul.crud__list
           li(v-for="product in sale.products")
-            a.crud__user(
-              :href="$store.state.frontUrl + '/producto/' + product.slug + '__' + product.id")
+            a(:href="$store.state.frontUrl + '/producto/' + product.slug + '__' + product.id")
               img.crud__cell-img(
                 :src="product.images[0]",
                 :alt="product.title")
-              .crud__text
-                p.crud__text_small ID: {{ product.id }}
-                p.crud__text_small {{ product.title }}
-                p.crud__text_small {{ product.price | currency }}
+            .crud__text
+              a(:href="$store.state.frontUrl + '/producto/' + product.slug + '__' + product.id")
+                .crud__text_small ID: {{ product.id }}
+              a(:href="$store.state.frontUrl + '/producto/' + product.slug + '__' + product.id")
+                .crud__text_small {{ product.title }}
+              a(:href="$store.state.frontUrl + '/producto/' + product.slug + '__' + product.id")
+                .crud__text_small {{ product.price | currency }}
       td.crud__cell {{ sale.commission_percentage }}% / {{ sale.commission | currency }}
       td.crud__cell
         UserCell(:user="sale.order.user")
