@@ -34,6 +34,7 @@
                 :src="product.images[0]",
                 :alt="product.title")
               .crud__text
+                p.crud__text_small ID: {{ product.id }}
                 p.crud__text_small {{ product.title }}
                 p.crud__text_small {{ product.price | currency }}
       td.crud__cell {{ sale.commission_percentage }}% / {{ sale.commission | currency }}
