@@ -105,11 +105,11 @@ export default {
               url: '/sliders',
               ico: 'i-upload'
             },
-            // {
-            //   name: 'Banners',
-            //   url: '/banners',
-            //   ico: 'i-upload'
-            // },
+            {
+              name: 'Banners',
+              url: '/banners',
+              ico: 'i-upload'
+            },
             // {
             //   name: 'Tallas',
             //   url: '/tallas',
