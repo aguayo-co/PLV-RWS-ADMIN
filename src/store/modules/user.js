@@ -9,6 +9,7 @@ const baseUserGenerator = () => {
     email: null,
     first_name: null,
     last_name: null,
+    full_name: null,
     picture: null,
     roles: []
   }

@@ -11,10 +11,10 @@
         p(v-for="product in sale.products") {{ product.title }}
       .form__row
         label.form__label Vendedora
-        p {{ sale.user | full_name }}
+        p {{ sale.user.full_name }}
       .form__row
         label.form__label Compradora
-        p {{ sale.order.user | full_name }}
+        p {{ sale.order.user.full_name }}
       .form__row
         label.form__label Total
         p {{ sale.total | currency }}

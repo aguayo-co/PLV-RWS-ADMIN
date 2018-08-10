@@ -10,10 +10,10 @@
           v-else) {{ user.first_name.charAt(0) }}
       div
         a.crud__user(:href="$store.state.frontUrl + '/closet/' + user.id")
-          figcaption.avatar__txt Id: {{ user.id }}
+          figcaption.avatar__txt {{ user.id }}
       div
         a.crud__user(:href="$store.state.frontUrl + '/closet/' + user.id")
-          figcaption.avatar__txt {{ user | full_name }}
+          figcaption.avatar__txt {{ user.full_name }}
       div
         a.crud__user(:href="$store.state.frontUrl + '/closet/' + user.id")
           figcaption.avatar__txt {{ user.email }}

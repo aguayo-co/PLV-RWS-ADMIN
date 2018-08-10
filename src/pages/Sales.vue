@@ -34,7 +34,7 @@
                 :alt="product.title")
             .crud__text
               a(:href="$store.state.frontUrl + '/producto/' + product.slug + '__' + product.id")
-                .crud__text_small ID: {{ product.id }}
+                .crud__text_small {{ product.id }}
               a(:href="$store.state.frontUrl + '/producto/' + product.slug + '__' + product.id")
                 .crud__text_small {{ product.title }}
               a(:href="$store.state.frontUrl + '/producto/' + product.slug + '__' + product.id")
@@ -87,15 +87,15 @@ export default {
       },
       filters: [
         {
-          label: 'Vendedora',
-          type: 'text',
-          filter: 'user',
-          value: null
-        },
-        {
           label: 'Compradora',
           type: 'text',
           filter: 'buyer',
+          value: null
+        },
+        {
+          label: 'Vendedora',
+          type: 'text',
+          filter: 'user',
           value: null
         },
         {
@@ -148,7 +148,7 @@ export default {
         return {buyer_id: text.replace(/ +/g, ',')}
       }
       // No sabemos que buscar, busca algo que asegura 0 resultados.
-      return {buyer_id: '-'}
+      return {buyer_full_name: text}
     },
     getSellerFilters (text) {
       // Cualqueir cosa que parezca un email lo aceptamos como válido.
@@ -163,7 +163,7 @@ export default {
         return {user_id: text.replace(/ +/g, ',')}
       }
       // No sabemos que buscar, busca algo que asegura 0 resultados.
-      return {user_id: '-'}
+      return {user_full_name: text}
     },
     getProductFilters (text) {
       // 123    456 => 123,456

@@ -17,7 +17,7 @@
               id="valid_receipt"
               v-model="valid_receipt")
             label.form__label_check.i-ok(for="valid_receipt")
-            | ¿Es un comprobante por {{ payment.request_data.amount | currency }} realizado en {{ payment.created_at | date }} por {{ payment.order.user | full_name }} ?
+            | ¿Es un comprobante por {{ payment.request_data.amount | currency }} realizado en {{ payment.created_at | date }} por {{ payment.order.user.full_name }} ?
           button.btn(
             :class="[valid_receipt ? 'btn_enabled' : 'btn_disabled']"
             @click.prevent="approve") Aprobar

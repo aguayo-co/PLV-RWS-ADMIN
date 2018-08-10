@@ -1,9 +1,5 @@
 export default {
   install (Vue) {
-    Vue.filter('full_name', function (user) {
-      return user.first_name + ' ' + user.last_name
-    })
-
     Vue.filter('unempty', function (value) {
       return value || '--'
     })
