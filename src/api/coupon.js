@@ -23,6 +23,10 @@ export default {
     return Vue.axiosAuth.patch('/api/coupons/' + coupon.id, coupon)
   },
 
+  delete (coupon) {
+    return Vue.axiosAuth.delete('/api/coupons/' + coupon.id)
+  },
+
   create (coupon) {
     return Vue.axiosAuth.post('/api/coupons', coupon)
   }

@@ -43,6 +43,7 @@ export default {
 
       objectsKey: 'sliders',
       loaderMethod: sliderAPI.get,
+      deleterMethod: sliderAPI.delete,
 
       sliders: [],
 

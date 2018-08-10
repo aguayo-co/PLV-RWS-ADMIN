@@ -19,6 +19,10 @@ export default {
     return Vue.axiosAuth.get('/api/campaigns', { params })
   },
 
+  delete (data) {
+    return Vue.axiosAuth.delete('/api/campaigns/' + data.slug)
+  },
+
   update (data) {
     return Vue.axiosAuth.patch('/api/campaigns/' + data.slug, data)
   },

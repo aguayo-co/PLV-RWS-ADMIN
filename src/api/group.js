@@ -19,6 +19,10 @@ export default {
     return Vue.axiosAuth.get('/api/groups', { params })
   },
 
+  delete (data) {
+    return Vue.axiosAuth.delete('/api/groups/' + data.slug)
+  },
+
   update (data) {
     return Vue.axiosAuth.patch('/api/groups/' + data.slug, data)
   },

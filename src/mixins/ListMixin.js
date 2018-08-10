@@ -24,6 +24,11 @@ export default {
       filter: null,
       query: null,
       objectsKey: null,
+
+      // El método a llamar para cargar los objetos a mostrar en el listado.
+      // Se puede modificar usando la propiedad computable `loader`.
+      deleterMethod: null,
+
       // Configurable: Arreglo de filtros para mostrar al usuario.
       // Este se une con los valores de filter para la consulta.
       // Cada filtro es un objeto con debe especificar:
@@ -65,10 +70,14 @@ export default {
       // Variables interna. No se debe configurar.
       slideObject: null,
       loading: true,
+      deleting: {},
       errorLog: {}
     }
   },
   computed: {
+    deleter () {
+      return this.deleterMethod
+    },
     // Get the method to be called to retrieve the objects from the api.
     loader () {
       if (!this.loaderMethod) {
@@ -125,7 +134,10 @@ export default {
   methods: {
     // Verifica si podemos editar este objeto.
     isEditable (object) {
-      return object !== null
+      return this.slide && object.id
+    },
+    isDeletable (object) {
+      return this.deleter && object.id
     },
     objectsChanged () {
       // Allow implementing components to take action on
@@ -154,12 +166,42 @@ export default {
       this.slideObject = object
       this.showSlide = true
     },
-    updateSearch () {
+    resetPage () {
       this.page = 1
       this.updateList()
     },
     alterParams (query, filters) {
       return [query, filters]
+    },
+    delete (deletingObject) {
+      if (!window.confirm('Confirma que quieres proceder con la eliminación:')) {
+        return
+      }
+      this.$set(this.deleting, deletingObject.id, true)
+      this.deleter(deletingObject).then(response => {
+        // Reemplaza el objeto pasado en el arreglo de objetos.
+        this.objects.some((object, index) => {
+          if (object.id === deletingObject.id) {
+            this.$delete(this.objects, index)
+            return true
+          }
+        })
+        this.objectsChanged()
+      }).catch(error => {
+        if (error.response.status === 409) {
+          const modal = {
+            name: 'ModalMessage',
+            parameters: {
+              title: 'Este objeto no se puede eliminar.',
+              body: 'Este objeto tiene datos asociados y no es posible eliminarlo.',
+              type: 'alert'
+            }
+          }
+          this.$store.dispatch('ui/showModal', modal)
+        }
+      }).finally(() => {
+        this.$delete(this.deleting, deletingObject.id)
+      })
     },
     updateList () {
       if (!this.objectsKey) {

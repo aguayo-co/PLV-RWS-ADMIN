@@ -29,6 +29,7 @@ export default {
 
       objectsKey: 'rawCampaigns',
       loaderMethod: campaignAPI.get,
+      deleterMethod: campaignAPI.delete,
 
       rawCampaigns: [],
 

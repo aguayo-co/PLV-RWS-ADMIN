@@ -29,6 +29,10 @@ export default {
     return Vue.axiosAuth.get('/api/sliders', { params })
   },
 
+  delete (data) {
+    return Vue.axiosAuth.delete('/api/sliders/' + data.slug)
+  },
+
   update (data) {
     return Vue.axiosAuth.patch('/api/sliders/' + data.slug, formData(data))
   },

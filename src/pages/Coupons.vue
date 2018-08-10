@@ -42,7 +42,7 @@ import ListMixin from '@/mixins/ListMixin'
 import EditCoupon from '@/components/EditCoupon'
 
 export default {
-  name: 'Campaigns',
+  name: 'Coupons',
   mixins: [ListMixin],
   data () {
     return {
@@ -51,6 +51,7 @@ export default {
 
       objectsKey: 'rawCoupons',
       loaderMethod: couponAPI.get,
+      deleterMethod: couponAPI.delete,
 
       rawCoupons: [],
 

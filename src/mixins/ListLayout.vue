@@ -23,7 +23,7 @@
               v-show='$parent.errorLog.query'
             ) {{ $parent.errorLog.query }}
             form.search(
-              @submit.prevent="$parent.updateSearch")
+              @submit.prevent="$parent.resetPage")
               .search__row
                 input#searchMain.search__input(
                   type='text'
@@ -40,7 +40,7 @@
             input.form__control(form="filter-form" v-if="filter.type === 'text'" v-model="filter.value")
             select.form__select(form="filter-form" v-if="filter.type === 'select'" v-model="filter.active")
               option(v-for="option in filter.options" :value="option.filter") {{ option.label }}
-          form(id="filter-form" @submit.prevent="$parent.updateList()")
+          form(id="filter-form" @submit.prevent="$parent.resetPage()")
             button.nav__btn.i-filter_after(title="Filtrar") Filtrar
 
         p.nav__text Se {{ ($parent.totalItems === 1) ? 'ha' : 'han' }} encontrado <strong>{{ $parent.totalItems | unempty }}</strong>  {{ ($parent.totalItems === 1) ? 'resultado' : 'resultados' }}
@@ -94,10 +94,13 @@
                   v-model="$parent.checkedIds")
                 label.form__label_check.i-ok(:for="'object-' + object.id")
             slot(:name="'row-' + object.id")
-            td.crud__cell(
-              v-if="$parent.slide")
+            td.crud__cell
               button(v-if="$parent.isEditable(object)" @click="$parent.openSlide(object)") Editar
               slot(:name="object.id + '-actions'")
+              template(v-if="$parent.isDeletable(object)")
+                button(v-if="$parent.deleting[object.id]" disabled)
+                  Dots
+                button(v-else @click="$parent.delete(object)") Eliminar
         tfoot
           slot(name="tfoot")
           tr(v-if="$parent.canCreate")

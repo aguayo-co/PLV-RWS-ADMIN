@@ -45,6 +45,9 @@ export default {
   name: 'Productos',
   mixins: [ListMixin],
   methods: {
+    isDeletable (product) {
+      return product.status < 30
+    },
     alterParams (query, filters) {
       // Cualqueir cosa que parezca un email lo aceptamos como válido.
       // Dividimos por espacios que reemplazamos por comas.
@@ -63,6 +66,7 @@ export default {
 
       objectsKey: 'products',
       loaderMethod: productAPI.get,
+      deleterMethod: productAPI.delete,
 
       products: [],
       filters: [

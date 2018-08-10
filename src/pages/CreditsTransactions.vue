@@ -166,11 +166,11 @@ export default {
       return this.payrollId ? null : filters
     },
     // Verifica si podemos editar este objeto.
-    isEditable (object) {
-      return object &&
-        object.order_id === null &&
-        object.sale_id === null &&
-        object.transfer_status === null
+    isEditable (transaction) {
+      return transaction &&
+        transaction.order_id === null &&
+        transaction.sale_id === null &&
+        transaction.transfer_status === null
     },
     status (transaction) {
       switch (transaction.transfer_status) {

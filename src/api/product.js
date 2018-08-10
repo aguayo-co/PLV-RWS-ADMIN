@@ -34,6 +34,10 @@ export default {
     return Vue.axiosAuth.get('/api/products', { params })
   },
 
+  delete (product) {
+    return Vue.axiosAuth.delete('/api/products/' + product.id)
+  },
+
   update (product) {
     var formData = new window.FormData()
 

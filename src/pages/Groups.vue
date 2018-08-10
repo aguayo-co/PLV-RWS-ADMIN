@@ -28,6 +28,7 @@ export default {
 
       objectsKey: 'groups',
       loaderMethod: groupAPI.get,
+      deleterMethod: groupAPI.delete,
 
       groups: [],
 
@@ -35,6 +36,11 @@ export default {
     }
   },
   methods: {
+    isDeletable (group) {
+      // First 3 groups are not deletable. They are used hardcoded in different places
+      // in the front end.
+      return group.id && group.id > 3
+    },
     objectsChanged () {
       this.$store.dispatch('ui/loadGroups')
     }
