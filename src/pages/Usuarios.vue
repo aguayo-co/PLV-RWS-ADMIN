@@ -11,23 +11,24 @@
       th.crud__th.crud__title Roles
       th.crud__th.crud__title Vaciones
       th.crud__th.crud__title Créditos
-      th.crud__th.crud__title Productos<br>publicados
-      th.crud__th.crud__title Productos<br>vendidos
-      th.crud__th.crud__title Productos<br>comprados
-      th.crud__th.crud__title Fecha de<br>creación
+      th.crud__th.crud__title Productos publicados
+      th.crud__th.crud__title Productos vendidos
+      th.crud__th.crud__title Productos comprados
+      th.crud__th.crud__title Fecha de creación
+      th.crud__th.crud__title Fecha de eliminación
 
     template(
       v-for="user in users"
       :slot="'row-' + user.id")
-      td.crud__cell {{ user.id }}
+      td.crud__cell(:class="{through: user.deleted_at}") {{ user.id }}
       td.crud__cell
         figure.crud__avatar.avatar
           img.avatar__img(v-if="user.picture", :src="user.picture", :alt="user.first_name")
           span.tool-user__letter.avatar__img(
             v-else
           ) {{ user.first_name.charAt(0).toUpperCase() }}
-          figcaption.avatar__txt {{ user.full_name }}
-      td.crud__cell.crud__cell_wbreak.crud__cell_130.small-txt {{ user.email }}
+          figcaption.avatar__txt(:class="{through: user.deleted_at}") {{ user.full_name }}
+      td.crud__cell.small-txt(:class="{through: user.deleted_at}") {{ user.email }}
       td.crud__cell {{ user.phone }}
       td.crud__cell
         ul(v-if='user.groups')
@@ -41,6 +42,7 @@
       td.crud__cell.crud__cell_center {{ user.sold_products_count }}
       td.crud__cell.crud__cell_center {{ user.purchased_products_count }}
       td.crud__cell {{ user.created_at | date }}
+      td.crud__cell {{ user.deleted_at | date }}
 </template>
 
 <script>
@@ -65,6 +67,9 @@ export default {
     }
   },
   methods: {
+    isDeletable (user) {
+      return !user.deleted_at
+    },
     alterParams (query, filters) {
       // Cualqueir cosa que parezca un email lo aceptamos como válido.
       // Dividimos por espacios que reemplazamos por comas.
@@ -80,9 +85,13 @@ export default {
     return {
       slide: EditUser,
       rawUsers: [],
+      filter: {
+        'with_trashed': true
+      },
 
       objectsKey: 'rawUsers',
-      loaderMethod: userAPI.get
+      loaderMethod: userAPI.get,
+      deleterMethod: userAPI.delete
     }
   }
 }

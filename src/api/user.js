@@ -20,6 +20,10 @@ export default {
     return Vue.axiosAuth.get('/api/users', { params })
   },
 
+  delete (user) {
+    return Vue.axiosAuth.delete('/api/users/' + user.id)
+  },
+
   update (user) {
     var formData = new window.FormData()
 
