@@ -1,28 +1,33 @@
 /**
- * API Calls related to products and their properties
+ * API Calls related to colors and their properties
  */
 import Vue from 'vue'
 
 export default {
-  get: function (page, items, filter) {
-    let queryFilter = ''
-    page = page || 1
-    items = items || 8
+  get (page = 1, items, filter, orderby) {
+    const params = {
+      page,
+      items,
+      orderby
+    }
 
     if (filter) {
       Object.keys(filter).forEach((key) => {
-        queryFilter += '&filter[' + key + ']=' + filter[key]
+        params['filter[' + key + ']'] = filter[key]
       })
     }
-    return Vue.axiosAuth.get('/api/colors?items=' + items + '&page=' + page + queryFilter)
+    return Vue.axiosAuth.get('/api/colors', { params })
   },
-  update: function (data) {
-    // const updateData = {...data}
-    const updateData = {
-      id: data.id,
-      name: data.name,
-      hex_code: data.hex_code
-    }
-    return Vue.axiosAuth.patch('/api/colors/' + data.slug, updateData)
+
+  update (color) {
+    return Vue.axiosAuth.patch('/api/colors/' + color.slug, color)
+  },
+
+  delete (color) {
+    return Vue.axiosAuth.delete('/api/colors/' + color.slug)
+  },
+
+  create (color) {
+    return Vue.axiosAuth.post('/api/colors', color)
   }
 }

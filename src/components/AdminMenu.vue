@@ -130,16 +130,11 @@ export default {
             //   url: '/conditions',
             //   ico: 'i-tag'
             // },
-            // {
-            //   name: 'Carousel Principal',
-            //   url: '/sliders',
-            //   ico: 'i-insta'
-            // },
-            // {
-            //   name: 'Colores',
-            //   url: '/colores',
-            //   ico: 'i-tag'
-            // },
+            {
+              name: 'Colores',
+              url: '/colores',
+              ico: 'i-tag'
+            },
             // {
             //   name: 'Categorias',
             //   url: '/categorias',

@@ -1,61 +1,60 @@
 <template lang="pug">
-.admin__edit(
-  v-if="selectedColor",
-  :class="{ 'admin__edit_open': active == true }")
-  transition(name='slide-right')
-    .edit__slide(
-      v-show="active == true")
-      h3.slide__header.i-close(
-        @click.stop="$emit('closeEdit')") Editar color
-      form.slide__form
-        .form__row
-          label.form__label(
-            for="size-category") Id
-          p(v-model="selectedColor.name") {{ selectedColor.id }}
-        .form__row
-          label.form__label(
-            for="color-name") Nombre
-          input.form__control(
-            id="color-name",
-            v-model="selectedColor.name",
-            type="text")
-        .form__row
-          label.form__label(
-            for="color-id") Código hexadecimal
-          input.form__control(
-            id="color-id",
-            v-model="selectedColor.hex_code",
-            type="text")
-        .form__row.form__row_away
-          button.btn.btn_solid.btn_block(@click.prevent="save($event)") Guardar
+  .edit__slide
+    h3.slide__header.i-close(
+      @click.stop="$emit('close')") Editar color
+    form.slide__form(@submit.prevent="submit")
+      .form__row
+        label.form__label(
+          for="color-name") Nombre
+        span.help(
+          v-if="errorLog.name") {{ errorLog.code }}
+        input.form__control(
+          id="color-name",
+          v-model="field_name",
+          type="text")
+      .form__row
+        label.form__label(
+          for="color-hex_code") Código HEX
+        span.help(
+          v-if="errorLog.hex_code") {{ errorLog.hex_code }}
+        input.form__control(
+          id="color-hex_code",
+          v-model="field_hex_code",
+          type="color")
+      .form__row.form__row_away
+        button.btn.btn_solid.btn_block(:disabled="saving")
+          Dots(v-if="saving")
+          template(v-else) Guardar
 </template>
 
 <script>
 
-import Vue from 'vue'
-import Croppa from 'vue-croppa'
-import colorsAPI from '@/api/color'
-Vue.component('croppa', Croppa.component)
+import EditFormMixin from '@/mixins/EditFormMixin'
+import colorAPI from '@/api/color'
+
+// Cada campo editable debe estar acá.
+// Con esto se crean las propiedades computables
+// de cada uno.
+const editableProps = {
+  name: null,
+  hex_code: null
+}
 
 export default {
-  props: ['color', 'active'],
+  mixins: [EditFormMixin(editableProps)],
   name: 'EditColor',
-  computed: {
-    selectedColor: function () {
-      return {...this.color}
+  data () {
+    return {
+      idPropertyName: 'slug'
     }
   },
-  methods: {
-    save: function (event) {
-      event.target.disabled = true
-      colorsAPI.update(this.selectedColor)
-        .then(response => {
-          this.$store.dispatch('ui/refreshColors')
-          this.$emit('closeEdit')
-          event.target.disabled = false
-        })
+  computed: {
+    apiMethod () {
+      return this.object.id ? colorAPI.update : colorAPI.create
+    },
+    color () {
+      return this.object
     }
   }
-
 }
 </script>
