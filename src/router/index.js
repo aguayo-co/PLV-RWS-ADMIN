@@ -15,6 +15,7 @@ import MenuItems from '@/pages/MenuItems'
 import Payrolls from '@/pages/Payrolls'
 import Productos from '@/pages/Productos'
 import Sales from '@/pages/Sales'
+import SaleReturns from '@/pages/SaleReturns'
 import ShippingMethods from '@/pages/ShippingMethods'
 import Sizes from '@/pages/Sizes'
 import Sliders from '@/pages/Sliders'
@@ -98,6 +99,11 @@ const router = new Router({
       path: '/sales',
       name: 'Sales',
       component: Sales
+    },
+    {
+      path: '/sale-returns',
+      name: 'SaleReturns',
+      component: SaleReturns
     },
     {
       path: '/groups',

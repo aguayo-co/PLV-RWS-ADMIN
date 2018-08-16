@@ -121,8 +121,7 @@ export default {
       loaderMethod: saleAPI.get,
       objectsKey: 'rawSales',
 
-      rawSales: [],
-      picture: null
+      rawSales: []
     }
   },
   computed: {

@@ -46,6 +46,11 @@ export default {
               ico: 'i-sale'
             },
             {
+              name: 'Devoluciones',
+              url: {name: 'SaleReturns'},
+              ico: 'i-sale'
+            },
+            {
               name: 'Pagos',
               url: {name: 'Payments'},
               ico: 'i-credits'
