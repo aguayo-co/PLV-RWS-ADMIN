@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     isDeletable (user) {
-      return !user.deleted_at
+      return !user.deleted_at && user.credits === 0
     },
     alterParams (query, filters) {
       // Cualqueir cosa que parezca un email lo aceptamos como válido.
