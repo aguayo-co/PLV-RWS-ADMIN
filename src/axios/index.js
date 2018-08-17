@@ -42,6 +42,10 @@ export default {
 
       if (error.response && error.response.status === 403) {
         modal.parameters.title = 'No tiene permiso para esto.'
+        const message = Vue.getNestedObject(error, ['response', 'data', 'message'])
+        if (message) {
+          modal.parameters.body = error.response.data.message
+        }
         store.dispatch('ui/showModal', modal)
       }
 
