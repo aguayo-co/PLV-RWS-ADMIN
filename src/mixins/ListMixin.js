@@ -178,8 +178,8 @@ export default {
         return
       }
       this.$set(this.deleting, deletingObject.id, true)
-      this.deleter(deletingObject).then(response => {
-        // Reemplaza el objeto pasado en el arreglo de objetos.
+      this.deleter(deletingObject).then(() => {
+        // Elimina el objeto del arreglo de objetos.
         this.objects.some((object, index) => {
           if (object.id === deletingObject.id) {
             this.$delete(this.objects, index)
