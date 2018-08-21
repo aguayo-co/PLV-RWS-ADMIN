@@ -81,7 +81,8 @@ const filters = [
       { label: 'Transferencias', filter: {transfer_status: '0,99'} },
       { label: 'Transferencias pendientes', filter: {transfer_status: '0'} },
       { label: 'Transferencias aprobadas', filter: {transfer_status: '1'} },
-      { label: 'Transferencias rechazadas', filter: {transfer_status: '99'} }
+      { label: 'Transferencias rechazadas', filter: {transfer_status: '99'} },
+      { label: 'Transferencias con devoluciones recientes', filter: {transfer_status: '0', recent_returns: true} }
     ]
   }
 ]
