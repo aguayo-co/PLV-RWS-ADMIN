@@ -17,6 +17,8 @@ import prilovHelpers from './helpers'
 import router from './router'
 import store from './store'
 
+import './scss/admin.scss'
+
 (() => {
   if (window.location.protocol === 'http:') {
     window.location.protocol = 'https:'

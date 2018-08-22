@@ -43,7 +43,7 @@
     top: -6px;
     width: 60px;
     height: 60px;
-    background: url(../img/brand-prilov.png) no-repeat center center $c-default;
+    background: url('/static/img/brand-prilov.png') no-repeat center center $c-default;
     background-size: 50px 53px;
     @include font-rem(0px);
     &:before {
