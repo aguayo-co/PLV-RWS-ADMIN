@@ -26,8 +26,7 @@ import conditionAPI from '@/api/condition'
 // Con esto se crean las propiedades computables
 // de cada uno.
 const editableProps = {
-  name: null,
-  discount_value: null
+  name: null
 }
 
 export default {
