@@ -88,6 +88,18 @@ export default {
       },
       filters: [
         {
+          label: '# Orden',
+          type: 'text',
+          filter: 'order_id',
+          value: null
+        },
+        {
+          label: '# Venta',
+          type: 'text',
+          filter: 'id',
+          value: null
+        },
+        {
           label: 'Compradora',
           type: 'text',
           filter: 'buyer',
