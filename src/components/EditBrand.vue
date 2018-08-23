@@ -50,7 +50,7 @@ export default {
   },
   computed: {
     apiMethod () {
-      return this.object.id ? brandAPI.update : brandAPI.create
+      return this.object.slug ? brandAPI.update : brandAPI.create
     },
     brand () {
       return this.object

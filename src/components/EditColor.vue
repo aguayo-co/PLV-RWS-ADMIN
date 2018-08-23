@@ -50,7 +50,7 @@ export default {
   },
   computed: {
     apiMethod () {
-      return this.object.id ? colorAPI.update : colorAPI.create
+      return this.object.slug ? colorAPI.update : colorAPI.create
     },
     color () {
       return this.object

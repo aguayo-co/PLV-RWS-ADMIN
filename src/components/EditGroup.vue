@@ -1,24 +1,24 @@
 <template lang="pug">
   .edit__slide
     h3.slide__header.i-close(
-      @click.stop="$emit('close')") Editar campaña
+      @click.stop="$emit('close')") Editar grupo
     form.slide__form(@submit.prevent="submit")
       .form__row
         label.form__label(
-          for="campaign-name") Nombre
+          for="group-name") Nombre
         span.help(
           v-if="errorLog.name") {{ errorLog.name }}
         input.form__control(
-          id="campaign-name",
+          id="group-name",
           v-model="field_name",
           type="text")
       .form__row
         label.form__label(
-          for="campaign-discount_value") Descuento
+          for="group-discount_value") Descuento
         span.help(
           v-if="errorLog.discount_value") {{ errorLog.discount_value }}
         input.form__control(
-          id="campaign-discount_value",
+          id="group-discount_value",
           v-model="field_discount_value",
           type="number"
           min=0
