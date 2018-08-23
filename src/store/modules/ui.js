@@ -18,7 +18,7 @@ const state = {
     name: null,
     parameters: {}
   },
-  menus: {},
+  menus: [],
   conditions: [],
   colors: [],
   brands: [],
@@ -53,7 +53,7 @@ const actions = {
     dispatch('loadGroups')
   },
   loadMenus ({ commit }) {
-    menusAPI.get(1, 10000)
+    menusAPI.get(1, 10000, null, null, null, true)
       .then(response => {
         const property = {
           name: 'menus',
@@ -76,7 +76,7 @@ const actions = {
       })
   },
   loadSizes ({ commit }) {
-    sizesAPI.get(1, 10000, null, null, true)
+    sizesAPI.get(1, 10000, null, null, null, true)
       .then(response => {
         const property = {
           name: 'sizes',
@@ -86,7 +86,7 @@ const actions = {
       })
   },
   loadCategories ({ commit }) {
-    categoriesAPI.get(1, 10000, null, null, true)
+    categoriesAPI.get(1, 10000, null, null, null, true)
       .then(response => {
         const property = {
           name: 'categories',

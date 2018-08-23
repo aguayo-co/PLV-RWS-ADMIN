@@ -1,6 +1,7 @@
 <template lang="pug">
   ListLayout
     template(slot="title") Items de menú
+      template(v-if="menu") : {{ menu.name }}
 
     template(slot="columns")
       th.crud__title
@@ -55,6 +56,11 @@ export default {
   },
   computed: {
     ...mapState('ui', ['menus']),
+    menu () {
+      return this.menus.find(menu => {
+        return menu.id === parseInt(this.menuId)
+      })
+    },
     slideData () {
       return {
         currentMenu: this.menuId,
