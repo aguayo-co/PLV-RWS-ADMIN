@@ -62,6 +62,7 @@
         template(v-else) {{ | unempty }}
       td.crud__cell
         p.crud__state.crud__state_detail(:class='"state-" + sale.status') {{ statuses[sale.status] }}
+          template(v-if="sale.status === 99 && sale.status_history[99].user_id")  por usuario {{ sale.status_history[99].user_id }}
 </template>
 
 <script>
