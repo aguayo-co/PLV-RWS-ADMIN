@@ -1,23 +1,33 @@
 /**
- * API Calls related to products and their properties
+ * API Calls related to shippingMethods and their properties
  */
 import Vue from 'vue'
 
 export default {
-  get: function (page, items, filter) {
-    let queryFilter = ''
-    page = page || 1
-    items = items || 8
+  get (page = 1, items, filter, orderby) {
+    const params = {
+      page,
+      items,
+      orderby
+    }
 
     if (filter) {
       Object.keys(filter).forEach((key) => {
-        queryFilter += '&filter[' + key + ']=' + filter[key]
+        params['filter[' + key + ']'] = filter[key]
       })
     }
-    return Vue.axiosAuth.get('/api/shipping_methods?items=' + items + '&page=' + page + queryFilter)
+    return Vue.axiosAuth.get('/api/shipping_methods', { params })
   },
-  update: function (data) {
-    const updateData = {...data}
-    return Vue.axiosAuth.patch('/api/shipping_methods/' + data.slug, updateData)
+
+  update (shippingMethod) {
+    return Vue.axiosAuth.patch('/api/shipping_methods/' + shippingMethod.slug, shippingMethod)
+  },
+
+  delete (shippingMethod) {
+    return Vue.axiosAuth.delete('/api/shipping_methods/' + shippingMethod.slug)
+  },
+
+  create (shippingMethod) {
+    return Vue.axiosAuth.post('/api/shipping_methods', shippingMethod)
   }
 }

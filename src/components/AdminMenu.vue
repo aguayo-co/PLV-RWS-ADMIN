@@ -130,11 +130,11 @@ export default {
             //   url: '/categorias',
             //   ico: 'i-tag'
             // },
-            // {
-            //   name: 'Métodos de envío',
-            //   url: '/metodos-envio',
-            //   ico: 'i-shipping'
-            // },
+            {
+              name: 'Métodos de envío',
+              url: '/metodos-envio',
+              ico: 'i-shipping'
+            },
             {
               name: 'Campañas',
               url: '/campaigns',
