@@ -125,11 +125,11 @@ export default {
               url: '/marcas',
               ico: 'i-edit-line'
             },
-            // {
-            //   name: 'Condiciones',
-            //   url: '/conditions',
-            //   ico: 'i-tag'
-            // },
+            {
+              name: 'Condiciones',
+              url: '/conditions',
+              ico: 'i-tag'
+            },
             {
               name: 'Colores',
               url: '/colores',
