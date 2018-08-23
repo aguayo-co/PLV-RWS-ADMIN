@@ -35,6 +35,11 @@ export default {
 
       canCreate: true
     }
+  },
+  methods: {
+    objectsChanged () {
+      this.$store.dispatch('ui/loadColors')
+    }
   }
 }
 </script>

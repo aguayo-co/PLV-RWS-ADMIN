@@ -115,11 +115,11 @@ export default {
               url: '/banners',
               ico: 'i-upload'
             },
-            // {
-            //   name: 'Tallas',
-            //   url: '/tallas',
-            //   ico: 'i-closet'
-            // },
+            {
+              name: 'Tallas',
+              url: '/tallas',
+              ico: 'i-closet'
+            },
             {
               name: 'Marcas',
               url: '/marcas',

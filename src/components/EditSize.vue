@@ -1,74 +1,59 @@
 <template lang="pug">
-.admin__edit(
-  v-if="selectedSize",
-  :class="{ 'admin__edit_open': active == true }")
-  transition(name='slide-right')
-    .edit__slide(
-      v-show="active == true")
-      h3.slide__header.i-close(
-        @click.stop="$emit('closeEdit')") Editar talla
-      form.slide__form
-        .form__row
-          label.form__label(
-            for="size-category") Categoria
-          //- input.form__control(
-          //-   id="size-category",
-          //-   v-model="selectedSizes.name",
-          //-   type="text")
-          p(v-model="selectedSizes.name") {{ selectedSizes.name }}
-        .form__row
-          label.form__label(
-            for="size-id") Id
-          //- input.form__control(
-          //-   id="size-id",
-          //-   v-model="selectedSize.id",
-          //-   type="text")
-          p(v-model="selectedSize.id") {{ selectedSize.id }}
-        .form__row
-          label.form__label(
-            for="size-id") Nombre
-          input.form__control(
-            id="size-id",
-            v-model="selectedSize.name",
-            type="text")
-        .form__row.form__row_away
-          button.btn.btn_solid.btn_block(@click.prevent="save($event)") Guardar
+  .edit__slide
+    h3.slide__header.i-close(
+      @click.stop="$emit('close')") Editar marca
+    form.slide__form(@submit.prevent="submit")
+      .form__row
+        label.form__label(
+          for="size-name") Nombre
+        span.help(
+          v-if="errorLog.name") {{ errorLog.name }}
+        input.form__control(
+          id="size-name",
+          v-model="field_name",
+          type="text")
+      .form__row(v-if="!size.children")
+        span.help(
+          v-if="errorLog.parent_id") {{ errorLog.parent_id }}
+        label.form__label(
+          for='size-parent_id') Talla padre
+        select.form__select(
+          id='size-parent_id'
+          v-model='field_parent_id')
+          option(v-if="!size.id" :value="undefined") Sin padre
+          option(v-for="parent in parentSizes" :value='parent.id') {{ parent.name }}
+      .form__row.form__row_away
+        button.btn.btn_solid.btn_block(:disabled="saving")
+          Dots(v-if="saving")
+          template(v-else) Guardar
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import EditFormMixin from '@/mixins/EditFormMixin'
+import sizeAPI from '@/api/size'
 
-import Vue from 'vue'
-import Croppa from 'vue-croppa'
-import sizesAPI from '@/api/size'
-Vue.component('croppa', Croppa.component)
+// Cada campo editable debe estar acá.
+// Con esto se crean las propiedades computables
+// de cada uno.
+const editableProps = {
+  name: null,
+  parent_id: null
+}
 
 export default {
-  props: ['size', 'sizeParent', 'active'],
+  mixins: [EditFormMixin(editableProps)],
   name: 'EditSize',
-  // data () {
-  //   return {
-  //     pictures: [null, null, null, null],
-  //     status: 0
-  //   }
-  // },
   computed: {
-    selectedSize: function () {
-      return this.size
+    ...mapState('ui', {
+      parentSizes: 'sizes'
+    }),
+    apiMethod () {
+      return this.object.id ? sizeAPI.update : sizeAPI.create
     },
-    selectedSizes: function () {
-      return this.sizeParent
-    }
-  },
-  methods: {
-    save: function (event) {
-      event.target.disabled = true
-      sizesAPI.update(this.selectedSize)
-        .then(response => {
-          this.$emit('closeEdit')
-          event.target.disabled = false
-        })
+    size () {
+      return this.object
     }
   }
-
 }
 </script>

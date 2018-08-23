@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import crandAPI from '@/api/brand'
+import brandAPI from '@/api/brand'
 import ListMixin from '@/mixins/ListMixin'
 import EditBrand from '@/components/EditBrand'
 
@@ -26,12 +26,17 @@ export default {
       slide: EditBrand,
 
       objectsKey: 'brands',
-      loaderMethod: crandAPI.get,
-      deleterMethod: crandAPI.delete,
+      loaderMethod: brandAPI.get,
+      deleterMethod: brandAPI.delete,
 
       brands: [],
 
       canCreate: true
+    }
+  },
+  methods: {
+    objectsChanged () {
+      this.$store.dispatch('ui/loadBrands')
     }
   }
 }

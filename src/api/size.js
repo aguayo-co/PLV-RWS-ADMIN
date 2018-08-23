@@ -1,23 +1,34 @@
 /**
- * API Calls related to products and their properties
+ * API Calls related to sizes and their properties
  */
 import Vue from 'vue'
 
 export default {
-  get: function (page, items, filter) {
-    let queryFilter = ''
-    page = page || 1
-    items = items || 8
+  get (page = 1, items, filter, orderby, flat) {
+    const params = {
+      page,
+      items,
+      orderby,
+      flat
+    }
 
     if (filter) {
       Object.keys(filter).forEach((key) => {
-        queryFilter += '&filter[' + key + ']=' + filter[key]
+        params['filter[' + key + ']'] = filter[key]
       })
     }
-    return Vue.axiosAuth.get('/api/sizes?items=' + items + '&page=' + page + queryFilter)
+    return Vue.axiosAuth.get('/api/sizes', { params })
   },
-  update: function (data) {
-    const updateData = {...data}
-    return Vue.axiosAuth.patch('/api/sizes/' + data.id, updateData)
+
+  update (size) {
+    return Vue.axiosAuth.patch('/api/sizes/' + size.id, size)
+  },
+
+  delete (size) {
+    return Vue.axiosAuth.delete('/api/sizes/' + size.id)
+  },
+
+  create (size) {
+    return Vue.axiosAuth.post('/api/sizes', size)
   }
 }

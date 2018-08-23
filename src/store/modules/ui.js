@@ -44,25 +44,6 @@ const actions = {
         }
         commit('setProperty', { property })
       })
-    colorsAPI.get()
-      .then(response => {
-        const colors = response.data.data.sort(function (a, b) {
-          return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
-        })
-        const property = {
-          name: 'colors',
-          data: colors
-        }
-        commit('setProperty', { property })
-      })
-    sizesAPI.get()
-      .then(response => {
-        const property = {
-          name: 'sizes',
-          data: response.data.data
-        }
-        commit('setProperty', { property })
-      })
     menusAPI.getMenus()
       .then(response => {
         const menus = {}
@@ -75,10 +56,35 @@ const actions = {
         }
         commit('setProperty', { property })
       })
+    dispatch('loadSizes')
+    dispatch('loadColors')
     dispatch('loadCampaigns')
     dispatch('loadCategories')
     dispatch('loadBrands')
     dispatch('loadGroups')
+  },
+  loadColors ({ commit }) {
+    colorsAPI.get(1, 10000)
+      .then(response => {
+        const colors = response.data.data.sort(function (a, b) {
+          return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+        })
+        const property = {
+          name: 'colors',
+          data: colors
+        }
+        commit('setProperty', { property })
+      })
+  },
+  loadSizes ({ commit }) {
+    sizesAPI.get(1, 10000, null, null, true)
+      .then(response => {
+        const property = {
+          name: 'sizes',
+          data: response.data.data
+        }
+        commit('setProperty', { property })
+      })
   },
   loadCategories ({ commit }) {
     categoriesAPI.get(1, 10000)
@@ -124,19 +130,6 @@ const actions = {
         const property = {
           name: 'groups',
           data: response.data.data
-        }
-        commit('setProperty', { property })
-      })
-  },
-  refreshColors ({ commit }) {
-    colorsAPI.get()
-      .then(response => {
-        const colors = response.data.data.sort(function (a, b) {
-          return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
-        })
-        const property = {
-          name: 'colors',
-          data: colors
         }
         commit('setProperty', { property })
       })
