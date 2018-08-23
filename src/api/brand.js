@@ -1,5 +1,5 @@
 /**
- * API Calls related to products and their properties
+ * API Calls related to brands and their properties
  */
 import Vue from 'vue'
 
@@ -18,8 +18,16 @@ export default {
     }
     return Vue.axiosAuth.get('/api/brands', { params })
   },
-  update: function (data) {
-    const updateData = {...data}
-    return Vue.axiosAuth.patch('/api/brands/' + data.slug, updateData)
+
+  update (brand) {
+    return Vue.axiosAuth.patch('/api/brands/' + brand.slug, brand)
+  },
+
+  delete (brand) {
+    return Vue.axiosAuth.delete('/api/brands/' + brand.slug)
+  },
+
+  create (brand) {
+    return Vue.axiosAuth.post('/api/brands', brand)
   }
 }

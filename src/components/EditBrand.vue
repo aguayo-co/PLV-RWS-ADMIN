@@ -1,53 +1,60 @@
 <template lang="pug">
-.admin__edit(
-  v-if="selectedBrand",
-  :class="{ 'admin__edit_open': active == true }")
-  transition(name='slide-right')
-    .edit__slide(
-      v-show="active == true")
-      h3.slide__header.i-close(
-        @click.stop="$emit('closeEdit')") Editar marca
-      form.slide__form
-        .form__row
-          label.form__label(
-            for="size-category") Id
-          p(v-model="selectedBrand.name") {{ selectedBrand.id }}
-        .form__row
-          label.form__label(
-            for="color-name") Nombre
-          input.form__control(
-            id="color-name",
-            v-model="selectedBrand.name",
-            type="text")
-        .form__row.form__row_away
-          button.btn.btn_solid.btn_block(@click.prevent="save($event)") Guardar
+  .edit__slide
+    h3.slide__header.i-close(
+      @click.stop="$emit('close')") Editar marca
+    form.slide__form(@submit.prevent="submit")
+      .form__row
+        label.form__label(
+          for="brand-name") Nombre
+        span.help(
+          v-if="errorLog.name") {{ errorLog.name }}
+        input.form__control(
+          id="brand-name",
+          v-model="field_name",
+          type="text")
+      .form__row
+        label.form__label(
+          for="brand-url") URL
+        span.help(
+          v-if="errorLog.url") {{ errorLog.url }}
+        input.form__control(
+          id="brand-url",
+          v-model="field_url",
+          type="brand")
+      .form__row.form__row_away
+        button.btn.btn_solid.btn_block(:disabled="saving")
+          Dots(v-if="saving")
+          template(v-else) Guardar
 </template>
 
 <script>
 
-import Vue from 'vue'
-import Croppa from 'vue-croppa'
-import brandsAPI from '@/api/brand'
-Vue.component('croppa', Croppa.component)
+import EditFormMixin from '@/mixins/EditFormMixin'
+import brandAPI from '@/api/brand'
+
+// Cada campo editable debe estar acá.
+// Con esto se crean las propiedades computables
+// de cada uno.
+const editableProps = {
+  name: null,
+  url: null
+}
 
 export default {
-  props: ['brand', 'active'],
+  mixins: [EditFormMixin(editableProps)],
   name: 'EditBrand',
-  computed: {
-    selectedBrand: function () {
-      return this.brand
+  data () {
+    return {
+      idPropertyName: 'slug'
     }
   },
-  methods: {
-    save: function (event) {
-      event.target.disabled = true
-      brandsAPI.update(this.selectedBrand)
-        .then(response => {
-          this.$emit('closeEdit')
-          event.target.disabled = false
-        })
+  computed: {
+    apiMethod () {
+      return this.object.id ? brandAPI.update : brandAPI.create
+    },
+    brand () {
+      return this.object
     }
   }
-
 }
 </script>

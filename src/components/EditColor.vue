@@ -7,7 +7,7 @@
         label.form__label(
           for="color-name") Nombre
         span.help(
-          v-if="errorLog.name") {{ errorLog.code }}
+          v-if="errorLog.name") {{ errorLog.name }}
         input.form__control(
           id="color-name",
           v-model="field_name",

@@ -120,11 +120,11 @@ export default {
             //   url: '/tallas',
             //   ico: 'i-closet'
             // },
-            // {
-            //   name: 'Marcas',
-            //   url: '/marcas',
-            //   ico: 'i-edit-line'
-            // },
+            {
+              name: 'Marcas',
+              url: '/marcas',
+              ico: 'i-edit-line'
+            },
             // {
             //   name: 'Condiciones',
             //   url: '/conditions',
