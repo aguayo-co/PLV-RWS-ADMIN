@@ -125,11 +125,11 @@ export default {
               url: '/colores',
               ico: 'i-tag'
             },
-            // {
-            //   name: 'Categorias',
-            //   url: '/categorias',
-            //   ico: 'i-tag'
-            // },
+            {
+              name: 'Categorias',
+              url: '/categorias',
+              ico: 'i-tag'
+            },
             {
               name: 'Métodos de envío',
               url: '/metodos-envio',

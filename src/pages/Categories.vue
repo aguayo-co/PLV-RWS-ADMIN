@@ -1,120 +1,70 @@
 <template lang="pug">
-  .content-data
-    header.data-header
-      h2.data-header__title.title Categorias
-      .data-header__item
-        form.search(action='', method='GET')
-          .search__row
-            input#searchMain.search__input(type='text', name='search', placeholder='Buscar en Tallas')
-            input.search__btn(type='submit', value='')
-        UserAvatar
-    EditCategory(
-      :category="selectedCategory",
-      :active="editActive",
-      @closeEdit="slideEdit")
-    nav.nav
-    //Crear item de categoria
-    ul.content-actions
-      li
-        button.btn.btn_solid.btn_auto.i-plus(@click="create") Crear item de categoria
-    //Tabla de contenido
-    table.crud.crud_wide
-      thead.crud__head
-        tr
-          th.crud__title.crud__cell_check
-              input#all.form__input-check(type="checkbox", name="all", value="selectAll")
-              label.form__label_check.i-ok(for="all")
-          th.crud__title.crud__cell_30 Categoria
-          th.crud__title.crud__cell_22 Url
-          th.crud__title.crud__cell_22 Creación
-          th.crud__title.crud__cell_22 Modificación
-      tbody.crud__tbody
-        tr.crud__row
-          td(colspan="5")
-            table.crud(
-              v-for="(parent, index) in categories")
-              tr.crud__row
-                th.crud__cell.crud__cell_check
-                  input.form__input-check(
-                    type="checkbox",
-                    id="all"
-                    name="all",
-                    value="selectAll")
-                  label.form__label_check.i-ok(
-                    for="all")
-                th.crud__cell.crud__cell_30 {{ parent.name }}
-                th.crud__cell.crud__cell_22 {{ '/' + parent.slug }}
-                th.crud__cell.crud__cell_22 {{ parent.created_at | date }}
-                th.crud__cell.crud__cell_22 {{ parent.updated_at | date }}
-              tbody.crud__tbody
-                tr.crud__row.crud__row_open(
-                  v-for="(children, subIndex) in parent.children",
-                  @click="loadCategory(subIndex, index)")
-                  td.crud__cell
-                    input.form__input-check(
-                      type="checkbox",
-                      name="all",
-                      value="selectAll")
-                    label.form__label_check.i-ok
-                  td.crud__cell {{ ' &#8735; ' + children.name }}
-                  td.crud__cell {{ '/' + children.slug }}
-                  td.crud__cell {{ children.created_at | date }}
-                  td.crud__cell {{ children.updated_at | date }}
-        tr.crud__row
-          td(colspan="5")
-            form.crud__form(action="")
-              p.crud__legend Cambiar estado
-              select.form__select
-                option(value="Pendiente") Pendiente
-                option(value="Rechazado") Rechazado
-                option(value="Aprobado") Aprobado
-                option(value="Disponible") Disponible
-                option(value="No disponible") No disponible
-                option(value="Vendido") Vendido
-              input.crud__btn(type="submit", value="Guardar")
-        //Tercera fila
-        //class para row gris en tabla: .crud__toggle-open
+  ListLayout
+    template(slot="title") Categorías
 
+    template(slot="columns")
+      th.crud__title
+      th.crud__title Nombre
+      th.crud__title Subcategorías
+    template(
+      v-for="category in categories"
+      :slot="'row-' + category.id")
+      td.crud__cell
+        template(v-if="category.children")
+          button(v-if="expanded === category.id" @click="expanded = false") -
+          button(v-else @click="expanded = category.id") +
+      td.crud__cell {{ category.name }}
+      td.crud__cell {{ category.children ? category.children.length : '' }}
 </template>
 
 <script>
-// import categoriesAPI from '@/api/category'
-import { mapState } from 'vuex'
+import categoryAPI from '@/api/category'
+import ListMixin from '@/mixins/ListMixin'
 import EditCategory from '@/components/EditCategory'
-import UserAvatar from '@/components/shared/UserAvatar'
 
 export default {
-  props: ['category', 'active'],
   name: 'Categories',
-  components: {
-    UserAvatar,
-    EditCategory
-  },
-  computed: {
-    ...mapState('ui', [
-      'categories',
-      'colors'
-    ])
-  },
+  mixins: [ListMixin],
   data () {
     return {
-      selectedCategory: {},
-      filter: {},
-      order: '-id',
-      editActive: false
+      expanded: null,
+
+      query: false,
+      slide: EditCategory,
+
+      objectsKey: 'categories',
+      loaderMethod: categoryAPI.get,
+      deleterMethod: categoryAPI.delete,
+
+      rawCategories: [],
+
+      canCreate: true
+    }
+  },
+  computed: {
+    categories: {
+      set (categories) {
+        this.rawCategories = categories
+      },
+      get () {
+        const categories = []
+        this.rawCategories.forEach(category => {
+          categories.push(category)
+          if (category.id === this.expanded) {
+            Array.prototype.push.apply(categories, category.children)
+          }
+        })
+        return categories
+      }
     }
   },
   methods: {
-    create: function () {
-      this.selectedCategory = {}
-      this.slideEdit()
+    updateObject () {
+      this.objectsChanged()
     },
-    slideEdit: function () {
-      this.editActive = !this.editActive
-    },
-    loadCategory: function (subIndex, index) {
-      this.selectedCategory = this.categories[index].children[subIndex]
-      this.slideEdit()
+    objectsChanged () {
+      this.updateList()
+      this.$store.dispatch('ui/loadCategories')
     }
   }
 }

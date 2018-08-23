@@ -1,107 +1,64 @@
 <template lang="pug">
-.admin__edit(
-  v-if="selectedCategory",
-  :class="{ 'admin__edit_open': active == true }")
-  transition(name='slide-right')
-    .edit__slide(
-      v-show="active == true")
-      h3.slide__header.i-close(
-        @click.stop="$emit('closeEdit')") {{ selectedCategory.id ? 'Editar categoría' : 'Crear categoría' }}
-      form.slide__form
-        //- .form__row(v-if="selectedCategory.id")
-        //-   label.form__label(
-        //-     for="size-category") Id
-        //-   p(v-model="selectedCategory.name") {{ selectedCategory.id }}
-        //- .form__row(v-else)
-        //-   label.form__label(
-        //-     for="categoria") Categoria principal
-        //-   select.form__select(
-        //-     v-model="type",
-        //-     ref='categoria',
-        //-     id='categoria')
-        //-     optgroup(label='Categoria principal')
-        //-       option(
-        //-         v-for='type in theCategories',
-        //-         :value='type.id') {{ type.name }}
-
-        .form__row()
-          label.form__label(
-            for="size-category") Id
-          p(v-model="selectedCategory.id") {{ selectedCategory.id }}
-        .form__row()
-          label.form__label(
-            for="categoria") Categoria principal
-          select.form__select(
-            v-model="selectedCategory.parent_id",
-            ref='categoria',
-            id='categoria')
-            optgroup(label='Categoria principal')
-              option(
-                v-for='type in categories',
-                :value='type.id') {{ type.name }}
-        .form__row
-          label.form__label(
-            for="color-name") Nombre
-          input.form__control(
-            id="color-name",
-            v-model="selectedCategory.name",
-            type="text")
-        .form__row.form__row_away
-          button.btn.btn_solid.btn_block(@click.prevent="save($event)") Guardar
+  .edit__slide
+    h3.slide__header.i-close(
+      @click.stop="$emit('close')") Editar categoría
+    form.slide__form(@submit.prevent="submit")
+      .form__row
+        label.form__label(
+          for="category-name") Nombre
+        span.help(
+          v-if="errorLog.name") {{ errorLog.name }}
+        input.form__control(
+          id="category-name",
+          v-model="field_name",
+          type="text")
+      .form__row(v-if="!category.children")
+        span.help(
+          v-if="errorLog.parent_id") {{ errorLog.parent_id }}
+        label.form__label(
+          for='category-parent_id') Talla padre
+        select.form__select(
+          id='category-parent_id'
+          v-model='field_parent_id')
+          option(v-if="!category.id" :value="undefined") Sin padre
+          option(v-for="parent in parentCategories" :value='parent.id') {{ parent.name }}
+      .form__row.form__row_away
+        button.btn.btn_solid.btn_block(:disabled="saving")
+          Dots(v-if="saving")
+          template(v-else) Guardar
 </template>
 
 <script>
-
-// import Vue from 'vue'
-import categoriesAPI from '@/api/category'
 import { mapState } from 'vuex'
+import EditFormMixin from '@/mixins/EditFormMixin'
+import categoryAPI from '@/api/category'
+
+// Cada campo editable debe estar acá.
+// Con esto se crean las propiedades computables
+// de cada uno.
+const editableProps = {
+  name: null,
+  parent_id: null
+}
 
 export default {
-  props: ['category', 'active'],
+  mixins: [EditFormMixin(editableProps)],
   name: 'EditCategory',
   data () {
     return {
-      type: 0
+      idPropertyName: 'slug'
     }
   },
   computed: {
-    selectedCategory: function () {
-      return {...this.category}
+    ...mapState('ui', {
+      parentCategories: 'categories'
+    }),
+    apiMethod () {
+      return this.object.slug ? categoryAPI.update : categoryAPI.create
     },
-    ...mapState('ui', [
-      'categories'
-    ])
-  },
-  methods: {
-    save: function (event) {
-      event.target.disabled = true
-      // If category has id we are updating else creating
-      this.selectedCategory.id ? this.update(event) : this.create(event)
-    },
-    update: function (event) {
-      categoriesAPI.update(this.selectedCategory)
-        .then(response => {
-          this.$emit('closeEdit')
-          this.$store.dispatch('ui/refreshCategories')
-          event.target.disabled = false
-        })
-    },
-    create: function (event) {
-      const newCategory = this.selectedCategory
-      categoriesAPI.create(newCategory)
-        .then(response => {
-          this.$emit('closeEdit')
-          this.$emit('updateItems')
-          event.target.disabled = false
-        })
+    category () {
+      return this.object
     }
-  },
-  created: function () {
-    categoriesAPI.getAll()
-      .then(response => {
-        this.theCategories = response.data.data
-      })
   }
-
 }
 </script>

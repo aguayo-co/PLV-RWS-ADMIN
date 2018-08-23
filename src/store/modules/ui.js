@@ -87,13 +87,8 @@ const actions = {
       })
   },
   loadCategories ({ commit }) {
-    categoriesAPI.get(1, 10000)
+    categoriesAPI.get(1, 10000, null, null, true)
       .then(response => {
-        response.data.data.forEach((category) => {
-          category.children.sort(function (a, b) {
-            return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
-          })
-        })
         const property = {
           name: 'categories',
           data: response.data.data

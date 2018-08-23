@@ -1,14 +1,15 @@
 /**
- * API Calls related to products and their properties
+ * API Calls related to categories and their properties
  */
 import Vue from 'vue'
 
 export default {
-  get (page = 1, items, filter, orderby) {
+  get (page = 1, items, filter, orderby, flat) {
     const params = {
       page,
       items,
-      orderby
+      orderby,
+      flat
     }
 
     if (filter) {
@@ -18,14 +19,16 @@ export default {
     }
     return Vue.axiosAuth.get('/api/categories', { params })
   },
-  getBySlug: function (slug) {
-    return Vue.axios.get('/api/categories/' + slug)
+
+  update (category) {
+    return Vue.axiosAuth.patch('/api/categories/' + category.slug, category)
   },
-  update: function (data) {
-    const updateData = {...data}
-    return Vue.axiosAuth.patch('/api/categories/' + data.slug, updateData)
+
+  delete (category) {
+    return Vue.axiosAuth.delete('/api/categories/' + category.slug)
   },
-  create: function (data) {
-    return Vue.axiosAuth.post('/api/categories/', data)
+
+  create (category) {
+    return Vue.axiosAuth.post('/api/categories', category)
   }
 }
