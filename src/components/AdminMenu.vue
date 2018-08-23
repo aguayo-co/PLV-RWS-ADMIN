@@ -139,11 +139,11 @@ export default {
               name: 'Campañas',
               url: '/campaigns',
               ico: 'i-rocket'
-            // },
-            // {
-            //   name: 'Menús',
-            //   url: '/menu-items',
-            //   ico: 'i-filter'
+            },
+            {
+              name: 'Menús',
+              url: '/menus',
+              ico: 'i-filter'
             // },
             // {
             //   name: 'Blog',

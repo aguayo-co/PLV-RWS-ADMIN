@@ -1,25 +1,34 @@
 /**
- * API Calls related to products and their properties
+ * API Calls related to menus and their properties
  */
 import Vue from 'vue'
 
 export default {
-
-  getItems: function (name) {
-    return Vue.axios.get('api/menus/' + name)
-  },
-
-  getMenus: function (page, items, filter) {
-    let queryFilter = ''
-    page = page || 1
-    items = items || 8
+  get (page = 1, items, filter, orderby, flat) {
+    const params = {
+      page,
+      items,
+      orderby,
+      flat
+    }
 
     if (filter) {
       Object.keys(filter).forEach((key) => {
-        queryFilter += '&filter[' + key + ']=' + filter[key]
+        params['filter[' + key + ']'] = filter[key]
       })
     }
-    return Vue.axiosAuth.get('/api/menus?items=' + items + '&page=' + page + queryFilter)
-  }
+    return Vue.axiosAuth.get('/api/menus', { params })
+  },
 
+  update (menu) {
+    return Vue.axiosAuth.patch('/api/menus/' + menu.slug, menu)
+  },
+
+  delete (menu) {
+    return Vue.axiosAuth.delete('/api/menus/' + menu.slug)
+  },
+
+  create (menu) {
+    return Vue.axiosAuth.post('/api/menus', menu)
+  }
 }

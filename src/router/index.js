@@ -11,6 +11,7 @@ import Coupons from '@/pages/Coupons'
 import CreditsTransactions from '@/pages/CreditsTransactions'
 import Groups from '@/pages/Groups'
 import Home from '@/pages/Home'
+import Menus from '@/pages/Menus'
 import MenuItems from '@/pages/MenuItems'
 import Payrolls from '@/pages/Payrolls'
 import Productos from '@/pages/Productos'
@@ -61,9 +62,15 @@ const router = new Router({
       component: Sizes
     },
     {
-      path: '/menu-items',
+      path: '/menus',
+      name: 'Menus',
+      component: Menus
+    },
+    {
+      path: '/menus/:menuId(\\d+)',
       name: 'MenuItems',
-      component: MenuItems
+      component: MenuItems,
+      props: true
     },
     {
       path: '/colores',

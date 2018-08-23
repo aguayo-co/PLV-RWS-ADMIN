@@ -44,24 +44,23 @@ const actions = {
         }
         commit('setProperty', { property })
       })
-    menusAPI.getMenus()
-      .then(response => {
-        const menus = {}
-        response.data.data.forEach((menu) => {
-          menus[menu.slug] = menu
-        })
-        const property = {
-          name: 'menus',
-          data: menus
-        }
-        commit('setProperty', { property })
-      })
+    dispatch('loadMenus')
     dispatch('loadSizes')
     dispatch('loadColors')
     dispatch('loadCampaigns')
     dispatch('loadCategories')
     dispatch('loadBrands')
     dispatch('loadGroups')
+  },
+  loadMenus ({ commit }) {
+    menusAPI.get(1, 10000)
+      .then(response => {
+        const property = {
+          name: 'menus',
+          data: response.data.data
+        }
+        commit('setProperty', { property })
+      })
   },
   loadColors ({ commit }) {
     colorsAPI.get(1, 10000)

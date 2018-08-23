@@ -75,6 +75,9 @@ export default {
     }
   },
   computed: {
+    // Se puede usar para pasar datos adicionales al slide de edición.
+    slideData () {
+    },
     deleter () {
       return this.deleterMethod
     },

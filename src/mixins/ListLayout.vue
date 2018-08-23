@@ -9,6 +9,7 @@
           v-if="$parent.showSlide"
           v-bind:is="$parent.slide"
           :object="$parent.slideObject"
+          :extraData="$parent.slideData"
           @updated="$parent.updateObject($event)"
           @close="$parent.closeSlide")
 

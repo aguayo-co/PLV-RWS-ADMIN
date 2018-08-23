@@ -1,46 +1,34 @@
 /**
- * API Calls related to products and their properties
+ * API Calls related to menu items and their properties
  */
 import Vue from 'vue'
 
 export default {
-  getAll: function (page, items, filter) {
-    let queryFilter = ''
-    page = page || 1
-    items = items || 8
+  get (page = 1, items, filter, orderby, flat) {
+    const params = {
+      page,
+      items,
+      orderby,
+      flat
+    }
 
     if (filter) {
       Object.keys(filter).forEach((key) => {
-        queryFilter += '&filter[' + key + ']=' + filter[key]
+        params['filter[' + key + ']'] = filter[key]
       })
     }
-    return Vue.axiosAuth.get('/api/menus?items=' + items + '&page=' + page + queryFilter)
+    return Vue.axiosAuth.get('/api/menu_items', { params })
   },
-  get: function (item) {
-    return Vue.axios.get('/api/menu_items/' + item)
+
+  update (menuItem) {
+    return Vue.axiosAuth.patch('/api/menu_items/' + menuItem.id, menuItem)
   },
-  getItems: function () {
-    return Vue.axios.get('/api/menu_items/')
+
+  delete (menuItem) {
+    return Vue.axiosAuth.delete('/api/menu_items/' + menuItem.id)
   },
-  update: function (data) {
-    const updateData = {
-      id: data.id,
-      name: data.name,
-      url: data.url
-    }
-    return Vue.axiosAuth.patch('/api/menu_items/' + data.id, updateData)
-  },
-  create: function (data) {
-    if (data.parent_id) {
-      // const formData = {
-      //   parent_id: data.menu_id,
-      //   name: data.name,
-      //   url: data.url
-      // }
-      delete data.menu_id
-      return Vue.axiosAuth.post('/api/menu_items/', data)
-    } else {
-      return Vue.axiosAuth.post('/api/menus/', data)
-    }
+
+  create (menuItem) {
+    return Vue.axiosAuth.post('/api/menu_items', menuItem)
   }
 }

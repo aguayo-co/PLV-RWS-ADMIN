@@ -37,7 +37,7 @@ function createComputedProps (editableProps) {
 //    EditFormMixin(editableProps)
 export default (editableProps) => {
   return {
-    props: ['object'],
+    props: ['object', 'extraData'],
     data () {
       return {
         idPropertyName: 'id',
