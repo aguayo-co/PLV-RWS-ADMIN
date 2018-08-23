@@ -38,7 +38,7 @@ export default {
             {
               name: 'Reporte',
               url: {name: 'Reporte'},
-              ico: 'i-credits'
+              ico: 'i-report'
             },
             {
               name: 'Ventas',
@@ -48,28 +48,18 @@ export default {
             {
               name: 'Devoluciones',
               url: {name: 'SaleReturns'},
-              ico: 'i-sale'
+              ico: 'i-reload'
             },
             {
               name: 'Pagos',
               url: {name: 'Payments'},
               ico: 'i-credits'
             },
-            // {
-            //   name: 'Devoluciones',
-            //   url: '#',
-            //   ico: 'i-reload'
-            // },
             {
               name: 'Cupones',
               url: {name: 'Coupons'},
               ico: 'i-bank-data'
             },
-            // {
-            //   name: 'Reportes',
-            //   url: '/user/data',
-            //   ico: 'i-report'
-            // },
             {
               name: 'Créditos',
               url: {name: 'CreditsTransactions'},
