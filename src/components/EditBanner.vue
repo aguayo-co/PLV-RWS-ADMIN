@@ -5,15 +5,23 @@
     form.slide__form(@submit.prevent="submit")
       .form__row
         label.form__label(
-          for="banner-name") Nombre
+          for='banner-type') Tipo de banner
+        select.form__select(
+          id='banner-type'
+          v-model='type')
+          option(v-for="type in types" :value="type") {{ type.label }}
+      .form__row(v-if="type && type.extraName")
+        label.form__label(
+          for="banner-extra-name") Nombre
         span.help(
           v-if="errorLog.name") {{ errorLog.name }}
         input.form__control(
-          id="banner-name",
-          v-model="field_name",
+          required
+          id="banner-extra-name",
+          v-model="extraName",
           type="text")
       .form__row(v-if="type.width")
-        label.form__label Imagen para Desktop ({{ type.width }}x{{ type.height }})
+        label.form__label Imagen ({{ type.width }}x{{ type.height }})
         .upfile.slide__desktop
           uploadPhoto(
             :errorLog="errorLog.image"
@@ -89,37 +97,74 @@ export default {
   data () {
     return {
       types: [
-        { name: '', label: 'Sin imagen' },
-        { name: 'categoria', label: 'Banner para categoría', width: 1280, height: 380 },
-        { name: 'sm', label: 'Home #3', width: 594, height: 356 },
-        { name: 'md', label: 'Home #2', width: 524, height: 354 },
-        { name: 'wide', label: 'Home #1', width: 360, height: 417 },
-        { name: 'campaign', label: 'Banner de menú', width: 410, height: 250 }
+        { name: 'top-', label: 'Top - Sin imagen', extraName: true },
+        { name: 'campana-', label: 'Banner para Campaña', width: 1280, height: 380, extraName: true },
+        { name: 'categoria-', label: 'Banner para Categoría', width: 1280, height: 380, extraName: true },
+        { name: 'grupo-', label: 'Banner para Grupo', width: 1280, height: 380, extraName: true },
+        { name: 'marca-', label: 'Banner para Marca', width: 1280, height: 380, extraName: true },
+        { name: 'home-1', label: 'Home #1', width: 480, height: 720, extraName: false },
+        { name: 'home-2', label: 'Home #2', width: 524, height: 354, extraName: false },
+        { name: 'home-3', label: 'Home #3', width: 524, height: 354, extraName: false },
+        { name: 'menu-campaign', label: 'Banner de menú', width: 410, height: 250, extraName: false }
       ],
       idPropertyName: 'slug'
     }
   },
   computed: {
-    type () {
-      if (!this.field_name) {
+    extraName: {
+      set (extraName) {
+        this.field_name = this.type.name + extraName
+      },
+      get () {
+        if (!this.type.extraName) {
+          return ''
+        }
+        if (!this.field_name) {
+          return ''
+        }
+        const typeLength = this.type.name.length
+        return this.field_name.slice(typeLength)
+      }
+    },
+    type: {
+      set (type) {
+        this.field_name = type.name + (type.extraName ? this.extraName : '')
+        if (!type.width) {
+          this.field_image = ''
+        } else if (this.field_image === '') {
+          this.field_image = this.banner.image
+        }
+      },
+      get () {
+        if (!this.field_name) {
+          return this.types[0]
+        }
+
+        const currentType = this.types.find(type => {
+          return type.name && this.field_name.indexOf(type.name) === 0
+        })
+
+        if (currentType) {
+          return currentType
+        }
+
         return this.types[0]
       }
-
-      const currentType = this.types.find(type => {
-        return type.name && this.field_name.includes(type.name)
-      })
-
-      if (currentType) {
-        return currentType
-      }
-
-      return this.types[0]
     },
     apiMethod () {
       return this.object.slug ? bannerAPI.update : bannerAPI.create
     },
     banner () {
       return this.object
+    }
+  },
+  methods: {
+    validate () {
+      if (this.type.width && !this.field_image) {
+        this.$set(this.errorLog, 'image', 'La imagen es obligatoria.')
+        return false
+      }
+      return true
     }
   }
 }
