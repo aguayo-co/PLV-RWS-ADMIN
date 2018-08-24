@@ -4,7 +4,7 @@
 ul.pagination
   li.pagination__select
     select.form__select.form__select_small(
-    v-if="itemsOptions.indexOf(items) !== -1"
+    v-if="itemsOptions.indexOf(parseInt(items)) !== -1"
     name="numeroItems",
     v-model="items",
     @change="$emit('itemsChanged', items)")
