@@ -65,8 +65,40 @@
               td.crud__cell(v-for="range in ranges") {{ reports.cashIn[range] | currency }}
 
             tr.crud__row
+              td.crud__cell Product Sold (w/o discount)
+              td.crud__cell(v-for="range in ranges") {{ reports.productsTotal[range] | currency }}
+
+            tr.crud__row
+              td.crud__cell Discount Prilov
+              td.crud__cell(v-for="range in ranges") {{ reports.discountPrilov[range] | currency }}
+
+            tr.crud__row
+              td.crud__cell Product Sold (w discount)
+              td.crud__cell(v-for="range in ranges") {{ reports.productsTotal[range] - reports.discountPrilov[range] | currency }}
+
+            tr.crud__row
+              td.crud__cell Discount Seller
+              td.crud__cell(v-for="range in ranges") {{ reports.discountSeller[range] | currency }}
+
+            tr.crud__row
+              td.crud__cell Total discount
+              td.crud__cell(v-for="range in ranges") {{ reports.discountPrilov[range] + reports.discountSeller[range] | currency }}
+
+            tr.crud__row
+              td.crud__cell Product Cash In
+              td.crud__cell(v-for="range in ranges") {{ reports.cashIn[range] - reports.shippingCostsTotal[range] | currency }}
+
+            tr.crud__row
+              td.crud__cell Gross Revenew Margin
+              td.crud__cell(v-for="range in ranges") {{ grossRevenewMargin(range) }}%
+
+            tr.crud__row
               td.crud__cell Gross Revenew
               td.crud__cell(v-for="range in ranges") {{ reports.grossRevenue[range] | currency }}
+
+            tr.crud__row
+              td.crud__cell Delivery Cash In
+              td.crud__cell(v-for="range in ranges") {{ reports.shippingCostsTotal[range] | currency }}
 </template>
 
 <script>
@@ -111,6 +143,9 @@ export default {
     }
   },
   methods: {
+    grossRevenewMargin (range) {
+      return parseInt(this.reports.grossRevenue[range] * 100 / this.reports.productsTotal[range])
+    },
     clearError (field) {
       this.$delete(this.errorLog, field)
     },
