@@ -22,7 +22,7 @@ export default {
   mixins: [ListMixin],
   data () {
     return {
-      query: false,
+      orderby: 'name',
       slide: EditBrand,
 
       objectsKey: 'brands',
@@ -35,6 +35,12 @@ export default {
     }
   },
   methods: {
+    alterParams (query, filters) {
+      if (query) {
+        filters['name'] = '%' + query + '%'
+      }
+      return [null, filters]
+    },
     objectsChanged () {
       this.$store.dispatch('ui/loadBrands')
     }

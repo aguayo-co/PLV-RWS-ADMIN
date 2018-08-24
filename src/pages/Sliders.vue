@@ -38,7 +38,6 @@ export default {
   mixins: [ListMixin],
   data () {
     return {
-      query: false,
       slide: EditSlider,
 
       objectsKey: 'sliders',
@@ -48,6 +47,14 @@ export default {
       sliders: [],
 
       canCreate: true
+    }
+  },
+  methods: {
+    alterParams (query, filters) {
+      if (query) {
+        filters['name'] = '%' + query + '%'
+      }
+      return [null, filters]
     }
   }
 }
