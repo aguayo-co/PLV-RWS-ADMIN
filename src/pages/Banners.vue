@@ -5,7 +5,6 @@
     template(slot="columns")
       th.crud__th.crud__title Imagen
       th.crud__th.crud__title Nombre
-      th.crud__th.crud__title Slug
       th.crud__th.crud__title Título
       th.crud__th.crud__title Subtítulo
       th.crud__th.crud__title Botón
@@ -19,7 +18,6 @@
           :src="banner.image")
         span(v-else) -
       td.crud__cell {{ banner.name }}
-      td.crud__cell {{ banner.slug }}
       td.crud__cell {{ banner.title }}
       td.crud__cell {{ banner.subtitle }}
       td.crud__cell {{ banner.button_text }}

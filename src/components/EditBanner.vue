@@ -97,15 +97,15 @@ export default {
   data () {
     return {
       types: [
-        { name: 'top-', label: 'Top - Sin imagen', extraName: true },
-        { name: 'campana-', label: 'Banner para Campaña', width: 1280, height: 380, extraName: true },
-        { name: 'categoria-', label: 'Banner para Categoría', width: 1280, height: 380, extraName: true },
-        { name: 'grupo-', label: 'Banner para Grupo', width: 1280, height: 380, extraName: true },
-        { name: 'marca-', label: 'Banner para Marca', width: 1280, height: 380, extraName: true },
-        { name: 'home-1', label: 'Home #1', width: 480, height: 720, extraName: false },
-        { name: 'home-2', label: 'Home #2', width: 524, height: 354, extraName: false },
-        { name: 'home-3', label: 'Home #3', width: 524, height: 354, extraName: false },
-        { name: 'menu-campaign', label: 'Banner de menú', width: 410, height: 250, extraName: false }
+        { name: 'Top ', label: 'Top - Sin imagen', extraName: true },
+        { name: 'Campana ', label: 'Banner para Campaña', width: 1280, height: 380, extraName: true },
+        { name: 'Categoria ', label: 'Banner para Categoría', width: 1280, height: 380, extraName: true },
+        { name: 'Grupo ', label: 'Banner para Grupo', width: 1280, height: 380, extraName: true },
+        { name: 'Marca ', label: 'Banner para Marca', width: 1280, height: 380, extraName: true },
+        { name: 'Home 1', label: 'Home #1', width: 480, height: 720, extraName: false },
+        { name: 'Home 2', label: 'Home #2', width: 524, height: 354, extraName: false },
+        { name: 'Home 3', label: 'Home #3', width: 524, height: 354, extraName: false },
+        { name: 'Menu campaign', label: 'Banner de menú', width: 410, height: 250, extraName: false }
       ],
       idPropertyName: 'slug'
     }
