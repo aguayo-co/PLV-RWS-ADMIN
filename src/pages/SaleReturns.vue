@@ -33,6 +33,12 @@
                 .crud__text_small {{ product.title }}
               a(:href="$store.state.frontUrl + '/producto/' + product.slug + '__' + product.id")
                 .crud__text_small {{ product.price | currency }}
+            button(
+              v-if="canReplicate(saleReturn, product)"
+              @click="replicate(product)") Republicar
+            a(
+              v-if="product.extra && product.extra.replicated"
+              :href="$store.state.frontUrl + '/producto/-__' + product.extra.replicated") Republicado: {{ product.extra.replicated }}
       td.crud__cell
         UserCell(:user="saleReturn.sale.order.user")
       td.crud__cell
@@ -46,6 +52,7 @@
 <script>
 
 import saleReturnAPI from '@/api/saleReturn'
+import replicateProductMixin from '@/mixins/replicateProductMixin'
 import ListMixin from '@/mixins/ListMixin'
 
 const statusFilters = Object.keys(saleReturnAPI.statuses)
@@ -55,7 +62,7 @@ const statusFilters = Object.keys(saleReturnAPI.statuses)
 
 export default {
   name: 'SaleReturns',
-  mixins: [ListMixin],
+  mixins: [replicateProductMixin, ListMixin],
   data () {
     return {
       statuses: saleReturnAPI.statuses,
@@ -98,6 +105,12 @@ export default {
     }
   },
   methods: {
+    canReplicate (saleReturn, product) {
+      if (saleReturn.status !== 90) {
+        return false
+      }
+      return this.canReplicateProduct(product)
+    },
     getShippingData (saleReturn) {
       if (!saleReturn.shipment_details) {
         return

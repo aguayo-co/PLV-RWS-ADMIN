@@ -46,6 +46,10 @@
               p {{ attributes.body }}
             .notify__footer
               .notify__row
+                a.btn.btn_solid.btn_block(
+                  v-if='attributes.linkTitle'
+                  :href='attributes.linkURL') {{ attributes.linkTitle }}
+              .notify__row
                 router-link.btn.btn_solid.btn_block(
                   :class='attributes.primaryButtonClass'
                   v-if='attributes.primaryButtonTitle'

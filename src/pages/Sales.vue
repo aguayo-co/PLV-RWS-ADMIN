@@ -39,6 +39,12 @@
                 .crud__text_small {{ product.title }}
               a(:href="$store.state.frontUrl + '/producto/' + product.slug + '__' + product.id")
                 .crud__text_small {{ product.price | currency }}
+              button(
+                v-if="canReplicate(sale, product)"
+                @click="replicate(product)") Republicar
+              a(
+                v-if="product.extra && product.extra.replicated"
+                :href="$store.state.frontUrl + '/producto/-__' + product.extra.replicated") Republicado: {{ product.extra.replicated }}
       td.crud__cell {{ sale.commission_percentage }}% / {{ sale.commission | currency }}
       td.crud__cell
         UserCell(:user="sale.order.user")
@@ -69,6 +75,7 @@
 
 import saleAPI from '@/api/sale'
 import EditSale from '@/components/EditSale'
+import replicateProductMixin from '@/mixins/replicateProductMixin'
 import ListMixin from '@/mixins/ListMixin'
 
 const statusFilters = Object.keys(saleAPI.statuses)
@@ -79,7 +86,7 @@ const statusFilters = Object.keys(saleAPI.statuses)
 
 export default {
   name: 'Sales',
-  mixins: [ListMixin],
+  mixins: [replicateProductMixin, ListMixin],
   data () {
     return {
       statuses: saleAPI.statuses,
@@ -147,6 +154,12 @@ export default {
     }
   },
   methods: {
+    canReplicate (sale, product) {
+      if (!sale.status_history[99] || !sale.status_history[99].user_id) {
+        return false
+      }
+      return this.canReplicateProduct(product)
+    },
     getBuyerFilters (text) {
       // Cualqueir cosa que parezca un email lo aceptamos como válido.
       // Dividimos por espacios que reemplazamos por comas.

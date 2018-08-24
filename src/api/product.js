@@ -34,6 +34,10 @@ export default {
     return Vue.axiosAuth.get('/api/products', { params })
   },
 
+  replicate (product) {
+    return Vue.axiosAuth.post('/api/products/' + product.id + '/replicate')
+  },
+
   delete (product) {
     return Vue.axiosAuth.delete('/api/products/' + product.id)
   },
