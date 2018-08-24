@@ -96,7 +96,7 @@ export default {
         }
       ],
       query: false,
-      orderby: '-creation_at',
+      orderby: '-created_at',
 
       loaderMethod: saleReturnAPI.get,
       objectsKey: 'rawSaleReturns',
