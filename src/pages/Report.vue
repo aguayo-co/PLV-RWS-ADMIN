@@ -99,6 +99,22 @@
             tr.crud__row
               td.crud__cell Delivery Cash In
               td.crud__cell(v-for="range in ranges") {{ reports.shippingCostsTotal[range] | currency }}
+
+            tr.crud__row
+              td.crud__cell Cancelled Sales
+              td.crud__cell(v-for="range in ranges") {{ reports.payedAndCanceledCount[range] }}
+
+            tr.crud__row
+              td.crud__cell Sale returns
+              td.crud__cell(v-for="range in ranges") {{ reports.returnsCount[range] }}
+
+            tr.crud__row
+              td.crud__cell Sales
+              td.crud__cell(v-for="range in ranges") {{ reports.salesCount[range] }}
+
+            tr.crud__row
+              td.crud__cell Sold Products
+              td.crud__cell(v-for="range in ranges") {{ reports.productsCount[range] }}
 </template>
 
 <script>
