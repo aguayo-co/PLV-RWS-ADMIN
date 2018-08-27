@@ -1,8 +1,8 @@
 import 'moment/locale/es'
 
+import './scss/admin.scss'
+
 import moment from 'moment'
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import VueMoment from 'vue-moment'
 import VueTextareaAutosize from 'vue-textarea-autosize'
@@ -16,8 +16,6 @@ import prilovFilters from './filters'
 import prilovHelpers from './helpers'
 import router from './router'
 import store from './store'
-
-import './scss/admin.scss'
 
 (() => {
   if (window.location.protocol === 'http:') {
@@ -40,10 +38,8 @@ import './scss/admin.scss'
 
   /* eslint-disable no-new */
   new Vue({
-    el: '#app',
     router,
     store,
-    components: { App },
-    template: '<App/>'
-  })
+    render: h => h(App)
+  }).$mount('#app')
 })()
