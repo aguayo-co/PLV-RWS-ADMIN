@@ -52,7 +52,7 @@
             th.crud__title Item
             template(v-if="!loading && ranges")
               th.crud__title(
-                v-for="header in tableHeaders") {{ header }}
+                v-for="header in tableHeaders" v-html="header")
 
         tbody.crud__tbody
           LoadingRow(v-if="loading")
@@ -90,7 +90,7 @@
 
             tr.crud__row
               td.crud__cell Gross Revenew Margin
-              td.crud__cell(v-for="range in ranges") {{ grossRevenewMargin(range) }}%
+              td.crud__cell(v-for="range in ranges") {{ grossRevenewMargin(range) | unempty }}
 
             tr.crud__row
               td.crud__cell Gross Revenew
@@ -115,6 +115,10 @@
             tr.crud__row
               td.crud__cell Credits Used
               td.crud__cell(v-for="range in ranges") {{ reports.creditsForOrdersTotal[range] | currency | unempty }}
+
+            tr.crud__row
+              td.crud__cell Credits Debt
+              td.crud__cell(v-for="range in ranges") {{ reports.creditsDebt[range] | currency | unempty }}
 
             tr.crud__row
               td.crud__cell Sales
@@ -162,13 +166,22 @@ export default {
           format = 'YYYY'
       }
       return this.ranges.map(range => {
-        return this.$moment(this.reports.ranges[range][0]).format(format)
+        const from = this.$moment(this.reports.ranges[range][0]).format(format)
+        const until = this.$moment(this.reports.ranges[range][1]).format(format)
+        let label = from
+        if (from !== until) {
+          label += '<br>' + until
+        }
+        return label
       })
     }
   },
   methods: {
     grossRevenewMargin (range) {
-      return parseInt(this.reports.grossRevenue[range] * 100 / this.reports.productsTotal[range])
+      if (!this.reports.grossRevenue[range] || !this.reports.productsTotal[range]) {
+        return
+      }
+      return parseInt(this.reports.grossRevenue[range] * 100 / this.reports.productsTotal[range]) + '%'
     },
     clearError (field) {
       this.$delete(this.errorLog, field)
