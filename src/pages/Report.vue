@@ -62,31 +62,31 @@
           template(v-else)
             tr.crud__row
               td.crud__cell Cash In
-              td.crud__cell(v-for="range in ranges") {{ reports.cashIn[range] | currency | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.cashIn, range) | currency | unempty }}
 
             tr.crud__row
               td.crud__cell Products Sold (w/o discount)
-              td.crud__cell(v-for="range in ranges") {{ reports.productsTotal[range] | currency | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.productsTotal, range) | currency | unempty }}
 
             tr.crud__row
               td.crud__cell Discount Prilov
-              td.crud__cell(v-for="range in ranges") {{ reports.discountPrilov[range] | currency | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.discountPrilov, range) | currency | unempty }}
 
             tr.crud__row
               td.crud__cell Products Sold (w/ discount)
-              td.crud__cell(v-for="range in ranges") {{ reports.productsTotal[range] - reports.discountPrilov[range] | currency | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.productsTotal, range) - getRangeFor(reports.discountPrilov, range) | currency | unempty }}
 
             tr.crud__row
               td.crud__cell Discount Seller
-              td.crud__cell(v-for="range in ranges") {{ reports.discountSeller[range] | currency | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.discountSeller, range) | currency | unempty }}
 
             tr.crud__row
               td.crud__cell Total discount
-              td.crud__cell(v-for="range in ranges") {{ reports.discountPrilov[range] + reports.discountSeller[range] | currency | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.discountPrilov, range) + getRangeFor(reports.discountSeller, range) | currency | unempty }}
 
             tr.crud__row
               td.crud__cell Product Cash In
-              td.crud__cell(v-for="range in ranges") {{ reports.cashIn[range] - reports.shippingCostsTotal[range] | currency | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.cashIn, range) - getRangeFor(reports.shippingCostsTotal, range) | currency | unempty }}
 
             tr.crud__row
               td.crud__cell Gross Revenew Margin
@@ -94,55 +94,75 @@
 
             tr.crud__row
               td.crud__cell Gross Revenew
-              td.crud__cell(v-for="range in ranges") {{ reports.grossRevenue[range] | currency | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.grossRevenue, range) | currency | unempty }}
 
             tr.crud__row
               td.crud__cell Delivery Cash In
-              td.crud__cell(v-for="range in ranges") {{ reports.shippingCostsTotal[range] | currency | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.shippingCostsTotal, range) | currency | unempty }}
 
             tr.crud__row
               td.crud__cell Cancelled Sales
-              td.crud__cell(v-for="range in ranges") {{ reports.payedAndCanceledCount[range] | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.payedAndCanceledCount, range) | unempty }}
 
             tr.crud__row
               td.crud__cell Sale returns
-              td.crud__cell(v-for="range in ranges") {{ reports.returnsCount[range] | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.returnsCount, range) | unempty }}
 
             tr.crud__row
               td.crud__cell Credits Generated
-              td.crud__cell(v-for="range in ranges") {{ reports.creditsForSalesTotal[range] | currency | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.creditsForSalesTotal, range) | currency | unempty }}
 
             tr.crud__row
               td.crud__cell Credits Used
-              td.crud__cell(v-for="range in ranges") {{ - reports.creditsForOrdersTotal[range] | currency | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ - getRangeFor(reports.creditsForOrdersTotal, range) | currency | unempty }}
 
             tr.crud__row
               td.crud__cell Credits Debt
-              td.crud__cell(v-for="range in ranges") {{ reports.creditsDebt[range] | currency | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.creditsDebt, range) | currency | unempty }}
 
             tr.crud__row
               td.crud__cell Sales
-              td.crud__cell(v-for="range in ranges") {{ reports.salesCount[range] | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.salesCount, range) | unempty }}
 
             tr.crud__row
               td.crud__cell Products Sold
-              td.crud__cell(v-for="range in ranges") {{ reports.soldProductsCount[range] | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.soldProductsCount, range) | unempty }}
 
             tr.crud__row
               td.crud__cell Products Sold average price
-              td.crud__cell(v-for="range in ranges") {{ parseInt(reports.productsTotal[range] / reports.soldProductsCount[range]) | currency | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ parseInt(getRangeFor(reports.productsTotal, range) / getRangeFor(reports.soldProductsCount, range)) | currency | unempty }}
 
             tr.crud__row
               td.crud__cell New products
-              td.crud__cell(v-for="range in ranges") {{ reports.newProductsCount[range] | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.newProductsCount, range) | unempty }}
 
             tr.crud__row
               td.crud__cell New products average price
-              td.crud__cell(v-for="range in ranges") {{ reports.newProductsAveragePrice[range] | currency | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.newProductsAveragePrice, range) | currency | unempty }}
 
             tr.crud__row
               td.crud__cell Average product price
-              td.crud__cell(v-for="range in ranges") {{ reports.productsAveragePrice[range] | currency | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.productsAveragePrice, range) | currency | unempty }}
+
+            tr.crud__row
+              td.crud__cell New Users
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.newUsers, range) | unempty }}
+
+            tr.crud__row
+              td.crud__cell New Users with picture
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.newUsersWithPicture, range) | unempty }}
+
+            tr.crud__row
+              td.crud__cell New Comments
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.newComments, range) | unempty }}
+
+            tr.crud__row
+              td.crud__cell New Messages
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.newMessages, range) | unempty }}
+
+            tr.crud__row
+              td.crud__cell New Reviews
+              td.crud__cell(v-for="range in ranges") {{ getRangeFor(reports.newRatings, range) | unempty }}
 
 </template>
 
@@ -194,6 +214,9 @@ export default {
     }
   },
   methods: {
+    getRangeFor (value, range) {
+      return this.$getNestedObject(value, [range])
+    },
     grossRevenewMargin (range) {
       if (!this.reports.grossRevenue[range] || !this.reports.productsTotal[range]) {
         return
