@@ -65,7 +65,7 @@
               td.crud__cell(v-for="range in ranges") {{ reports.cashIn[range] | currency | unempty }}
 
             tr.crud__row
-              td.crud__cell Product Sold (w/o discount)
+              td.crud__cell Products Sold (w/o discount)
               td.crud__cell(v-for="range in ranges") {{ reports.productsTotal[range] | currency | unempty }}
 
             tr.crud__row
@@ -73,7 +73,7 @@
               td.crud__cell(v-for="range in ranges") {{ reports.discountPrilov[range] | currency | unempty }}
 
             tr.crud__row
-              td.crud__cell Product Sold (w discount)
+              td.crud__cell Products Sold (w/ discount)
               td.crud__cell(v-for="range in ranges") {{ reports.productsTotal[range] - reports.discountPrilov[range] | currency | unempty }}
 
             tr.crud__row
@@ -114,7 +114,7 @@
 
             tr.crud__row
               td.crud__cell Credits Used
-              td.crud__cell(v-for="range in ranges") {{ reports.creditsForOrdersTotal[range] | currency | unempty }}
+              td.crud__cell(v-for="range in ranges") {{ - reports.creditsForOrdersTotal[range] | currency | unempty }}
 
             tr.crud__row
               td.crud__cell Credits Debt
@@ -125,8 +125,25 @@
               td.crud__cell(v-for="range in ranges") {{ reports.salesCount[range] | unempty }}
 
             tr.crud__row
-              td.crud__cell Sold Products
-              td.crud__cell(v-for="range in ranges") {{ reports.productsCount[range] | unempty }}
+              td.crud__cell Products Sold
+              td.crud__cell(v-for="range in ranges") {{ reports.soldProductsCount[range] | unempty }}
+
+            tr.crud__row
+              td.crud__cell Products Sold average price
+              td.crud__cell(v-for="range in ranges") {{ parseInt(reports.productsTotal[range] / reports.soldProductsCount[range]) | currency | unempty }}
+
+            tr.crud__row
+              td.crud__cell New products
+              td.crud__cell(v-for="range in ranges") {{ reports.newProductsCount[range] | unempty }}
+
+            tr.crud__row
+              td.crud__cell New products average price
+              td.crud__cell(v-for="range in ranges") {{ reports.newProductsAveragePrice[range] | currency | unempty }}
+
+            tr.crud__row
+              td.crud__cell Average product price
+              td.crud__cell(v-for="range in ranges") {{ reports.productsAveragePrice[range] | currency | unempty }}
+
 </template>
 
 <script>
