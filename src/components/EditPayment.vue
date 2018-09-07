@@ -1,8 +1,9 @@
 <template lang="pug">
-  .edit__slide
-    h3.slide__header.i-close(
-      @click.stop="$emit('close')") Aprobar transferencia
-    form.slide__form
+  EditLayout
+
+    template(slot="title") Aprobar transferencia
+
+    form.slide__form(slot="form")
       .form__row
         label.form__label Comprobante
         img.form__img(
@@ -39,10 +40,14 @@
 <script>
 
 import paymentAPI from '@/api/payment'
+import EditLayout from '@/mixins//EditLayout'
 
 export default {
   props: ['object'],
   name: 'EditTransfer',
+  components: {
+    EditLayout
+  },
   data () {
     return {
       valid_receipt: false,

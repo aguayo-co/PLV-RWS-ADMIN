@@ -1,21 +1,17 @@
 <template lang="pug">
-  .edit__slide
-    h3.slide__header.i-close(
-      @click.stop="$emit('close')") Editar campaña
-    form.slide__form(@submit.prevent="submit")
-      .form__row
-        label.form__label(
-          for="campaign-name") Nombre
-        span.help(
-          v-if="errorLog.name") {{ errorLog.name }}
-        input.form__control(
-          id="campaign-name",
-          v-model="field_name",
-          type="text")
-      .form__row.form__row_away
-        button.btn.btn_solid.btn_block(:disabled="saving")
-          Dots(v-if="saving")
-          template(v-else) Guardar
+  EditLayout
+
+    template(slot="title") Editar campaña
+
+    .form__row
+      label.form__label(
+        for="campaign-name") Nombre
+      span.help(
+        v-if="errorLog.name") {{ errorLog.name }}
+      input.form__control(
+        id="campaign-name",
+        v-model="field_name",
+        type="text")
 </template>
 
 <script>

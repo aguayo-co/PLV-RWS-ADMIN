@@ -1,35 +1,31 @@
 <template lang="pug">
-  div
-    h3.slide__header.i-close(
-      @click.stop="$emit('close')") Editar ventas
-    form.slide__form(@submit.prevent="submit")
-      .form__row
-        label.form__label Id
-        p {{ sale.id }}
-      .form__row
-        label.form__label Productos
-        p(v-for="product in sale.products") {{ product.title }}
-      .form__row
-        label.form__label Vendedora
-        p {{ sale.user.full_name }}
-      .form__row
-        label.form__label Compradora
-        p {{ sale.order.user.full_name }}
-      .form__row
-        label.form__label Total
-        p {{ sale.total | currency }}
-      .form__row
-        label.form__label Estado
-        p {{ statuses[sale.status] }}
-      .form__row
-        label.form__label(
-          for="sale-status") Nuevo estado
-        select.form__control(v-model="field_status" id="sale-status")
-          option(v-for="(status, index) in availableStatuses" :value="index") {{ status }}
-      .form__row.form__row_away
-        button.btn.btn_solid.btn_block(:disabled="saving")
-          Dots(v-if="saving")
-          template(v-else) Guardar
+  EditLayout
+
+    template(slot="title") Editar venta
+
+    .form__row
+      label.form__label Id
+      p {{ sale.id }}
+    .form__row
+      label.form__label Productos
+      p(v-for="product in sale.products") {{ product.title }}
+    .form__row
+      label.form__label Vendedora
+      p {{ sale.user.full_name }}
+    .form__row
+      label.form__label Compradora
+      p {{ sale.order.user.full_name }}
+    .form__row
+      label.form__label Total
+      p {{ sale.total | currency }}
+    .form__row
+      label.form__label Estado
+      p {{ statuses[sale.status] }}
+    .form__row
+      label.form__label(
+        for="sale-status") Nuevo estado
+      select.form__control(v-model="field_status" id="sale-status")
+        option(v-for="(status, index) in availableStatuses" :value="index") {{ status }}
 </template>
 
 <script>

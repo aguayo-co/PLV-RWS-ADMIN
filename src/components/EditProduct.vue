@@ -1,71 +1,67 @@
 <template lang="pug">
-  .edit__slide_large
-    h3.slide__header.i-close(
-      @click.stop="$emit('close')") Editar producto
-    form.slide__form(@submit.prevent="submit")
-      .form__row
-        label.form__label Estado actual
-        p {{ statuses[product.status] }}
-      .form__row
-        label.form__label(for="product-status") Nuevo estado
-        span.help(
-            v-if="errorLog.status") {{ errorLog.status }}
-        select.form__control(
-          v-model="field_status"
-          id="product-status")
-          option(v-for="(status, index) in availableStatuses" :value="index") {{ status }}
-      .form__row(v-if="field_status < 10")
-        label.form__label(for="product-admin_notes") Este producto se rechazó porque:
-        span.help(
-            v-if="errorLog.admin_notes") {{ errorLog.admin_notes }}
-        input.form__control(
-          v-model="field_admin_notes",
-          id="product-admin_notes",
-          type="text")
-      .form__row
-        label.form__label Imagen para Instashop
-        span.help(
-          v-if="errorLog.image_instagram") {{ errorLog.image_instagram }}
-        .upfile__small
-          uploadPhoto(
-            v-model="field_image_instagram"
-            :initialImage='product.image_instagram'
-            :square="true")
-      .form__row
-        label.form__label Imágenes
-        span.help(
-          v-if="errorLog.images") {{ errorLog.images }}
-        .upfile__small(v-for="i in 4")
-          uploadPhoto(
-            v-model="new_images[i - 1]"
-            :initialImage='sortedImages[i - 1]')
-      .form__row
-        label.form__label Campañas
-        span.help(
-            v-if="errorLog.campaign_ids") {{ errorLog.campaign_ids }}
-        .row(v-for="campaign in campaigns")
-          input.form__input-check(
-            type="checkbox"
-            :id="'product-campaign-' + campaign.id"
-            :value="campaign.id"
-            v-model="field_campaign_ids")
-          label.form__label-checkbox.i-ok(
-            :for="'product-campaign-' + campaign.id") {{ campaign.name }}
-      .form__row
-        label.form__label(for="product-commission") Comisión
-        span.help(
-            v-if="errorLog.commission") {{ errorLog.commission }}
-        input.form__control(
-          id="product-commission"
-          v-model="field_commission"
-          type="number"
-          step="1"
-          min="0"
-          max="100")
-      .form__row.form__row_away
-        button.btn.btn_solid.btn_block(:disabled="saving")
-          Dots(v-if="saving")
-          template(v-else) Guardar
+  EditLayout.edit__slide_large
+
+    template(slot="title") Editar producto
+
+    .form__row
+      label.form__label Estado actual
+      p {{ statuses[product.status] }}
+    .form__row
+      label.form__label(for="product-status") Nuevo estado
+      span.help(
+          v-if="errorLog.status") {{ errorLog.status }}
+      select.form__control(
+        v-model="field_status"
+        id="product-status")
+        option(v-for="(status, index) in availableStatuses" :value="index") {{ status }}
+    .form__row(v-if="field_status < 10")
+      label.form__label(for="product-admin_notes") Este producto se rechazó porque:
+      span.help(
+          v-if="errorLog.admin_notes") {{ errorLog.admin_notes }}
+      input.form__control(
+        v-model="field_admin_notes",
+        id="product-admin_notes",
+        type="text")
+    .form__row
+      label.form__label Imagen para Instashop
+      span.help(
+        v-if="errorLog.image_instagram") {{ errorLog.image_instagram }}
+      .upfile__small
+        uploadPhoto(
+          v-model="field_image_instagram"
+          :initialImage='product.image_instagram'
+          :square="true")
+    .form__row
+      label.form__label Imágenes
+      span.help(
+        v-if="errorLog.images") {{ errorLog.images }}
+      .upfile__small(v-for="i in 4")
+        uploadPhoto(
+          v-model="new_images[i - 1]"
+          :initialImage='sortedImages[i - 1]')
+    .form__row
+      label.form__label Campañas
+      span.help(
+          v-if="errorLog.campaign_ids") {{ errorLog.campaign_ids }}
+      .row(v-for="campaign in campaigns")
+        input.form__input-check(
+          type="checkbox"
+          :id="'product-campaign-' + campaign.id"
+          :value="campaign.id"
+          v-model="field_campaign_ids")
+        label.form__label-checkbox.i-ok(
+          :for="'product-campaign-' + campaign.id") {{ campaign.name }}
+    .form__row
+      label.form__label(for="product-commission") Comisión
+      span.help(
+          v-if="errorLog.commission") {{ errorLog.commission }}
+      input.form__control(
+        id="product-commission"
+        v-model="field_commission"
+        type="number"
+        step="1"
+        min="0"
+        max="100")
 </template>
 
 <script>

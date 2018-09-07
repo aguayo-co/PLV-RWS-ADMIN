@@ -1,30 +1,26 @@
 <template lang="pug">
-  .edit__slide
-    h3.slide__header.i-close(
-      @click.stop="$emit('close')") Editar marca
-    form.slide__form(@submit.prevent="submit")
-      .form__row
-        label.form__label(
-          for="brand-name") Nombre
-        span.help(
-          v-if="errorLog.name") {{ errorLog.name }}
-        input.form__control(
-          id="brand-name",
-          v-model="field_name",
-          type="text")
-      .form__row
-        label.form__label(
-          for="brand-url") URL
-        span.help(
-          v-if="errorLog.url") {{ errorLog.url }}
-        input.form__control(
-          id="brand-url",
-          v-model="field_url",
-          type="brand")
-      .form__row.form__row_away
-        button.btn.btn_solid.btn_block(:disabled="saving")
-          Dots(v-if="saving")
-          template(v-else) Guardar
+  EditLayout
+
+    template(slot="title") Editar marca
+
+    .form__row
+      label.form__label(
+        for="brand-name") Nombre
+      span.help(
+        v-if="errorLog.name") {{ errorLog.name }}
+      input.form__control(
+        id="brand-name",
+        v-model="field_name",
+        type="text")
+    .form__row
+      label.form__label(
+        for="brand-url") URL
+      span.help(
+        v-if="errorLog.url") {{ errorLog.url }}
+      input.form__control(
+        id="brand-url",
+        v-model="field_url",
+        type="brand")
 </template>
 
 <script>

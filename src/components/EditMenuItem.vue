@@ -1,46 +1,42 @@
 <template lang="pug">
-  .edit__slide
-    h3.slide__header.i-close(
-      @click.stop="$emit('close')") Editar item de menú
-    form.slide__form(@submit.prevent="submit")
-      .form__row
-        label.form__label(
-          for="menu_item-name") Nombre
-        span.help(
-          v-if="errorLog.name") {{ errorLog.name }}
-        input.form__control(
-          id="menu_item-name",
-          v-model="field_name",
-          type="text")
-      .form__row
-        span.help(
-          v-if="errorLog.parent_id") {{ errorLog.parent_id }}
-        label.form__label(
-          for='menu_item-parent_id') Item padre
-        select.form__select(
-          id='menu_item-parent'
-          v-model='parent')
-          option(:value="undefined") Sin padre
-          option(v-for="parent in extraData.availableTree" v-if="parent.id !== menuItem.id" :value='parent') {{ parent.name }}
-        select.form__select(
-          v-if="parent && parent.children"
-          id='menu_item-sub_parent'
-          v-model='subParent')
-          option(:value="undefined") -
-          option(v-for="subParent in parent.children" v-if="subParent.id !== menuItem.id" :value='subParent') {{ subParent.name }}
-      .form__row
-        label.form__label(
-          for="menu_item-url") Nombre
-        span.help(
-          v-if="errorLog.url") {{ errorLog.url }}
-        input.form__control(
-          id="menu_item-url",
-          v-model="field_url",
-          type="text")
-      .form__row.form__row_away
-        button.btn.btn_solid.btn_block(:disabled="saving")
-          Dots(v-if="saving")
-          template(v-else) Guardar
+  EditLayout
+
+    template(slot="title") Editar item de menú
+
+    .form__row
+      label.form__label(
+        for="menu_item-name") Nombre
+      span.help(
+        v-if="errorLog.name") {{ errorLog.name }}
+      input.form__control(
+        id="menu_item-name",
+        v-model="field_name",
+        type="text")
+    .form__row
+      span.help(
+        v-if="errorLog.parent_id") {{ errorLog.parent_id }}
+      label.form__label(
+        for='menu_item-parent_id') Item padre
+      select.form__select(
+        id='menu_item-parent'
+        v-model='parent')
+        option(:value="undefined") Sin padre
+        option(v-for="parent in extraData.availableTree" v-if="parent.id !== menuItem.id" :value='parent') {{ parent.name }}
+      select.form__select(
+        v-if="parent && parent.children"
+        id='menu_item-sub_parent'
+        v-model='subParent')
+        option(:value="undefined") -
+        option(v-for="subParent in parent.children" v-if="subParent.id !== menuItem.id" :value='subParent') {{ subParent.name }}
+    .form__row
+      label.form__label(
+        for="menu_item-url") Nombre
+      span.help(
+        v-if="errorLog.url") {{ errorLog.url }}
+      input.form__control(
+        id="menu_item-url",
+        v-model="field_url",
+        type="text")
 </template>
 
 <script>

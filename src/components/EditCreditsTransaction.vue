@@ -1,33 +1,29 @@
 <template lang="pug">
-  div
-    h3.slide__header.i-close(
-      @click.stop="$emit('close')") Editar Transacción de créditos
-    form.slide__form(@submit.prevent="submit")
-      .form__row(v-if="!object.id")
-        label.form__label(
-          for="transaction-user_id") ID de Usuario
-        span.help(
-          v-show='errorLog.user_id'
-        ) {{ errorLog.user_id }}
-        input.form__control(v-model="field_user_id" id="transaction-user_id" min=1, step=1)
-      .form__row
-        label.form__label(
-          for="transaction-amount") Cantidad
-        span.help(
-          v-show='errorLog.amount'
-        ) {{ errorLog.amount }}
-        input.form__control(v-model="field_amount" id="transaction-amount" step=1)
-      .form__row
-        label.form__label(
-          for="transaction-reason") Razón o motivo:
-        span.help(
-          v-show='errorLog.extra'
-        ) {{ errorLog.extra }}
-        textarea.form__control(v-model="field_reason" id="transaction-reason")
-      .form__row.form__row_away
-        button.btn.btn_solid.btn_block(:disabled="saving")
-          Dots(v-if="saving")
-          template(v-else) Guardar
+  EditLayout
+
+    template(slot="title") Editar Transacción de créditos
+
+    .form__row(v-if="!object.id")
+      label.form__label(
+        for="transaction-user_id") ID de Usuario
+      span.help(
+        v-show='errorLog.user_id'
+      ) {{ errorLog.user_id }}
+      input.form__control(v-model="field_user_id" id="transaction-user_id" min=1, step=1)
+    .form__row
+      label.form__label(
+        for="transaction-amount") Cantidad
+      span.help(
+        v-show='errorLog.amount'
+      ) {{ errorLog.amount }}
+      input.form__control(v-model="field_amount" id="transaction-amount" step=1)
+    .form__row
+      label.form__label(
+        for="transaction-reason") Razón o motivo:
+      span.help(
+        v-show='errorLog.extra'
+      ) {{ errorLog.extra }}
+      textarea.form__control(v-model="field_reason" id="transaction-reason")
 </template>
 
 <script>

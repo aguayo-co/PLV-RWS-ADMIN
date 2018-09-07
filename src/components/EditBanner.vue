@@ -1,74 +1,70 @@
 <template lang="pug">
-  .edit__slide_large
-    h3.slide__header.i-close(
-      @click.stop="$emit('close')") Editar banner
-    form.slide__form(@submit.prevent="submit")
-      .form__row
-        label.form__label(
-          for='banner-type') Tipo de banner
-        select.form__select(
-          id='banner-type'
-          v-model='type')
-          option(v-for="type in types" :value="type") {{ type.label }}
-      .form__row(v-if="type && type.extraName")
-        label.form__label(
-          for="banner-extra-name") Nombre
-        span.help(
-          v-if="errorLog.name") {{ errorLog.name }}
-        input.form__control(
-          required
-          id="banner-extra-name",
-          v-model="extraName",
-          type="text")
-      .form__row(v-if="type.width")
-        label.form__label Imagen ({{ type.width }}x{{ type.height }})
-        .upfile.slide__desktop
-          uploadPhoto(
-            :errorLog="errorLog.image"
-            :width="type.width",
-            :height="type.height",
-            v-model="field_image"
-            :initialImage='banner.image')
-      .form__row
-        label.form__label(
-          for="banner-title") Título
-        span.help(
-          v-if="errorLog.title") {{ errorLog.title }}
-        input.form__control(
-          v-model="field_title",
-          id="banner-title",
-          type="text")
-      .form__row
-        label.form__label(
-          for="banner-subtitle") Sub título
-        span.help(
-          v-if="errorLog.subtitle") {{ errorLog.subtitle }}
-        input.form__control(
-          v-model="field_subtitle",
-          id="banner-subtitle",
-          type="text")
-      .form__row
-        label.form__label(
-          for="banner-button_text") Texto del botón
-        span.help(
-          v-if="errorLog.button_text") {{ errorLog.button_text }}
-        input.form__control(
-          id="banner-button_text",
-          v-model="field_button_text",
-          type="text")
-      .form__row
-        label.form__label(
-          for="banner-url") URL
-        span.help(
-          v-if="errorLog.url") {{ errorLog.url }}
-        input.form__control(
-          v-model="field_url",
-          id="banner-url",
-          type="text")
-      .form__row.form__row_away
-        button.btn.btn_solid.btn_block(:disabled="saving")
-          Dots(v-if="saving")
-          template(v-else) Guardar
+  EditLayout.edit__slide_large
+
+    template(slot="title") Editar banner
+
+    .form__row
+      label.form__label(
+        for='banner-type') Tipo de banner
+      select.form__select(
+        id='banner-type'
+        v-model='type')
+        option(v-for="type in types" :value="type") {{ type.label }}
+    .form__row(v-if="type && type.extraName")
+      label.form__label(
+        for="banner-extra-name") Nombre
+      span.help(
+        v-if="errorLog.name") {{ errorLog.name }}
+      input.form__control(
+        required
+        id="banner-extra-name",
+        v-model="extraName",
+        type="text")
+    .form__row(v-if="type.width")
+      label.form__label Imagen ({{ type.width }}x{{ type.height }})
+      .upfile.slide__desktop
+        uploadPhoto(
+          :errorLog="errorLog.image"
+          :width="type.width",
+          :height="type.height",
+          v-model="field_image"
+          :initialImage='banner.image')
+    .form__row
+      label.form__label(
+        for="banner-title") Título
+      span.help(
+        v-if="errorLog.title") {{ errorLog.title }}
+      input.form__control(
+        v-model="field_title",
+        id="banner-title",
+        type="text")
+    .form__row
+      label.form__label(
+        for="banner-subtitle") Sub título
+      span.help(
+        v-if="errorLog.subtitle") {{ errorLog.subtitle }}
+      input.form__control(
+        v-model="field_subtitle",
+        id="banner-subtitle",
+        type="text")
+    .form__row
+      label.form__label(
+        for="banner-button_text") Texto del botón
+      span.help(
+        v-if="errorLog.button_text") {{ errorLog.button_text }}
+      input.form__control(
+        id="banner-button_text",
+        v-model="field_button_text",
+        type="text")
+    .form__row
+      label.form__label(
+        for="banner-url") URL
+      span.help(
+        v-if="errorLog.url") {{ errorLog.url }}
+      input.form__control(
+        v-model="field_url",
+        id="banner-url",
+        type="text")
 </template>
 
 <script>

@@ -1,3 +1,5 @@
+import EditLayout from './EditLayout'
+
 /**
  * Los valores de los formularios los almacenamos en local hasta
  * que se guarden en el servidor.
@@ -38,6 +40,9 @@ function createComputedProps (editableProps) {
 export default (editableProps) => {
   return {
     props: ['object', 'extraData'],
+    components: {
+      EditLayout
+    },
     data () {
       return {
         idPropertyName: 'id',
