@@ -26,7 +26,7 @@
             form="filter-form"
             v-model="from"
             pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
-            :placeholder="$moment().format('YYYY-MM-DD')"
+            :placeholder="'Ej: ' + $moment().format('YYYY-MM-DD')"
             type="text")
         label(for="report-until") Hasta
           span.help(
@@ -38,7 +38,7 @@
             form="filter-form"
             v-model="until"
             pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
-            :placeholder="$moment().format('YYYY-MM-DD')"
+            :placeholder="'Ej: ' + $moment().format('YYYY-MM-DD')"
             type="text")
         form(id="filter-form" @submit.prevent="updateList()")
           button.nav__btn.i-filter_after(title="Filtrar") Filtrar
@@ -272,6 +272,8 @@ export default {
         return
       }
 
+      // Las fechas deben ir en UTC.
+      // Acá convertimos a el inicio y fin del día en nuestro uso horario a UTC.
       const from = this.$moment(this.from).utc().format('YYYY-MM-DD HH:mm:ss')
       const until = this.$moment(this.until).add(1, 'day').utc().format('YYYY-MM-DD HH:mm:ss')
       const tz = this.$moment().format('Z')

@@ -38,6 +38,12 @@
       nav.nav
         template(v-if="$parent.filters")
           label(v-for="(filter, index) in $parent.filters") {{ filter.label }}
+            input.form__control(
+              form="filter-form"
+              v-if="filter.type === 'date'"
+              v-model="filter.value"
+              pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+              :placeholder="'Ej: ' + $moment().format('YYYY-MM-DD')")
             input.form__control(form="filter-form" v-if="filter.type === 'text'" v-model="filter.value")
             select.form__select(form="filter-form" v-if="filter.type === 'select'" v-model="filter.active")
               option(v-for="option in filter.options" :value="option.filter") {{ option.label }}

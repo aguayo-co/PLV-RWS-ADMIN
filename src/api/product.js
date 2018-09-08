@@ -34,6 +34,23 @@ export default {
     return Vue.axiosAuth.get('/api/products', { params })
   },
 
+  getWithCounts (page = 1, items, filter, orderby, q) {
+    const params = {
+      page,
+      items,
+      orderby,
+      q,
+      withCounts: 1
+    }
+
+    if (filter) {
+      Object.keys(filter).forEach((key) => {
+        params['filter[' + key + ']'] = filter[key]
+      })
+    }
+    return Vue.axiosAuth.get('/api/products', { params })
+  },
+
   replicate (product) {
     return Vue.axiosAuth.post('/api/products/' + product.id + '/replicate')
   },
