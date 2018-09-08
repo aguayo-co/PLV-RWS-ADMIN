@@ -10,7 +10,7 @@
       label.form__label(for="product-status") Nuevo estado
       span.help(
           v-if="errorLog.status") {{ errorLog.status }}
-      select.form__control(
+      select.form__select(
         v-model="field_status"
         id="product-status")
         option(v-for="(status, index) in availableStatuses" :value="index") {{ status }}
@@ -39,6 +39,95 @@
         uploadPhoto(
           v-model="new_images[i - 1]"
           :initialImage='sortedImages[i - 1]')
+    .form__row
+      label.form__label(
+        for="product-title") Título
+      span.help(
+        v-if="errorLog.title") {{ errorLog.title }}
+      input.form__control(
+        id="product-title",
+        v-model="field_title",
+        type="text")
+    .form__row
+      label.form__label(
+        for="product-description") Descripción
+      span.help(
+        v-if="errorLog.description") {{ errorLog.description }}
+      textarea.form__control(
+        id="product-description",
+        v-model="field_description",
+        type="text")
+    .form__row
+      label.form__label(for="product-category_id") Categoría
+      span.help(
+          v-if="errorLog.category_id") {{ errorLog.category_id }}
+      select.form__select(
+        v-model="field_category_id"
+        id="product-category_id")
+        optgroup(v-for="category in categories" :value="category.id" :label="category.name")
+          option(v-for="subcategory in category.children" :value="subcategory.id") {{ subcategory.name }}
+    .form__row
+      label.form__label Colores
+      span.help(
+          v-if="errorLog.color_ids") {{ errorLog.color_ids }}
+      .row(v-for="color in colors")
+        input.form__input-check(
+          type="checkbox"
+          :id="'product-color-' + color.id"
+          :value="color.id"
+          v-model="field_color_ids")
+        label.form__label-checkbox.i-ok(
+          :for="'product-color-' + color.id")
+            span(:style="'background-color:' + color.hex_code + '; width: 1em; height: 1em; display: inline-block'")
+            span  {{ color.name }}
+    .form__row
+      label.form__label(for="product-size_id") Talla
+      span.help(
+          v-if="errorLog.size_id") {{ errorLog.size_id }}
+      select.form__select(
+        v-model="field_size_id"
+        id="product-size_id")
+        optgroup(v-for="size in sizes" :value="size.id" :label="size.name")
+          option(v-for="subsize in size.children" :value="subsize.id") {{ subsize.name }}
+    .form__row
+      label.form__label(for="product-brand_id") Marca
+      span.help(
+          v-if="errorLog.brand_id") {{ errorLog.brand_id }}
+      select.form__select(
+        v-model="field_brand_id"
+        id="product-brand_id")
+        option(v-for="brand in brands" :value="brand.id") {{ brand.name }}
+    .form__row
+      label.form__label(
+        for="product-dimensions") Medidas
+      span.help(
+        v-if="errorLog.dimensions") {{ errorLog.dimensions }}
+      input.form__control(
+        id="product-dimensions",
+        v-model="field_dimensions",
+        type="text")
+    .form__row
+      label.form__label(
+        for="product-price") Precio de venta
+      span.help(
+        v-if="errorLog.price") {{ errorLog.price }}
+      input.form__control(
+        id="product-price",
+        v-model="field_price",
+        type="number"
+        step="1"
+        min="0")
+    .form__row
+      label.form__label(
+        for="product-original_price") Precio original
+      span.help(
+        v-if="errorLog.original_price") {{ errorLog.original_price }}
+      input.form__control(
+        id="product-original_price",
+        v-model="field_original_price",
+        type="number"
+        step="1"
+        min="0")
     .form__row
       label.form__label Campañas
       span.help(
@@ -78,6 +167,15 @@ const editableProps = {
   admin_notes: null,
   status: null,
   image_instagram: null,
+  original_price: null,
+  price: null,
+  dimensions: null,
+  color_ids: null,
+  category_id: null,
+  size_id: null,
+  brand_id: null,
+  title: null,
+  description: null,
   campaign_ids: null,
   commission: null
 }
@@ -97,7 +195,11 @@ export default {
   },
   computed: {
     ...mapState('ui', [
-      'campaigns'
+      'brands',
+      'campaigns',
+      'categories',
+      'colors',
+      'sizes'
     ]),
     // Images should come with names like #-@@@@@@@.ext
     // We try to return the images using the index (#) it has in the name.
