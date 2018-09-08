@@ -32,6 +32,23 @@ export default {
     return Vue.axiosAuth.get('/api/sales', { params })
   },
 
+  getForReport (page = 1, items, filter, orderby) {
+    const params = {
+      buyer: true,
+      page,
+      orderby,
+      items,
+      withReportData: 1
+    }
+
+    if (filter) {
+      Object.keys(filter).forEach((key) => {
+        params['filter[' + key + ']'] = filter[key]
+      })
+    }
+    return Vue.axiosAuth.get('/api/sales', { params })
+  },
+
   update (sale) {
     return Vue.axiosAuth.patch('/api/sales/' + sale.id, sale)
   }

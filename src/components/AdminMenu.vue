@@ -77,7 +77,12 @@ export default {
             },
             {
               name: 'Reporte Productos',
-              url: {name: 'ReporteProductos'},
+              url: {name: 'ReportProductos'},
+              ico: 'i-report'
+            },
+            {
+              name: 'Reporte carrito',
+              url: {name: 'ReportShoppingCarts'},
               ico: 'i-report'
             }
           ]

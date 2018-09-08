@@ -23,6 +23,7 @@ import Sliders from '@/pages/Sliders'
 import Payments from '@/pages/Payments'
 import Report from '@/pages/Report'
 import ReportProducts from '@/pages/ReportProducts'
+import ReportShoppingCarts from '@/pages/ReportShoppingCarts'
 import Usuarios from '@/pages/Usuarios'
 
 import beforeEach from './beforeEach'
@@ -151,8 +152,13 @@ const router = new Router({
     },
     {
       path: '/reporte-productos',
-      name: 'ReporteProductos',
+      name: 'ReportProductos',
       component: ReportProducts
+    },
+    {
+      path: '/reporte-shopping-cart',
+      name: 'ReportShoppingCarts',
+      component: ReportShoppingCarts
     }
   ]
 })
