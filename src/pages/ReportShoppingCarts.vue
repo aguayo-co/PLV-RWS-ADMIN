@@ -11,15 +11,15 @@
       th.crud__th.crud__title Veces en favoritos
 
     template(
-      v-for="product in products"
-      :slot="'row-' + product.id")
-      template(v-if="product.rowspan")
-        td.crud__cell(:rowspan="product.rowspan") {{ product.sale.created_at | date }}
-        td.crud__cell(:rowspan="product.rowspan") {{ product.sale.order.user.email }}
-        td.crud__cell(:rowspan="product.rowspan") {{ product.sale.order.user.orders_count }}
-      td.crud__cell {{ product.title }}
-      td.crud__cell {{ product.shopping_cart_count }}
-      td.crud__cell {{ product.favorited_by_count }}
+      v-for="row in rows"
+      :slot="'row-' + row.id")
+      template(v-if="row.rowspan")
+        td.crud__cell(:rowspan="row.rowspan") {{ row.sale.created_at | date }}
+        td.crud__cell(:rowspan="row.rowspan") {{ row.sale.order.user.email }}
+        td.crud__cell(:rowspan="row.rowspan") {{ row.sale.order.user.orders_count }}
+      td.crud__cell {{ row.product.title }}
+      td.crud__cell {{ row.product.shopping_cart_count }}
+      td.crud__cell {{ row.product.favorited_by_count }}
 
 </template>
 
@@ -57,7 +57,7 @@ export default {
   },
   data () {
     return {
-      objectsKey: 'products',
+      objectsKey: 'rows',
       loaderMethod: saleAPI.getForReport,
       query: false,
       filter: {
@@ -89,24 +89,26 @@ export default {
     // vamos a recorrer productos.
     // Acá guardamos las sales en local, pero devolvemos
     // transofrmado en productos.
-    products: {
+    rows: {
       set (sales) {
         this.sales = sales
       },
       get () {
-        const products = []
+        const rows = []
         this.sales.forEach(sale => {
           let rowspan = sale.products.length
           sale.products.forEach(product => {
-            products.push({
-              ...product,
+            rows.push({
+              id: sale.id + '-' + product.id,
               rowspan,
-              sale: sale
+              product,
+              sale
             })
+            // Sólo la primera fila de una venta debe tener rowspan.
             rowspan = null
           })
         })
-        return products
+        return rows
       }
     }
   }
