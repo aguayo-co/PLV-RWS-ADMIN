@@ -45,7 +45,8 @@
       td.crud__cell {{ transaction.sale_id }}
       td.crud__cell
         UserCell(:user="transaction.user")
-      td.crud__cell {{ status(transaction) | unempty }}
+      td.crud__cell
+        p.crud__state.crud__state_detail(:class='{"state-warning": [0].indexOf(transaction.transfer_status) !== -1}') {{ status(transaction) | unempty }}
       td.crud__cell {{ transaction.created_at | date-time | unempty }}
       td.crud__cell {{ bankInfo(transaction, 'fullName') | unempty }}
       td.crud__cell {{ banks[bankInfo(transaction, 'bankId')] | unempty }}

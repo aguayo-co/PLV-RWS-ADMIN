@@ -46,7 +46,7 @@
       td.crud__cell {{ saleReturn.reason }}
       td.crud__cell {{ saleReturn.shippingData }}
       td.crud__cell
-        p.crud__state.crud__state_detail(:class='"state-" + saleReturn.status') {{ statuses[saleReturn.status] }}
+        p.crud__state.crud__state_detail(:class='{"state-warning": [0, 50, 99].indexOf(saleReturn.status) !== -1}') {{ statuses[saleReturn.status] }}
 </template>
 
 <script>
@@ -57,7 +57,7 @@ import ListMixin from '@/mixins/ListMixin'
 
 const statusFilters = Object.keys(saleReturnAPI.statuses)
   .map(status => {
-    return { label: saleReturnAPI.statuses[status], filter: {status: status} }
+    return { label: saleReturnAPI.statuses[status], filter: { status: status } }
   })
 
 export default {
@@ -88,9 +88,9 @@ export default {
         {
           label: 'Estado',
           type: 'select',
-          active: {status: '0,99'},
+          active: { status: '0,99' },
           options: [
-            { label: 'Todas', filter: {status: '0,99'} },
+            { label: 'Todas', filter: { status: '0,99' } },
             ...statusFilters
           ]
         }
@@ -128,56 +128,56 @@ export default {
       // Dividimos por espacios que reemplazamos por comas.
       // lo@quesea.com    otra@cosa.com => lo@quesea.com,otra@cosa.com
       if (/^([^ ,]+@[^ ,]+ *)+$/.test(text)) {
-        return {buyer_email: text.replace(/ +/g, ',')}
+        return { buyer_email: text.replace(/ +/g, ',') }
       }
 
       // 123    456 => 123,456
       if (/^([0-9]+ *)+$/.test(text)) {
-        return {buyer_id: text.replace(/ +/g, ',')}
+        return { buyer_id: text.replace(/ +/g, ',') }
       }
       // No sabemos que buscar, busca algo que asegura 0 resultados.
-      return {buyer_full_name: text}
+      return { buyer_full_name: text }
     },
     getSellerFilters (text) {
       // Cualqueir cosa que parezca un email lo aceptamos como válido.
       // Dividimos por espacios que reemplazamos por comas.
       // lo@quesea.com    otra@cosa.com => lo@quesea.com,otra@cosa.com
       if (/^([^ ,]+@[^ ,]+ *)+$/.test(text)) {
-        return {user_email: text.replace(/ +/g, ',')}
+        return { user_email: text.replace(/ +/g, ',') }
       }
 
       // 123    456 => 123,456
       if (/^([0-9]+ *)+$/.test(text)) {
-        return {user_id: text.replace(/ +/g, ',')}
+        return { user_id: text.replace(/ +/g, ',') }
       }
       // No sabemos que buscar, busca algo que asegura 0 resultados.
-      return {user_full_name: text}
+      return { user_full_name: text }
     },
     getProductFilters (text) {
       // 123    456 => 123,456
       if (/^([0-9]+ *)+$/.test(text)) {
-        return {product_id: text.replace(/ +/g, ',')}
+        return { product_id: text.replace(/ +/g, ',') }
       }
       // No sabemos que buscar, busca algo que asegura 0 resultados.
-      return {product_title: text}
+      return { product_title: text }
     },
     alterParams (query, filters) {
       const buyerText = filters.buyer
       delete filters.buyer
       if (buyerText) {
-        filters = {...filters, ...this.getBuyerFilters(buyerText)}
+        filters = { ...filters, ...this.getBuyerFilters(buyerText) }
       }
 
       const sellerText = filters.user
       delete filters.user
       if (sellerText) {
-        filters = {...filters, ...this.getSellerFilters(sellerText)}
+        filters = { ...filters, ...this.getSellerFilters(sellerText) }
       }
 
       const productText = filters.product
       delete filters.product
       if (productText) {
-        filters = {...filters, ...this.getProductFilters(productText)}
+        filters = { ...filters, ...this.getProductFilters(productText) }
       }
 
       return [query, filters]

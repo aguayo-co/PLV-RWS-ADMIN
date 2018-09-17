@@ -26,9 +26,7 @@
         UserCell(:user="payment.order.user")
       td.crud__cell {{ payment.created_at | date-time }}
       td.crud__cell
-        //-- ToDo: integrar reglas de .crud__state_detail en crud__state y crear reglas para crud__state_alert
-        p.crud__state(
-          :class='{ "crud__state_alert": payment.status === 1 }') {{ statuses[payment.status] }}
+        p.crud__state.crud__state_detail(:class='{"state-warning": [0, 1].indexOf(payment.status) !== -1}') {{ statuses[payment.status] }}
     template(
       v-for="payment in payments"
       :slot="payment.id + '-actions'")

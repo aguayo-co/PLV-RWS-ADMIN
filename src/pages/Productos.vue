@@ -31,8 +31,7 @@
       td.crud__cell
         UserCell(:user="product.user")
       td.crud__cell
-        p.crud__state(
-          :class='[{ "crud__state_alert": product.status === 0 }, { "crud__state_alert": product.status === 3 }]') {{ statuses[product.status] }}
+        p.crud__state.crud__state_detail(:class='{"state-warning": [0, 3].indexOf(product.status) !== -1}') {{ statuses[product.status] }}
 </template>
 
 <script>

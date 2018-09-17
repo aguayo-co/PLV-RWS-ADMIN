@@ -27,7 +27,10 @@
         template(v-if="coupon.discount_type === '%'") {{ coupon.discount_value }}%
         template(v-else) {{ coupon.discount_value | currency }}
       td.crud__cell(v-html="coupon.first_purchase_only ? 'Si' : 'No'")
-      td.crud__cell(v-html="coupon.status ? 'Si' : 'No'")
+      td.crud__cell
+        p.crud__state.crud__state_detail(
+          :class='{"state-warning": [0].indexOf(coupon.status) !== -1}'
+          v-html="coupon.status ? 'Si' : 'No'")
       td.crud__cell
         ul(v-if="coupon.campaigns_ids.length")
           li(v-for="campaign in coupon.campaigns") {{ campaign.name }}

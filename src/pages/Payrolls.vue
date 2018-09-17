@@ -13,7 +13,8 @@
     template(
       v-for="payroll in payrolls"
       :slot="'row-' + payroll.id")
-        td.crud__cell(:class="statusClass(payroll)") {{ status(payroll) | unempty }}
+        td.crud__cell
+          p.crud__state.crud__state_detail(:class="statusClass(payroll)") {{ status(payroll) | unempty }}
         td.crud__cell {{ payroll.created_at | date | unempty }}
         td.crud__cell {{ payrollTotal(payroll) | currency | unempty }}
         td.crud__cell {{ payrollCommission(payroll) | currency | unempty }}
@@ -47,7 +48,7 @@ export default {
       return payroll.credits_transactions.reduce((count, transaction) => {
         count[transaction.transfer_status]++
         return count
-      }, {0: 0, 1: 0, 99: 0})
+      }, { 0: 0, 1: 0, 99: 0 })
     },
     hasPending (payroll) {
       const count = this.transactionsPerStatus(payroll)
@@ -56,16 +57,12 @@ export default {
     statusClass (payroll) {
       const count = this.transactionsPerStatus(payroll)
 
-      // La orden puede estar completada, pendiente o parcialmente completada.
+      // A menos que esté todo pagado, marcar con warning.
       switch (payroll.credits_transactions.length) {
         case count[1]:
-          return 'state-1'
-        case count[99]:
-          return 'state-99'
-        case count[1] + count[99]:
-          return 'state-x'
+          return ''
         default:
-          return 'state-0'
+          return 'state-warning'
       }
     },
     status (payroll) {
