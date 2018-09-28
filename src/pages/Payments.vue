@@ -5,7 +5,8 @@
     template(slot="columns")
       th.crud__th.crud__title Plataforma
       th.crud__th.crud__title Comprobante
-      th.crud__th.crud__title Total
+      th.crud__th.crud__title Total orden
+      th.crud__th.crud__title Total pago
       th.crud__th.crud__title # Orden
       th.crud__th.crud__title Usuaria
       th.crud__th.crud__title Fecha de creación
@@ -21,6 +22,7 @@
           :alt="'Recibo-' + payment.id")
         span(v-else) -
       td.crud__cell {{ payment.order.due | currency }}
+      td.crud__cell {{ payment.amount | currency }}
       td.crud__cell {{ payment.order_id }}
       td.crud__cell
         UserCell(:user="payment.order.user")
