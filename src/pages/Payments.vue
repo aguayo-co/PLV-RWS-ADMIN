@@ -5,7 +5,7 @@
     template(slot="columns")
       th.crud__th.crud__title Plataforma
       th.crud__th.crud__title Comprobante
-      th.crud__th.crud__title Total orden
+      th.crud__th.crud__title Total por pagar orden
       th.crud__th.crud__title Total pago
       th.crud__th.crud__title # Orden
       th.crud__th.crud__title Usuaria
