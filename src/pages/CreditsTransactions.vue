@@ -130,6 +130,7 @@ export default {
       filters: this.getFilters(),
 
       objectsKey: 'transactions',
+      orderby: '-created_at',
       slide: EditCreditsTransaction,
 
       canCreate: true
