@@ -20,11 +20,11 @@ ListLayout
         :alt="'Recibo-' + payment.id"
       )
       span(v-else) -
-    td.crud__cell {{ orders[payment.id] && orders[payment.id].due | currency }}
+    td.crud__cell {{ payment.order && payment.order.due | currency }}
     td.crud__cell {{ payment.amount | currency }}
     td.crud__cell {{ payment.order_id }}
     td.crud__cell
-      UserCell(:user="orders[payment.id] && orders[payment.id].user")
+      UserCell(:user="payment.order && payment.order.user")
     td.crud__cell {{ payment.created_at | (date - time) }}
     td.crud__cell
       p.crud__state.crud__state_detail(
@@ -66,7 +66,6 @@ export default {
       objectsKey: "payments",
       loaderMethod: paymentAPI.get,
       console: console,
-      orders: [],
       payments: [],
       filters: [
         {
@@ -127,9 +126,9 @@ export default {
       if (payments.length) {
         for (let index = 0; index < payments.length; index++) {
           const paymentId = payments[index].id;
-          if (!this.orders[paymentId]) {
+          if (!payments[index].order) {
             await paymentAPI.getOrder(paymentId).then((response) => {
-              this.orders[paymentId] = response.data;
+              payments[index].order = response.data;
             });
           }
         }
