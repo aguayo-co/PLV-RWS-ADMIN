@@ -125,11 +125,14 @@ export default {
     async beforeGetResponse(payments) {
       if (payments.length) {
         for (let index = 0; index < payments.length; index++) {
-          const paymentId = payments[index].id;
+          const orderId = payments[index].order_id;
           if (!payments[index].order) {
-            await paymentAPI.getOrder(paymentId).then((response) => {
-              payments[index].order = response.data;
-            });
+            await paymentAPI
+              .getOrder(orderId)
+              .then((response) => {
+                payments[index].order = response.data;
+              })
+              .catch((e) => console.log(orderId, "payment don't exist"));
           }
         }
       }
