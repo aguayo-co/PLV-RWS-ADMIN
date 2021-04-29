@@ -12,7 +12,7 @@ export default {
     99: 'Cancelada'
   },
 
-  get (page = 1, items, filter, orderby) {
+  get(page = 1, items, filter, orderby) {
     const params = {
       page,
       items,
@@ -27,15 +27,15 @@ export default {
     return Vue.axiosAuth.get('/api/payments', { params })
   },
 
-  getById (id) {
+  getById(id) {
     return Vue.axiosAuth.get('/api/payments/' + id)
   },
 
-  update (payment) {
+  update(payment) {
     return Vue.axiosAuth.patch('/api/payments/' + payment.id, payment)
   },
 
-  approve (payment) {
+  approve(payment) {
     const data = {
       reference: payment.request_data.reference,
       status: 'approved'
@@ -43,11 +43,15 @@ export default {
     return Vue.axiosAuth.post('/callback/gateway/transfer', data)
   },
 
-  reject (payment) {
+  reject(payment) {
     const data = {
       reference: payment.request_data.reference,
       status: 'rejected'
     }
     return Vue.axiosAuth.post('/callback/gateway/transfer', data)
+  },
+
+  getOrder(id) {
+    return Vue.axiosAuth.get(`/api/orders/get-by-id/${id}`)
   }
 }

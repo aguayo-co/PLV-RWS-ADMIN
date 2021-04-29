@@ -10,7 +10,7 @@ export default {
   components: {
     ListLayout
   },
-  data () {
+  data() {
     return {
       // Los objetos a cargar en el listado se controlan con las
       // siguientes propiedades:
@@ -76,13 +76,13 @@ export default {
   },
   computed: {
     // Se puede usar para pasar datos adicionales al slide de edición.
-    slideData () {
+    slideData() {
     },
-    deleter () {
+    deleter() {
       return this.deleterMethod
     },
     // Get the method to be called to retrieve the objects from the api.
-    loader () {
+    loader() {
       if (!this.loaderMethod) {
         console.error('loaderMethod not defined.')
         return
@@ -91,7 +91,7 @@ export default {
       return this.loaderMethod
     },
     // Une filtros obligados con filtros de usuario.
-    mergedFilters () {
+    mergedFilters() {
       if (!this.filters) {
         return this.filter
       }
@@ -99,7 +99,7 @@ export default {
       this.filters.forEach(filter => {
         // Es un filtros tipo select.
         if (filter.active) {
-          merged = {...merged, ...filter.active}
+          merged = { ...merged, ...filter.active }
           return
         }
         // Es un filtros tipo text, pero validar que tenemos valor.
@@ -109,14 +109,14 @@ export default {
       })
       // Incluye filtros globales.
       if (this.filter) {
-        merged = {...merged, ...this.filter}
+        merged = { ...merged, ...this.filter }
       }
       return merged
     },
     // Generic computed property to access the retrieved objects.
     // Each component can have its own name by setting "objectsKey".
     objects: {
-      get () {
+      get() {
         if (!this.objectsKey) {
           console.error('objectsKey not defined.')
           return
@@ -124,7 +124,7 @@ export default {
 
         return this[this.objectsKey]
       },
-      set (value) {
+      set(value) {
         if (!this.objectsKey) {
           console.error('objectsKey not defined.')
           return
@@ -136,17 +136,21 @@ export default {
   },
   methods: {
     // Verifica si podemos editar este objeto.
-    isEditable (object) {
+    isEditable(object) {
       return this.slide && object.id
     },
-    isDeletable (object) {
+    isDeletable(object) {
       return this.deleter && object.id
     },
-    objectsChanged () {
+    objectsChanged() {
       // Allow implementing components to take action on
       // objects changes.
     },
-    updateObject (newObject) {
+    beforeGetResponse(_payments) {
+
+    },
+
+    updateObject(newObject) {
       // Reemplaza el objeto pasado en el arreglo de objetos.
       const replaced = this.objects.some((object, index) => {
         if (object.id === newObject.id) {
@@ -161,22 +165,22 @@ export default {
 
       this.objectsChanged()
     },
-    closeSlide () {
+    closeSlide() {
       this.slideObject = null
       this.showSlide = false
     },
-    openSlide (object) {
+    openSlide(object) {
       this.slideObject = object
       this.showSlide = true
     },
-    resetPage () {
+    resetPage() {
       this.page = 1
       this.updateList()
     },
-    alterParams (query, filters) {
+    alterParams(query, filters) {
       return [query, filters]
     },
-    delete (deletingObject) {
+    delete(deletingObject) {
       if (!window.confirm('Confirma que quieres proceder con la eliminación:')) {
         return
       }
@@ -206,7 +210,7 @@ export default {
         this.$delete(this.deleting, deletingObject.id)
       })
     },
-    updateList () {
+    updateList() {
       if (!this.objectsKey) {
         console.error('objectsKey not defined.')
         return
@@ -218,7 +222,7 @@ export default {
       }
 
       let query = this.query ? this.query.trim() : null
-      let filters = {...this.mergedFilters}
+      let filters = { ...this.mergedFilters }
       let orderby = this.orderby
 
       // Si búsqueda sólo son números,
@@ -226,7 +230,7 @@ export default {
       if (this.query && /^[0-9]+( [0-9]+)*$/.test(this.query)) {
         query = null
         // Reemplaza espacios por comas en query para filtrar.
-        filters = {...filters, id: this.query.replace(/ /g, ',')}
+        filters = { ...filters, id: this.query.replace(/ /g, ',') }
       }
 
       // Permite a los componentes alterar query y filters antes de enviar la consulta.
@@ -241,11 +245,13 @@ export default {
       }
 
       const localLoading = this.loading = this.loader(this.page, this.items, filters, orderby, query)
-        .then(response => {
+        .then(async response => {
           // Keep track of last request.
           if (localLoading !== this.loading) {
             return
           }
+
+          await this.beforeGetResponse(response.data.data);
           this.totalItems = response.data.total
           this.totalPages = response.data.last_page
           this.objects = response.data.data
@@ -259,7 +265,7 @@ export default {
         })
     }
   },
-  created () {
+  created() {
     this.updateList()
   }
 }
